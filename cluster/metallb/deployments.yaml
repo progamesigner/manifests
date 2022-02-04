@@ -1,0 +1,58 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/component: metallb
+    app.kubernetes.io/name: controller
+    app.kubernetes.io/part-of: cluster
+  name: metallb-controller
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: metallb
+      app.kubernetes.io/name: controller
+      app.kubernetes.io/part-of: cluster
+  template:
+    metadata:
+      annotations:
+        prometheus.io/port: '7472'
+        prometheus.io/scrape: 'true'
+      labels:
+        app.kubernetes.io/component: metallb
+        app.kubernetes.io/name: controller
+        app.kubernetes.io/part-of: cluster
+    spec:
+      containers:
+      - name: controller
+        image: metallb/controller:latest
+        args:
+        - --config=metallb
+        - --log-level=info
+        - --port=7472
+        env:
+        - name: METALLB_ML_SECRET_NAME
+          value: metallb-memberlist
+        - name: METALLB_DEPLOYMENT
+          value: metallb-controller
+        ports:
+        - name: monitor
+          containerPort: 7472
+        resources:
+          limits:
+            cpu: 100m
+            memory: 32Mi
+          requests:
+            cpu: 50m
+            memory: 16Mi
+        securityContext:
+          capabilities:
+            drop:
+            - ALL
+          readOnlyRootFilesystem: true
+      securityContext:
+        fsGroup: 65534
+        runAsNonRoot: true
+        runAsUser: 65534
+      serviceAccountName: metallb-controller
+      terminationGracePeriodSeconds: 0

@@ -1,0 +1,77 @@
+---
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  labels:
+    app.kubernetes.io/component: metallb
+    app.kubernetes.io/name: speaker
+    app.kubernetes.io/part-of: cluster
+  name: metallb-speaker
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: metallb
+      app.kubernetes.io/name: speaker
+      app.kubernetes.io/part-of: cluster
+  template:
+    metadata:
+      annotations:
+        prometheus.io/port: '7472'
+        prometheus.io/scrape: 'true'
+      labels:
+        app.kubernetes.io/component: metallb
+        app.kubernetes.io/name: speaker
+        app.kubernetes.io/part-of: cluster
+    spec:
+      containers:
+      - name: speaker
+        image: metallb/speaker:latest
+        args:
+        - --config=metallb
+        - --log-level=info
+        - --port=7472
+        env:
+        - name: METALLB_HOST
+          valueFrom:
+            fieldRef:
+              fieldPath: status.hostIP
+        - name: METALLB_NODE_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: spec.nodeName
+        - name: METALLB_ML_BIND_ADDR
+          valueFrom:
+            fieldRef:
+              fieldPath: status.podIP
+        - name: METALLB_ML_LABELS
+          value: app.kubernetes.io/name=metallb,app.kubernetes.io/instance=metallb,app.kubernetes.io/component=cluster
+        - name: METALLB_ML_SECRET_KEY
+          valueFrom:
+            secretKeyRef:
+              name: metallb-memberlist
+              key: secretkey
+        ports:
+        - name: monitor
+          containerPort: 7472
+        - name: memberlist-tcp
+          containerPort: 7946
+          protocol: TCP
+        - name: memberlist-udp
+          containerPort: 7946
+          protocol: UDP
+        resources:
+          limits:
+            cpu: 100m
+            memory: 32Mi
+          requests:
+            cpu: 50m
+            memory: 16Mi
+        securityContext:
+          capabilities:
+            add:
+            - NET_RAW
+            drop:
+            - ALL
+          readOnlyRootFilesystem: true
+      hostNetwork: true
+      serviceAccountName: metallb-speaker
