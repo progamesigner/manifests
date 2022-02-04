@@ -1,0 +1,67 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/component: pgadmin
+    app.kubernetes.io/name: pgadmin
+    app.kubernetes.io/part-of: dashboard
+  name: pgadmin
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: pgadmin
+      app.kubernetes.io/name: pgadmin
+      app.kubernetes.io/part-of: dashboard
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/component: pgadmin
+        app.kubernetes.io/name: pgadmin
+        app.kubernetes.io/part-of: dashboard
+    spec:
+      initContainers:
+      - name: chown
+        image: pgadmin:latest
+        command:
+        - /bin/sh
+        - -c
+        - set -ex; chown -R pgadmin /var/lib/pgadmin
+        volumeMounts:
+        - name: data
+          mountPath: /var/lib/pgadmin
+        securityContext:
+          runAsUser: 0
+      containers:
+      - name: pgadmin
+        image: pgadmin:latest
+        env:
+        - name: GUNICORN_THREADS
+          value: '2'
+        - name: PGADMIN_CONFIG_MASTER_PASSWORD_REQUIRED
+          value: 'False'
+        - name: PGADMIN_CONFIG_SERVER_MODE
+          value: 'False'
+        - name: PGADMIN_DEFAULT_EMAIL
+          value: pgadmin4@pgadmin.org
+        - name: PGADMIN_DEFAULT_PASSWORD
+          value: pgadmin4@pgadmin.org
+        - name: PGADMIN_DISABLE_POSTFIX
+          value: '1'
+        ports:
+        - name: http
+          containerPort: 80
+        volumeMounts:
+        - name: data
+          mountPath: /var/lib/pgadmin
+        resources:
+          limits:
+            cpu: 1000m
+            memory: 128Mi
+          requests:
+            cpu: 50m
+            memory: 32Mi
+      volumes:
+      - name: data
+        emptyDir: {}
