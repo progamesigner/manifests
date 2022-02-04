@@ -5,7 +5,6 @@ resources:
 - deployments.yaml
 - services.yaml
 secretGenerator:
-- literals:
-  - POSTGRES_USER=default
-  - POSTGRES_PASSWORD=password
-  name: postgresql
+- name: mariadb
+  literals:
+  - MARIADB_ROOT_PASSWORD=password
