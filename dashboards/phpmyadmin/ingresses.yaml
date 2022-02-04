@@ -1,0 +1,37 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  labels:
+    app.kubernetes.io/component: phpmyadmin
+    app.kubernetes.io/name: ingress
+    app.kubernetes.io/part-of: dashboard
+  name: phpmyadmin
+spec:
+  ingressClassName: ingress-nginx
+  rules:
+  - host: mariadb.progamesigner.dev
+    http:
+      paths:
+      - backend:
+          service:
+            name: phpmyadmin
+            port:
+              name: http
+        path: /
+        pathType: Prefix
+  - host: mysql.progamesigner.dev
+    http:
+      paths:
+      - backend:
+          service:
+            name: phpmyadmin
+            port:
+              name: http
+        path: /
+        pathType: Prefix
+  tls:
+  - hosts:
+    - mariadb.progamesigner.dev
+    - mysql.progamesigner.dev
+    secretName: tls-dev-progamesigner

@@ -1,0 +1,15 @@
+---
+apiVersion: kustomize.config.k8s.io/v1alpha1
+kind: Component
+resources:
+- deployments.yaml
+- ingresses.yaml
+- services.yaml
+secretGenerator:
+- name: phpmyadmin
+  literals:
+  - PMA_USER=root
+  - PMA_PASSWORD=password
+  - MYSQL_ROOT_PASSWORD=password
+  - PMA_HOST=mariadb.default.svc.cluster.local
+  - PMA_USER_CONFIG_BASE64=PD9waHAKCiRjZmdbJ015c3FsU3NsV2FybmluZ1NhZmVIb3N0cyddID0gWycxMjcuMC4wLjEnLCAnbG9jYWxob3N0JywgJ21hcmlhZGIuZGVmYXVsdC5zdmMuY2x1c3Rlci5sb2NhbCddOwo=
