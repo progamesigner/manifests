@@ -7,4 +7,6 @@ resources:
 secretGenerator:
 - name: mariadb
   literals:
+  - MARIADB_PASSWORD=password
   - MARIADB_ROOT_PASSWORD=password
+  - MARIADB_USER=default
