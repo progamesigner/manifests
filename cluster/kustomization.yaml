@@ -6,6 +6,7 @@ components:
 - default-backend
 - ingress-nginx
 - metallb
+- syncthing
 images:
 - name: cert-manager/cainjector
   newName: quay.io/jetstack/cert-manager-cainjector
@@ -28,4 +29,21 @@ images:
 - name: metallb/speaker
   newName: quay.io/metallb/speaker
   newTag: v0.11.0
+- name: syncthing
+  newName: syncthing/syncthing
+  newTag: 1.19.0
 namespace: kube-system
+patchesJson6902:
+- target:
+    group: apps
+    version: v1
+    kind: Deployment
+    name: syncthing
+  patch: |-
+    - op: replace
+      path: /spec/template/spec/volumes/0
+      value:
+        name: syncthing
+        hostPath:
+          type: DirectoryOrCreate
+          path: /srv/syncthing

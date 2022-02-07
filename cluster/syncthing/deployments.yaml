@@ -1,0 +1,52 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/component: syncthing
+    app.kubernetes.io/name: syncthing
+    app.kubernetes.io/part-of: cluster
+  name: syncthing
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: syncthing
+      app.kubernetes.io/name: syncthing
+      app.kubernetes.io/part-of: cluster
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/component: syncthing
+        app.kubernetes.io/name: syncthing
+        app.kubernetes.io/part-of: cluster
+    spec:
+      automountServiceAccountToken: false
+      containers:
+      - name: syncthing
+        image: syncthing:latest
+        ports:
+        - name: gui
+          containerPort: 8384
+        - name: syncthing
+          containerPort: 22000
+        - name: syncthing-udp
+          containerPort: 22000
+          protocol: UDP
+        - name: discovery-udp
+          containerPort: 21027
+          protocol: UDP
+        volumeMounts:
+        - name: syncthing
+          mountPath: /var/syncthing
+        resources:
+          limits:
+            cpu: 1500m
+            memory: 512Mi
+          requests:
+            cpu: 100m
+            memory: 64Mi
+      serviceAccountName: default
+      volumes:
+      - name: syncthing
+        emptyDir: {}
