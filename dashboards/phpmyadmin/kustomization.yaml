@@ -13,4 +13,4 @@ secretGenerator:
   - PMA_PASSWORD=password
   - PMA_USER_CONFIG_BASE64=PD9waHAKCiRjZmdbJ015c3FsU3NsV2FybmluZ1NhZmVIb3N0cyddID0gWycxMjcuMC4wLjEnLCAnbG9jYWxob3N0JywgJ21hcmlhZGIuZGVmYXVsdC5zdmMuY2x1c3Rlci5sb2NhbCddOwo=
   - PMA_USER=root
-  - UPLOAD_LIMIT=512M
+  - UPLOAD_LIMIT=256M
