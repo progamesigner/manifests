@@ -24,3 +24,29 @@ spec:
     app.kubernetes.io/name: controller
     app.kubernetes.io/part-of: cluster
   type: LoadBalancer
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/component: ingress-nginx
+    app.kubernetes.io/name: service
+    app.kubernetes.io/part-of: cluster
+  name: external-ingress-nginx
+spec:
+  externalTrafficPolicy: Local
+  loadBalancerIP: 192.168.0.10
+  ports:
+  - name: http
+    port: 80
+    targetPort: http
+    appProtocol: http
+  - name: https
+    port: 443
+    targetPort: https
+    appProtocol: https
+  selector:
+    app.kubernetes.io/component: external-ingress-nginx
+    app.kubernetes.io/name: controller
+    app.kubernetes.io/part-of: cluster
+  type: LoadBalancer
