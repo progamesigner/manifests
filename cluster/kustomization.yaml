@@ -19,10 +19,7 @@ images:
   newTag: 1.2.3
 - name: ingress-nginx/controller
   newName: k8s.gcr.io/ingress-nginx/controller
-  newTag: v1.1.1
-- name: ingress-nginx/kube-webhook-certgen
-  newName: k8s.gcr.io/ingress-nginx/kube-webhook-certgen
-  newTag: v1.1.1
+  newTag: v1.1.2
 - name: metallb/controller
   newName: quay.io/metallb/controller
   newTag: v0.11.0
