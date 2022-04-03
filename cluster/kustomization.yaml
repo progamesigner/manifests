@@ -19,7 +19,7 @@ images:
   newTag: 1.2.3
 - name: ingress-nginx/controller
   newName: k8s.gcr.io/ingress-nginx/controller
-  newTag: v1.1.2
+  newTag: v1.1.3
 - name: metallb/controller
   newName: quay.io/metallb/controller
   newTag: v0.11.0
