@@ -65,6 +65,13 @@ rules:
   verbs:
   - update
 - apiGroups:
+  - coordination.k8s.io
+  resources:
+  - leases
+  verbs:
+  - list
+  - watch
+- apiGroups:
   - networking.k8s.io
   resources:
   - ingressclasses
@@ -118,6 +125,28 @@ rules:
 - apiGroups:
   - ''
   resources:
+  - configmaps
+  verbs:
+  - create
+- apiGroups:
+  - ''
+  resources:
+  - configmaps
+  resourceNames:
+  - ingress-controller-leader
+  verbs:
+  - get
+  - update
+- apiGroups:
+  - ''
+  resources:
+  - events
+  verbs:
+  - create
+  - patch
+- apiGroups:
+  - ''
+  resources:
   - services
   verbs:
   - get
@@ -138,6 +167,21 @@ rules:
   verbs:
   - update
 - apiGroups:
+  - coordination.k8s.io
+  resources:
+  - leases
+  verbs:
+  - create
+- apiGroups:
+  - coordination.k8s.io
+  resources:
+  - leases
+  resourceNames:
+  - ingress-controller-leader
+  verbs:
+  - get
+  - list
+- apiGroups:
   - networking.k8s.io
   resources:
   - ingressclasses
@@ -145,28 +189,6 @@ rules:
   - get
   - list
   - watch
-- apiGroups:
-  - ''
-  resources:
-  - configmaps
-  resourceNames:
-  - ingress-controller-leader
-  verbs:
-  - get
-  - update
-- apiGroups:
-  - ''
-  resources:
-  - configmaps
-  verbs:
-  - create
-- apiGroups:
-  - ''
-  resources:
-  - events
-  verbs:
-  - create
-  - patch
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
