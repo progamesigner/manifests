@@ -10,10 +10,10 @@ components:
 images:
 - name: cert-manager/cainjector
   newName: quay.io/jetstack/cert-manager-cainjector
-  newTag: v1.9.0
+  newTag: v1.9.1
 - name: cert-manager/controller
   newName: quay.io/jetstack/cert-manager-controller
-  newTag: v1.9.0
+  newTag: v1.9.1
 - name: ingress-default-backend
   newName: ghcr.io/progamesigner/ingress-default-backend
   newTag: 1.2.3
