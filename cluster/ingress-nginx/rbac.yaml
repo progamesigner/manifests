@@ -72,6 +72,14 @@ rules:
   - list
   - watch
 - apiGroups:
+  - discovery.k8s.io
+  resources:
+  - endpointslices
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
   - networking.k8s.io
   resources:
   - ingressclasses
@@ -180,7 +188,7 @@ rules:
   - ingress-controller-leader
   verbs:
   - get
-  - list
+  - update
 - apiGroups:
   - networking.k8s.io
   resources:
