@@ -24,6 +24,27 @@ spec:
         app.kubernetes.io/part-of: services
     spec:
       automountServiceAccountToken: false
+      initContainers:
+      - name: init-elasticsearch
+        image: elasticsearch:latest
+        command:
+        - sh
+        - -c
+        - |
+          chown elasticsearch:elasticsearch /usr/share/elasticsearch/data
+        envFrom:
+        - secretRef:
+            name: elasticsearch
+        volumeMounts:
+        - name: data
+          mountPath: /usr/share/elasticsearch/data
+        resources:
+          limits:
+            cpu: 1500m
+            memory: 512Mi
+          requests:
+            cpu: 100m
+            memory: 64Mi
       containers:
       - name: elasticsearch
         image: elasticsearch:latest
