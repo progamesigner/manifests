@@ -7,9 +7,9 @@ components:
 images:
 - name: pgadmin
   newName: dpage/pgadmin4
-  newTag: '6.7'
+  newTag: '6.15'
 - name: phpmyadmin
-  newTag: 5.1.3
+  newTag: 5.2.0
 namespace: default
 resources:
 - certificates.yaml
