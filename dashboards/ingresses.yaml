@@ -1,0 +1,80 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  labels:
+    app.kubernetes.io/component: adguard
+    app.kubernetes.io/name: ingress
+    app.kubernetes.io/part-of: dashboard
+  name: adguard
+spec:
+  ingressClassName: ingress-nginx
+  rules:
+  - host: adguard.progamesigner.dev
+    http:
+      paths:
+      - backend:
+          service:
+            name: adguard
+            port:
+              name: https
+        path: /
+        pathType: Prefix
+  tls:
+  - hosts:
+    - adguard.progamesigner.dev
+    secretName: tls-dev-progamesigner
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  labels:
+    app.kubernetes.io/component: home-assistant
+    app.kubernetes.io/name: ingress
+    app.kubernetes.io/part-of: dashboard
+  name: home-assistant
+spec:
+  ingressClassName: ingress-nginx
+  rules:
+  - host: home.progamesigner.dev
+    http:
+      paths:
+      - backend:
+          service:
+            name: home-assistant
+            port:
+              name: https
+        path: /
+        pathType: Prefix
+  tls:
+  - hosts:
+    - home.progamesigner.dev
+    secretName: tls-dev-progamesigner
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    nginx.ingress.kubernetes.io/backend-protocol: https
+  labels:
+    app.kubernetes.io/component: unifi
+    app.kubernetes.io/name: ingress
+    app.kubernetes.io/part-of: dashboard
+  name: unifi
+spec:
+  ingressClassName: ingress-nginx
+  rules:
+  - host: unifi.progamesigner.dev
+    http:
+      paths:
+      - backend:
+          service:
+            name: unifi
+            port:
+              name: https
+        path: /
+        pathType: Prefix
+  tls:
+  - hosts:
+    - unifi.progamesigner.dev
+    secretName: tls-dev-progamesigner
