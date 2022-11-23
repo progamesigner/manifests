@@ -8,3 +8,4 @@ secretGenerator:
 - name: elasticsearch
   literals:
   - discovery.type=single-node
+  - ELASTIC_PASSWORD=password
