@@ -9,3 +9,4 @@ secretGenerator:
   literals:
   - discovery.type=single-node
   - ELASTIC_PASSWORD=password
+  - ingest.geoip.downloader.enabled=false
