@@ -16,8 +16,6 @@ kind: ConfigMap
 metadata:
   name: external-ingress-nginx-tcp
 data:
-  '22067': kube-system/syncthing:22067
-  '22070': kube-system/syncthing:22070
 ---
 apiVersion: v1
 kind: ConfigMap

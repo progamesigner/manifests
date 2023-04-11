@@ -54,9 +54,9 @@ patchesJson6902:
     name: syncthing-relay
   patch: |-
     - op: replace
-      path: /spec/template/spec/volumes/1
+      path: /spec/template/spec/volumes/0
       value:
-        name: syncthing
+        name: syncthing-relay
         hostPath:
           type: DirectoryOrCreate
           path: /srv/syncthing-relay

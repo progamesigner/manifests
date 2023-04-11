@@ -45,12 +45,6 @@ spec:
     port: 443
     targetPort: https
     appProtocol: https
-  - name: relaysrv
-    port: 22067
-    targetPort: relaysrv
-  - name: relaysrv-status
-    port: 22070
-    targetPort: relaysrv-status
   selector:
     app.kubernetes.io/component: external-ingress-nginx
     app.kubernetes.io/name: controller

@@ -162,10 +162,6 @@ spec:
           containerPort: 8443
         - name: metrics
           containerPort: 10254
-        - name: relaysrv
-          containerPort: 22067
-        - name: relaysrv-status
-          containerPort: 22070
         startupProbe:
           httpGet:
             path: /healthz
