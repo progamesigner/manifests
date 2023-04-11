@@ -19,6 +19,12 @@ spec:
   - name: syncthing
     port: 22000
     targetPort: syncthing
+  - name: relay
+    port: 22067
+    targetPort: relay
+  - name: status
+    port: 22070
+    targetPort: status
   selector:
     app.kubernetes.io/component: syncthing
     app.kubernetes.io/name: syncthing

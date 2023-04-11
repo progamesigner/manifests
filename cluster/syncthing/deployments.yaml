@@ -48,7 +48,29 @@ spec:
           requests:
             cpu: 300m
             memory: 128Mi
+      - name: syncthing-relay
+        image: syncthing-relay:latest
+        args:
+        - -global-rate=2000000
+        - -provided-by='0x148 <https://0x148.com>'
+        ports:
+        - name: relay
+          containerPort: 22067
+        - name: status
+          containerPort: 22070
+        volumeMounts:
+        - name: syncthing-relay
+          mountPath: /var/strelaysrv
+        resources:
+          limits:
+            cpu: 100m
+            memory: 128Mi
+          requests:
+            cpu: 50m
+            memory: 32Mi
       serviceAccountName: default
       volumes:
       - name: syncthing
+        emptyDir: {}
+      - name: syncthing-relay
         emptyDir: {}

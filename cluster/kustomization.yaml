@@ -29,6 +29,9 @@ images:
 - name: syncthing
   newName: syncthing/syncthing
   newTag: 1.22.0
+- name: syncthing-relay
+  newName: syncthing/relaysrv
+  newTag: 1.18.6
 namespace: kube-system
 patchesJson6902:
 - target:
@@ -44,5 +47,18 @@ patchesJson6902:
         hostPath:
           type: DirectoryOrCreate
           path: /srv/syncthing
+- target:
+    group: apps
+    version: v1
+    kind: Deployment
+    name: syncthing-relay
+  patch: |-
+    - op: replace
+      path: /spec/template/spec/volumes/1
+      value:
+        name: syncthing
+        hostPath:
+          type: DirectoryOrCreate
+          path: /srv/syncthing-relay
 resources:
 - https://github.com/cert-manager/cert-manager/releases/download/v1.11.1/cert-manager.crds.yaml

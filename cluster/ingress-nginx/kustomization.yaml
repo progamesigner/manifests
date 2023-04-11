@@ -7,19 +7,8 @@ configMapGenerator:
   - ingress.conf
   options:
     disableNameSuffixHash: true
-- name: ingress-nginx-tcp
-  options:
-    disableNameSuffixHash: true
-- name: ingress-nginx-udp
-  options:
-    disableNameSuffixHash: true
-- name: external-ingress-nginx-tcp
-  options:
-    disableNameSuffixHash: true
-- name: external-ingress-nginx-udp
-  options:
-    disableNameSuffixHash: true
 resources:
+- configmaps.yaml
 - deployments.yaml
 - ingressclasses.yaml
 - rbac.yaml

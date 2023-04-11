@@ -1,0 +1,26 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ingress-nginx-tcp
+data:
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ingress-nginx-udp
+data:
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: external-ingress-nginx-tcp
+data:
+  '22067': kube-system/syncthing:22067
+  '22070': kube-system/syncthing:22070
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: external-ingress-nginx-udp
+data:
