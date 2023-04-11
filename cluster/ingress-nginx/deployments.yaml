@@ -123,6 +123,7 @@ spec:
         app.kubernetes.io/component: external-ingress-nginx
         app.kubernetes.io/name: controller
         app.kubernetes.io/part-of: cluster
+        use-gateway: external
     spec:
       automountServiceAccountToken: true
       containers:
