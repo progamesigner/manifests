@@ -123,7 +123,6 @@ spec:
         app.kubernetes.io/component: external-ingress-nginx
         app.kubernetes.io/name: controller
         app.kubernetes.io/part-of: cluster
-        use-gateway: external
     spec:
       automountServiceAccountToken: true
       containers:
@@ -159,6 +158,9 @@ spec:
           containerPort: 80
         - name: https
           containerPort: 443
+        - name: https-udp
+          containerPort: 443
+          protocol: UDP
         - name: webhook
           containerPort: 8443
         - name: metrics

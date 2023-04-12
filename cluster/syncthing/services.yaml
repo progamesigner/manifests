@@ -16,9 +16,6 @@ spec:
   - name: gui
     port: 8384
     targetPort: gui
-  - name: syncthing
-    port: 22000
-    targetPort: syncthing
   selector:
     app.kubernetes.io/component: syncthing
     app.kubernetes.io/name: syncthing
@@ -28,27 +25,23 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  annotations:
-    metallb.universe.tf/allow-shared-ip: syncthing
   labels:
-    app.kubernetes.io/component: syncthing
+    app.kubernetes.io/component: external-syncthing
     app.kubernetes.io/name: service
     app.kubernetes.io/part-of: cluster
-  name: syncthing-udp
+  name: external-syncthing
 spec:
   externalTrafficPolicy: Local
-  loadBalancerIP: 192.168.48.10
+  loadBalancerIP: 192.168.0.6
   ports:
-  - name: syncthing-udp
-    port: 22000
-    targetPort: syncthing-udp
-    protocol: UDP
-  - name: discovery-udp
-    port: 21027
-    targetPort: discovery-udp
-    protocol: UDP
+  - name: relaysrv
+    port: 22067
+    targetPort: relaysrv
+  - name: relaysrv-status
+    port: 22070
+    targetPort: relaysrv-status
   selector:
     app.kubernetes.io/component: syncthing
-    app.kubernetes.io/name: syncthing
+    app.kubernetes.io/name: syncthing-relay
     app.kubernetes.io/part-of: cluster
   type: LoadBalancer
