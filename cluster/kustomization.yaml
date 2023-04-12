@@ -62,4 +62,3 @@ patchesJson6902:
           path: /srv/syncthing-relay
 resources:
 - https://github.com/cert-manager/cert-manager/releases/download/v1.11.1/cert-manager.crds.yaml
-- services.yaml

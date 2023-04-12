@@ -5,3 +5,4 @@ resources:
 - cluster
 - dashboards
 - services
+- services.yaml
