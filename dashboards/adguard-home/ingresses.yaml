@@ -1,0 +1,26 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  labels:
+    app.kubernetes.io/component: adguard-home
+    app.kubernetes.io/name: ingress
+    app.kubernetes.io/part-of: dashboard
+  name: adguard-home
+spec:
+  ingressClassName: ingress-nginx
+  rules:
+  - host: adguard.progamesigner.dev
+    http:
+      paths:
+      - backend:
+          service:
+            name: adguard-home
+            port:
+              name: admin
+        path: /
+        pathType: Prefix
+  tls:
+  - hosts:
+    - adguard.progamesigner.dev
+    secretName: tls-dev-progamesigner

@@ -1,0 +1,80 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/component: adguard-home
+    app.kubernetes.io/name: adguard-home
+    app.kubernetes.io/part-of: dashboard
+  name: adguard-home
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: adguard-home
+      app.kubernetes.io/name: adguard-home
+      app.kubernetes.io/part-of: dashboard
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/component: adguard-home
+        app.kubernetes.io/name: adguard-home
+        app.kubernetes.io/part-of: dashboard
+        use-gateway: external
+    spec:
+      automountServiceAccountToken: false
+      containers:
+      - name: adguard-home
+        image: adguard-home:latest
+        ports:
+        - name: dns
+          containerPort: 53
+        - name: dns-udp
+          containerPort: 53
+          protocol: UDP
+        - name: dhcp-server
+          containerPort: 67
+          protocol: UDP
+        - name: dhcp-client
+          containerPort: 68
+          protocol: UDP
+        - name: http
+          containerPort: 80
+        - name: https
+          containerPort: 443
+        - name: https-udp
+          containerPort: 443
+          protocol: UDP
+        - name: dns-tls
+          containerPort: 853
+        - name: dns-tls-udp
+          containerPort: 853
+          protocol: UDP
+        - name: admin
+          containerPort: 3000
+        - name: admin-udp
+          containerPort: 3000
+          protocol: UDP
+        - name: dnscrypt
+          containerPort: 5443
+        - name: dnscrypt-udp
+          containerPort: 5443
+          protocol: UDP
+        volumeMounts:
+        - name: conf
+          mountPath: /opt/adguardhome/conf
+        - name: data
+          mountPath: /opt/adguardhome/work
+        resources:
+          limits:
+            cpu: 300m
+            memory: 127Mi
+          requests:
+            cpu: 50m
+            memory: 64Mi
+      serviceAccountName: default
+      volumes:
+      - name: conf
+        emptyDir: {}
+      - name: data
+        emptyDir: {}
