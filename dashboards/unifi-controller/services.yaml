@@ -74,7 +74,7 @@ spec:
     port: 1900
     targetPort: l2-discovery
     protocol: UDP
-  - name: dns-udp
+  - name: dns
     port: 53
     targetPort: dns-udp
     protocol: UDP
