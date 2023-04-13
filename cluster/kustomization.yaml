@@ -22,10 +22,10 @@ images:
   newTag: v1.4.0
 - name: metallb/controller
   newName: quay.io/metallb/controller
-  newTag: v0.12.0
+  newTag: v0.13.9
 - name: metallb/speaker
   newName: quay.io/metallb/speaker
-  newTag: v0.12.0
+  newTag: v0.13.9
 - name: syncthing
   newName: syncthing/syncthing
   newTag: 1.23.4
@@ -62,3 +62,10 @@ patchesJson6902:
           path: /srv/syncthing-relay
 resources:
 - https://github.com/cert-manager/cert-manager/releases/download/v1.11.1/cert-manager.crds.yaml
+- https://raw.githubusercontent.com/metallb/metallb/v0.13.9/config/crd/bases/metallb.io_addresspools.yaml
+- https://raw.githubusercontent.com/metallb/metallb/v0.13.9/config/crd/bases/metallb.io_bfdprofiles.yaml
+- https://raw.githubusercontent.com/metallb/metallb/v0.13.9/config/crd/bases/metallb.io_bgpadvertisements.yaml
+- https://raw.githubusercontent.com/metallb/metallb/v0.13.9/config/crd/bases/metallb.io_bgppeers.yaml
+- https://raw.githubusercontent.com/metallb/metallb/v0.13.9/config/crd/bases/metallb.io_communities.yaml
+- https://raw.githubusercontent.com/metallb/metallb/v0.13.9/config/crd/bases/metallb.io_ipaddresspools.yaml
+- https://raw.githubusercontent.com/metallb/metallb/v0.13.9/config/crd/bases/metallb.io_l2advertisements.yaml

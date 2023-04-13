@@ -24,16 +24,23 @@ metadata:
     app.kubernetes.io/component: metallb
     app.kubernetes.io/name: controller-cluster-role
     app.kubernetes.io/part-of: cluster
-  name: metallb-controller
+  name: metallb:controller
 rules:
 - apiGroups:
   - ''
   resources:
   - services
+  - namespaces
   verbs:
   - get
   - list
   - watch
+- apiGroups:
+  - ''
+  resources:
+  - nodes
+  verbs:
+  - list
 - apiGroups:
   - ''
   resources:
@@ -47,6 +54,64 @@ rules:
   verbs:
   - create
   - patch
+- apiGroups:
+  - policy
+  resourceNames:
+  - metallb-controller
+  resources:
+  - podsecuritypolicies
+  verbs:
+  - use
+- apiGroups:
+  - admissionregistration.k8s.io
+  resources:
+  - mutatingwebhookconfigurations
+  - validatingwebhookconfigurations
+  resourceNames:
+  - metallb-webhook-configuration
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - admissionregistration.k8s.io
+  resources:
+  - mutatingwebhookconfigurations
+  - validatingwebhookconfigurations
+  verbs:
+  - list
+  - watch
+- apiGroups:
+  - apiextensions.k8s.io
+  resources:
+  - customresourcedefinitions
+  resourceNames:
+  - addresspools.metallb.io
+  - bfdprofiles.metallb.io
+  - bgpadvertisements.metallb.io
+  - bgppeers.metallb.io
+  - communities.metallb.io
+  - ipaddresspools.metallb.io
+  - l2advertisements.metallb.io
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - apiextensions.k8s.io
+  resources:
+  - customresourcedefinitions
+  verbs:
+  - list
+  - watch
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
@@ -55,14 +120,15 @@ metadata:
     app.kubernetes.io/component: metallb
     app.kubernetes.io/name: speaker-cluster-role
     app.kubernetes.io/part-of: cluster
-  name: metallb-speaker
+  name: metallb:speaker
 rules:
 - apiGroups:
   - ''
   resources:
-  - services
   - endpoints
+  - namespaces
   - nodes
+  - services
   verbs:
   - get
   - list
@@ -82,20 +148,98 @@ rules:
   verbs:
   - create
   - patch
+- apiGroups:
+  - policy
+  resourceNames:
+  - metallb-speaker
+  resources:
+  - podsecuritypolicies
+  verbs:
+  - use
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
   labels:
     app.kubernetes.io/component: metallb
-    app.kubernetes.io/name: watcher-role
+    app.kubernetes.io/name: lister-role
     app.kubernetes.io/part-of: cluster
-  name: metallb-watcher
+  name: metallb:lister
 rules:
 - apiGroups:
   - ''
   resources:
+  - pods
+  verbs:
+  - list
+- apiGroups:
+  - ''
+  resources:
+  - secrets
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - ''
+  resources:
   - configmaps
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - metallb.io
+  resources:
+  - addresspools
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - metallb.io
+  resources:
+  - bfdprofiles
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - metallb.io
+  resources:
+  - bgppeers
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - metallb.io
+  resources:
+  - l2advertisements
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - metallb.io
+  resources:
+  - bgpadvertisements
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - metallb.io
+  resources:
+  - ipaddresspools
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - metallb.io
+  resources:
+  - communities
   verbs:
   - get
   - list
@@ -106,25 +250,9 @@ kind: Role
 metadata:
   labels:
     app.kubernetes.io/component: metallb
-    app.kubernetes.io/name: lister-role
-    app.kubernetes.io/part-of: cluster
-  name: metallb-lister
-rules:
-- apiGroups:
-  - ''
-  resources:
-  - pods
-  verbs:
-  - list
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: Role
-metadata:
-  labels:
-    app.kubernetes.io/component: metallb
     app.kubernetes.io/name: controller-role
     app.kubernetes.io/part-of: cluster
-  name: metallb-controller
+  name: metallb:controller
 rules:
 - apiGroups:
   - ''
@@ -132,6 +260,12 @@ rules:
   - secrets
   verbs:
   - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
 - apiGroups:
   - ''
   resources:
@@ -148,6 +282,61 @@ rules:
   - metallb-controller
   verbs:
   - get
+- apiGroups:
+  - metallb.io
+  resources:
+  - bgppeers
+  verbs:
+  - get
+  - list
+- apiGroups:
+  - metallb.io
+  resources:
+  - addresspools
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - metallb.io
+  resources:
+  - bfdprofiles
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - metallb.io
+  resources:
+  - ipaddresspools
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - metallb.io
+  resources:
+  - bgpadvertisements
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - metallb.io
+  resources:
+  - l2advertisements
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - metallb.io
+  resources:
+  - communities
+  verbs:
+  - get
+  - list
+  - watch
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
@@ -156,11 +345,11 @@ metadata:
     app.kubernetes.io/component: metallb
     app.kubernetes.io/name: controller-cluster-role-binding
     app.kubernetes.io/part-of: cluster
-  name: metallb-controller
+  name: metallb:controller
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: metallb-controller
+  name: metallb:controller
 subjects:
 - kind: ServiceAccount
   name: metallb-controller
@@ -172,30 +361,12 @@ metadata:
     app.kubernetes.io/component: metallb
     app.kubernetes.io/name: speaker-cluster-role-binding
     app.kubernetes.io/part-of: cluster
-  name: metallb-speaker
+  name: metallb:speaker
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: metallb-speaker
+  name: metallb:speaker
 subjects:
-- kind: ServiceAccount
-  name: metallb-speaker
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: RoleBinding
-metadata:
-  labels:
-    app.kubernetes.io/component: metallb
-    app.kubernetes.io/name: watcher-role-binding
-    app.kubernetes.io/part-of: cluster
-  name: metallb-watcher
-roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: Role
-  name: metallb-watcher
-subjects:
-- kind: ServiceAccount
-  name: metallb-controller
 - kind: ServiceAccount
   name: metallb-speaker
 ---
@@ -206,11 +377,11 @@ metadata:
     app.kubernetes.io/component: metallb
     app.kubernetes.io/name: lister-role-binding
     app.kubernetes.io/part-of: cluster
-  name: metallb-lister
+  name: metallb:lister
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
-  name: metallb-lister
+  name: metallb:lister
 subjects:
 - kind: ServiceAccount
   name: metallb-speaker
@@ -222,11 +393,11 @@ metadata:
     app.kubernetes.io/component: metallb
     app.kubernetes.io/name: controller-role-binding
     app.kubernetes.io/part-of: cluster
-  name: metallb-controller
+  name: metallb:controller
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
-  name: metallb-controller
+  name: metallb:controller
 subjects:
 - kind: ServiceAccount
   name: metallb-controller

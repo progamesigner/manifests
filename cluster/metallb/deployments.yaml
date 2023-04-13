@@ -27,9 +27,9 @@ spec:
       - name: controller
         image: metallb/controller:latest
         args:
-        - --config=metallb
         - --log-level=info
         - --port=7472
+        - --webhook-mode=disabled
         env:
         - name: METALLB_ML_SECRET_NAME
           value: metallb-memberlist
@@ -38,6 +38,18 @@ spec:
         ports:
         - name: monitor
           containerPort: 7472
+        - name: webhook
+          containerPort: 9443
+        livenessProbe:
+          httpGet:
+            path: /metrics
+            port: monitor
+          initialDelaySeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /metrics
+            port: monitor
+          initialDelaySeconds: 10
         resources:
           limits:
             cpu: 100m
@@ -46,6 +58,7 @@ spec:
             cpu: 50m
             memory: 16Mi
         securityContext:
+          allowPrivilegeEscalation: false
           capabilities:
             drop:
             - ALL
