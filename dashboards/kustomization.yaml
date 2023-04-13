@@ -5,6 +5,7 @@ components:
 - adguard-home
 - pgadmin
 - phpmyadmin
+- unifi-controller
 images:
 - name: adguard-home
   newName: adguard/adguardhome
@@ -14,6 +15,9 @@ images:
   newTag: '6.15'
 - name: phpmyadmin
   newTag: 5.2.0
+- name: unifi-controller
+  newName: lscr.io/linuxserver/unifi-controller
+  newTag: 7.3.83-ls187
 namespace: default
 resources:
 - certificates.yaml
@@ -54,6 +58,19 @@ patchesJson6902:
         hostPath:
           type: DirectoryOrCreate
           path: /srv/pgadmin
+- target:
+    group: apps
+    version: v1
+    kind: Deployment
+    name: unifi-controller
+  patch: |-
+    - op: replace
+      path: /spec/template/spec/volumes/0
+      value:
+        name: data
+        hostPath:
+          type: DirectoryOrCreate
+          path: /srv/unifi-controller
 secretGenerator:
 - name: cert-manager-cloudflare
   envs:

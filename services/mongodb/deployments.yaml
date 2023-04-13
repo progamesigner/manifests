@@ -32,7 +32,7 @@ spec:
             name: mongodb
         ports:
         - name: mongodb
-          containerPort: 5432
+          containerPort: 27017
         volumeMounts:
         - name: data
           mountPath: /data/db

@@ -1,0 +1,91 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/component: unifi-controller
+    app.kubernetes.io/name: unifi-controller
+    app.kubernetes.io/part-of: dashboard
+  name: unifi-controller
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: unifi-controller
+      app.kubernetes.io/name: unifi-controller
+      app.kubernetes.io/part-of: dashboard
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/component: unifi-controller
+        app.kubernetes.io/name: unifi-controller
+        app.kubernetes.io/part-of: dashboard
+    spec:
+      initContainers:
+      - name: unifi-system-ip
+        image: unifi-controller:latest
+        command:
+        - /bin/sh
+        - -c
+        - sed -i "s/.*system_ip=.*/system_ip=192.168.0.2/" /config/data/system.properties
+        volumeMounts:
+        - name: data
+          mountPath: /config
+        resources:
+          limits:
+            cpu: 1000m
+            memory: 2Gi
+          requests:
+            cpu: 50m
+            memory: 1Gi
+      containers:
+      - name: unifi-controller
+        image: unifi-controller:latest
+        env:
+        - name: PUID
+          value: '1000'
+        - name: PGID
+          value: '1000'
+        - name: TZ
+          value: UTC
+        ports:
+        - name: dns
+          containerPort: 53
+        - name: dns-udp
+          containerPort: 53
+          protocol: UDP
+        - name: l2-discovery
+          containerPort: 1900
+          protocol: UDP
+        - name: stun
+          containerPort: 3478
+          protocol: UDP
+        - name: syslog
+          containerPort: 5514
+          protocol: UDP
+        - name: speed-test
+          containerPort: 6789
+        - name: inform
+          containerPort: 8080
+        - name: https
+          containerPort: 8443
+        - name: https-redirect
+          containerPort: 8843
+        - name: http-redirect
+          containerPort: 8880
+        - name: discovery
+          containerPort: 10001
+          protocol: UDP
+        volumeMounts:
+        - name: data
+          mountPath: /config
+        resources:
+          limits:
+            cpu: 1000m
+            memory: 2Gi
+          requests:
+            cpu: 50m
+            memory: 1Gi
+      volumes:
+      - name: data
+        emptyDir: {}
