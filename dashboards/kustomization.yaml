@@ -9,7 +9,7 @@ components:
 images:
 - name: adguard-home
   newName: adguard/adguardhome
-  newTag: v0.107.27
+  newTag: v0.107.28
 - name: pgadmin
   newName: dpage/pgadmin4
   newTag: '6.15'
