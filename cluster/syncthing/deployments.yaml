@@ -76,7 +76,6 @@ spec:
         app.kubernetes.io/component: syncthing
         app.kubernetes.io/name: syncthing-relay
         app.kubernetes.io/part-of: cluster
-        use-gateway: external
     spec:
       automountServiceAccountToken: false
       containers:

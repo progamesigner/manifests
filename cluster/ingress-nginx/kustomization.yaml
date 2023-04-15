@@ -16,6 +16,6 @@ resources:
 secretGenerator:
 - name: ingress-nginx-dhparam
   files:
-  - dhparam.pem=dhparam.pem
+  - dhparam.pem=files/dhparam.pem
   options:
     disableNameSuffixHash: true

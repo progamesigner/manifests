@@ -30,8 +30,7 @@ spec:
         command:
         - sh
         - -c
-        - |
-          chown elasticsearch:elasticsearch /usr/share/elasticsearch/data
+        - set -ex; chown elasticsearch:elasticsearch /usr/share/elasticsearch/data
         envFrom:
         - secretRef:
             name: elasticsearch

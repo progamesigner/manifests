@@ -27,7 +27,7 @@ spec:
         command:
         - /bin/sh
         - -c
-        - sed -i "s/.*system_ip=.*/system_ip=192.168.0.2/" /config/data/system.properties
+        - set -ex; sed -i "s/.*system_ip=.*/system_ip=192.168.0.2/" /config/data/system.properties
         volumeMounts:
         - name: data
           mountPath: /config
