@@ -1,0 +1,91 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/component: home-assistant
+    app.kubernetes.io/name: home-assistant
+    app.kubernetes.io/part-of: dashboard
+  name: home-assistant
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: home-assistant
+      app.kubernetes.io/name: home-assistant
+      app.kubernetes.io/part-of: dashboard
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/component: home-assistant
+        app.kubernetes.io/name: home-assistant
+        app.kubernetes.io/part-of: dashboard
+    spec:
+      automountServiceAccountToken: false
+      initContainers:
+      - name: init-home-assistant
+        image: home-assistant:latest
+        command:
+        - /bin/sh
+        - -c
+        - |
+          set -ex;
+          cp /home-assistant/configuration.yaml /config/configuration.yaml;
+          curl -sSL https://github.com/cnstudio/Taipower-Bimonthly-Energy-Cost-homeassistant/archive/refs/tags/v0.52.1.tar.gz | tar zx -C /config --strip-components=1 Taipower-Bimonthly-Energy-Cost-homeassistant-0.52.1/custom_components/;
+          curl -sSL https://github.com/osk2/panasonic_smart_app/archive/refs/tags/v2.5.0.tar.gz | tar zx -C /config --strip-components=1 panasonic_smart_app-2.5.0/custom_components/;
+        volumeMounts:
+        - name: configurations
+          mountPath: /home-assistant
+        - name: data
+          mountPath: /config
+      containers:
+      - name: home-assistant
+        image: home-assistant:latest
+        env:
+        - name: DB_URL
+          value: postgresql://default:password@postgresql.default.svc.cluster.local/home-assistant
+        - name: TZ
+          value: UTC
+        ports:
+        - name: dhcp-server
+          containerPort: 67
+          protocol: UDP
+        - name: dhcp-client
+          containerPort: 67
+          protocol: UDP
+        - name: rtsp
+          containerPort: 554
+        - name: rtsp-udp
+          containerPort: 554
+          protocol: UDP
+        - name: upnp
+          containerPort: 1900
+          protocol: UDP
+        - name: mdns
+          containerPort: 5353
+          protocol: UDP
+        - name: http
+          containerPort: 8123
+        - name: homekit
+          containerPort: 21063
+        - name: homekit-flow
+          containerPort: 21064
+        volumeMounts:
+        - name: data
+          mountPath: /config
+        resources:
+          limits:
+            cpu: 1000m
+            memory: 2Gi
+          requests:
+            cpu: 100m
+            memory: 512Mi
+      serviceAccountName: default
+      volumes:
+      - name: data
+        emptyDir: {}
+      - name: configurations
+        configMap:
+          name: home-assistant

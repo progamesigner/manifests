@@ -1,0 +1,82 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    metallb.universe.tf/allow-shared-ip: home-assistant
+  labels:
+    app.kubernetes.io/component: home-assistant
+    app.kubernetes.io/name: service
+    app.kubernetes.io/part-of: dashboard
+  name: home-assistant
+spec:
+  ports:
+  - name: http
+    port: 8123
+    targetPort: http
+  selector:
+    app.kubernetes.io/component: home-assistant
+    app.kubernetes.io/name: home-assistant
+    app.kubernetes.io/part-of: dashboard
+  type: ClusterIP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    metallb.universe.tf/allow-shared-ip: external-home-assistant
+  labels:
+    app.kubernetes.io/component: home-assistant
+    app.kubernetes.io/name: service
+    app.kubernetes.io/part-of: dashboard
+  name: external-home-assistant
+spec:
+  externalTrafficPolicy: Local
+  loadBalancerIP: 192.168.0.9
+  ports:
+  - name: rtsp
+    port: 554
+  - name: homekit
+    port: 21063
+  - name: homekit-flow
+    port: 21064
+  selector:
+    app.kubernetes.io/component: home-assistant
+    app.kubernetes.io/name: home-assistant
+    app.kubernetes.io/part-of: dashboard
+  type: LoadBalancer
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    metallb.universe.tf/allow-shared-ip: external-home-assistant
+  labels:
+    app.kubernetes.io/component: home-assistant
+    app.kubernetes.io/name: service
+    app.kubernetes.io/part-of: dashboard
+  name: external-home-assistant-udp
+spec:
+  externalTrafficPolicy: Local
+  loadBalancerIP: 192.168.0.9
+  ports:
+  - name: dhcp-server
+    port: 67
+    protocol: UDP
+  - name: dhcp-client
+    port: 68
+    protocol: UDP
+  - name: rtsp-udp
+    port: 554
+    protocol: UDP
+  - name: upnp
+    port: 1900
+    protocol: UDP
+  - name: mdns
+    port: 5353
+    protocol: UDP
+  selector:
+    app.kubernetes.io/component: adguard-home
+    app.kubernetes.io/name: adguard-home
+    app.kubernetes.io/part-of: dashboard
+  type: LoadBalancer
