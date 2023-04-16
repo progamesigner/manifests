@@ -22,7 +22,7 @@ metadata:
   name: reserved-ip-address-pool
 spec:
   addresses:
-  - 192.168.48.10-192.168.48.19
+  - 192.168.48.1-192.168.48.25
   autoAssign: false
 ---
 apiVersion: metallb.io/v1beta1
