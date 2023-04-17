@@ -28,7 +28,7 @@ spec:
         - /bin/sh
         - -c
         - set -ex;
-          chown -R pgadmin /var/lib/pgadmin
+          chown -R pgadmin /var/lib/pgadmin;
         volumeMounts:
         - name: data
           mountPath: /var/lib/pgadmin
