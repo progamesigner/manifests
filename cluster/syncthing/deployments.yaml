@@ -94,11 +94,11 @@ spec:
           mountPath: /var/strelaysrv
         resources:
           limits:
-            cpu: 100m
-            memory: 128Mi
+            cpu: 300m
+            memory: 512Mi
           requests:
             cpu: 50m
-            memory: 32Mi
+            memory: 128Mi
       serviceAccountName: default
       volumes:
       - name: syncthing-relay
