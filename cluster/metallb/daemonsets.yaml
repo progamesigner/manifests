@@ -26,9 +26,6 @@ spec:
       containers:
       - name: speaker
         image: metallb/speaker:latest
-        args:
-        - --log-level=info
-        - --port=7472
         env:
         - name: METALLB_HOST
           valueFrom:

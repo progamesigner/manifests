@@ -27,14 +27,9 @@ spec:
       - name: controller
         image: metallb/controller:latest
         args:
-        - --log-level=info
-        - --port=7472
+        - --deployment=metallb-controller
+        - --ml-secret-name=metallb-memberlist
         - --webhook-mode=disabled
-        env:
-        - name: METALLB_ML_SECRET_NAME
-          value: metallb-memberlist
-        - name: METALLB_DEPLOYMENT
-          value: metallb-controller
         ports:
         - name: monitor
           containerPort: 7472
