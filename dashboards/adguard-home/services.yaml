@@ -2,8 +2,6 @@
 apiVersion: v1
 kind: Service
 metadata:
-  annotations:
-    metallb.universe.tf/allow-shared-ip: adguard-home
   labels:
     app.kubernetes.io/component: adguard-home
     app.kubernetes.io/name: service
@@ -11,31 +9,15 @@ metadata:
   name: adguard-home
 spec:
   ports:
-  - name: admin
-    port: 3000
-    targetPort: admin
-  selector:
-    app.kubernetes.io/component: adguard-home
-    app.kubernetes.io/name: adguard-home
-    app.kubernetes.io/part-of: dashboard
-  type: ClusterIP
----
-apiVersion: v1
-kind: Service
-metadata:
-  annotations:
-    metallb.universe.tf/allow-shared-ip: adguard-home
-  labels:
-    app.kubernetes.io/component: adguard-home
-    app.kubernetes.io/name: service
-    app.kubernetes.io/part-of: dashboard
-  name: adguard-home-udp
-spec:
-  ports:
-  - name: admin
-    port: 3000
-    targetPort: admin-udp
-    protocol: UDP
+  - name: https
+    port: 443
+    targetPort: https
+  - name: dns-tls
+    port: 853
+    targetPort: dns-tls
+  - name: dnscrypt
+    port: 5443
+    targetPort: dnscrypt
   selector:
     app.kubernetes.io/component: adguard-home
     app.kubernetes.io/name: adguard-home
@@ -59,15 +41,6 @@ spec:
   - name: dns
     port: 53
     targetPort: dns
-  - name: https
-    port: 443
-    targetPort: https
-  - name: dns-tls
-    port: 853
-    targetPort: dns-tls
-  - name: dnscrypt
-    port: 5443
-    targetPort: dnscrypt
   selector:
     app.kubernetes.io/component: adguard-home
     app.kubernetes.io/name: adguard-home
@@ -91,18 +64,6 @@ spec:
   - name: dns
     port: 53
     targetPort: dns-udp
-    protocol: UDP
-  - name: https
-    port: 443
-    targetPort: https-udp
-    protocol: UDP
-  - name: dns-tls
-    port: 853
-    targetPort: dns-tls-udp
-    protocol: UDP
-  - name: dnscrypt
-    port: 5443
-    targetPort: dnscrypt-udp
     protocol: UDP
   selector:
     app.kubernetes.io/component: adguard-home

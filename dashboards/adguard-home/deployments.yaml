@@ -37,8 +37,6 @@ spec:
         - name: dhcp-client
           containerPort: 68
           protocol: UDP
-        - name: http
-          containerPort: 80
         - name: https
           containerPort: 443
         - name: https-udp
@@ -60,6 +58,9 @@ spec:
           containerPort: 5443
           protocol: UDP
         volumeMounts:
+        - name: cert
+          mountPath: /opt/adguardhome/cert
+          readOnly: true
         - name: conf
           mountPath: /opt/adguardhome/conf
         - name: data
@@ -77,3 +78,12 @@ spec:
         emptyDir: {}
       - name: data
         emptyDir: {}
+      - name: cert
+        secret:
+          secretName: tls-dev-progamesigner
+          defaultMode: 420
+          items:
+          - key: tls.crt
+            path: tls.crt
+          - key: tls.key
+            path: tls.key

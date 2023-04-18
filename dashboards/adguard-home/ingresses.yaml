@@ -2,6 +2,8 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
+  annotations:
+    nginx.ingress.kubernetes.io/backend-protocol: https
   labels:
     app.kubernetes.io/component: adguard-home
     app.kubernetes.io/name: ingress
@@ -17,7 +19,7 @@ spec:
           service:
             name: adguard-home
             port:
-              name: admin
+              name: https
         path: /
         pathType: Prefix
   tls:
