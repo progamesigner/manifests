@@ -2,8 +2,6 @@
 apiVersion: v1
 kind: Service
 metadata:
-  annotations:
-    metallb.universe.tf/allow-shared-ip: home-assistant
   labels:
     app.kubernetes.io/component: home-assistant
     app.kubernetes.io/name: service
@@ -20,74 +18,54 @@ spec:
     app.kubernetes.io/part-of: dashboard
   type: ClusterIP
 ---
-apiVersion: v1
-kind: Service
+apiVersion: k8s.cni.cncf.io/v1
+kind: NetworkAttachmentDefinition
 metadata:
-  annotations:
-    metallb.universe.tf/allow-shared-ip: external-home-assistant
   labels:
     app.kubernetes.io/component: home-assistant
-    app.kubernetes.io/name: service
+    app.kubernetes.io/name: network-attachment-definition
     app.kubernetes.io/part-of: dashboard
-  name: external-home-assistant
+  name: home-assistant
 spec:
-  externalTrafficPolicy: Local
-  loadBalancerIP: 192.168.0.9
-  ports:
-  - name: rtsp
-    port: 554
-    targetPort: rtsp
-  - name: homekit
-    port: 21063
-    targetPort: homekit
-  - name: homekit-flow
-    port: 21064
-    targetPort: homekit-flow
-  - name: upnp-40000
-    port: 40000
-    targetPort: upnp-40000
-  selector:
-    app.kubernetes.io/component: home-assistant
-    app.kubernetes.io/name: home-assistant
-    app.kubernetes.io/part-of: dashboard
-  type: LoadBalancer
+  config: |
+    {
+      "name": "vlan0",
+      "type": "macvlan",
+      "ipam": {
+        "type": "static",
+        "addresses": [
+          {
+            "address": "192.168.0.9/20",
+            "gateway": "192.168.0.1"
+          }
+        ],
+        "routes": [
+          {
+            "dst": "0.0.0.0/0"
+          }
+        ]
+      }
+    }
 ---
-apiVersion: v1
-kind: Service
+apiVersion: k8s.cni.cncf.io/v1
+kind: NetworkAttachmentDefinition
 metadata:
-  annotations:
-    metallb.universe.tf/allow-shared-ip: external-home-assistant
-  labels:
-    app.kubernetes.io/component: home-assistant
-    app.kubernetes.io/name: service
-    app.kubernetes.io/part-of: dashboard
-  name: external-home-assistant-udp
+  name: cluster-network
 spec:
-  externalTrafficPolicy: Local
-  loadBalancerIP: 192.168.0.9
-  ports:
-  - name: dhcp-server
-    port: 67
-    targetPort: dhcp-server
-    protocol: UDP
-  - name: dhcp-client
-    port: 68
-    targetPort: dhcp-client
-    protocol: UDP
-  - name: rtsp-udp
-    port: 554
-    targetPort: rtsp-udp
-    protocol: UDP
-  - name: upnp
-    port: 1900
-    targetPort: upnp
-    protocol: UDP
-  - name: mdns
-    port: 5353
-    targetPort: mdns
-    protocol: UDP
-  selector:
-    app.kubernetes.io/component: home-assistant
-    app.kubernetes.io/name: home-assistant
-    app.kubernetes.io/part-of: dashboard
-  type: LoadBalancer
+  config: |
+    {
+      "name": "vhost0",
+      "type": "ptp",
+      "ipam": {
+        "type": "host-local",
+        "subnet": "10.20.0.0/24",
+        "routes": [
+          {
+            "dst": "10.0.0.0/12"
+          },
+          {
+            "dst": "10.16.0.0/14"
+          }
+        ]
+      }
+    }

@@ -14,31 +14,17 @@ spec:
       app.kubernetes.io/component: unifi-controller
       app.kubernetes.io/name: unifi-controller
       app.kubernetes.io/part-of: dashboard
+  strategy:
+    type: Recreate
   template:
     metadata:
+      annotations:
+        k8s.v1.cni.cncf.io/networks: unifi-controller, cluster-network
       labels:
         app.kubernetes.io/component: unifi-controller
         app.kubernetes.io/name: unifi-controller
         app.kubernetes.io/part-of: dashboard
     spec:
-      initContainers:
-      - name: unifi-system-ip
-        image: unifi-controller:latest
-        command:
-        - /bin/sh
-        - -c
-        - set -ex;
-          sed -i "s/.*system_ip=.*/system_ip=192.168.0.2/" /config/data/system.properties;
-        volumeMounts:
-        - name: data
-          mountPath: /config
-        resources:
-          limits:
-            cpu: 1000m
-            memory: 2Gi
-          requests:
-            cpu: 50m
-            memory: 1Gi
       containers:
       - name: unifi-controller
         image: unifi-controller:latest

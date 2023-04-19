@@ -72,6 +72,8 @@ spec:
     type: Recreate
   template:
     metadata:
+      annotations:
+        k8s.v1.cni.cncf.io/networks: syncthing-relay, default/cluster-network
       labels:
         app.kubernetes.io/component: syncthing
         app.kubernetes.io/name: syncthing-relay

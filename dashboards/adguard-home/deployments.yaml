@@ -14,8 +14,12 @@ spec:
       app.kubernetes.io/component: adguard-home
       app.kubernetes.io/name: adguard-home
       app.kubernetes.io/part-of: dashboard
+  strategy:
+    type: Recreate
   template:
     metadata:
+      annotations:
+        k8s.v1.cni.cncf.io/networks: adguard-home, cluster-network
       labels:
         app.kubernetes.io/component: adguard-home
         app.kubernetes.io/name: adguard-home
