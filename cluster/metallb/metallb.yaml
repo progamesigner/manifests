@@ -9,7 +9,7 @@ metadata:
   name: external-ip-address-pool
 spec:
   addresses:
-  - 192.168.0.1-192.168.0.25
+  - 192.168.0.11-192.168.0.15
   autoAssign: false
 ---
 apiVersion: metallb.io/v1beta1
@@ -22,7 +22,7 @@ metadata:
   name: reserved-ip-address-pool
 spec:
   addresses:
-  - 192.168.48.1-192.168.48.25
+  - 192.168.48.11-192.168.48.15
   autoAssign: false
 ---
 apiVersion: metallb.io/v1beta1
@@ -35,7 +35,7 @@ metadata:
   name: default-ip-address-pool
 spec:
   addresses:
-  - 192.168.48.31-192.168.48.99
+  - 192.168.48.20-192.168.48.99
 ---
 apiVersion: metallb.io/v1beta1
 kind: L2Advertisement

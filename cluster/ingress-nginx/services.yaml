@@ -35,7 +35,7 @@ metadata:
   name: external-ingress-nginx
 spec:
   externalTrafficPolicy: Local
-  loadBalancerIP: 192.168.0.4
+  loadBalancerIP: 192.168.0.11
   ports:
   - name: http
     port: 80
