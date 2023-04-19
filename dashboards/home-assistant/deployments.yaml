@@ -26,26 +26,6 @@ spec:
         app.kubernetes.io/part-of: dashboard
     spec:
       automountServiceAccountToken: false
-      initContainers:
-      - name: init-home-assistant
-        image: home-assistant:latest
-        command:
-        - /bin/sh
-        - -c
-        - set -ex;
-          touch /config/automations.yaml;
-          touch /config/configuration.yaml;
-          touch /config/scenes.yaml;
-          touch /config/scripts.yaml;
-          touch /config/secrets.yaml;
-          cp /home-assistant/configuration.yaml /config/configuration.yaml;
-          curl -sSL https://github.com/cnstudio/Taipower-Bimonthly-Energy-Cost-homeassistant/archive/refs/tags/v0.52.1.tar.gz | tar zx -C /config --strip-components=1 Taipower-Bimonthly-Energy-Cost-homeassistant-0.52.1/custom_components/;
-          curl -sSL https://github.com/osk2/panasonic_smart_app/archive/refs/tags/v2.5.0.tar.gz | tar zx -C /config --strip-components=1 panasonic_smart_app-2.5.0/custom_components/;
-        volumeMounts:
-        - name: configurations
-          mountPath: /home-assistant
-        - name: data
-          mountPath: /config
       containers:
       - name: home-assistant
         image: home-assistant:latest
@@ -97,9 +77,6 @@ spec:
       volumes:
       - name: data
         emptyDir: {}
-      - name: configurations
-        configMap:
-          name: home-assistant
       - name: dbus
         hostPath:
           path: /run/dbus
