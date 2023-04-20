@@ -21,7 +21,7 @@ images:
   newTag: 5.2.0
 - name: unifi-controller
   newName: lscr.io/linuxserver/unifi-controller
-  newTag: 7.3.83-ls187
+  newTag: 7.3.83-ls188
 namespace: default
 resources:
 - certificates.yaml
