@@ -6,7 +6,6 @@ components:
 - default-backend
 - ingress-nginx
 - metallb
-- syncthing
 images:
 - name: cert-manager/cainjector
   newName: quay.io/jetstack/cert-manager-cainjector
@@ -26,40 +25,7 @@ images:
 - name: metallb/speaker
   newName: quay.io/metallb/speaker
   newTag: v0.13.9
-- name: syncthing
-  newName: syncthing/syncthing
-  newTag: 1.23.4
-- name: syncthing-relay
-  newName: syncthing/relaysrv
-  newTag: 1.18.6
 namespace: kube-system
-patchesJson6902:
-- target:
-    group: apps
-    version: v1
-    kind: Deployment
-    name: syncthing
-  patch: |-
-    - op: replace
-      path: /spec/template/spec/volumes/0
-      value:
-        name: syncthing
-        hostPath:
-          type: DirectoryOrCreate
-          path: /srv/syncthing
-- target:
-    group: apps
-    version: v1
-    kind: Deployment
-    name: syncthing-relay
-  patch: |-
-    - op: replace
-      path: /spec/template/spec/volumes/0
-      value:
-        name: syncthing-relay
-        hostPath:
-          type: DirectoryOrCreate
-          path: /srv/syncthing-relay
 resources:
 - https://github.com/cert-manager/cert-manager/releases/download/v1.11.1/cert-manager.crds.yaml
 - https://raw.githubusercontent.com/metallb/metallb/v0.13.9/config/crd/bases/metallb.io_addresspools.yaml
