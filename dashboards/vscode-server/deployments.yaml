@@ -1,0 +1,80 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/component: vscode-server
+    app.kubernetes.io/name: vscode-server
+    app.kubernetes.io/part-of: dashboard
+  name: vscode-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: vscode-server
+      app.kubernetes.io/name: vscode-server
+      app.kubernetes.io/part-of: dashboard
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        k8s.v1.cni.cncf.io/networks: vscode-server, default/cluster-network
+      labels:
+        app.kubernetes.io/component: vscode-server
+        app.kubernetes.io/name: vscode-server
+        app.kubernetes.io/part-of: dashboard
+    spec:
+      automountServiceAccountToken: false
+      containers:
+      - name: vscode-server
+        image: vscode/server:latest
+        args:
+        - --accept-server-license-terms
+        - --name=$(VSCODE_SERVER_NAME)
+        env:
+        - name: VSCODE_CLI_DATA_DIR
+          value: /opt/vscode-server
+        - name: VSCODE_SERVER_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: spec.nodeName
+        resources:
+          limits:
+            cpu: 1000m
+            memory: 4Gi
+          requests:
+            cpu: 300m
+            memory: 512Mi
+        volumeMounts:
+        - name: data
+          mountPath: /opt/vscode-server
+        - name: codespaces
+          mountPath: /home/vscode/codespaces
+        - name: dotfiles
+          mountPath: /home/vscode/dotfiles
+        - name: vscode-docker
+          mountPath: /home/vscode/.docker
+        - name: vscode-kubernetes
+          mountPath: /home/vscode/.kube
+        - name: vscode-ssh
+          mountPath: /home/vscode/.ssh
+      serviceAccountName: default
+      volumes:
+      - name: data
+        emptyDir: {}
+      - name: codespaces
+        hostPath:
+          path: /srv/syncthing/codespaces
+      - name: dotfiles
+        hostPath:
+          path: /srv/syncthing/dotfiles
+      - name: vscode-docker
+        hostPath:
+          path: /srv/syncthing/dotfiles/.docker
+      - name: vscode-kubernetes
+        hostPath:
+          path: /srv/syncthing/dotfiles/.kubernetes
+      - name: vscode-ssh
+        hostPath:
+          path: /srv/syncthing/dotfiles/.ssh

@@ -1,0 +1,30 @@
+---
+apiVersion: k8s.cni.cncf.io/v1
+kind: NetworkAttachmentDefinition
+metadata:
+  labels:
+    app.kubernetes.io/component: vscode-server
+    app.kubernetes.io/name: network-attachment-definition
+    app.kubernetes.io/part-of: dashboard
+  name: vscode-server
+spec:
+  config: |
+    {
+      "name": "vlan0",
+      "type": "macvlan",
+      "mac": "7A:22:25:01:04:03",
+      "ipam": {
+        "type": "static",
+        "addresses": [
+          {
+            "address": "192.168.0.3/20",
+            "gateway": "192.168.0.1"
+          }
+        ],
+        "routes": [
+          {
+            "dst": "0.0.0.0/0"
+          }
+        ]
+      }
+    }

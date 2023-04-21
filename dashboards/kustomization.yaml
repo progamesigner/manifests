@@ -7,6 +7,7 @@ components:
 - pgadmin
 - phpmyadmin
 - unifi-controller
+- vscode-server
 images:
 - name: adguard-home
   newName: adguard/adguardhome
@@ -22,6 +23,9 @@ images:
 - name: unifi-controller
   newName: lscr.io/linuxserver/unifi-controller
   newTag: 7.3.83-ls188
+- name: vscode/server
+  newName: ghcr.io/progamesigner/vscode-server
+  newTag: 202304200352-jammy
 namespace: default
 resources:
 - certificates.yaml
@@ -86,6 +90,19 @@ patchesJson6902:
         hostPath:
           type: DirectoryOrCreate
           path: /srv/unifi-controller
+- target:
+    group: apps
+    version: v1
+    kind: Deployment
+    name: vscode-server
+  patch: |-
+    - op: replace
+      path: /spec/template/spec/volumes/0
+      value:
+        name: data
+        hostPath:
+          type: DirectoryOrCreate
+          path: /srv/vscode-server
 secretGenerator:
 - name: cert-manager-cloudflare
   envs:
