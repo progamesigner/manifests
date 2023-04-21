@@ -25,7 +25,7 @@ images:
   newTag: 7.3.83-ls188
 - name: vscode/server
   newName: ghcr.io/progamesigner/vscode-server
-  newTag: 202304200352-jammy
+  newTag: 202304210401-jammy
 namespace: default
 resources:
 - certificates.yaml
