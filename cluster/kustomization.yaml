@@ -5,6 +5,7 @@ components:
 - cert-manager
 - default-backend
 - ingress-nginx
+- kube-router
 - metallb
 - multus
 images:
