@@ -22,6 +22,8 @@ configMapGenerator:
         }
       ]
     }
+  options:
+    disableNameSuffixHash: true
 resources:
 - daemonsets.yaml
 - rbac.yaml

@@ -81,7 +81,7 @@ spec:
           mountPath: /etc/multus
       hostNetwork: true
       priorityClassName: system-node-critical
-      serviceAccount: multus
+      serviceAccountName: multus
       tolerations:
       - effect: NoSchedule
         operator: Exists

@@ -18,6 +18,8 @@ configMapGenerator:
         }
       ]
     }
+  options:
+    disableNameSuffixHash: true
 resources:
 - crds.yaml
 - daemonsets.yaml

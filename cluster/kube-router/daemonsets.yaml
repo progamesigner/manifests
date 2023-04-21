@@ -78,7 +78,7 @@ spec:
           readOnly: false
       hostNetwork: true
       priorityClassName: system-node-critical
-      serviceAccount: kube-router
+      serviceAccountName: kube-router
       tolerations:
       - effect: NoSchedule
         operator: Exists
