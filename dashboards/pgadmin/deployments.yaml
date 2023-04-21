@@ -25,9 +25,10 @@ spec:
       - name: chown
         image: pgadmin:latest
         command:
-        - /bin/sh
+        - sh
         - -c
-        - set -ex;
+        - |
+          set -ex;
           chown -R pgadmin /var/lib/pgadmin;
         volumeMounts:
         - name: data
