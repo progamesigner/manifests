@@ -31,6 +31,7 @@ spec:
     {
       "name": "vlan0",
       "type": "macvlan",
+      "mac": "7A:22:25:01:04:02",
       "ipam": {
         "type": "static",
         "addresses": [
