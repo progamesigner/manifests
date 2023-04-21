@@ -28,7 +28,7 @@ spec:
       - name: syncthing
         image: syncthing:latest
         ports:
-        - name: gui
+        - name: http
           containerPort: 8384
         - name: syncthing
           containerPort: 22000
