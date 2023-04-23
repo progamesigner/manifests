@@ -19,7 +19,7 @@ spec:
   template:
     metadata:
       annotations:
-        k8s.v1.cni.cncf.io/networks: unifi-controller, cluster-network
+        k8s.v1.cni.cncf.io/networks: '[{"name": "cluster"}, { "name": "local", "mac": "7A:22:25:01:04:02" }]'
       labels:
         app.kubernetes.io/component: unifi-controller
         app.kubernetes.io/name: unifi-controller

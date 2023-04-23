@@ -17,33 +17,3 @@ spec:
     app.kubernetes.io/name: unifi-controller
     app.kubernetes.io/part-of: dashboard
   type: ClusterIP
----
-apiVersion: k8s.cni.cncf.io/v1
-kind: NetworkAttachmentDefinition
-metadata:
-  labels:
-    app.kubernetes.io/component: unifi-controller
-    app.kubernetes.io/name: network-attachment-definition
-    app.kubernetes.io/part-of: dashboard
-  name: unifi-controller
-spec:
-  config: |
-    {
-      "name": "vlan0",
-      "type": "macvlan",
-      "mac": "7A:22:25:01:04:02",
-      "ipam": {
-        "type": "static",
-        "addresses": [
-          {
-            "address": "192.168.0.2/20",
-            "gateway": "192.168.0.1"
-          }
-        ],
-        "routes": [
-          {
-            "dst": "0.0.0.0/0"
-          }
-        ]
-      }
-    }

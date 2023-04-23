@@ -37,6 +37,7 @@ namespace: default
 resources:
 - certificates.yaml
 - issuers.yaml
+- networks.yaml
 patchesJson6902:
 - target:
     group: apps

@@ -19,7 +19,7 @@ spec:
   template:
     metadata:
       annotations:
-        k8s.v1.cni.cncf.io/networks: vscode-server, default/cluster-network
+        k8s.v1.cni.cncf.io/networks: '[{"name": "cluster"}, { "name": "local", "mac": "7A:22:25:01:04:03" }]'
       labels:
         app.kubernetes.io/component: vscode-server
         app.kubernetes.io/name: vscode-server

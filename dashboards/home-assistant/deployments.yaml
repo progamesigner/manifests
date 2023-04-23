@@ -19,7 +19,7 @@ spec:
   template:
     metadata:
       annotations:
-        k8s.v1.cni.cncf.io/networks: home-assistant, cluster-network
+        k8s.v1.cni.cncf.io/networks: '[{"name": "cluster"}, { "name": "local", "mac": "7A:22:25:01:04:09" }]'
       labels:
         app.kubernetes.io/component: home-assistant
         app.kubernetes.io/name: home-assistant
