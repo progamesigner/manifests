@@ -15,7 +15,7 @@ images:
   newTag: v0.107.29
 - name: home-assistant
   newName: ghcr.io/home-assistant/home-assistant
-  newTag: 2023.4.5
+  newTag: 2023.4.6
 - name: pgadmin
   newName: dpage/pgadmin4
   newTag: '6.15'
