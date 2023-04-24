@@ -2,10 +2,11 @@
 apiVersion: v1
 kind: Service
 metadata:
+  annotations:
+    metallb.universe.tf/loadBalancerIPs: 192.168.48.20
   name: redis
 spec:
   externalTrafficPolicy: Local
-  loadBalancerIP: 192.168.48.20
   ports:
   - name: redis
     port: 6379
@@ -19,10 +20,11 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
+  annotations:
+    metallb.universe.tf/loadBalancerIPs: 192.168.48.21
   name: postgresql
 spec:
   externalTrafficPolicy: Local
-  loadBalancerIP: 192.168.48.21
   ports:
   - name: postgresql
     port: 5432
@@ -36,10 +38,11 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
+  annotations:
+    metallb.universe.tf/loadBalancerIPs: 192.168.48.22
   name: mariadb
 spec:
   externalTrafficPolicy: Local
-  loadBalancerIP: 192.168.48.22
   ports:
   - name: mariadb
     port: 3306
@@ -53,10 +56,11 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
+  annotations:
+    metallb.universe.tf/loadBalancerIPs: 192.168.48.23
   name: elasticsearch
 spec:
   externalTrafficPolicy: Local
-  loadBalancerIP: 192.168.48.23
   ports:
   - name: elasticsearch
     port: 9200
@@ -70,10 +74,11 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
+  annotations:
+    metallb.universe.tf/loadBalancerIPs: 192.168.48.24
   name: mongodb
 spec:
   externalTrafficPolicy: Local
-  loadBalancerIP: 192.168.48.24
   ports:
   - name: mongodb
     port: 27017
