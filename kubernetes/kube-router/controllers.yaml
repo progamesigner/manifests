@@ -1,0 +1,106 @@
+---
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  labels:
+    app.kubernetes.io/component: kube-router
+    app.kubernetes.io/name: kube-router
+    app.kubernetes.io/part-of: kubernetes
+  name: kube-router
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: kube-router
+      app.kubernetes.io/name: kube-router
+      app.kubernetes.io/part-of: kubernetes
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/component: kube-router
+        app.kubernetes.io/name: kube-router
+        app.kubernetes.io/part-of: kubernetes
+    spec:
+      automountServiceAccountToken: true
+      initContainers:
+      - name: install-cni
+        image: busybox:latest
+        command:
+        - sh
+        - -c
+        - set -ex;
+          cp /etc/kube-router/20-kube-router.conflist /etc/cni/net.d/20-kube-router.conflist;
+        resources:
+          requests:
+            cpu: 50m
+            memory: 16Mi
+        volumeMounts:
+        - name: cni-conf-dir
+          mountPath: /etc/cni/net.d
+        - name: conf
+          mountPath: /etc/kube-router
+      containers:
+      - name: kube-router
+        image: kube-router/kube-router:latest
+        args:
+        - --bgp-graceful-restart=true
+        - --run-firewall=true
+        - --run-router=true
+        - --run-service-proxy=true
+        env:
+        - name: KUBE_ROUTER_CNI_CONF_FILE
+          value: /etc/cni/net.d/20-kube-router.conflist
+        - name: NODE_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: spec.nodeName
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 20244
+          initialDelaySeconds: 10
+          periodSeconds: 3
+        resources:
+          limits:
+            cpu: 1000m
+            memory: 256Mi
+          requests:
+            cpu: 250m
+            memory: 256Mi
+        securityContext:
+          privileged: true
+        volumeMounts:
+        - name: cni-conf-dir
+          mountPath: /etc/cni/net.d
+        - name: lib-modules
+          mountPath: /lib/modules
+          readOnly: true
+        - name: xtables-lock
+          mountPath: /var/run/xtables.lock
+          readOnly: false
+      hostNetwork: true
+      priorityClassName: system-node-critical
+      serviceAccountName: kube-router
+      tolerations:
+      - effect: NoSchedule
+        operator: Exists
+      - key: CriticalAddonsOnly
+        operator: Exists
+      - effect: NoExecute
+        operator: Exists
+      volumes:
+      - name: cni-conf-dir
+        hostPath:
+          path: /etc/cni/net.d
+      - name: conf
+        configMap:
+          name: kube-router
+          items:
+          - key: cni-conf.json
+            path: 20-kube-router.conflist
+      - name: lib-modules
+        hostPath:
+          path: /lib/modules
+      - name: xtables-lock
+        hostPath:
+          path: /var/run/xtables.lock
+          type: FileOrCreate

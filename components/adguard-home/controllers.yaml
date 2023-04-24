@@ -1,0 +1,104 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/component: adguard-home
+    app.kubernetes.io/name: adguard-home
+    app.kubernetes.io/part-of: components
+  name: adguard-home
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: adguard-home
+      app.kubernetes.io/name: adguard-home
+      app.kubernetes.io/part-of: components
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        k8s.v1.cni.cncf.io/networks: |
+          [
+            {
+              "name": "cluster",
+              "namespace": "kube-system"
+            },
+            {
+              "name": "local",
+              "namespace": "kube-system",
+              "mac": "7A:22:25:01:04:08"
+            }
+          ]
+      labels:
+        app.kubernetes.io/component: adguard-home
+        app.kubernetes.io/name: adguard-home
+        app.kubernetes.io/part-of: components
+    spec:
+      automountServiceAccountToken: false
+      containers:
+      - name: adguard-home
+        image: adguard-home/adguard-home:latest
+        ports:
+        - name: dns
+          containerPort: 53
+        - name: dns-udp
+          containerPort: 53
+          protocol: UDP
+        - name: dhcp-server
+          containerPort: 67
+          protocol: UDP
+        - name: dhcp-client
+          containerPort: 68
+          protocol: UDP
+        - name: https
+          containerPort: 443
+        - name: https-udp
+          containerPort: 443
+          protocol: UDP
+        - name: dns-tls
+          containerPort: 853
+        - name: dns-tls-udp
+          containerPort: 853
+          protocol: UDP
+        - name: admin
+          containerPort: 3000
+        - name: admin-udp
+          containerPort: 3000
+          protocol: UDP
+        - name: dnscrypt
+          containerPort: 5443
+        - name: dnscrypt-udp
+          containerPort: 5443
+          protocol: UDP
+        resources:
+          limits:
+            cpu: 300m
+            memory: 128Mi
+          requests:
+            cpu: 50m
+            memory: 64Mi
+        volumeMounts:
+        - name: cert
+          mountPath: /opt/adguardhome/cert
+          readOnly: true
+        - name: data
+          mountPath: /opt/adguardhome/conf
+          subPath: conf
+        - name: data
+          mountPath: /opt/adguardhome/work
+          subPath: work
+      serviceAccountName: default
+      volumes:
+      - name: data
+        emptyDir: {}
+      - name: cert
+        secret:
+          secretName: tls-dev-progamesigner
+          defaultMode: 420
+          items:
+          - key: tls.crt
+            path: tls.crt
+          - key: tls.key
+            path: tls.key

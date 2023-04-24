@@ -1,0 +1,14 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: IngressClass
+metadata:
+  name: internal-ingress-nginx
+spec:
+  controller: k8s.io/internal-ingress-nginx
+---
+apiVersion: networking.k8s.io/v1
+kind: IngressClass
+metadata:
+  name: external-ingress-nginx
+spec:
+  controller: k8s.io/external-ingress-nginx

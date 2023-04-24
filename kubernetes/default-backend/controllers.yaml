@@ -1,0 +1,50 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/component: default-backend
+    app.kubernetes.io/name: default-backend
+    app.kubernetes.io/part-of: kubernetes
+  name: default-backend
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: default-backend
+      app.kubernetes.io/name: default-backend
+      app.kubernetes.io/part-of: kubernetes
+  template:
+    metadata:
+      annotations:
+        prometheus.io/path: /metrics
+        prometheus.io/port: '9402'
+        prometheus.io/scrape: 'true'
+      labels:
+        app.kubernetes.io/component: default-backend
+        app.kubernetes.io/name: default-backend
+        app.kubernetes.io/part-of: kubernetes
+    spec:
+      automountServiceAccountToken: false
+      containers:
+      - name: default-backend
+        image: default-backend/default-backend:latest
+        ports:
+        - name: http
+          containerPort: 8080
+        - name: monitor
+          containerPort: 9402
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: monitor
+        resources:
+          limits:
+            cpu: 100m
+            memory: 32Mi
+          requests:
+            cpu: 50m
+            memory: 16Mi
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 999
+      serviceAccountName: default

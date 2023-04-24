@@ -8,16 +8,21 @@ components:
 - postgresql
 - redis
 images:
-- name: elasticsearch
-  newTag: 8.4.3
-- name: mariadb
-  newTag: 10.7.1-focal
-- name: mongo
-  newTag: 6.0.5-jammy
-- name: postgres
-  newTag: 14.1-alpine
-- name: redis
-  newTag: 6.2.6-alpine
+- name: elasticsearch/elasticsearch
+  newName: docker.elastic.co/elasticsearch/elasticsearch
+  newTag: 8.7.0
+- name: mariadb/mariadb
+  newName: mariadb
+  newTag: 10.11.2
+- name: mongodb/mongodb
+  newName: mongo
+  newTag: 6.0.5
+- name: postgresql/postgresql
+  newName: postgres
+  newTag: 15.2-alpine
+- name: redis/redis
+  newName: redis
+  newTag: 7.0.11-alpine
 namespace: default
 patchesJson6902:
 - target:
@@ -72,3 +77,5 @@ patchesJson6902:
         hostPath:
           type: DirectoryOrCreate
           path: /srv/postgresql
+resources:
+- services.yaml

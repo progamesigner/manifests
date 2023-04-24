@@ -1,0 +1,33 @@
+---
+apiVersion: kustomize.config.k8s.io/v1alpha1
+kind: Component
+configMapGenerator:
+- name: coredns
+  literals:
+  - |
+    Corefile=
+    .:53 {
+      errors
+      health {
+        lameduck 5s
+      }
+      ready
+      kubernetes cluster.local in-addr.arpa ip6.arpa {
+        pods insecure
+        fallthrough in-addr.arpa ip6.arpa
+        ttl 30
+      }
+      prometheus :9153
+      forward . /etc/resolv.conf {
+        max_concurrent 1000
+      }
+      cache 30
+      loop
+      reload
+      loadbalance
+    }
+  options:
+    disableNameSuffixHash: true
+resources:
+- controllers.yaml
+- rbac.yaml

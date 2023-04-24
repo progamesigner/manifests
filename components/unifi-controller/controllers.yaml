@@ -1,0 +1,89 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/component: unifi-controller
+    app.kubernetes.io/name: unifi-controller
+    app.kubernetes.io/part-of: components
+  name: unifi-controller
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: unifi-controller
+      app.kubernetes.io/name: unifi-controller
+      app.kubernetes.io/part-of: components
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        k8s.v1.cni.cncf.io/networks: |
+          [
+            {
+              "name": "cluster",
+              "namespace": "kube-system"
+            },
+            {
+              "name": "local",
+              "namespace": "kube-system",
+              "mac": "7A:22:25:01:04:02"
+            }
+          ]
+      labels:
+        app.kubernetes.io/component: unifi-controller
+        app.kubernetes.io/name: unifi-controller
+        app.kubernetes.io/part-of: components
+    spec:
+      containers:
+      - name: unifi-controller
+        image: unifi-controller/unifi-controller:latest
+        env:
+        - name: PUID
+          value: '1000'
+        - name: PGID
+          value: '1000'
+        - name: TZ
+          value: UTC
+        ports:
+        - name: dns
+          containerPort: 53
+        - name: dns-udp
+          containerPort: 53
+          protocol: UDP
+        - name: l2-discovery
+          containerPort: 1900
+          protocol: UDP
+        - name: stun
+          containerPort: 3478
+          protocol: UDP
+        - name: syslog
+          containerPort: 5514
+          protocol: UDP
+        - name: speed-test
+          containerPort: 6789
+        - name: inform
+          containerPort: 8080
+        - name: https
+          containerPort: 8443
+        - name: https-redirect
+          containerPort: 8843
+        - name: http-redirect
+          containerPort: 8880
+        - name: discovery
+          containerPort: 10001
+          protocol: UDP
+        resources:
+          limits:
+            cpu: 1000m
+            memory: 2Gi
+          requests:
+            cpu: 50m
+            memory: 1Gi
+        volumeMounts:
+        - name: data
+          mountPath: /config
+      volumes:
+      - name: data
+        emptyDir: {}

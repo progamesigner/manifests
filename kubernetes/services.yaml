@@ -1,0 +1,112 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    kubernetes.io/cluster-service: 'true'
+    kubernetes.io/name: CertManager
+  name: cert-manager
+spec:
+  ports:
+  - name: monitor
+    port: 9402
+    targetPort: monitor
+  selector:
+    app.kubernetes.io/component: controller
+    app.kubernetes.io/name: cert-manager
+    app.kubernetes.io/part-of: kubernetes
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    prometheus.io/port: '9153'
+    prometheus.io/scrape: 'true'
+  labels:
+    kubernetes.io/cluster-service: 'true'
+    kubernetes.io/name: CoreDNS
+  name: coredns
+spec:
+  clusterIP: 10.16.0.8
+  ports:
+  - name: dns
+    port: 53
+    targetPort: 53
+  - name: dns-udp
+    port: 53
+    targetPort: 53
+    protocol: UDP
+  - name: monitor
+    port: 9153
+    targetPort: 9153
+  selector:
+    app.kubernetes.io/component: coredns
+    app.kubernetes.io/name: coredns
+    app.kubernetes.io/part-of: kubernetes
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    kubernetes.io/cluster-service: 'true'
+    kubernetes.io/name: DefaultBackend
+  name: default-backend
+spec:
+  ports:
+  - name: http
+    port: 80
+    targetPort: http
+  selector:
+    app.kubernetes.io/component: default-backend
+    app.kubernetes.io/name: default-backend
+    app.kubernetes.io/part-of: kubernetes
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    kubernetes.io/cluster-service: 'true'
+    kubernetes.io/name: InternalIngressNginx
+  name: internal-ingress-nginx
+spec:
+  externalTrafficPolicy: Local
+  loadBalancerIP: 192.168.48.11
+  ports:
+  - name: http
+    port: 80
+    targetPort: http
+    appProtocol: http
+  - name: https
+    port: 443
+    targetPort: https
+    appProtocol: https
+  selector:
+    app.kubernetes.io/component: controller
+    app.kubernetes.io/name: internal-ingress-nginx
+    app.kubernetes.io/part-of: kubernetes
+  type: LoadBalancer
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    kubernetes.io/cluster-service: 'true'
+    kubernetes.io/name: ExternalIngressNginx
+  name: external-ingress-nginx
+spec:
+  externalTrafficPolicy: Local
+  loadBalancerIP: 192.168.0.11
+  ports:
+  - name: http
+    port: 80
+    targetPort: http
+    appProtocol: http
+  - name: https
+    port: 443
+    targetPort: https
+    appProtocol: https
+  selector:
+    app.kubernetes.io/component: controller
+    app.kubernetes.io/name: external-ingress-nginx
+    app.kubernetes.io/part-of: kubernetes
+  type: LoadBalancer

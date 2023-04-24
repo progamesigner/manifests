@@ -1,40 +1,13 @@
 ---
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-components:
-- cert-manager
-- coredns
-- default-backend
-- ingress-nginx
-- kube-router
-- metallb
-- multus
-images:
-- name: cert-manager/cainjector
-  newName: quay.io/jetstack/cert-manager-cainjector
-  newTag: v1.11.1
-- name: cert-manager/controller
-  newName: quay.io/jetstack/cert-manager-controller
-  newTag: v1.11.1
-- name: ingress-default-backend
-  newName: ghcr.io/progamesigner/ingress-default-backend
-  newTag: 1.2.3
-- name: ingress-nginx/controller
-  newName: k8s.gcr.io/ingress-nginx/controller
-  newTag: v1.4.0
-- name: metallb/controller
-  newName: quay.io/metallb/controller
-  newTag: v0.13.9
-- name: metallb/speaker
-  newName: quay.io/metallb/speaker
-  newTag: v0.13.9
-namespace: kube-system
+namespace: default
 resources:
-- https://github.com/cert-manager/cert-manager/releases/download/v1.11.1/cert-manager.crds.yaml
-- https://raw.githubusercontent.com/metallb/metallb/v0.13.9/config/crd/bases/metallb.io_addresspools.yaml
-- https://raw.githubusercontent.com/metallb/metallb/v0.13.9/config/crd/bases/metallb.io_bfdprofiles.yaml
-- https://raw.githubusercontent.com/metallb/metallb/v0.13.9/config/crd/bases/metallb.io_bgpadvertisements.yaml
-- https://raw.githubusercontent.com/metallb/metallb/v0.13.9/config/crd/bases/metallb.io_bgppeers.yaml
-- https://raw.githubusercontent.com/metallb/metallb/v0.13.9/config/crd/bases/metallb.io_communities.yaml
-- https://raw.githubusercontent.com/metallb/metallb/v0.13.9/config/crd/bases/metallb.io_ipaddresspools.yaml
-- https://raw.githubusercontent.com/metallb/metallb/v0.13.9/config/crd/bases/metallb.io_l2advertisements.yaml
+- certificates.yaml
+- issuers.yaml
+secretGenerator:
+- name: cert-manager-cloudflare
+  envs:
+  - cloudflare.env
+  options:
+    disableNameSuffixHash: true

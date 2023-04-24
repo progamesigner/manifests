@@ -1,0 +1,40 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/component: redis
+    app.kubernetes.io/name: redis
+    app.kubernetes.io/part-of: services
+  name: redis
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: redis
+      app.kubernetes.io/name: redis
+      app.kubernetes.io/part-of: services
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/component: redis
+        app.kubernetes.io/name: redis
+        app.kubernetes.io/part-of: services
+    spec:
+      automountServiceAccountToken: false
+      containers:
+      - name: redis
+        image: redis/redis:latest
+        ports:
+        - name: redis
+          containerPort: 6379
+        resources:
+          limits:
+            cpu: 1500m
+            memory: 512Mi
+          requests:
+            cpu: 100m
+            memory: 64Mi
+      serviceAccountName: default

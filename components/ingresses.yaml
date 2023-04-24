@@ -1,0 +1,92 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    nginx.ingress.kubernetes.io/backend-protocol: https
+  name: adguard-home
+spec:
+  ingressClassName: internal-ingress-nginx
+  rules:
+  - host: adguard.progamesigner.dev
+    http:
+      paths:
+      - backend:
+          service:
+            name: adguard-home
+            port:
+              name: https
+        path: /
+        pathType: Prefix
+  tls:
+  - hosts:
+    - adguard.progamesigner.dev
+    secretName: tls-dev-progamesigner
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: home-assistant
+spec:
+  ingressClassName: internal-ingress-nginx
+  rules:
+  - host: home.progamesigner.dev
+    http:
+      paths:
+      - backend:
+          service:
+            name: home-assistant
+            port:
+              name: http
+        path: /
+        pathType: Prefix
+  tls:
+  - hosts:
+    - home.progamesigner.dev
+    secretName: tls-dev-progamesigner
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: syncthing
+spec:
+  ingressClassName: internal-ingress-nginx
+  rules:
+  - host: syncthing.progamesigner.dev
+    http:
+      paths:
+      - backend:
+          service:
+            name: syncthing
+            port:
+              name: http
+        path: /
+        pathType: Prefix
+  tls:
+  - hosts:
+    - syncthing.progamesigner.dev
+    secretName: tls-dev-progamesigner
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    nginx.ingress.kubernetes.io/backend-protocol: https
+  name: unifi-controller
+spec:
+  ingressClassName: internal-ingress-nginx
+  rules:
+  - host: unifi.progamesigner.dev
+    http:
+      paths:
+      - backend:
+          service:
+            name: unifi-controller
+            port:
+              name: https
+        path: /
+        pathType: Prefix
+  tls:
+  - hosts:
+    - unifi.progamesigner.dev
+    secretName: tls-dev-progamesigner

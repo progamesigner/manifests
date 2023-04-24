@@ -1,0 +1,164 @@
+---
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  labels:
+    app.kubernetes.io/component: speaker
+    app.kubernetes.io/name: metallb
+    app.kubernetes.io/part-of: kubernetes
+  name: metallb-speaker
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: speaker
+      app.kubernetes.io/name: metallb
+      app.kubernetes.io/part-of: kubernetes
+  template:
+    metadata:
+      annotations:
+        prometheus.io/port: '7472'
+        prometheus.io/scrape: 'true'
+      labels:
+        app.kubernetes.io/component: speaker
+        app.kubernetes.io/name: metallb
+        app.kubernetes.io/part-of: kubernetes
+    spec:
+      automountServiceAccountToken: true
+      containers:
+      - name: speaker
+        image: metallb/speaker:latest
+        env:
+        - name: METALLB_HOST
+          valueFrom:
+            fieldRef:
+              fieldPath: status.hostIP
+        - name: METALLB_ML_BIND_ADDR
+          valueFrom:
+            fieldRef:
+              fieldPath: status.podIP
+        - name: METALLB_ML_LABELS
+          value: app.kubernetes.io/name=metallb,app.kubernetes.io/component=speak
+        - name: METALLB_ML_SECRET_KEY_PATH
+          value: /etc/ml_secret_key
+        - name: METALLB_NODE_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: spec.nodeName
+        ports:
+        - name: monitor
+          containerPort: 7472
+        - name: memberlist
+          containerPort: 7946
+        - name: memberlist-udp
+          containerPort: 7946
+          protocol: UDP
+        livenessProbe:
+          httpGet:
+            path: /metrics
+            port: monitor
+          initialDelaySeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /metrics
+            port: monitor
+          initialDelaySeconds: 10
+        resources:
+          limits:
+            cpu: 100m
+            memory: 32Mi
+          requests:
+            cpu: 50m
+            memory: 16Mi
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            add:
+            - NET_RAW
+            drop:
+            - ALL
+          readOnlyRootFilesystem: true
+        volumeMounts:
+        - name: memberlist
+          mountPath: /etc/ml_secret_key
+          readOnly: true
+        - name: metallb-excludel2
+          mountPath: /etc/metallb
+          readOnly: true
+      hostNetwork: true
+      serviceAccountName: metallb-speaker
+      volumes:
+      - name: memberlist
+        secret:
+          secretName: metallb-memberlist
+          defaultMode: 420
+      - name: metallb-excludel2
+        configMap:
+          name: metallb-excludel2
+          defaultMode: 256
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/component: controller
+    app.kubernetes.io/name: metallb
+    app.kubernetes.io/part-of: kubernetes
+  name: metallb-controller
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: controller
+      app.kubernetes.io/name: metallb
+      app.kubernetes.io/part-of: kubernetes
+  template:
+    metadata:
+      annotations:
+        prometheus.io/port: '7472'
+        prometheus.io/scrape: 'true'
+      labels:
+        app.kubernetes.io/component: controller
+        app.kubernetes.io/name: metallb
+        app.kubernetes.io/part-of: kubernetes
+    spec:
+      automountServiceAccountToken: true
+      containers:
+      - name: controller
+        image: metallb/controller:latest
+        args:
+        - --deployment=metallb-controller
+        - --ml-secret-name=metallb-memberlist
+        - --webhook-mode=disabled
+        ports:
+        - name: monitor
+          containerPort: 7472
+        - name: webhook
+          containerPort: 9443
+        livenessProbe:
+          httpGet:
+            path: /metrics
+            port: monitor
+          initialDelaySeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /metrics
+            port: monitor
+          initialDelaySeconds: 10
+        resources:
+          limits:
+            cpu: 100m
+            memory: 32Mi
+          requests:
+            cpu: 50m
+            memory: 16Mi
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+          readOnlyRootFilesystem: true
+      securityContext:
+        fsGroup: 65534
+        runAsNonRoot: true
+        runAsUser: 65534
+      serviceAccountName: metallb-controller
+      terminationGracePeriodSeconds: 0

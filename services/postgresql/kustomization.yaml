@@ -2,8 +2,7 @@
 apiVersion: kustomize.config.k8s.io/v1alpha1
 kind: Component
 resources:
-- deployments.yaml
-- services.yaml
+- controllers.yaml
 secretGenerator:
 - name: postgresql
   literals:
