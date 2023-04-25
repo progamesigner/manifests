@@ -6,7 +6,7 @@ metadata:
     nginx.ingress.kubernetes.io/backend-protocol: https
   name: adguard-home
 spec:
-  ingressClassName: internal-ingress-nginx
+  ingressClassName: internal-ingress
   rules:
   - host: adguard.progamesigner.dev
     http:
@@ -28,7 +28,7 @@ kind: Ingress
 metadata:
   name: home-assistant
 spec:
-  ingressClassName: internal-ingress-nginx
+  ingressClassName: internal-ingress
   rules:
   - host: home.progamesigner.dev
     http:
@@ -50,7 +50,7 @@ kind: Ingress
 metadata:
   name: syncthing
 spec:
-  ingressClassName: internal-ingress-nginx
+  ingressClassName: internal-ingress
   rules:
   - host: syncthing.progamesigner.dev
     http:
@@ -74,7 +74,7 @@ metadata:
     nginx.ingress.kubernetes.io/backend-protocol: https
   name: unifi-controller
 spec:
-  ingressClassName: internal-ingress-nginx
+  ingressClassName: internal-ingress
   rules:
   - host: unifi.progamesigner.dev
     http:

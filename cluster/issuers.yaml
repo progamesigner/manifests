@@ -12,7 +12,7 @@ spec:
     solvers:
     - http01:
         ingress:
-          class: external-ingress-nginx
+          class: external-ingress
     - dns01:
         cloudflare:
           apiTokenSecretRef:

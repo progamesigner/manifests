@@ -4,7 +4,7 @@ kind: Ingress
 metadata:
   name: internal-default-backend
 spec:
-  ingressClassName: internal-ingress-nginx
+  ingressClassName: internal-ingress
   rules:
   - host: ''
     http:
@@ -22,7 +22,7 @@ kind: Ingress
 metadata:
   name: external-default-backend
 spec:
-  ingressClassName: external-ingress-nginx
+  ingressClassName: external-ingress
   rules:
   - host: ''
     http:

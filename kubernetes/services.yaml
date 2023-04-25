@@ -64,13 +64,15 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
+  annotations:
+    metallb.universe.tf/allow-shared-ip: internal-ingress
+    metallb.universe.tf/loadBalancerIPs: 192.168.48.11
   labels:
     kubernetes.io/cluster-service: 'true'
-    kubernetes.io/name: InternalIngressNginx
-  name: internal-ingress-nginx
+    kubernetes.io/name: InternalIngress
+  name: internal-ingress
 spec:
   externalTrafficPolicy: Local
-  loadBalancerIP: 192.168.48.11
   ports:
   - name: http
     port: 80
@@ -89,13 +91,15 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
+  annotations:
+    metallb.universe.tf/allow-shared-ip: external-ingress
+    metallb.universe.tf/loadBalancerIPs: 192.168.0.11
   labels:
     kubernetes.io/cluster-service: 'true'
-    kubernetes.io/name: ExternalIngressNginx
-  name: external-ingress-nginx
+    kubernetes.io/name: ExternalIngress
+  name: external-ingress
 spec:
   externalTrafficPolicy: Local
-  loadBalancerIP: 192.168.0.11
   ports:
   - name: http
     port: 80
