@@ -49,10 +49,7 @@ spec:
         ports:
         - name: dns
           containerPort: 53
-        - name: dns-udp
-          containerPort: 53
-          protocol: UDP
-        - name: l2-discovery
+        - name: l2discovery
           containerPort: 1900
           protocol: UDP
         - name: stun

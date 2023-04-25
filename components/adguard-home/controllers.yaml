@@ -43,9 +43,6 @@ spec:
         ports:
         - name: dns
           containerPort: 53
-        - name: dns-udp
-          containerPort: 53
-          protocol: UDP
         - name: dhcp-server
           containerPort: 67
           protocol: UDP
@@ -54,24 +51,12 @@ spec:
           protocol: UDP
         - name: https
           containerPort: 443
-        - name: https-udp
-          containerPort: 443
-          protocol: UDP
         - name: dns-tls
           containerPort: 853
-        - name: dns-tls-udp
-          containerPort: 853
-          protocol: UDP
         - name: admin
           containerPort: 3000
-        - name: admin-udp
-          containerPort: 3000
-          protocol: UDP
         - name: dnscrypt
           containerPort: 5443
-        - name: dnscrypt-udp
-          containerPort: 5443
-          protocol: UDP
         resources:
           limits:
             cpu: 300m

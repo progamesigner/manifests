@@ -54,9 +54,6 @@ spec:
           protocol: UDP
         - name: rtsp
           containerPort: 554
-        - name: rtsp-udp
-          containerPort: 554
-          protocol: UDP
         - name: upnp
           containerPort: 1900
           protocol: UDP

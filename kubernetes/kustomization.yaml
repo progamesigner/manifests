@@ -4,11 +4,10 @@ kind: Kustomization
 components:
 - cert-manager
 - coredns
-- default-backend
-- ingress-nginx
 - kube-router
 - metallb
 - multus
+- nginx-ingress
 images:
 - name: cert-manager/cainjector
   newName: quay.io/jetstack/cert-manager-cainjector
@@ -22,9 +21,6 @@ images:
 - name: default-backend/default-backend
   newName: ghcr.io/progamesigner/ingress-default-backend
   newTag: 1.2.3
-- name: ingress-nginx/controller
-  newName: registry.k8s.io/ingress-nginx/controller
-  newTag: v1.7.0
 - name: kube-router/kube-router
   newName: cloudnativelabs/kube-router
   newTag: v1.5.3
@@ -37,10 +33,12 @@ images:
 - name: multus/multus
   newName: ghcr.io/k8snetworkplumbingwg/multus-cni
   newTag: v4.0.1
+- name: nginx-ingress/nginx-ingress
+  newName: nginx/nginx-ingress
+  newTag: 3.1.0
 namespace: kube-system
 resources:
 - ingressclasses.yaml
-- ingresses.yaml
 - networks.yaml
 - services.yaml
 - storageclasses.yaml

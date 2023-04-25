@@ -6,11 +6,11 @@ metadata:
     ingressclass.kubernetes.io/is-default-class: 'true'
   name: internal-ingress
 spec:
-  controller: k8s.io/ingress-nginx
+  controller: nginx.org/ingress-controller
 ---
 apiVersion: networking.k8s.io/v1
 kind: IngressClass
 metadata:
   name: external-ingress
 spec:
-  controller: k8s.io/ingress-nginx
+  controller: nginx.org/ingress-controller

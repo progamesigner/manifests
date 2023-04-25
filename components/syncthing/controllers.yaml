@@ -30,14 +30,11 @@ spec:
         ports:
         - name: http
           containerPort: 8384
-        - name: syncthing
-          containerPort: 22000
-        - name: syncthing-udp
-          containerPort: 22000
-          protocol: UDP
-        - name: discovery-udp
+        - name: discovery
           containerPort: 21027
           protocol: UDP
+        - name: syncthing
+          containerPort: 22000
         resources:
           limits:
             cpu: 3000m
@@ -105,7 +102,7 @@ spec:
         resources:
           limits:
             cpu: 300m
-            memory: 512Mi
+            memory: 1Gi
           requests:
             cpu: 50m
             memory: 128Mi

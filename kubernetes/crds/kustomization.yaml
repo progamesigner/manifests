@@ -5,3 +5,4 @@ components:
 - cert-manager
 - metallb
 - multus
+- nginx-ingress

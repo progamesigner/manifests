@@ -60,3 +60,37 @@ spec:
     app.kubernetes.io/component: unifi-controller
     app.kubernetes.io/name: unifi-controller
     app.kubernetes.io/part-of: components
+
+---
+apiVersion: k8s.nginx.org/v1alpha1
+kind: TransportServer
+metadata:
+  name: adguard-home
+spec:
+  action:
+    pass: adguard-home
+  listener:
+    name: dns-over-tls
+    protocol: TCP
+  upstreams:
+  - name: adguard-home
+    service: adguard-home
+    port: 853
+---
+apiVersion: k8s.nginx.org/v1alpha1
+kind: TransportServer
+metadata:
+  name: adguard-home-udp
+spec:
+  action:
+    pass: adguard-home
+  listener:
+    name: dns-over-tls-udp
+    protocol: UDP
+  upstreams:
+  - name: adguard-home
+    service: adguard-home
+    port: 853
+  upstreamParameters:
+    udpRequests: 1
+    udpResponses: 1

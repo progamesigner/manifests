@@ -1,0 +1,272 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/component: nginx-ingress
+    app.kubernetes.io/name: internal-nginx-ingress
+    app.kubernetes.io/part-of: kubernetes
+  name: internal-nginx-ingress
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: nginx-ingress
+      app.kubernetes.io/name: internal-nginx-ingress
+      app.kubernetes.io/part-of: kubernetes
+  template:
+    metadata:
+      annotations:
+        prometheus.io/port: '9113'
+        prometheus.io/scrape: 'true'
+      labels:
+        app.kubernetes.io/component: nginx-ingress
+        app.kubernetes.io/name: internal-nginx-ingress
+        app.kubernetes.io/part-of: kubernetes
+    spec:
+      automountServiceAccountToken: true
+      initContainers:
+      - name: init-nginx
+        image: nginx-ingress/nginx-ingress:latest
+        command:
+        - sh
+        - -c
+        - |
+          set -ex;
+          cp -dRv /etc/nginx/. /opt/nginx;
+          openssl req -newkey rsa:2048 -x509 -sha512 -days 365 -nodes -subj "/O=Acme Co/CN=Kubernetes Ingress Controller Fake Certificate" -out /opt/nginx/secrets/default.crt -keyout /opt/nginx/secrets/default.key;
+          cat /opt/nginx/secrets/default.crt /opt/nginx/secrets/default.key > /opt/nginx/secrets/default;
+          rm -fv /opt/nginx/secrets/default.crt /opt/nginx/secrets/default.key;
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+          readOnlyRootFilesystem: true
+          runAsNonRoot: true
+          runAsUser: 101
+        volumeMounts:
+        - name: etc
+          mountPath: /opt/nginx
+      containers:
+      - name: nginx-ingress
+        image: nginx-ingress/nginx-ingress:latest
+        args:
+        - -enable-latency-metrics=true
+        - -enable-prometheus-metrics=true
+        - -enable-snippets=true
+        - -enable-tls-passthrough=true
+        - -external-service=$(POD_NAMESPACE)/internal-ingress
+        - -global-configuration=$(POD_NAMESPACE)/internal-nginx-ingress
+        - -ingress-class=internal-ingress
+        - -leader-election-lock-name=internal-ingress-controller-leader
+        - -nginx-configmaps=$(POD_NAMESPACE)/nginx-ingress
+        - -report-ingress-status=true
+        env:
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: POD_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        ports:
+        - name: http
+          containerPort: 80
+        - name: https
+          containerPort: 443
+        - name: status
+          containerPort: 8080
+        - name: readiness
+          containerPort: 8081
+        - name: monitor
+          containerPort: 9113
+        readinessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /nginx-ready
+            port: readiness
+          initialDelaySeconds: 10
+          timeoutSeconds: 3
+        resources:
+          limits:
+            cpu: 2000m
+            memory: 2G
+          requests:
+            cpu: 100m
+            memory: 128Mi
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+          readOnlyRootFilesystem: true
+          runAsNonRoot: true
+          runAsUser: 101
+        volumeMounts:
+        - name: cache
+          mountPath: /var/cache/nginx
+        - name: etc
+          mountPath: /etc/nginx
+        - name: html
+          mountPath: /etc/nginx/html
+        - name: lib
+          mountPath: /var/lib/nginx
+        - name: log
+          mountPath: /var/log/nginx
+      priorityClassName: system-cluster-critical
+      securityContext:
+        fsGroup: 101
+        seccompProfile:
+          type: RuntimeDefault
+        sysctls:
+        - name: net.ipv4.ip_unprivileged_port_start
+          value: '0'
+      serviceAccountName: nginx-ingress
+      terminationGracePeriodSeconds: 300
+      volumes:
+      - name: cache
+        emptyDir: {}
+      - name: etc
+        emptyDir: {}
+      - name: html
+        configMap:
+          name: nginx-ingress-html
+      - name: lib
+        emptyDir: {}
+      - name: log
+        emptyDir: {}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/component: nginx-ingress
+    app.kubernetes.io/name: external-nginx-ingress
+    app.kubernetes.io/part-of: kubernetes
+  name: external-nginx-ingress
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: nginx-ingress
+      app.kubernetes.io/name: external-nginx-ingress
+      app.kubernetes.io/part-of: kubernetes
+  template:
+    metadata:
+      annotations:
+        prometheus.io/port: '9113'
+        prometheus.io/scrape: 'true'
+      labels:
+        app.kubernetes.io/component: nginx-ingress
+        app.kubernetes.io/name: external-nginx-ingress
+        app.kubernetes.io/part-of: kubernetes
+    spec:
+      automountServiceAccountToken: true
+      initContainers:
+      - name: init-nginx
+        image: nginx-ingress/nginx-ingress:latest
+        command:
+        - cp
+        - -vdR
+        - /etc/nginx/.
+        - /mnt/etc
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+          readOnlyRootFilesystem: true
+          runAsNonRoot: true
+          runAsUser: 101
+        volumeMounts:
+        - name: etc
+          mountPath: /mnt/etc
+      containers:
+      - name: nginx-ingress
+        image: nginx-ingress/nginx-ingress:latest
+        args:
+        - -enable-latency-metrics=true
+        - -enable-prometheus-metrics=true
+        - -enable-snippets=true
+        - -enable-tls-passthrough=true
+        - -external-service=$(POD_NAMESPACE)/external-ingress
+        - -global-configuration=$(POD_NAMESPACE)/external-nginx-ingress
+        - -ingress-class=external-ingress
+        - -leader-election-lock-name=external-ingress-controller-leader
+        - -nginx-configmaps=$(POD_NAMESPACE)/nginx-ingress
+        - -report-ingress-status=true
+        env:
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: POD_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        ports:
+        - name: http
+          containerPort: 80
+        - name: https
+          containerPort: 443
+        - name: status
+          containerPort: 8080
+        - name: readiness
+          containerPort: 8081
+        - name: monitor
+          containerPort: 9113
+        readinessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /nginx-ready
+            port: readiness
+          initialDelaySeconds: 10
+          timeoutSeconds: 3
+        resources:
+          limits:
+            cpu: 2000m
+            memory: 2G
+          requests:
+            cpu: 100m
+            memory: 128Mi
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+          readOnlyRootFilesystem: true
+          runAsNonRoot: true
+          runAsUser: 101
+        volumeMounts:
+        - name: cache
+          mountPath: /var/cache/nginx
+        - name: etc
+          mountPath: /etc/nginx
+        - name: html
+          mountPath: /etc/nginx/html
+        - name: lib
+          mountPath: /var/lib/nginx
+        - name: log
+          mountPath: /var/log/nginx
+      priorityClassName: system-cluster-critical
+      securityContext:
+        fsGroup: 101
+        seccompProfile:
+          type: RuntimeDefault
+        sysctls:
+        - name: net.ipv4.ip_unprivileged_port_start
+          value: '0'
+      serviceAccountName: nginx-ingress
+      terminationGracePeriodSeconds: 300
+      volumes:
+      - name: cache
+        emptyDir: {}
+      - name: etc
+        emptyDir: {}
+      - name: html
+        configMap:
+          name: nginx-ingress-html
+      - name: lib
+        emptyDir: {}
+      - name: log
+        emptyDir: {}

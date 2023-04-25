@@ -10,7 +10,7 @@ spec:
   ports:
   - name: monitor
     port: 9402
-    targetPort: monitor
+    targetPort: 9402
   selector:
     app.kubernetes.io/component: controller
     app.kubernetes.io/name: cert-manager
@@ -47,23 +47,6 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  labels:
-    kubernetes.io/cluster-service: 'true'
-    kubernetes.io/name: DefaultBackend
-  name: default-backend
-spec:
-  ports:
-  - name: http
-    port: 80
-    targetPort: http
-  selector:
-    app.kubernetes.io/component: default-backend
-    app.kubernetes.io/name: default-backend
-    app.kubernetes.io/part-of: kubernetes
----
-apiVersion: v1
-kind: Service
-metadata:
   annotations:
     metallb.universe.tf/allow-shared-ip: internal-ingress
     metallb.universe.tf/loadBalancerIPs: 192.168.48.11
@@ -76,15 +59,48 @@ spec:
   ports:
   - name: http
     port: 80
-    targetPort: http
+    targetPort: 80
     appProtocol: http
   - name: https
     port: 443
-    targetPort: https
+    targetPort: 443
     appProtocol: https
+  - name: dns-over-tls
+    port: 853
+    targetPort: 853
+    appProtocol: domain-s
   selector:
-    app.kubernetes.io/component: controller
-    app.kubernetes.io/name: internal-ingress-nginx
+    app.kubernetes.io/component: nginx-ingress
+    app.kubernetes.io/name: internal-nginx-ingress
+    app.kubernetes.io/part-of: kubernetes
+  type: LoadBalancer
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    metallb.universe.tf/allow-shared-ip: internal-ingress
+    metallb.universe.tf/loadBalancerIPs: 192.168.48.11
+  labels:
+    kubernetes.io/cluster-service: 'true'
+    kubernetes.io/name: InternalIngress
+  name: internal-ingress-udp
+spec:
+  externalTrafficPolicy: Local
+  ports:
+  - name: https
+    port: 443
+    targetPort: 443
+    protocol: UDP
+    appProtocol: https
+  - name: dns-over-tls
+    port: 853
+    targetPort: 853
+    protocol: UDP
+    appProtocol: domain-s
+  selector:
+    app.kubernetes.io/component: nginx-ingress
+    app.kubernetes.io/name: internal-nginx-ingress
     app.kubernetes.io/part-of: kubernetes
   type: LoadBalancer
 ---
@@ -103,14 +119,66 @@ spec:
   ports:
   - name: http
     port: 80
-    targetPort: http
+    targetPort: 80
     appProtocol: http
   - name: https
     port: 443
-    targetPort: https
+    targetPort: 443
     appProtocol: https
+  - name: dns-over-tls
+    port: 853
+    targetPort: 853
+    appProtocol: domain-s
   selector:
-    app.kubernetes.io/component: controller
-    app.kubernetes.io/name: external-ingress-nginx
+    app.kubernetes.io/component: nginx-ingress
+    app.kubernetes.io/name: external-nginx-ingress
     app.kubernetes.io/part-of: kubernetes
   type: LoadBalancer
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    metallb.universe.tf/allow-shared-ip: external-ingress
+    metallb.universe.tf/loadBalancerIPs: 192.168.0.11
+  labels:
+    kubernetes.io/cluster-service: 'true'
+    kubernetes.io/name: ExternalIngress
+  name: external-ingress-udp
+spec:
+  externalTrafficPolicy: Local
+  ports:
+  - name: https
+    port: 443
+    targetPort: 443
+    protocol: UDP
+    appProtocol: https
+  - name: dns-over-tls
+    port: 853
+    targetPort: 853
+    protocol: UDP
+    appProtocol: domain-s
+  selector:
+    app.kubernetes.io/component: nginx-ingress
+    app.kubernetes.io/name: external-nginx-ingress
+    app.kubernetes.io/part-of: kubernetes
+  type: LoadBalancer
+---
+apiVersion: k8s.nginx.org/v1alpha1
+kind: GlobalConfiguration
+metadata:
+  name: internal-nginx-ingress
+spec:
+  listeners:
+  - name: dns-over-tls
+    port: 853
+    protocol: TCP
+  - name: dns-over-tls-udp
+    port: 853
+    protocol: UDP
+---
+apiVersion: k8s.nginx.org/v1alpha1
+kind: GlobalConfiguration
+metadata:
+  name: external-nginx-ingress
+spec: {}
