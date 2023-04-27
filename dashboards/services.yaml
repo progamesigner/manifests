@@ -11,7 +11,7 @@ spec:
   selector:
     app.kubernetes.io/component: pgadmin
     app.kubernetes.io/name: pgadmin
-    app.kubernetes.io/part-of: dashboard
+    app.kubernetes.io/part-of: dashboards
 ---
 apiVersion: v1
 kind: Service
@@ -25,4 +25,4 @@ spec:
   selector:
     app.kubernetes.io/component: phpmyadmin
     app.kubernetes.io/name: phpmyadmin
-    app.kubernetes.io/part-of: dashboard
+    app.kubernetes.io/part-of: dashboards

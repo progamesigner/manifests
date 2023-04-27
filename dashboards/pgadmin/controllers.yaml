@@ -5,7 +5,7 @@ metadata:
   labels:
     app.kubernetes.io/component: pgadmin
     app.kubernetes.io/name: pgadmin
-    app.kubernetes.io/part-of: dashboard
+    app.kubernetes.io/part-of: dashboards
   name: pgadmin
 spec:
   replicas: 1
@@ -13,13 +13,13 @@ spec:
     matchLabels:
       app.kubernetes.io/component: pgadmin
       app.kubernetes.io/name: pgadmin
-      app.kubernetes.io/part-of: dashboard
+      app.kubernetes.io/part-of: dashboards
   template:
     metadata:
       labels:
         app.kubernetes.io/component: pgadmin
         app.kubernetes.io/name: pgadmin
-        app.kubernetes.io/part-of: dashboard
+        app.kubernetes.io/part-of: dashboards
     spec:
       initContainers:
       - name: chown
