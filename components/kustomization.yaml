@@ -4,6 +4,7 @@ kind: Kustomization
 components:
 - adguard-home
 - home-assistant
+- node-red
 - syncthing
 - unifi-controller
 - vscode-server
@@ -14,6 +15,9 @@ images:
 - name: home-assistant/home-assistant
   newName: ghcr.io/home-assistant/home-assistant
   newTag: 2023.4.6
+- name: node-red/node-red
+  newName: nodered/node-red
+  newTag: 3.0.2
 - name: syncthing/syncthing
   newName: syncthing/syncthing
   newTag: 1.23.4
@@ -54,6 +58,19 @@ patchesJson6902:
         hostPath:
           type: DirectoryOrCreate
           path: /srv/home-assistant
+- target:
+    group: apps
+    version: v1
+    kind: Deployment
+    name: node-red
+  patch: |-
+    - op: replace
+      path: /spec/template/spec/volumes/0
+      value:
+        name: data
+        hostPath:
+          type: DirectoryOrCreate
+          path: /srv/node-red
 - target:
     group: apps
     version: v1

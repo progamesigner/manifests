@@ -1,0 +1,78 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/component: node-red
+    app.kubernetes.io/name: node-red
+    app.kubernetes.io/part-of: components
+  name: node-red
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: node-red
+      app.kubernetes.io/name: node-red
+      app.kubernetes.io/part-of: components
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        k8s.v1.cni.cncf.io/networks: |
+          [
+            {
+              "name": "cluster",
+              "namespace": "kube-system"
+            },
+            {
+              "name": "local",
+              "namespace": "kube-system",
+              "mac": "7A:22:25:01:04:07"
+            }
+          ]
+      labels:
+        app.kubernetes.io/component: node-red
+        app.kubernetes.io/name: node-red
+        app.kubernetes.io/part-of: components
+    spec:
+      automountServiceAccountToken: false
+      initContainers:
+      - name: init-node-red
+        image: busybox:latest
+        command:
+        - sh
+        - -c
+        - |
+          set -ex;
+          chown 1000:1000 /data
+        volumeMounts:
+        - name: data
+          mountPath: /data
+        resources:
+          limits:
+            cpu: 1500m
+            memory: 512Mi
+          requests:
+            cpu: 100m
+            memory: 64Mi
+      containers:
+      - name: node-red
+        image: node-red/node-red:latest
+        ports:
+        - name: http
+          containerPort: 1880
+        resources:
+          limits:
+            cpu: 1000m
+            memory: 1Gi
+          requests:
+            cpu: 100m
+            memory: 128Mi
+        volumeMounts:
+        - name: data
+          mountPath: /data
+      serviceAccountName: default
+      volumes:
+      - name: data
+        emptyDir: {}

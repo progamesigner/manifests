@@ -27,6 +27,30 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   annotations:
+    nginx.org/websocket-services: 'node-red'
+  name: node-red
+spec:
+  ingressClassName: internal-ingress
+  rules:
+  - host: auto.progamesigner.dev
+    http:
+      paths:
+      - backend:
+          service:
+            name: node-red
+            port:
+              name: http
+        path: /
+        pathType: Prefix
+  tls:
+  - hosts:
+    - auto.progamesigner.dev
+    secretName: tls-dev-progamesigner
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
     nginx.org/websocket-services: 'home-assistant'
   name: home-assistant
 spec:
