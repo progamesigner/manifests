@@ -20,9 +20,9 @@ metadata:
 spec:
   ports:
   - name: http
-    port: 80
+    port: 1200
     targetPort: http
   selector:
     app.kubernetes.io/component: rsshub
-    app.kubernetes.io/name: rsshub
+    app.kubernetes.io/name: rss
     app.kubernetes.io/part-of: applications
