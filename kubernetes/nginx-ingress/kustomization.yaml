@@ -11,14 +11,14 @@ configMapGenerator:
   - ssl-ciphers=ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA256
   - ssl-protocols=TLSv1.2 TLSv1.3
   files:
-  - main-template=files/nginx.conf.tmpl
-  - server-snippets=files/server.conf
-  - ssl-dhparam-file=files/dhparam.pem
+  - main-template=nginx.conf.tmpl
+  - server-snippets=server.conf
+  - ssl-dhparam-file=dhparam.pem
   options:
     disableNameSuffixHash: true
 - name: nginx-ingress-html
   files:
-  - 404.html=files/404.html
+  - 404.html=404.html
 resources:
 - controllers.yaml
 - rbac.yaml
