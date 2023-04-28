@@ -4,6 +4,7 @@ kind: Kustomization
 resources:
 - cluster
 - components
+- crds
 - dashboards
 - kubernetes
 - services
