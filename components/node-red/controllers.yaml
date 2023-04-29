@@ -72,7 +72,14 @@ spec:
         volumeMounts:
         - name: data
           mountPath: /data
+        - name: srv
+          mountPath: /srv
+          readOnly: true
       serviceAccountName: default
       volumes:
       - name: data
         emptyDir: {}
+      - name: srv
+        hostPath:
+          type: Directory
+          path: /srv
