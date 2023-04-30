@@ -49,6 +49,10 @@ spec:
               user: multus
           current-context: multus
           EOF
+        envFrom:
+        - configMapRef:
+            name: kubernetes
+            optional: false
         resources:
           requests:
             cpu: 50m
@@ -65,6 +69,10 @@ spec:
         - --global-namespaces=default,kube-system
         - --multus-conf-file=/etc/multus/10-multus.conflist
         - --namespace-isolation=true
+        envFrom:
+        - configMapRef:
+            name: kubernetes
+            optional: false
         resources:
           limits:
             cpu: 100m

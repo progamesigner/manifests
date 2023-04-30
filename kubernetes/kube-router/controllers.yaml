@@ -53,6 +53,10 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: spec.nodeName
+        envFrom:
+        - configMapRef:
+            name: kubernetes
+            optional: false
         livenessProbe:
           httpGet:
             path: /healthz
