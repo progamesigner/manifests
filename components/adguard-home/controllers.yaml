@@ -43,12 +43,6 @@ spec:
         ports:
         - name: dns
           containerPort: 53
-        - name: dhcp-server
-          containerPort: 67
-          protocol: UDP
-        - name: dhcp-client
-          containerPort: 68
-          protocol: UDP
         - name: https
           containerPort: 443
         - name: dns-tls

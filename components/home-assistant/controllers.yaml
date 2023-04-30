@@ -46,12 +46,6 @@ spec:
         - name: TZ
           value: UTC
         ports:
-        - name: dhcp-server
-          containerPort: 67
-          protocol: UDP
-        - name: dhcp-client
-          containerPort: 68
-          protocol: UDP
         - name: rtsp
           containerPort: 554
         - name: upnp
