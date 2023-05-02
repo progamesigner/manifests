@@ -74,6 +74,8 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
+  annotations:
+    nginx.org/ssl-services: 'syncthing'
   name: syncthing
 spec:
   ingressClassName: internal-ingress
