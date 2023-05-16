@@ -1,0 +1,53 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/component: external-dns
+    app.kubernetes.io/name: external-dns
+    app.kubernetes.io/part-of: kubernetes
+  name: external-dns
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: external-dns
+      app.kubernetes.io/name: external-dns
+      app.kubernetes.io/part-of: kubernetes
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/component: external-dns
+        app.kubernetes.io/name: external-dns
+        app.kubernetes.io/part-of: kubernetes
+    spec:
+      automountServiceAccountToken: true
+      containers:
+      - name: external-dns
+        image: external-dns/external-dns:latest
+        args:
+        - --cloudflare-dns-records-per-page=5000
+        - --domain-filter=progamesigner.net
+        - --provider=cloudflare
+        - --registry=txt
+        - --source=ingress
+        - --source=service
+        - --zone-id-filter=507bfed164112193bd8a84153cb90a2f
+        envFrom:
+        - secretRef:
+            name: external-dns
+        resources:
+          limits:
+            cpu: 100m
+            memory: 32Mi
+          requests:
+            cpu: 50m
+            memory: 16Mi
+        securityContext:
+          capabilities:
+            drop:
+            - ALL
+          readOnlyRootFilesystem: true
+          runAsNonRoot: true
+          runAsUser: 65534
+      serviceAccountName: external-dns

@@ -4,6 +4,7 @@ kind: Kustomization
 components:
 - cert-manager
 - coredns
+- external-dns
 - kube-router
 - metallb
 - multus
@@ -21,6 +22,9 @@ images:
 - name: default-backend/default-backend
   newName: ghcr.io/progamesigner/ingress-default-backend
   newTag: 1.2.3
+- name: external-dns/external-dns
+  newName: registry.k8s.io/external-dns/external-dns
+  newTag: v0.13.4
 - name: kube-router/kube-router
   newName: cloudnativelabs/kube-router
   newTag: v1.5.3
