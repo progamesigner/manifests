@@ -3,7 +3,7 @@ apiVersion: v1
 kind: Service
 metadata:
   annotations:
-    metallb.universe.tf/loadBalancerIPs: 192.168.48.20
+    external-dns.alpha.kubernetes.io/hostname: redis.progamesigner.net
   name: redis
 spec:
   externalTrafficPolicy: Local
@@ -21,7 +21,7 @@ apiVersion: v1
 kind: Service
 metadata:
   annotations:
-    metallb.universe.tf/loadBalancerIPs: 192.168.48.21
+    external-dns.alpha.kubernetes.io/hostname: postgresql.progamesigner.net
   name: postgresql
 spec:
   externalTrafficPolicy: Local
@@ -39,7 +39,7 @@ apiVersion: v1
 kind: Service
 metadata:
   annotations:
-    metallb.universe.tf/loadBalancerIPs: 192.168.48.22
+    external-dns.alpha.kubernetes.io/hostname: mariadb.progamesigner.net,mysql.progamesigner.net
   name: mariadb
 spec:
   externalTrafficPolicy: Local
@@ -57,7 +57,7 @@ apiVersion: v1
 kind: Service
 metadata:
   annotations:
-    metallb.universe.tf/loadBalancerIPs: 192.168.48.23
+    external-dns.alpha.kubernetes.io/hostname: elasticsearch.progamesigner.net
   name: elasticsearch
 spec:
   externalTrafficPolicy: Local
@@ -75,7 +75,7 @@ apiVersion: v1
 kind: Service
 metadata:
   annotations:
-    metallb.universe.tf/loadBalancerIPs: 192.168.48.24
+    external-dns.alpha.kubernetes.io/hostname: mongodb.progamesigner.net
   name: mongodb
 spec:
   externalTrafficPolicy: Local
