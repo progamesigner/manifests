@@ -1,0 +1,12 @@
+{
+  "cniVersion": "1.0.0",
+  "name": "multus",
+  "plugins": [
+    {
+      "type": "multus",
+      "clusterNetwork": "/etc/cni/net.d/20-kube-router.conflist",
+      "defaultNetworks": [],
+      "kubeconfig": "/etc/cni/net.d/multus.d/multus.kubeconfig"
+    }
+  ]
+}

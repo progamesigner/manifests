@@ -1,0 +1,16 @@
+{
+  "cniVersion": "1.0.0",
+  "name": "kube-router",
+  "plugins": [
+    {
+      "name": "kube-router",
+      "type": "bridge",
+      "bridge": "kube-bridge",
+      "isDefaultGateway": true,
+      "hairpinMode": true,
+      "ipam": {
+        "type": "host-local"
+      }
+    }
+  ]
+}
