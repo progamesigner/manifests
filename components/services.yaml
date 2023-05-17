@@ -74,7 +74,64 @@ spec:
     app.kubernetes.io/component: unifi-controller
     app.kubernetes.io/name: unifi-controller
     app.kubernetes.io/part-of: components
-
+---
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    metallb.universe.tf/allow-shared-ip: adguard-home
+    metallb.universe.tf/loadBalancerIPs: 192.168.48.1,192.168.48.2
+  labels:
+    kubernetes.io/cluster-service: 'true'
+    kubernetes.io/name: AdGuardHome
+  name: adguard-home-dns
+spec:
+  externalTrafficPolicy: Local
+  ports:
+  - name: dns
+    port: 53
+    targetPort: 53
+    appProtocol: domain-s
+  - name: http
+    port: 80
+    targetPort: 80
+    appProtocol: http
+  - name: https
+    port: 443
+    targetPort: 443
+    appProtocol: https
+  selector:
+    app.kubernetes.io/component: adguard-home
+    app.kubernetes.io/name: adguard-home
+    app.kubernetes.io/part-of: components
+  type: LoadBalancer
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    metallb.universe.tf/allow-shared-ip: adguard-home
+    metallb.universe.tf/loadBalancerIPs: 192.168.48.1,192.168.48.2
+  name: adguard-home-dns-udp
+spec:
+  externalTrafficPolicy: Local
+  ports:
+  - name: dns
+    port: 53
+    targetPort: 53
+    protocol: UDP
+    appProtocol: domain-s
+  - name: https
+    port: 443
+    targetPort: 443
+    protocol: UDP
+    appProtocol: https
+  selector:
+    app.kubernetes.io/component: adguard-home
+    app.kubernetes.io/name: adguard-home
+    app.kubernetes.io/part-of: components
+  type: LoadBalancer
 ---
 apiVersion: k8s.nginx.org/v1alpha1
 kind: TransportServer

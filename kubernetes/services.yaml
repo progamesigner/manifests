@@ -105,6 +105,7 @@ kind: Service
 metadata:
   annotations:
     metallb.universe.tf/allow-shared-ip: external-ingress
+    metallb.universe.tf/loadBalancerIPs: 192.168.0.11
   labels:
     kubernetes.io/cluster-service: 'true'
     kubernetes.io/name: ExternalIngress
@@ -135,6 +136,7 @@ kind: Service
 metadata:
   annotations:
     metallb.universe.tf/allow-shared-ip: external-ingress
+    metallb.universe.tf/loadBalancerIPs: 192.168.0.11
   name: external-ingress-udp
 spec:
   externalTrafficPolicy: Local

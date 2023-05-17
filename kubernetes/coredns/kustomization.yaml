@@ -5,6 +5,7 @@ configMapGenerator:
 - name: coredns
   files:
   - Corefile=Corefile
+  - resolv.conf=resolv.conf
   options:
     disableNameSuffixHash: true
 resources:
