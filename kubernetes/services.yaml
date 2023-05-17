@@ -80,9 +80,6 @@ kind: Service
 metadata:
   annotations:
     metallb.universe.tf/allow-shared-ip: internal-ingress
-  labels:
-    kubernetes.io/cluster-service: 'true'
-    kubernetes.io/name: InternalIngress
   name: internal-ingress-udp
 spec:
   externalTrafficPolicy: Local
@@ -106,6 +103,8 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
+  annotations:
+    metallb.universe.tf/allow-shared-ip: external-ingress
   labels:
     kubernetes.io/cluster-service: 'true'
     kubernetes.io/name: ExternalIngress
@@ -136,9 +135,6 @@ kind: Service
 metadata:
   annotations:
     metallb.universe.tf/allow-shared-ip: external-ingress
-  labels:
-    kubernetes.io/cluster-service: 'true'
-    kubernetes.io/name: ExternalIngress
   name: external-ingress-udp
 spec:
   externalTrafficPolicy: Local
