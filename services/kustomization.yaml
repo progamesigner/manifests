@@ -6,6 +6,7 @@ components:
 - mariadb
 - mongodb
 - postgresql
+- rabbitmq
 - redis
 images:
 - name: elasticsearch/elasticsearch
@@ -20,6 +21,9 @@ images:
 - name: postgresql/postgresql
   newName: postgres
   newTag: 15.2-alpine
+- name: rabbitmq/rabbitmq
+  newName: rabbitmq
+  newTag: 3.11.16-alpine
 - name: redis/redis
   newName: redis
   newTag: 7.0.11-alpine
