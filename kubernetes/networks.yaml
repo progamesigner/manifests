@@ -2,28 +2,21 @@
 apiVersion: metallb.io/v1beta1
 kind: IPAddressPool
 metadata:
-  name: external-ip-address-pool
-spec:
-  addresses:
-  - 192.168.0.11-192.168.0.15
-  autoAssign: false
----
-apiVersion: metallb.io/v1beta1
-kind: IPAddressPool
-metadata:
-  name: internal-ip-address-pool
-spec:
-  addresses:
-  - 192.168.48.11-192.168.48.15
-  autoAssign: false
----
-apiVersion: metallb.io/v1beta1
-kind: IPAddressPool
-metadata:
   name: default-ip-address-pool
 spec:
   addresses:
-  - 192.168.48.20-192.168.48.99
+  - 192.168.32.20-192.168.32.99
+---
+apiVersion: metallb.io/v1beta1
+kind: IPAddressPool
+metadata:
+  name: managed-ip-address-pool
+spec:
+  addresses:
+  - 192.168.0.1-192.168.0.15
+  - 192.168.16.1-192.168.16.15
+  - 192.168.32.1-192.168.32.15
+  autoAssign: false
 ---
 apiVersion: metallb.io/v1beta1
 kind: L2Advertisement
@@ -32,8 +25,7 @@ metadata:
 spec:
   ipAddressPools:
   - default-ip-address-pool
-  - external-ip-address-pool
-  - internal-ip-address-pool
+  - managed-ip-address-pool
 ---
 apiVersion: k8s.cni.cncf.io/v1
 kind: NetworkAttachmentDefinition

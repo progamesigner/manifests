@@ -75,19 +75,18 @@ spec:
     app.kubernetes.io/name: unifi-controller
     app.kubernetes.io/part-of: components
 ---
----
 apiVersion: v1
 kind: Service
 metadata:
   annotations:
-    metallb.universe.tf/allow-shared-ip: adguard-home
-    metallb.universe.tf/loadBalancerIPs: 192.168.48.1,192.168.48.2
+    metallb.universe.tf/allow-shared-ip: external-dns
   labels:
     kubernetes.io/cluster-service: 'true'
     kubernetes.io/name: AdGuardHome
-  name: adguard-home-dns
+  name: external-dns
 spec:
   externalTrafficPolicy: Local
+  loadBalancerIP: 192.168.0.8
   ports:
   - name: dns
     port: 53
@@ -111,11 +110,68 @@ apiVersion: v1
 kind: Service
 metadata:
   annotations:
-    metallb.universe.tf/allow-shared-ip: adguard-home
-    metallb.universe.tf/loadBalancerIPs: 192.168.48.1,192.168.48.2
-  name: adguard-home-dns-udp
+    metallb.universe.tf/allow-shared-ip: external-dns
+  name: external-dns-udp
 spec:
   externalTrafficPolicy: Local
+  loadBalancerIP: 192.168.0.8
+  ports:
+  - name: dns
+    port: 53
+    targetPort: 53
+    protocol: UDP
+    appProtocol: domain-s
+  - name: https
+    port: 443
+    targetPort: 443
+    protocol: UDP
+    appProtocol: https
+  selector:
+    app.kubernetes.io/component: adguard-home
+    app.kubernetes.io/name: adguard-home
+    app.kubernetes.io/part-of: components
+  type: LoadBalancer
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    metallb.universe.tf/allow-shared-ip: internal-dns
+  labels:
+    kubernetes.io/cluster-service: 'true'
+    kubernetes.io/name: AdGuardHome
+  name: internal-dns
+spec:
+  externalTrafficPolicy: Local
+  loadBalancerIP: 192.168.32.8
+  ports:
+  - name: dns
+    port: 53
+    targetPort: 53
+    appProtocol: domain-s
+  - name: http
+    port: 80
+    targetPort: 80
+    appProtocol: http
+  - name: https
+    port: 443
+    targetPort: 443
+    appProtocol: https
+  selector:
+    app.kubernetes.io/component: adguard-home
+    app.kubernetes.io/name: adguard-home
+    app.kubernetes.io/part-of: components
+  type: LoadBalancer
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    metallb.universe.tf/allow-shared-ip: internal-dns
+  name: internal-dns-udp
+spec:
+  externalTrafficPolicy: Local
+  loadBalancerIP: 192.168.32.8
   ports:
   - name: dns
     port: 53
