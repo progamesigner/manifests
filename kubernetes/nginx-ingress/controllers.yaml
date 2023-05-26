@@ -16,6 +16,7 @@ spec:
   template:
     metadata:
       annotations:
+        nginx.org/nginx-configmaps: nginx-ingress
         prometheus.io/port: '9113'
         prometheus.io/scrape: 'true'
       labels:
@@ -70,6 +71,10 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: metadata.namespace
+        - name: NGINX_INGRESS_CONFIG
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.annotations['nginx.org/nginx-configmaps']
         ports:
         - name: http
           containerPort: 80
@@ -156,6 +161,7 @@ spec:
   template:
     metadata:
       annotations:
+        nginx.org/nginx-configmaps: nginx-ingress
         prometheus.io/port: '9113'
         prometheus.io/scrape: 'true'
       labels:
@@ -206,6 +212,10 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: metadata.namespace
+        - name: NGINX_INGRESS_CONFIG
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.annotations['nginx.org/nginx-configmaps']
         ports:
         - name: http
           containerPort: 80

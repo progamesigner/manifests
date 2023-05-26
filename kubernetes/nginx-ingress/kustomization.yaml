@@ -17,14 +17,6 @@ configMapGenerator:
 - name: nginx-ingress-html
   files:
   - 404.html=404.html
-vars:
-- name: NGINX_INGRESS_CONFIG
-  objref:
-    apiVersion: v1
-    kind: ConfigMap
-    name: nginx-ingress
-  fieldref:
-    fieldpath: metadata.name
 resources:
 - controllers.yaml
 - rbac.yaml

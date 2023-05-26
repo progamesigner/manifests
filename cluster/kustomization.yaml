@@ -1,8 +1,6 @@
 ---
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-configurations:
-- configurations.yaml
 namespace: default
 resources:
 - certificates.yaml
@@ -11,11 +9,3 @@ secretGenerator:
 - name: cert-manager-cloudflare
   envs:
   - cloudflare.env
-vars:
-- name: CERT_MANAGER_CLOUDFLARE_SECRET
-  objref:
-    apiVersion: v1
-    kind: Secret
-    name: cert-manager-cloudflare
-  fieldref:
-    fieldpath: metadata.name
