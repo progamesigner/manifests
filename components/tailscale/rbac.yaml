@@ -18,7 +18,7 @@ rules:
 - apiGroups:
   - ''
   resourceNames:
-  - tailscale
+  - tailscale-state
   resources:
   - secrets
   verbs:

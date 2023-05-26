@@ -5,8 +5,6 @@ configMapGenerator:
 - name: kube-router
   files:
   - cni-conf.json=cni-conf.json
-  options:
-    disableNameSuffixHash: true
 resources:
 - controllers.yaml
 - rbac.yaml

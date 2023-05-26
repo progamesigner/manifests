@@ -59,7 +59,7 @@ spec:
         - -global-configuration=$(POD_NAMESPACE)/internal-nginx-ingress
         - -ingress-class=internal-ingress
         - -leader-election-lock-name=internal-ingress-controller-leader
-        - -nginx-configmaps=$(POD_NAMESPACE)/nginx-ingress
+        - -nginx-configmaps=$(POD_NAMESPACE)/$(NGINX_INGRESS_CONFIG)
         - -report-ingress-status=true
         env:
         - name: POD_NAME
@@ -195,7 +195,7 @@ spec:
         - -global-configuration=$(POD_NAMESPACE)/external-nginx-ingress
         - -ingress-class=external-ingress
         - -leader-election-lock-name=external-ingress-controller-leader
-        - -nginx-configmaps=$(POD_NAMESPACE)/nginx-ingress
+        - -nginx-configmaps=$(POD_NAMESPACE)/$(NGINX_INGRESS_CONFIG)
         - -report-ingress-status=true
         env:
         - name: POD_NAME

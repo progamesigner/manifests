@@ -67,12 +67,7 @@ spec:
           readOnlyRootFilesystem: true
         volumeMounts:
         - name: conf
-          mountPath: /etc/coredns/Corefile
-          subPath: Corefile
-          readOnly: true
-        - name: conf
-          mountPath: /etc/resolv.conf
-          subPath: resolv.conf
+          mountPath: /etc/coredns
           readOnly: true
       dnsPolicy: Default
       priorityClassName: system-cluster-critical
@@ -84,3 +79,6 @@ spec:
       - name: conf
         configMap:
           name: coredns
+          items:
+          - key: Corefile
+            path: Corefile

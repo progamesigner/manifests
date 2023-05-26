@@ -1,0 +1,3 @@
+varReference:
+- kind: Issuer
+  path: spec/acme/solvers/dns01/cloudflare/apiTokenSecretRef/name

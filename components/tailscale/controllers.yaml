@@ -25,6 +25,9 @@ spec:
       containers:
       - name: tailscale
         image: tailscale/tailscale:latest
+        env:
+        - name: TS_KUBE_SECRET
+          value: tailscale-state
         envFrom:
         - secretRef:
             name: tailscale

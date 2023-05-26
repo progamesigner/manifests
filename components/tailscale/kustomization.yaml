@@ -8,5 +8,3 @@ secretGenerator:
 - name: tailscale
   envs:
   - tailscale.env
-  options:
-    disableNameSuffixHash: true
