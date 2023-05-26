@@ -30,7 +30,7 @@ images:
   newTag: v1.40.1
 - name: unifi-controller/unifi-controller
   newName: lscr.io/linuxserver/unifi-controller
-  newTag: 7.3.83-ls193
+  newTag: 7.3.83-ls194
 - name: vscode/server
   newName: ghcr.io/progamesigner/vscode-server
   newTag: 20230422-jammy
