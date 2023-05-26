@@ -83,12 +83,12 @@ spec:
         securityContext:
           privileged: true
         volumeMounts:
-        - name: conf
-          mountPath: /etc/multus
         - name: cni-bin-dir
           mountPath: /opt/cni/bin
         - name: cni-conf-dir
           mountPath: /etc/cni/net.d
+        - name: conf
+          mountPath: /etc/multus
       hostNetwork: true
       priorityClassName: system-node-critical
       serviceAccountName: multus
@@ -100,15 +100,15 @@ spec:
       - effect: NoExecute
         operator: Exists
       volumes:
-      - name: conf
-        configMap:
-          name: multus
-          items:
-          - key: cni-conf.json
-            path: 10-multus.conflist
       - name: cni-bin-dir
         hostPath:
           path: /opt/cni/bin
       - name: cni-conf-dir
         hostPath:
           path: /etc/cni/net.d
+      - name: conf
+        configMap:
+          name: multus
+          items:
+          - key: cni-conf.json
+            path: 10-multus.conflist

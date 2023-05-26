@@ -12,20 +12,21 @@ images:
   newName: phpmyadmin
   newTag: 5.2.1
 namespace: default
-patchesJson6902:
-- target:
-    group: apps
-    version: v1
+patches:
+- patch: |-
+    apiVersion: apps/v1
     kind: Deployment
-    name: pgadmin
-  patch: |-
-    - op: replace
-      path: /spec/template/spec/volumes/0
-      value:
-        name: data
-        hostPath:
-          type: DirectoryOrCreate
-          path: /srv/pgadmin
+    metadata:
+      name: pgadmin
+    spec:
+      template:
+        spec:
+          volumes:
+          - name: data
+            emptyDir: null
+            hostPath:
+              type: DirectoryOrCreate
+              path: /srv/pgadmin
 resources:
 - ingresses.yaml
 - services.yaml

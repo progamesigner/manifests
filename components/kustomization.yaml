@@ -35,98 +35,129 @@ images:
   newName: ghcr.io/progamesigner/vscode-server
   newTag: 20230422-jammy
 namespace: default
-patchesJson6902:
-- target:
-    group: apps
-    version: v1
+patches:
+- patch: |-
+    apiVersion: apps/v1
     kind: Deployment
-    name: adguard-home
-  patch: |-
-    - op: replace
-      path: /spec/template/spec/volumes/0
-      value:
-        name: data
-        hostPath:
-          type: DirectoryOrCreate
-          path: /srv/adguard-home
-- target:
-    group: apps
-    version: v1
+    metadata:
+      name: adguard-home
+    spec:
+      template:
+        spec:
+          volumes:
+          - name: data
+            emptyDir: null
+            hostPath:
+              type: DirectoryOrCreate
+              path: /srv/adguard-home
+- patch: |-
+    apiVersion: apps/v1
     kind: Deployment
-    name: home-assistant
-  patch: |-
-    - op: replace
-      path: /spec/template/spec/volumes/0
-      value:
-        name: data
-        hostPath:
-          type: DirectoryOrCreate
-          path: /srv/home-assistant
-- target:
-    group: apps
-    version: v1
+    metadata:
+      name: home-assistant
+    spec:
+      template:
+        spec:
+          volumes:
+          - name: data
+            emptyDir: null
+            hostPath:
+              type: DirectoryOrCreate
+              path: /srv/home-assistant
+- patch: |-
+    apiVersion: apps/v1
     kind: Deployment
-    name: node-red
-  patch: |-
-    - op: replace
-      path: /spec/template/spec/volumes/0
-      value:
-        name: data
-        hostPath:
-          type: DirectoryOrCreate
-          path: /srv/node-red
-- target:
-    group: apps
-    version: v1
+    metadata:
+      name: node-red
+    spec:
+      template:
+        spec:
+          volumes:
+          - name: data
+            emptyDir: null
+            hostPath:
+              type: DirectoryOrCreate
+              path: /srv/node-red
+          - name: files
+            emptyDir: null
+            hostPath:
+              type: Directory
+              path: /srv
+- patch: |-
+    apiVersion: apps/v1
     kind: Deployment
-    name: syncthing
-  patch: |-
-    - op: replace
-      path: /spec/template/spec/volumes/0
-      value:
-        name: data
-        hostPath:
-          type: DirectoryOrCreate
-          path: /srv/syncthing
-- target:
-    group: apps
-    version: v1
+    metadata:
+      name: syncthing
+    spec:
+      template:
+        spec:
+          volumes:
+          - name: data
+            emptyDir: null
+            hostPath:
+              type: DirectoryOrCreate
+              path: /srv/syncthing
+- patch: |-
+    apiVersion: apps/v1
     kind: Deployment
-    name: syncthing-relay
-  patch: |-
-    - op: replace
-      path: /spec/template/spec/volumes/0
-      value:
-        name: data
-        hostPath:
-          type: DirectoryOrCreate
-          path: /srv/syncthing-relay
-- target:
-    group: apps
-    version: v1
+    metadata:
+      name: syncthing-relay
+    spec:
+      template:
+        spec:
+          volumes:
+          - name: data
+            emptyDir: null
+            hostPath:
+              type: DirectoryOrCreate
+              path: /srv/syncthing-relay
+- patch: |-
+    apiVersion: apps/v1
     kind: Deployment
-    name: unifi-controller
-  patch: |-
-    - op: replace
-      path: /spec/template/spec/volumes/0
-      value:
-        name: data
-        hostPath:
-          type: DirectoryOrCreate
-          path: /srv/unifi-controller
-- target:
-    group: apps
-    version: v1
+    metadata:
+      name: unifi-controller
+    spec:
+      template:
+        spec:
+          volumes:
+          - name: data
+            emptyDir: null
+            hostPath:
+              type: DirectoryOrCreate
+              path: /srv/unifi-controller
+- patch: |-
+    apiVersion: apps/v1
     kind: Deployment
-    name: vscode-server
-  patch: |-
-    - op: replace
-      path: /spec/template/spec/volumes/0
-      value:
-        name: data
-        hostPath:
-          type: DirectoryOrCreate
-          path: /srv/vscode-server
+    metadata:
+      name: vscode-server
+    spec:
+      template:
+        spec:
+          volumes:
+          - name: data
+            emptyDir: null
+            hostPath:
+              type: DirectoryOrCreate
+              path: /srv/vscode-server
+- patch: |-
+    apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      name: vscode-server
+    spec:
+      template:
+        spec:
+          volumes:
+          - name: data
+            emptyDir: null
+            hostPath:
+              type: DirectoryOrCreate
+              path: /srv/vscode-server
+          - name: files
+            emptyDir: null
+            hostPath:
+              type: Directory
+              path: /srv/syncthing
 resources:
 - ingresses.yaml
 - services.yaml

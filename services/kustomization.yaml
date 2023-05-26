@@ -28,58 +28,62 @@ images:
   newName: redis
   newTag: 7.0.11-alpine
 namespace: default
-patchesJson6902:
-- target:
-    group: apps
-    version: v1
+patches:
+- patch: |-
+    apiVersion: apps/v1
     kind: Deployment
-    name: elasticsearch
-  patch: |-
-    - op: replace
-      path: /spec/template/spec/volumes/0
-      value:
-        name: data
-        hostPath:
-          type: DirectoryOrCreate
-          path: /srv/elasticsearch
-- target:
-    group: apps
-    version: v1
+    metadata:
+      name: elasticsearch
+    spec:
+      template:
+        spec:
+          volumes:
+          - name: data
+            emptyDir: null
+            hostPath:
+              type: DirectoryOrCreate
+              path: /srv/elasticsearch
+- patch: |-
+    apiVersion: apps/v1
     kind: Deployment
-    name: mariadb
-  patch: |-
-    - op: replace
-      path: /spec/template/spec/volumes/0
-      value:
-        name: data
-        hostPath:
-          type: DirectoryOrCreate
-          path: /srv/mariadb
-- target:
-    group: apps
-    version: v1
+    metadata:
+      name: mariadb
+    spec:
+      template:
+        spec:
+          volumes:
+          - name: data
+            emptyDir: null
+            hostPath:
+              type: DirectoryOrCreate
+              path: /srv/mariadb
+- patch: |-
+    apiVersion: apps/v1
     kind: Deployment
-    name: mongodb
-  patch: |-
-    - op: replace
-      path: /spec/template/spec/volumes/0
-      value:
-        name: data
-        hostPath:
-          type: DirectoryOrCreate
-          path: /srv/mongodb
-- target:
-    group: apps
-    version: v1
+    metadata:
+      name: mongodb
+    spec:
+      template:
+        spec:
+          volumes:
+          - name: data
+            emptyDir: null
+            hostPath:
+              type: DirectoryOrCreate
+              path: /srv/mongodb
+- patch: |-
+    apiVersion: apps/v1
     kind: Deployment
-    name: postgresql
-  patch: |-
-    - op: replace
-      path: /spec/template/spec/volumes/0
-      value:
-        name: data
-        hostPath:
-          type: DirectoryOrCreate
-          path: /srv/postgresql
+    metadata:
+      name: postgresql
+    spec:
+      template:
+        spec:
+          volumes:
+          - name: data
+            emptyDir: null
+            hostPath:
+              type: DirectoryOrCreate
+              path: /srv/postgresql
 resources:
 - services.yaml
