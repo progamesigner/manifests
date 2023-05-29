@@ -56,7 +56,7 @@ spec:
         - -enable-prometheus-metrics=true
         - -enable-snippets=true
         - -enable-tls-passthrough=true
-        - -external-service=$(POD_NAMESPACE)/internal-ingress
+        - -external-service=internal-ingress
         - -global-configuration=$(POD_NAMESPACE)/internal-nginx-ingress
         - -ingress-class=internal-ingress
         - -leader-election-lock-name=internal-ingress-controller-leader
@@ -197,7 +197,7 @@ spec:
         - -enable-prometheus-metrics=true
         - -enable-snippets=true
         - -enable-tls-passthrough=true
-        - -external-service=$(POD_NAMESPACE)/external-ingress
+        - -external-service=external-ingress
         - -global-configuration=$(POD_NAMESPACE)/external-nginx-ingress
         - -ingress-class=external-ingress
         - -leader-election-lock-name=external-ingress-controller-leader
