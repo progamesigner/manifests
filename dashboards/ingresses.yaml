@@ -2,6 +2,8 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
+  annotations:
+    kubernetes.progamesigner.io/hostname: postgresql
   name: pgadmin
 spec:
   ingressClassName: internal-ingress
@@ -24,6 +26,8 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
+  annotations:
+    kubernetes.progamesigner.io/hostname: mariadb,mysql
   name: phpmyadmin
 spec:
   ingressClassName: internal-ingress

@@ -106,6 +106,7 @@ kind: Service
 metadata:
   annotations:
     external-dns.alpha.kubernetes.io/hostname: progamesigner.net
+    kubernetes.progamesigner.io/hostname: '@'
     metallb.universe.tf/allow-shared-ip: internal-ingress
   labels:
     kubernetes.io/cluster-service: 'true'
