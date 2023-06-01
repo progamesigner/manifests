@@ -1,0 +1,52 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/component: obsidian
+    app.kubernetes.io/name: obsidian
+    app.kubernetes.io/part-of: components
+  name: obsidian
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: obsidian
+      app.kubernetes.io/name: obsidian
+      app.kubernetes.io/part-of: components
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/component: obsidian
+        app.kubernetes.io/name: obsidian
+        app.kubernetes.io/part-of: components
+    spec:
+      automountServiceAccountToken: false
+      containers:
+      - name: obsidian
+        image: obsidian/obsidian:latest
+        ports:
+        - name: http
+          containerPort: 8080
+        - name: https
+          containerPort: 8443
+        resources:
+          limits:
+            cpu: 1000m
+            memory: 1Gi
+          requests:
+            cpu: 100m
+            memory: 128Mi
+        volumeMounts:
+        - name: data
+          mountPath: /config
+          subPath: config
+        - name: data
+          mountPath: /vaults
+          subPath: vaults
+      serviceAccountName: default
+      volumes:
+      - name: data
+        emptyDir: {}

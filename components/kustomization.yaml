@@ -5,6 +5,7 @@ components:
 - adguard-home
 - home-assistant
 - node-red
+- obsidian
 - syncthing
 - tailscale
 - unifi-controller
@@ -19,6 +20,9 @@ images:
 - name: node-red/node-red
   newName: nodered/node-red
   newTag: 3.0.2
+- name: obsidian/obsidian
+  newName: ghcr.io/sytone/obsidian-remote
+  newTag: 0.1.1
 - name: syncthing/syncthing
   newName: syncthing/syncthing
   newTag: 1.23.4
@@ -83,6 +87,20 @@ patches:
             hostPath:
               type: Directory
               path: /srv
+- patch: |-
+    apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      name: obsidian
+    spec:
+      template:
+        spec:
+          volumes:
+          - name: data
+            emptyDir: null
+            hostPath:
+              type: DirectoryOrCreate
+              path: /srv/obsidian
 - patch: |-
     apiVersion: apps/v1
     kind: Deployment

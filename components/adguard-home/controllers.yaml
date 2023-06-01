@@ -57,8 +57,6 @@ spec:
           subPath: work
       serviceAccountName: default
       volumes:
-      - name: data
-        emptyDir: {}
       - name: cert
         secret:
           secretName: tls-dev-progamesigner
@@ -68,3 +66,5 @@ spec:
             path: tls.crt
           - key: tls.key
             path: tls.key
+      - name: data
+        emptyDir: {}
