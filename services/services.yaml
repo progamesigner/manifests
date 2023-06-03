@@ -3,7 +3,6 @@ apiVersion: v1
 kind: Service
 metadata:
   annotations:
-    external-dns.alpha.kubernetes.io/hostname: redis.progamesigner.net
     kubernetes.progamesigner.io/hostname: redis
   name: redis
 spec:
@@ -22,7 +21,6 @@ apiVersion: v1
 kind: Service
 metadata:
   annotations:
-    external-dns.alpha.kubernetes.io/hostname: rabbitmq.progamesigner.net
     kubernetes.progamesigner.io/hostname: rabbitmq
   name: rabbitmq
 spec:
@@ -41,7 +39,6 @@ apiVersion: v1
 kind: Service
 metadata:
   annotations:
-    external-dns.alpha.kubernetes.io/hostname: postgresql.progamesigner.net
     kubernetes.progamesigner.io/hostname: postgresql
   name: postgresql
 spec:
@@ -60,7 +57,6 @@ apiVersion: v1
 kind: Service
 metadata:
   annotations:
-    external-dns.alpha.kubernetes.io/hostname: mariadb.progamesigner.net,mysql.progamesigner.net
     kubernetes.progamesigner.io/hostname: mariadb,mysql
   name: mariadb
 spec:
@@ -79,7 +75,6 @@ apiVersion: v1
 kind: Service
 metadata:
   annotations:
-    external-dns.alpha.kubernetes.io/hostname: elasticsearch.progamesigner.net
     kubernetes.progamesigner.io/hostname: elasticsearch
   name: elasticsearch
 spec:
@@ -98,7 +93,6 @@ apiVersion: v1
 kind: Service
 metadata:
   annotations:
-    external-dns.alpha.kubernetes.io/hostname: mongodb.progamesigner.net
     kubernetes.progamesigner.io/hostname: mongodb
   name: mongodb
 spec:
