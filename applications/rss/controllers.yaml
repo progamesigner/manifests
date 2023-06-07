@@ -36,6 +36,8 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: spec.nodeName
+        - name: PROXY_URI
+          value: http://proxy.default.svc.cluster.local:8080
         - name: PUPPETEER_WS_ENDPOINT
           value: ws://browserless.default.svc.cluster.local:3000
         - name: REDIS_URL
