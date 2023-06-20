@@ -49,6 +49,9 @@ spec:
               user: multus
           current-context: multus
           EOF
+        envFrom:
+        - configMapRef:
+            name: kubernetes
         resources:
           requests:
             cpu: 50m
