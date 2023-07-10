@@ -18,7 +18,7 @@ images:
   newTag: 2023.3.398-1
 - name: rss/rsshub
   newName: diygod/rsshub
-  newTag: 2023-04-25
+  newTag: 2023-07-09
 namespace: default
 resources:
 - services.yaml
