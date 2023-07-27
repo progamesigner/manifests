@@ -11,13 +11,13 @@ components:
 images:
 - name: cert-manager/cainjector
   newName: quay.io/jetstack/cert-manager-cainjector
-  newTag: v1.12.2
+  newTag: v1.12.3
 - name: cert-manager/controller
   newName: quay.io/jetstack/cert-manager-controller
-  newTag: v1.12.2
+  newTag: v1.12.3
 - name: cert-manager/webhook
   newName: quay.io/jetstack/cert-manager-webhook
-  newTag: v1.12.2
+  newTag: v1.12.3
 - name: coredns/coredns
   newName: registry.k8s.io/coredns/coredns
   newTag: v1.10.1
