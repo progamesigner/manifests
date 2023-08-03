@@ -16,7 +16,7 @@ images:
   newTag: v0.107.36
 - name: home-assistant/home-assistant
   newName: ghcr.io/home-assistant/home-assistant
-  newTag: 2023.7.3
+  newTag: 2023.8.0
 - name: node-red/node-red
   newName: nodered/node-red
   newTag: 3.0.2
