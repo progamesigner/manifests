@@ -157,20 +157,6 @@ patches:
             hostPath:
               type: DirectoryOrCreate
               path: /srv/vscode-server
-- patch: |-
-    apiVersion: apps/v1
-    kind: Deployment
-    metadata:
-      name: vscode-server
-    spec:
-      template:
-        spec:
-          volumes:
-          - name: data
-            emptyDir: null
-            hostPath:
-              type: DirectoryOrCreate
-              path: /srv/vscode-server
           - name: files
             emptyDir: null
             hostPath:
