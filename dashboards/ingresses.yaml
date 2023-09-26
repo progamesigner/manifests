@@ -4,6 +4,9 @@ kind: Ingress
 metadata:
   annotations:
     kubernetes.progamesigner.io/hostname: postgresql
+    nginx.org/client_max_body_size: 2G
+    nginx.org/proxy-read-timeout: 3600s
+    nginx.org/proxy-send-timeout: 3600s
   name: pgadmin
 spec:
   ingressClassName: internal-ingress
@@ -28,6 +31,9 @@ kind: Ingress
 metadata:
   annotations:
     kubernetes.progamesigner.io/hostname: mariadb,mysql
+    nginx.org/client_max_body_size: 2G
+    nginx.org/proxy-read-timeout: 3600s
+    nginx.org/proxy-send-timeout: 3600s
   name: phpmyadmin
 spec:
   ingressClassName: internal-ingress
