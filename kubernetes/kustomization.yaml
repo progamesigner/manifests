@@ -38,7 +38,7 @@ images:
   newTag: v4.0.1
 - name: nginx-ingress/nginx-ingress
   newName: nginx/nginx-ingress
-  newTag: 3.1.1
+  newTag: 3.3.0
 namespace: kube-system
 resources:
 - ingressclasses.yaml
