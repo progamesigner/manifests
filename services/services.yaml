@@ -3,60 +3,6 @@ apiVersion: v1
 kind: Service
 metadata:
   annotations:
-    kubernetes.progamesigner.io/hostname: redis
-  name: redis
-spec:
-  externalTrafficPolicy: Local
-  ports:
-  - name: redis
-    port: 6379
-    targetPort: redis
-  selector:
-    app.kubernetes.io/component: redis
-    app.kubernetes.io/name: redis
-    app.kubernetes.io/part-of: services
-  type: LoadBalancer
----
-apiVersion: v1
-kind: Service
-metadata:
-  annotations:
-    kubernetes.progamesigner.io/hostname: rabbitmq
-  name: rabbitmq
-spec:
-  externalTrafficPolicy: Local
-  ports:
-  - name: amqp-tls
-    port: 5672
-    targetPort: amqp-tls
-  selector:
-    app.kubernetes.io/component: rabbitmq
-    app.kubernetes.io/name: rabbitmq
-    app.kubernetes.io/part-of: services
-  type: LoadBalancer
----
-apiVersion: v1
-kind: Service
-metadata:
-  annotations:
-    kubernetes.progamesigner.io/hostname: postgresql
-  name: postgresql
-spec:
-  externalTrafficPolicy: Local
-  ports:
-  - name: postgresql
-    port: 5432
-    targetPort: postgresql
-  selector:
-    app.kubernetes.io/component: postgresql
-    app.kubernetes.io/name: postgresql
-    app.kubernetes.io/part-of: services
-  type: LoadBalancer
----
-apiVersion: v1
-kind: Service
-metadata:
-  annotations:
     kubernetes.progamesigner.io/hostname: mariadb,mysql
   name: mariadb
 spec:
@@ -104,5 +50,59 @@ spec:
   selector:
     app.kubernetes.io/component: mongodb
     app.kubernetes.io/name: mongodb
+    app.kubernetes.io/part-of: services
+  type: LoadBalancer
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    kubernetes.progamesigner.io/hostname: postgresql
+  name: postgresql
+spec:
+  externalTrafficPolicy: Local
+  ports:
+  - name: postgresql
+    port: 5432
+    targetPort: postgresql
+  selector:
+    app.kubernetes.io/component: postgresql
+    app.kubernetes.io/name: postgresql
+    app.kubernetes.io/part-of: services
+  type: LoadBalancer
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    kubernetes.progamesigner.io/hostname: rabbitmq
+  name: rabbitmq
+spec:
+  externalTrafficPolicy: Local
+  ports:
+  - name: amqp-tls
+    port: 5672
+    targetPort: amqp-tls
+  selector:
+    app.kubernetes.io/component: rabbitmq
+    app.kubernetes.io/name: rabbitmq
+    app.kubernetes.io/part-of: services
+  type: LoadBalancer
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    kubernetes.progamesigner.io/hostname: redis
+  name: redis
+spec:
+  externalTrafficPolicy: Local
+  ports:
+  - name: redis
+    port: 6379
+    targetPort: redis
+  selector:
+    app.kubernetes.io/component: redis
+    app.kubernetes.io/name: redis
     app.kubernetes.io/part-of: services
   type: LoadBalancer
