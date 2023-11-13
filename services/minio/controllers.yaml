@@ -1,0 +1,57 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/component: minio
+    app.kubernetes.io/name: minio
+    app.kubernetes.io/part-of: services
+  name: minio
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: minio
+      app.kubernetes.io/name: minio
+      app.kubernetes.io/part-of: services
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/component: minio
+        app.kubernetes.io/name: minio
+        app.kubernetes.io/part-of: services
+    spec:
+      automountServiceAccountToken: false
+      containers:
+      - name: minio
+        image: minio/minio:latest
+        imagePullPolicy: Always
+        args:
+        - server
+        - /var/lib/minio
+        - --address=:9000
+        - --console-address=:9090
+        envFrom:
+        - secretRef:
+            name: minio
+        ports:
+        - name: minio
+          containerPort: 9000
+        - name: minio-console
+          containerPort: 9090
+        volumeMounts:
+        - name: data
+          mountPath: /var/lib/minio
+        resources:
+          limits:
+            cpu: 1500m
+            memory: 512Mi
+          requests:
+            cpu: 100m
+            memory: 64Mi
+      serviceAccountName: default
+      volumes:
+      - name: data
+        emptyDir: {}

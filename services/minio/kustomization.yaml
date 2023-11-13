@@ -1,0 +1,10 @@
+---
+apiVersion: kustomize.config.k8s.io/v1alpha1
+kind: Component
+resources:
+- controllers.yaml
+secretGenerator:
+- name: minio
+  literals:
+  - MINIO_ROOT_PASSWORD=password
+  - MINIO_ROOT_USER=default

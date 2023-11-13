@@ -4,6 +4,7 @@ kind: Kustomization
 components:
 - elasticsearch
 - mariadb
+- minio
 - mongodb
 - postgresql
 - rabbitmq
@@ -15,6 +16,8 @@ images:
 - name: mariadb/mariadb
   newName: mariadb
   newTag: 10.11.2
+- name: minio/minio
+  newName: quay.io/minio/minio
 - name: mongodb/mongodb
   newName: mongo
   newTag: 6.0.5
@@ -57,6 +60,20 @@ patches:
             hostPath:
               type: DirectoryOrCreate
               path: /srv/mariadb
+- patch: |-
+    apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      name: minio
+    spec:
+      template:
+        spec:
+          volumes:
+          - name: data
+            emptyDir: null
+            hostPath:
+              type: DirectoryOrCreate
+              path: /srv/minio
 - patch: |-
     apiVersion: apps/v1
     kind: Deployment
