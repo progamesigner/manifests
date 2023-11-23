@@ -4,6 +4,7 @@ kind: Ingress
 metadata:
   annotations:
     kubernetes.progamesigner.io/hostname: minio
+    nginx.org/websocket-services: minio
   name: minio
 spec:
   ingressClassName: internal-ingress
