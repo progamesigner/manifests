@@ -7,7 +7,7 @@ components:
 images:
 - name: pgadmin/pgadmin
   newName: dpage/pgadmin4
-  newTag: '7.6'
+  newTag: '8.0'
 - name: phpmyadmin/phpmyadmin
   newName: phpmyadmin
   newTag: 5.2.1
