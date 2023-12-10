@@ -62,9 +62,28 @@ spec:
         - name: files
           mountPath: /home/vscode/.ssh
           subPath: dotfiles/.ssh
+        - name: files
+          mountPath: /home/vscode/.gitattributes
+          subPath: dotfiles/git/attributes
+        - name: files
+          mountPath: /home/vscode/.gitignore
+          subPath: dotfiles/git/ignore
+        - name: files-git
+          mountPath: /home/vscode/.gitconfig
+          subPath: gitconfig
+        - name: files-gpg
+          mountPath: /home/vscode/.gnupg
+        - name: files-ssh
+          mountPath: /home/vscode/.dotfiles/.ssh
       serviceAccountName: default
       volumes:
       - name: data
         emptyDir: {}
       - name: files
+        emptyDir: {}
+      - name: files-git
+        emptyDir: {}
+      - name: files-gpg
+        emptyDir: {}
+      - name: files-ssh
         emptyDir: {}

@@ -162,6 +162,21 @@ patches:
             hostPath:
               type: Directory
               path: /srv/syncthing
+          - name: files-git
+            emptyDir: null
+            hostPath:
+              type: Directory
+              path: /srv/dev-tunnel-git
+          - name: files-gpg
+            emptyDir: null
+            hostPath:
+              type: Directory
+              path: /srv/dev-tunnel-gpg
+          - name: files-ssh
+            emptyDir: null
+            hostPath:
+              type: Directory
+              path: /srv/dev-tunnel-ssh
 resources:
 - ingresses.yaml
 - services.yaml
