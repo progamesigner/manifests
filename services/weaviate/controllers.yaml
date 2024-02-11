@@ -1,0 +1,52 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/component: weaviate
+    app.kubernetes.io/name: weaviate
+    app.kubernetes.io/part-of: services
+  name: weaviate
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: weaviate
+      app.kubernetes.io/name: weaviate
+      app.kubernetes.io/part-of: services
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/component: weaviate
+        app.kubernetes.io/name: weaviate
+        app.kubernetes.io/part-of: services
+    spec:
+      automountServiceAccountToken: false
+      containers:
+      - name: weaviate
+        image: weaviate/weaviate:latest
+        env:
+        - name: PERSISTENCE_DATA_PATH
+          value: /var/lib/weaviate
+        envFrom:
+        - secretRef:
+            name: weaviate
+        ports:
+        - name: weaviate
+          containerPort: 8080
+        volumeMounts:
+        - name: data
+          mountPath: /var/lib/weaviate
+        resources:
+          limits:
+            cpu: 1500m
+            memory: 512Mi
+          requests:
+            cpu: 100m
+            memory: 64Mi
+      serviceAccountName: default
+      volumes:
+      - name: data
+        emptyDir: {}

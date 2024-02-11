@@ -127,3 +127,21 @@ spec:
     app.kubernetes.io/name: redis
     app.kubernetes.io/part-of: services
   type: LoadBalancer
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    kubernetes.progamesigner.io/hostname: weaviate
+  name: weaviate
+spec:
+  externalTrafficPolicy: Local
+  ports:
+  - name: weaviate
+    port: 8080
+    targetPort: weaviate
+  selector:
+    app.kubernetes.io/component: weaviate
+    app.kubernetes.io/name: weaviate
+    app.kubernetes.io/part-of: services
+  type: LoadBalancer

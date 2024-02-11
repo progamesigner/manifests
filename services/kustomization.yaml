@@ -9,6 +9,7 @@ components:
 - postgresql
 - rabbitmq
 - redis
+- weaviate
 images:
 - name: elasticsearch/elasticsearch
   newName: docker.elastic.co/elasticsearch/elasticsearch
@@ -30,6 +31,9 @@ images:
 - name: redis/redis
   newName: redis
   newTag: 7.0.11-alpine
+- name: weaviate/weaviate
+  newName: semitechnologies/weaviate
+  newTag: 1.23.8
 namespace: default
 patches:
 - patch: |-
@@ -102,5 +106,19 @@ patches:
             hostPath:
               type: DirectoryOrCreate
               path: /srv/postgresql
+- patch: |-
+    apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      name: weaviate
+    spec:
+      template:
+        spec:
+          volumes:
+          - name: data
+            emptyDir: null
+            hostPath:
+              type: DirectoryOrCreate
+              path: /srv/weaviate
 resources:
 - services.yaml
