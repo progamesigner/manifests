@@ -38,7 +38,7 @@ images:
   newTag: 2023.3.398-1
 - name: rss/rsshub
   newName: diygod/rsshub
-  newTag: 2023-09-04
+  newTag: 2024-02-10
 namespace: default
 patches:
 - patch: |-
