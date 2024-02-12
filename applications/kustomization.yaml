@@ -35,7 +35,7 @@ images:
   newTag: v0.72.10
 - name: proxy/proxy
   newName: amirdaaee/cloudflare-warp
-  newTag: 2023.3.398-1
+  newTag: 2023.10.120-1
 - name: rss/rsshub
   newName: diygod/rsshub
   newTag: 2024-02-10
