@@ -16,6 +16,48 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
+  name: dify-api
+spec:
+  ports:
+  - name: http
+    port: 5001
+    targetPort: http
+  selector:
+    app.kubernetes.io/component: api
+    app.kubernetes.io/name: dify
+    app.kubernetes.io/part-of: applications
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: dify-app
+spec:
+  ports:
+  - name: http
+    port: 80
+    targetPort: http
+  selector:
+    app.kubernetes.io/component: nginx
+    app.kubernetes.io/name: dify
+    app.kubernetes.io/part-of: applications
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: dify-web
+spec:
+  ports:
+  - name: http
+    port: 3000
+    targetPort: http
+  selector:
+    app.kubernetes.io/component: web
+    app.kubernetes.io/name: dify
+    app.kubernetes.io/part-of: applications
+---
+apiVersion: v1
+kind: Service
+metadata:
   name: proxy
 spec:
   ports:

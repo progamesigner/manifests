@@ -1,0 +1,35 @@
+---
+apiVersion: kustomize.config.k8s.io/v1alpha1
+kind: Component
+configMapGenerator:
+- name: dify
+  literals:
+  - LOG_LEVEL=INFO
+  - MIGRATION_ENABLED=true
+  - STORAGE_TYPE=s3
+  - VECTOR_STORE=weaviate
+- name: dify-nginx
+  files:
+  - default.conf=nginx/default.conf
+  - proxy.conf=nginx/proxy.conf
+resources:
+- controllers.yaml
+secretGenerator:
+- name: dify
+  envs:
+  - dify.env
+  literals:
+  - CELERY_BROKER_URL=redis://redis.default.svc.cluster.local:6379/1
+  - DB_DATABASE=dify
+  - DB_HOST=postgresql.default.svc.cluster.local
+  - DB_PASSWORD=password
+  - DB_PORT=5432
+  - DB_USERNAME=default
+  - REDIS_DB=0
+  - REDIS_HOST=redis.default.svc.cluster.local
+  - REDIS_PORT=6379
+  - REDIS_USE_SSL=false
+  - S3_BUCKET_NAME=dify
+  - S3_REGION=us-east-1
+  - WEAVIATE_API_KEY=password
+  - WEAVIATE_ENDPOINT=http://weaviate.default.svc.cluster.local:8080
