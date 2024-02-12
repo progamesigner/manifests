@@ -6,6 +6,7 @@ components:
 - cloudflare
 - dify
 - gloomhaven
+- localai
 - proxy
 - rss
 images:
@@ -33,6 +34,9 @@ images:
 - name: gloomhaven/server
   newName: gloomhavensecretariat/ghs-server
   newTag: v0.72.10
+- name: localai/localai
+  newName: quay.io/go-skynet/local-ai
+  newTag: v2.8.0-ffmpeg
 - name: proxy/proxy
   newName: amirdaaee/cloudflare-warp
   newTag: 2023.10.120-1
@@ -55,5 +59,19 @@ patches:
             hostPath:
               type: DirectoryOrCreate
               path: /srv/gloomhaven-server
+- patch: |-
+    apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      name: localai
+    spec:
+      template:
+        spec:
+          volumes:
+          - name: data
+            emptyDir: null
+            hostPath:
+              type: DirectoryOrCreate
+              path: /srv/localai
 resources:
 - services.yaml

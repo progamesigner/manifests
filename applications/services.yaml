@@ -58,6 +58,20 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
+  name: localai
+spec:
+  ports:
+  - name: http
+    port: 8080
+    targetPort: http
+  selector:
+    app.kubernetes.io/component: localai
+    app.kubernetes.io/name: localai
+    app.kubernetes.io/part-of: applications
+---
+apiVersion: v1
+kind: Service
+metadata:
   name: proxy
 spec:
   ports:
