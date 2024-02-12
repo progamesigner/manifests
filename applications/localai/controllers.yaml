@@ -30,8 +30,18 @@ spec:
         - -c
         - |
           set -ex;
-          make build -j4
-          cp local-ai /built/local-ai
+
+          touch /built/version
+
+          BUILT_VERSION=$(cat /built/version)
+          IMAGE_VERSION=$(/build/local-ai --version)
+
+          if [ "$BUILT_VERSION" != "$IMAGE_VERSION" ]; then
+            rm -f /built/local-ai
+            make build -j4
+            cp local-ai /built/local-ai
+            /built/local-ai --version > /built/version
+          fi
         resources:
           limits:
             cpu: 4000m
@@ -47,6 +57,7 @@ spec:
         image: localai/localai:latest
         command:
         - /build/local-ai
+        - --parallel-requests
         env:
         - name: GALLERIES
           value: |-
@@ -75,6 +86,7 @@ spec:
         volumeMounts:
         - name: artefacts
           mountPath: /build/local-ai
+          readOnly: true
           subPath: local-ai
         - name: data
           mountPath: /models

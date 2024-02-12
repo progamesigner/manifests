@@ -68,6 +68,11 @@ patches:
       template:
         spec:
           volumes:
+          - name: artefacts
+            emptyDir: null
+            hostPath:
+              type: DirectoryOrCreate
+              path: /srv/localai-artefacts
           - name: data
             emptyDir: null
             hostPath:
