@@ -57,6 +57,7 @@ spec:
         image: localai/localai:latest
         command:
         - /build/local-ai
+        - --f16
         - --parallel-requests
         env:
         - name: GALLERIES
