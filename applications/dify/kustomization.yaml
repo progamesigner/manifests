@@ -5,7 +5,6 @@ configMapGenerator:
 - name: dify
   literals:
   - LOG_LEVEL=INFO
-  - MIGRATION_ENABLED=true
   - STORAGE_TYPE=s3
   - VECTOR_STORE=weaviate
 - name: dify-nginx

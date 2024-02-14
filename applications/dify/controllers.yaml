@@ -22,6 +22,28 @@ spec:
         app.kubernetes.io/part-of: applications
     spec:
       automountServiceAccountToken: false
+      initContainers:
+      - name: migrator
+        image: dify/api:latest
+        command:
+        - sh
+        - -c
+        - |
+          set -ex;
+
+          flask db upgrade
+        envFrom:
+        - configMapRef:
+            name: dify
+        - secretRef:
+            name: dify
+        resources:
+          limits:
+            cpu: 1000m
+            memory: 2Gi
+          requests:
+            cpu: 100m
+            memory: 64Mi
       containers:
       - name: dify-api
         image: dify/api:latest
@@ -34,6 +56,8 @@ spec:
           value: ''
         - name: EDITION
           value: SELF_HOSTED
+        - name: FORWARDED_ALLOW_IPS
+          value: '*'
         - name: MODE
           value: api
         - name: SERVICE_API_URL
