@@ -45,7 +45,7 @@ spec:
         resources:
           limits:
             cpu: 4000m
-            memory: 8Gi
+            memory: 4Gi
           requests:
             cpu: 300m
             memory: 128Mi
@@ -57,12 +57,15 @@ spec:
         image: localai/localai:latest
         command:
         - /build/local-ai
-        - --f16
         - --parallel-requests
         env:
         - name: GALLERIES
           value: |-
             [
+                {
+                    "url": "github:progamesigner/localai-model-gallery/index.yaml",
+                    "name": "progamesigner-model-gallery"
+                },
                 {
                     "name": "model-gallery",
                     "url": "github:go-skynet/model-gallery/index.yaml"
@@ -80,7 +83,7 @@ spec:
         resources:
           limits:
             cpu: 4000m
-            memory: 20Gi
+            memory: 16Gi
           requests:
             cpu: 300m
             memory: 128Mi
