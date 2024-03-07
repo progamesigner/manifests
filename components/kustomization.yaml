@@ -13,7 +13,7 @@ components:
 images:
 - name: adguard-home/adguard-home
   newName: adguard/adguardhome
-  newTag: v0.107.44
+  newTag: v0.107.45
 - name: home-assistant/home-assistant
   newName: ghcr.io/home-assistant/home-assistant
   newTag: 2024.2.5
