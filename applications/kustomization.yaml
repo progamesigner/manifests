@@ -18,13 +18,13 @@ images:
   newTag: 2024.2.1
 - name: dify/api
   newName: langgenius/dify-api
-  newTag: 0.5.8
+  newTag: 0.5.9
 - name: dify/worker
   newName: langgenius/dify-api
-  newTag: 0.5.8
+  newTag: 0.5.9
 - name: dify/web
   newName: langgenius/dify-web
-  newTag: 0.5.8
+  newTag: 0.5.9
 - name: dify/nginx
   newName: nginx
   newTag: 1.24-alpine
