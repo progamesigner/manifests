@@ -26,13 +26,13 @@ images:
   newTag: 1.2.3
 - name: kube-router/kube-router
   newName: cloudnativelabs/kube-router
-  newTag: v1.5.3
+  newTag: v2.1.0
 - name: metallb/controller
   newName: quay.io/metallb/controller
-  newTag: v0.13.9
+  newTag: v0.14.3
 - name: metallb/speaker
   newName: quay.io/metallb/speaker
-  newTag: v0.13.9
+  newTag: v0.14.3
 - name: multus/multus
   newName: ghcr.io/k8snetworkplumbingwg/multus-cni
   newTag: v4.0.1
