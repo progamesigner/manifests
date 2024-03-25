@@ -22,6 +22,76 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
+  name: browserless
+spec:
+  ports:
+  - name: http
+    port: 3000
+    targetPort: http
+  selector:
+    app.kubernetes.io/component: browserless
+    app.kubernetes.io/name: browserless
+    app.kubernetes.io/part-of: components
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: dify-api
+spec:
+  ports:
+  - name: http
+    port: 5001
+    targetPort: http
+  selector:
+    app.kubernetes.io/component: api
+    app.kubernetes.io/name: dify
+    app.kubernetes.io/part-of: components
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: dify-app
+spec:
+  ports:
+  - name: http
+    port: 80
+    targetPort: http
+  selector:
+    app.kubernetes.io/component: nginx
+    app.kubernetes.io/name: dify
+    app.kubernetes.io/part-of: components
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: dify-web
+spec:
+  ports:
+  - name: http
+    port: 3000
+    targetPort: http
+  selector:
+    app.kubernetes.io/component: web
+    app.kubernetes.io/name: dify
+    app.kubernetes.io/part-of: components
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: gloomhaven
+spec:
+  ports:
+  - name: http
+    port: 8080
+    targetPort: http
+  selector:
+    app.kubernetes.io/component: secretariat
+    app.kubernetes.io/name: gloomhaven
+    app.kubernetes.io/part-of: components
+---
+apiVersion: v1
+kind: Service
+metadata:
   name: home-assistant
 spec:
   ports:
@@ -36,6 +106,20 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
+  name: localai
+spec:
+  ports:
+  - name: http
+    port: 8080
+    targetPort: http
+  selector:
+    app.kubernetes.io/component: localai
+    app.kubernetes.io/name: localai
+    app.kubernetes.io/part-of: components
+---
+apiVersion: v1
+kind: Service
+metadata:
   name: node-red
 spec:
   ports:
@@ -45,6 +129,65 @@ spec:
   selector:
     app.kubernetes.io/component: node-red
     app.kubernetes.io/name: node-red
+    app.kubernetes.io/part-of: components
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: pgadmin
+spec:
+  ports:
+  - name: http
+    port: 80
+    targetPort: http
+  selector:
+    app.kubernetes.io/component: pgadmin
+    app.kubernetes.io/name: pgadmin
+    app.kubernetes.io/part-of: components
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: phpmyadmin
+spec:
+  ports:
+  - name: http
+    port: 80
+    targetPort: http
+  selector:
+    app.kubernetes.io/component: phpmyadmin
+    app.kubernetes.io/name: phpmyadmin
+    app.kubernetes.io/part-of: components
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: proxy
+spec:
+  ports:
+  - name: socks
+    port: 1080
+    targetPort: socks
+  - name: proxy
+    port: 8080
+    targetPort: proxy
+  selector:
+    app.kubernetes.io/component: proxy
+    app.kubernetes.io/name: proxy
+    app.kubernetes.io/part-of: components
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: rsshub
+spec:
+  ports:
+  - name: http
+    port: 1200
+    targetPort: http
+  selector:
+    app.kubernetes.io/component: rsshub
+    app.kubernetes.io/name: rsshub
     app.kubernetes.io/part-of: components
 ---
 apiVersion: v1

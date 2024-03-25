@@ -1,9 +1,4 @@
 nameReference:
-- kind: ConfigMap
-  fieldSpecs:
-  - kind: Deployment
-    path: spec/template/metadata/annotations/nginx.org\/nginx-configmaps
-
 - kind: Secret
   fieldSpecs:
   - kind: Issuer

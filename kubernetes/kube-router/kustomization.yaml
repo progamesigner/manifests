@@ -5,6 +5,10 @@ configMapGenerator:
 - name: kube-router
   files:
   - cni-conf.json=cni-conf.json
+images:
+- name: kube-router/kube-router
+  newName: cloudnativelabs/kube-router
+  newTag: v2.1.0
 resources:
 - controllers.yaml
 - rbac.yaml

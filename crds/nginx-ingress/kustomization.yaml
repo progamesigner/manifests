@@ -1,9 +1,0 @@
----
-apiVersion: kustomize.config.k8s.io/v1alpha1
-kind: Component
-resources:
-- https://raw.githubusercontent.com/nginxinc/kubernetes-ingress/v3.4.3/config/crd/bases/k8s.nginx.org_globalconfigurations.yaml
-- https://raw.githubusercontent.com/nginxinc/kubernetes-ingress/v3.4.3/config/crd/bases/k8s.nginx.org_policies.yaml
-- https://raw.githubusercontent.com/nginxinc/kubernetes-ingress/v3.4.3/config/crd/bases/k8s.nginx.org_transportservers.yaml
-- https://raw.githubusercontent.com/nginxinc/kubernetes-ingress/v3.4.3/config/crd/bases/k8s.nginx.org_virtualserverroutes.yaml
-- https://raw.githubusercontent.com/nginxinc/kubernetes-ingress/v3.4.3/config/crd/bases/k8s.nginx.org_virtualservers.yaml

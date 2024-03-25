@@ -3,26 +3,76 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 components:
 - adguard-home
+- browserless
+- cloudflared
+- dify
+- gloomhaven
 - home-assistant
+- localai
 - node-red
 - obsidian
+- pgadmin
+- phpmyadmin
+- proxy
+- rsshub
 - syncthing
 - tailscale
 - unifi-controller
 - vscode-server
+configurations:
+- configurations.yaml
 images:
 - name: adguard-home/adguard-home
   newName: adguard/adguardhome
   newTag: v0.107.46
+- name: browserless/browserless
+  newName: browserless/chrome
+  newTag: 1.58.0-chrome-stable
+- name: cloudflared/cloudflared
+  newName: cloudflare/cloudflared
+  newTag: 2024.3.0
+- name: dify/api
+  newName: langgenius/dify-api
+  newTag: 0.5.10
+- name: dify/worker
+  newName: langgenius/dify-api
+  newTag: 0.5.10
+- name: dify/web
+  newName: langgenius/dify-web
+  newTag: 0.5.10
+- name: dify/nginx
+  newName: nginx
+  newTag: 1.24-alpine
+- name: gloomhaven/client
+  newName: gloomhavensecretariat/ghs
+  newTag: v0.73.0
+- name: gloomhaven/server
+  newName: gloomhavensecretariat/ghs-server
+  newTag: v0.72.10
 - name: home-assistant/home-assistant
   newName: ghcr.io/home-assistant/home-assistant
   newTag: 2024.3.3
+- name: localai/localai
+  newName: quay.io/go-skynet/local-ai
+  newTag: v2.8.0-ffmpeg
 - name: node-red/node-red
   newName: nodered/node-red
   newTag: 3.0.2
 - name: obsidian/obsidian
   newName: ghcr.io/sytone/obsidian-remote
   newTag: 0.1.1
+- name: pgadmin/pgadmin
+  newName: dpage/pgadmin4
+  newTag: '8.4'
+- name: phpmyadmin/phpmyadmin
+  newName: phpmyadmin
+  newTag: 5.2.1
+- name: proxy/proxy
+  newName: amirdaaee/cloudflare-warp
+  newTag: 2023.10.120-1
+- name: rsshub/rsshub
+  newName: diygod/rsshub
+  newTag: 2024-02-10
 - name: syncthing/syncthing
   newName: syncthing/syncthing
   newTag: 1.23.4
@@ -58,6 +108,20 @@ patches:
     apiVersion: apps/v1
     kind: Deployment
     metadata:
+      name: gloomhaven
+    spec:
+      template:
+        spec:
+          volumes:
+          - name: data
+            emptyDir: null
+            hostPath:
+              type: DirectoryOrCreate
+              path: /srv/gloomhaven-server
+- patch: |-
+    apiVersion: apps/v1
+    kind: Deployment
+    metadata:
       name: home-assistant
     spec:
       template:
@@ -68,6 +132,25 @@ patches:
             hostPath:
               type: DirectoryOrCreate
               path: /srv/home-assistant
+- patch: |-
+    apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      name: localai
+    spec:
+      template:
+        spec:
+          volumes:
+          - name: artefacts
+            emptyDir: null
+            hostPath:
+              type: DirectoryOrCreate
+              path: /srv/localai-artefacts
+          - name: data
+            emptyDir: null
+            hostPath:
+              type: DirectoryOrCreate
+              path: /srv/localai
 - patch: |-
     apiVersion: apps/v1
     kind: Deployment
@@ -101,6 +184,20 @@ patches:
             hostPath:
               type: DirectoryOrCreate
               path: /srv/obsidian
+- patch: |-
+    apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      name: pgadmin
+    spec:
+      template:
+        spec:
+          volumes:
+          - name: data
+            emptyDir: null
+            hostPath:
+              type: DirectoryOrCreate
+              path: /srv/pgadmin
 - patch: |-
     apiVersion: apps/v1
     kind: Deployment
@@ -178,5 +275,11 @@ patches:
               type: Directory
               path: /srv/dev-tunnel-ssh
 resources:
+- certificates.yaml
 - ingresses.yaml
+- issuers.yaml
 - services.yaml
+secretGenerator:
+- name: cert-manager-cloudflare
+  envs:
+  - cloudflare.env

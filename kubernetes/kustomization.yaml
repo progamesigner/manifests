@@ -8,37 +8,8 @@ components:
 - metallb
 - multus
 - nginx-ingress
-images:
-- name: cert-manager/cainjector
-  newName: quay.io/jetstack/cert-manager-cainjector
-  newTag: v1.14.4
-- name: cert-manager/controller
-  newName: quay.io/jetstack/cert-manager-controller
-  newTag: v1.14.4
-- name: cert-manager/webhook
-  newName: quay.io/jetstack/cert-manager-webhook
-  newTag: v1.14.4
-- name: coredns/coredns
-  newName: registry.k8s.io/coredns/coredns
-  newTag: v1.10.1
-- name: default-backend/default-backend
-  newName: ghcr.io/progamesigner/ingress-default-backend
-  newTag: 1.2.3
-- name: kube-router/kube-router
-  newName: cloudnativelabs/kube-router
-  newTag: v2.1.0
-- name: metallb/controller
-  newName: quay.io/metallb/controller
-  newTag: v0.14.3
-- name: metallb/speaker
-  newName: quay.io/metallb/speaker
-  newTag: v0.14.3
-- name: multus/multus
-  newName: ghcr.io/k8snetworkplumbingwg/multus-cni
-  newTag: v4.0.1
-- name: nginx-ingress/nginx-ingress
-  newName: nginx/nginx-ingress
-  newTag: 3.4.3
+configurations:
+- configurations.yaml
 namespace: kube-system
 resources:
 - ingressclasses.yaml

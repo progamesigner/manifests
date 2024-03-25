@@ -5,6 +5,10 @@ configMapGenerator:
 - name: coredns
   files:
   - Corefile=Corefile
+images:
+- name: coredns/coredns
+  newName: registry.k8s.io/coredns/coredns
+  newTag: v1.10.1
 resources:
 - controllers.yaml
 - rbac.yaml

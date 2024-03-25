@@ -4,27 +4,27 @@ kind: Deployment
 metadata:
   labels:
     app.kubernetes.io/component: rsshub
-    app.kubernetes.io/name: rss
-    app.kubernetes.io/part-of: applications
+    app.kubernetes.io/name: rsshub
+    app.kubernetes.io/part-of: components
   name: rsshub
 spec:
   replicas: 1
   selector:
     matchLabels:
       app.kubernetes.io/component: rsshub
-      app.kubernetes.io/name: rss
-      app.kubernetes.io/part-of: applications
+      app.kubernetes.io/name: rsshub
+      app.kubernetes.io/part-of: components
   template:
     metadata:
       labels:
         app.kubernetes.io/component: rsshub
-        app.kubernetes.io/name: rss
-        app.kubernetes.io/part-of: applications
+        app.kubernetes.io/name: rsshub
+        app.kubernetes.io/part-of: components
     spec:
       automountServiceAccountToken: false
       containers:
       - name: rsshub
-        image: rss/rsshub:latest
+        image: rsshub/rsshub:latest
         env:
         - name: CACHE_TYPE
           value: redis

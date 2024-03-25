@@ -4,6 +4,6 @@ kind: Component
 resources:
 - controllers.yaml
 secretGenerator:
-- name: cloudflare
+- name: cloudflared
   envs:
-  - cloudflare.env
+  - cloudflared.env

@@ -5,6 +5,12 @@ configMapGenerator:
 - name: multus
   files:
   - cni-conf.json=cni-conf.json
+images:
+- name: multus/multus
+  newName: ghcr.io/k8snetworkplumbingwg/multus-cni
+  newTag: v4.0.1
 resources:
+- crds/network-attachment-definitions.yaml
+
 - controllers.yaml
 - rbac.yaml

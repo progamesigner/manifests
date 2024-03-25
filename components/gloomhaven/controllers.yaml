@@ -5,7 +5,7 @@ metadata:
   labels:
     app.kubernetes.io/component: secretariat
     app.kubernetes.io/name: gloomhaven
-    app.kubernetes.io/part-of: applications
+    app.kubernetes.io/part-of: components
   name: gloomhaven
 spec:
   replicas: 1
@@ -13,13 +13,13 @@ spec:
     matchLabels:
       app.kubernetes.io/component: secretariat
       app.kubernetes.io/name: gloomhaven
-      app.kubernetes.io/part-of: applications
+      app.kubernetes.io/part-of: components
   template:
     metadata:
       labels:
         app.kubernetes.io/component: secretariat
         app.kubernetes.io/name: gloomhaven
-        app.kubernetes.io/part-of: applications
+        app.kubernetes.io/part-of: components
     spec:
       automountServiceAccountToken: false
       initContainers:

@@ -28,6 +28,56 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   annotations:
+    kubernetes.progamesigner.io/hostname: home
+    nginx.org/websocket-services: home-assistant
+  name: home-assistant
+spec:
+  ingressClassName: internal-ingress
+  rules:
+  - host: home.progamesigner.dev
+    http:
+      paths:
+      - backend:
+          service:
+            name: home-assistant
+            port:
+              name: http
+        path: /
+        pathType: Prefix
+  tls:
+  - hosts:
+    - home.progamesigner.dev
+    secretName: tls-dev-progamesigner
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    kubernetes.progamesigner.io/hostname: minio
+    nginx.org/websocket-services: minio
+  name: minio
+spec:
+  ingressClassName: internal-ingress
+  rules:
+  - host: minio.progamesigner.dev
+    http:
+      paths:
+      - backend:
+          service:
+            name: minio
+            port:
+              name: minio-console
+        path: /
+        pathType: Prefix
+  tls:
+  - hosts:
+    - minio.progamesigner.dev
+    secretName: tls-dev-progamesigner
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
     kubernetes.progamesigner.io/hostname: auto
     nginx.org/websocket-services: node-red
   name: node-red
@@ -53,25 +103,65 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   annotations:
-    kubernetes.progamesigner.io/hostname: home
-    nginx.org/websocket-services: home-assistant
-  name: home-assistant
+    kubernetes.progamesigner.io/hostname: postgresql
+    nginx.org/client-max-body-size: 2G
+    nginx.org/proxy-read-timeout: 3600s
+    nginx.org/proxy-send-timeout: 3600s
+  name: pgadmin
 spec:
   ingressClassName: internal-ingress
   rules:
-  - host: home.progamesigner.dev
+  - host: postgresql.progamesigner.dev
     http:
       paths:
       - backend:
           service:
-            name: home-assistant
+            name: pgadmin
             port:
               name: http
         path: /
         pathType: Prefix
   tls:
   - hosts:
-    - home.progamesigner.dev
+    - postgresql.progamesigner.dev
+    secretName: tls-dev-progamesigner
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    kubernetes.progamesigner.io/hostname: mariadb,mysql
+    nginx.org/client-max-body-size: 2G
+    nginx.org/proxy-read-timeout: 3600s
+    nginx.org/proxy-send-timeout: 3600s
+  name: phpmyadmin
+spec:
+  ingressClassName: internal-ingress
+  rules:
+  - host: mariadb.progamesigner.dev
+    http:
+      paths:
+      - backend:
+          service:
+            name: phpmyadmin
+            port:
+              name: http
+        path: /
+        pathType: Prefix
+  - host: mysql.progamesigner.dev
+    http:
+      paths:
+      - backend:
+          service:
+            name: phpmyadmin
+            port:
+              name: http
+        path: /
+        pathType: Prefix
+  tls:
+  - hosts:
+    - mariadb.progamesigner.dev
+    - mysql.progamesigner.dev
     secretName: tls-dev-progamesigner
 ---
 apiVersion: networking.k8s.io/v1
