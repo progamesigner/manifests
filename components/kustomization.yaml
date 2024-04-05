@@ -24,7 +24,7 @@ configurations:
 images:
 - name: adguard-home/adguard-home
   newName: adguard/adguardhome
-  newTag: v0.107.46
+  newTag: v0.107.47
 - name: browserless/browserless
   newName: browserless/chrome
   newTag: 1.58.0-chrome-stable
