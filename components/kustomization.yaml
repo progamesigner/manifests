@@ -63,7 +63,7 @@ images:
   newTag: 0.1.1
 - name: pgadmin/pgadmin
   newName: dpage/pgadmin4
-  newTag: '8.4'
+  newTag: '8.5'
 - name: phpmyadmin/phpmyadmin
   newName: phpmyadmin
   newTag: 5.2.1
