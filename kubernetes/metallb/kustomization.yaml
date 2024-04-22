@@ -23,10 +23,10 @@ configMapGenerator:
 images:
 - name: metallb/controller
   newName: quay.io/metallb/controller
-  newTag: v0.14.4
+  newTag: v0.14.5
 - name: metallb/speaker
   newName: quay.io/metallb/speaker
-  newTag: v0.14.4
+  newTag: v0.14.5
 resources:
 - https://raw.githubusercontent.com/metallb/metallb/v0.14.4/config/crd/bases/metallb.io_bfdprofiles.yaml
 - https://raw.githubusercontent.com/metallb/metallb/v0.14.4/config/crd/bases/metallb.io_bgpadvertisements.yaml
