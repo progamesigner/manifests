@@ -72,7 +72,7 @@ images:
   newTag: 2023.10.120-1
 - name: rsshub/rsshub
   newName: diygod/rsshub
-  newTag: 2024-02-10
+  newTag: 2024-06-06
 - name: syncthing/syncthing
   newName: syncthing/syncthing
   newTag: 1.23.4
