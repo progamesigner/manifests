@@ -81,7 +81,7 @@ images:
   newTag: 1.18.6
 - name: tailscale/tailscale
   newName: tailscale/tailscale
-  newTag: v1.66.4
+  newTag: v1.68.0
 - name: unifi-controller/unifi-controller
   newName: lscr.io/linuxserver/unifi-controller
   newTag: 8.0.24-ls221
