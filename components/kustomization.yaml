@@ -30,7 +30,7 @@ images:
   newTag: 1.58.0-chrome-stable
 - name: cloudflared/cloudflared
   newName: cloudflare/cloudflared
-  newTag: 2024.6.0
+  newTag: 2024.6.1
 - name: dify/api
   newName: langgenius/dify-api
   newTag: 0.6.11
