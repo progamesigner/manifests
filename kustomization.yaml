@@ -3,14 +3,284 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 configurations:
 - configurations.yaml
-resources:
-- certificates.yaml
-- ingresses.yaml
-- issuers.yaml
+patches:
+- patch: |-
+    apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      name: adguard-home
+    spec:
+      template:
+        spec:
+          volumes:
+          - name: data
+            emptyDir: null
+            hostPath:
+              type: DirectoryOrCreate
+              path: /srv/adguard-home
 
+- patch: |-
+    apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      name: elasticsearch
+    spec:
+      template:
+        spec:
+          volumes:
+          - name: data
+            emptyDir: null
+            hostPath:
+              type: DirectoryOrCreate
+              path: /srv/elasticsearch
+- patch: |-
+    apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      name: gloomhaven
+    spec:
+      template:
+        spec:
+          volumes:
+          - name: data
+            emptyDir: null
+            hostPath:
+              type: DirectoryOrCreate
+              path: /srv/gloomhaven-server
+- patch: |-
+    apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      name: home-assistant
+    spec:
+      template:
+        spec:
+          volumes:
+          - name: data
+            emptyDir: null
+            hostPath:
+              type: DirectoryOrCreate
+              path: /srv/home-assistant
+- patch: |-
+    apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      name: localai
+    spec:
+      template:
+        spec:
+          volumes:
+          - name: artefacts
+            emptyDir: null
+            hostPath:
+              type: DirectoryOrCreate
+              path: /srv/localai-artefacts
+          - name: data
+            emptyDir: null
+            hostPath:
+              type: DirectoryOrCreate
+              path: /srv/localai
+- patch: |-
+    apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      name: mariadb
+    spec:
+      template:
+        spec:
+          volumes:
+          - name: data
+            emptyDir: null
+            hostPath:
+              type: DirectoryOrCreate
+              path: /srv/mariadb
+- patch: |-
+    apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      name: minio
+    spec:
+      template:
+        spec:
+          volumes:
+          - name: data
+            emptyDir: null
+            hostPath:
+              type: DirectoryOrCreate
+              path: /srv/minio
+- patch: |-
+    apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      name: mongodb
+    spec:
+      template:
+        spec:
+          volumes:
+          - name: data
+            emptyDir: null
+            hostPath:
+              type: DirectoryOrCreate
+              path: /srv/mongodb
+- patch: |-
+    apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      name: node-red
+    spec:
+      template:
+        spec:
+          volumes:
+          - name: data
+            emptyDir: null
+            hostPath:
+              type: DirectoryOrCreate
+              path: /srv/node-red
+          - name: files
+            emptyDir: null
+            hostPath:
+              type: Directory
+              path: /srv
+- patch: |-
+    apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      name: obsidian
+    spec:
+      template:
+        spec:
+          volumes:
+          - name: data
+            emptyDir: null
+            hostPath:
+              type: DirectoryOrCreate
+              path: /srv/obsidian
+- patch: |-
+    apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      name: postgresql
+    spec:
+      template:
+        spec:
+          volumes:
+          - name: data
+            emptyDir: null
+            hostPath:
+              type: DirectoryOrCreate
+              path: /srv/postgresql
+- patch: |-
+    apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      name: pgadmin
+    spec:
+      template:
+        spec:
+          volumes:
+          - name: data
+            emptyDir: null
+            hostPath:
+              type: DirectoryOrCreate
+              path: /srv/pgadmin
+- patch: |-
+    apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      name: syncthing
+    spec:
+      template:
+        spec:
+          volumes:
+          - name: data
+            emptyDir: null
+            hostPath:
+              type: DirectoryOrCreate
+              path: /srv/syncthing
+- patch: |-
+    apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      name: syncthing-relay
+    spec:
+      template:
+        spec:
+          volumes:
+          - name: data
+            emptyDir: null
+            hostPath:
+              type: DirectoryOrCreate
+              path: /srv/syncthing-relay
+- patch: |-
+    apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      name: unifi-controller
+    spec:
+      template:
+        spec:
+          volumes:
+          - name: data
+            emptyDir: null
+            hostPath:
+              type: DirectoryOrCreate
+              path: /srv/unifi-controller
+- patch: |-
+    apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      name: vscode-server
+    spec:
+      template:
+        spec:
+          volumes:
+          - name: data
+            emptyDir: null
+            hostPath:
+              type: DirectoryOrCreate
+              path: /srv/vscode-server
+          - name: files
+            emptyDir: null
+            hostPath:
+              type: Directory
+              path: /srv/syncthing
+          - name: files-git
+            emptyDir: null
+            hostPath:
+              type: Directory
+              path: /srv/dev-tunnel-git
+          - name: files-gpg
+            emptyDir: null
+            hostPath:
+              type: Directory
+              path: /srv/dev-tunnel-gpg
+          - name: files-ssh
+            emptyDir: null
+            hostPath:
+              type: Directory
+              path: /srv/dev-tunnel-ssh
+- patch: |-
+    apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      name: weaviate
+    spec:
+      template:
+        spec:
+          volumes:
+          - name: data
+            emptyDir: null
+            hostPath:
+              type: DirectoryOrCreate
+              path: /srv/weaviate
+resources:
 - components
 - kubernetes
 - services
+
+- certificates.yaml
+- ingresses.yaml
+- issuers.yaml
 secretGenerator:
 - name: cert-manager-cloudflare
   envs:
