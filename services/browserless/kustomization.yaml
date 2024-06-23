@@ -5,5 +5,5 @@ resources:
 - controllers.yaml
 secretGenerator:
 - name: browserless
-  envs:
-  - browserless.env
+  literals:
+  - TOKEN=default

@@ -22,20 +22,6 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: browserless
-spec:
-  ports:
-  - name: http
-    port: 3000
-    targetPort: http
-  selector:
-    app.kubernetes.io/component: browserless
-    app.kubernetes.io/name: browserless
-    app.kubernetes.io/part-of: components
----
-apiVersion: v1
-kind: Service
-metadata:
   name: dify-api
 spec:
   ports:
