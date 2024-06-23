@@ -18,8 +18,6 @@ components:
 - syncthing
 - unifi-controller
 - vscode-server
-configurations:
-- configurations.yaml
 images:
 - name: adguard-home/adguard-home
   newName: adguard/adguardhome
@@ -272,7 +270,3 @@ patches:
               path: /srv/dev-tunnel-ssh
 resources:
 - services.yaml
-secretGenerator:
-- name: cert-manager-cloudflare
-  envs:
-  - cloudflare.env
