@@ -14,8 +14,6 @@ spec:
       app.kubernetes.io/component: syncthing
       app.kubernetes.io/name: syncthing
       app.kubernetes.io/part-of: components
-  strategy:
-    type: Recreate
   template:
     metadata:
       labels:

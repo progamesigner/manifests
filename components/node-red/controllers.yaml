@@ -14,8 +14,6 @@ spec:
       app.kubernetes.io/component: node-red
       app.kubernetes.io/name: node-red
       app.kubernetes.io/part-of: components
-  strategy:
-    type: Recreate
   template:
     metadata:
       labels:
