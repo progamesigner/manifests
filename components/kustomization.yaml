@@ -4,6 +4,7 @@ kind: Kustomization
 components:
 - adguard-home
 - cloudflared
+- coder
 - dify
 - gloomhaven
 - home-assistant
@@ -24,6 +25,9 @@ images:
 - name: cloudflared/cloudflared
   newName: cloudflare/cloudflared
   newTag: 2024.6.1
+- name: coder/coder
+  newName: ghcr.io/coder/coder
+  newTag: v2.11.3
 - name: dify/api
   newName: langgenius/dify-api
   newTag: 0.6.11

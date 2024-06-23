@@ -22,6 +22,23 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
+  name: coder
+spec:
+  ports:
+  - name: http
+    port: 3000
+    targetPort: http
+  - name: https
+    port: 3443
+    targetPort: https
+  selector:
+    app.kubernetes.io/component: coder
+    app.kubernetes.io/name: coder
+    app.kubernetes.io/part-of: components
+---
+apiVersion: v1
+kind: Service
+metadata:
   name: dify-api
 spec:
   ports:

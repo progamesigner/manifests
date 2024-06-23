@@ -1,0 +1,68 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/component: coder
+    app.kubernetes.io/name: coder
+    app.kubernetes.io/part-of: components
+  name: coder
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: coder
+      app.kubernetes.io/name: coder
+      app.kubernetes.io/part-of: components
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/component: coder
+        app.kubernetes.io/name: coder
+        app.kubernetes.io/part-of: components
+    spec:
+      automountServiceAccountToken: false
+      containers:
+      - name: coder
+        image: coder/coder:latest
+        env:
+        - name: CODER_HTTP_ADDRESS
+          value: 0.0.0.0:3000
+        - name: CODER_TLS_ADDRESS
+          value: 0.0.0.0:3443
+        - name: CODER_TLS_CERT_FILE
+          value: /etc/ssl/certs/coder/tls.crt
+        - name: CODER_TLS_ENABLE
+          value: 'true'
+        - name: CODER_TLS_KEY_FILE
+          value: /etc/ssl/certs/coder/tls.key
+        envFrom:
+        - secretRef:
+            name: coder
+        ports:
+        - name: http
+          containerPort: 3000
+        - name: https
+          containerPort: 3443
+        resources:
+          limits:
+            cpu: 300m
+            memory: 512Mi
+          requests:
+            cpu: 50m
+            memory: 64Mi
+        volumeMounts:
+        - name: cert
+          mountPath: /etc/ssl/certs/coder
+          readOnly: true
+      serviceAccountName: default
+      volumes:
+      - name: cert
+        secret:
+          secretName: tls-dev-progamesigner
+          defaultMode: 420
+          items:
+          - key: tls.crt
+            path: tls.crt
+          - key: tls.key
+            path: tls.key
