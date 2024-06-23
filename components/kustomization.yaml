@@ -271,9 +271,6 @@ patches:
               type: Directory
               path: /srv/dev-tunnel-ssh
 resources:
-- certificates.yaml
-- ingresses.yaml
-- issuers.yaml
 - services.yaml
 secretGenerator:
 - name: cert-manager-cloudflare
