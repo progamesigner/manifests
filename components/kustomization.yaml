@@ -25,8 +25,8 @@ images:
   newName: adguard/adguardhome
   newTag: v0.107.51
 - name: browserless/browserless
-  newName: browserless/chrome
-  newTag: 1.58.0-chrome-stable
+  newName: ghcr.io/browserless/chrome
+  newTag: v2.14.0
 - name: cloudflared/cloudflared
   newName: cloudflare/cloudflared
   newTag: 2024.6.1
