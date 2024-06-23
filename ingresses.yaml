@@ -3,7 +3,7 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   annotations:
-    kubernetes.progamesigner.io/hostname: adguard
+    kubernetes.progamesigner.dev/hostname: adguard
     nginx.org/ssl-services: adguard-home
   name: adguard-home
 spec:
@@ -28,7 +28,7 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   annotations:
-    kubernetes.progamesigner.io/hostname: home
+    kubernetes.progamesigner.dev/hostname: home
     nginx.org/websocket-services: home-assistant
   name: home-assistant
 spec:
@@ -53,7 +53,7 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   annotations:
-    kubernetes.progamesigner.io/hostname: minio
+    kubernetes.progamesigner.dev/hostname: minio
     nginx.org/websocket-services: minio
   name: minio
 spec:
@@ -78,7 +78,7 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   annotations:
-    kubernetes.progamesigner.io/hostname: auto
+    kubernetes.progamesigner.dev/hostname: auto
     nginx.org/websocket-services: node-red
   name: node-red
 spec:
@@ -103,7 +103,7 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   annotations:
-    kubernetes.progamesigner.io/hostname: postgresql
+    kubernetes.progamesigner.dev/hostname: postgresql
     nginx.org/client-max-body-size: 2G
     nginx.org/proxy-read-timeout: 3600s
     nginx.org/proxy-send-timeout: 3600s
@@ -130,7 +130,7 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   annotations:
-    kubernetes.progamesigner.io/hostname: mariadb,mysql
+    kubernetes.progamesigner.dev/hostname: mariadb,mysql
     nginx.org/client-max-body-size: 2G
     nginx.org/proxy-read-timeout: 3600s
     nginx.org/proxy-send-timeout: 3600s
@@ -168,7 +168,7 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   annotations:
-    kubernetes.progamesigner.io/hostname: syncthing
+    kubernetes.progamesigner.dev/hostname: syncthing
     nginx.org/ssl-services: syncthing
   name: syncthing
 spec:
@@ -193,7 +193,7 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   annotations:
-    kubernetes.progamesigner.io/hostname: unifi
+    kubernetes.progamesigner.dev/hostname: unifi
     nginx.org/ssl-services: unifi-controller
   name: unifi-controller
 spec:

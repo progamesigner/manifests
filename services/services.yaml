@@ -3,7 +3,7 @@ apiVersion: v1
 kind: Service
 metadata:
   annotations:
-    kubernetes.progamesigner.io/hostname: mariadb,mysql
+    kubernetes.progamesigner.dev/hostname: mariadb,mysql
   name: mariadb
 spec:
   externalTrafficPolicy: Local
@@ -21,7 +21,7 @@ apiVersion: v1
 kind: Service
 metadata:
   annotations:
-    kubernetes.progamesigner.io/hostname: elasticsearch
+    kubernetes.progamesigner.dev/hostname: elasticsearch
   name: elasticsearch
 spec:
   externalTrafficPolicy: Local
@@ -39,7 +39,7 @@ apiVersion: v1
 kind: Service
 metadata:
   annotations:
-    kubernetes.progamesigner.io/hostname: minio
+    kubernetes.progamesigner.dev/hostname: minio
   name: minio
 spec:
   externalTrafficPolicy: Local
@@ -60,7 +60,7 @@ apiVersion: v1
 kind: Service
 metadata:
   annotations:
-    kubernetes.progamesigner.io/hostname: mongodb
+    kubernetes.progamesigner.dev/hostname: mongodb
   name: mongodb
 spec:
   externalTrafficPolicy: Local
@@ -78,7 +78,7 @@ apiVersion: v1
 kind: Service
 metadata:
   annotations:
-    kubernetes.progamesigner.io/hostname: postgresql
+    kubernetes.progamesigner.dev/hostname: postgresql
   name: postgresql
 spec:
   externalTrafficPolicy: Local
@@ -96,7 +96,7 @@ apiVersion: v1
 kind: Service
 metadata:
   annotations:
-    kubernetes.progamesigner.io/hostname: rabbitmq
+    kubernetes.progamesigner.dev/hostname: rabbitmq
   name: rabbitmq
 spec:
   externalTrafficPolicy: Local
@@ -114,7 +114,7 @@ apiVersion: v1
 kind: Service
 metadata:
   annotations:
-    kubernetes.progamesigner.io/hostname: redis
+    kubernetes.progamesigner.dev/hostname: redis
   name: redis
 spec:
   externalTrafficPolicy: Local
@@ -132,7 +132,7 @@ apiVersion: v1
 kind: Service
 metadata:
   annotations:
-    kubernetes.progamesigner.io/hostname: weaviate
+    kubernetes.progamesigner.dev/hostname: weaviate
   name: weaviate
 spec:
   externalTrafficPolicy: Local
