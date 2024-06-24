@@ -8,5 +8,10 @@ secretGenerator:
   envs:
   - coder.env
   literals:
+  - CODER_DERP_FORCE_WEBSOCKETS=true
   - CODER_DISABLE_PASSWORD_AUTH=true
+  - CODER_OAUTH2_GITHUB_ALLOW_SIGNUPS=false
   - CODER_PG_CONNECTION_URL=postgres://default:password@postgresql.default.svc.cluster.local/coder?sslmode=disable
+  - CODER_REDIRECT_TO_ACCESS_URL=true
+  - CODER_SECURE_AUTH_COOKIE=true
+  - CODER_STRICT_TRANSPORT_SECURITY=3600

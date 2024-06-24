@@ -59,7 +59,7 @@ spec:
       volumes:
       - name: cert
         secret:
-          secretName: tls-dev-progamesigner
+          secretName: tls-com-progamesigner
           defaultMode: 420
           items:
           - key: tls.crt
