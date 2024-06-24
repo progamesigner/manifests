@@ -20,4 +20,6 @@ spec:
             key: API_TOKEN
       selector:
         dnsZones:
+        - progamesigner.com
         - progamesigner.dev
+        - progamesigner.net

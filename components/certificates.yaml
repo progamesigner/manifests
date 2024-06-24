@@ -2,6 +2,19 @@
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
+  name: progamesigner-com
+spec:
+  commonName: progamesigner.com
+  dnsNames:
+  - progamesigner.com
+  - '*.progamesigner.com'
+  issuerRef:
+    name: letsencrypt
+  secretName: tls-com-progamesigner
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
   name: progamesigner-dev
 spec:
   commonName: progamesigner.dev
