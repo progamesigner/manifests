@@ -1,13 +1,8 @@
 ---
 apiVersion: kustomize.config.k8s.io/v1alpha1
 kind: Component
-configMapGenerator:
-- name: tailscale-funnel-coder
-  files:
-  - tailscale-funnel.json=tailscale-funnel.json
 resources:
 - controllers.yaml
-- rbac.yaml
 secretGenerator:
 - name: coder
   envs:
@@ -15,6 +10,3 @@ secretGenerator:
   literals:
   - CODER_DISABLE_PASSWORD_AUTH=true
   - CODER_PG_CONNECTION_URL=postgres://default:password@postgresql.default.svc.cluster.local/coder?sslmode=disable
-- name: tailscale-coder
-  envs:
-  - tailscale-coder.env
