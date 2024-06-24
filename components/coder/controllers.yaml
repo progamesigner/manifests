@@ -55,6 +55,45 @@ spec:
         - name: cert
           mountPath: /etc/ssl/certs/coder
           readOnly: true
+        - name: service-account
+          mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+          readOnly: true
+      - name: tailscale
+        image: tailscale/tailscale:latest
+        env:
+        - name: TS_AUTHKEY
+          valueFrom:
+            secretKeyRef:
+              name: tailscale-coder
+              key: TS_AUTHKEY
+              optional: true
+        - name: TS_SERVE_CONFIG
+          value: /opt/tailscale-funnel/tailscale-funnel.json
+        - name: TS_HOSTNAME
+          value: coder
+        - name: TS_KUBE_SECRET
+          value: tailscale-coder-auth
+        - name: TS_USERSPACE
+          value: 'false'
+        resources:
+          limits:
+            cpu: 300m
+            memory: 64Mi
+          requests:
+            cpu: 50m
+            memory: 16Mi
+        securityContext:
+          capabilities:
+            add:
+            - NET_ADMIN
+        volumeMounts:
+        - name: service-account
+          mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+          readOnly: true
+        - name: tailscale-funnel
+          mountPath: /opt/tailscale-funnel/tailscale-funnel.json
+          subPath: tailscale-funnel.json
+          readOnly: true
       serviceAccountName: default
       volumes:
       - name: cert
@@ -66,3 +105,20 @@ spec:
             path: tls.crt
           - key: tls.key
             path: tls.key
+      - name: service-account
+        projected:
+          sources:
+          - configMap:
+              name: kube-root-ca.crt
+          - downwardAPI:
+              items:
+              - path: namespace
+                fieldRef:
+                  fieldPath: metadata.namespace
+          - serviceAccountToken:
+              audience: https://kubernetes.default.svc.cluster.local
+              expirationSeconds: 3600
+              path: token
+      - name: tailscale-funnel
+        configMap:
+          name: tailscale-funnel-coder
