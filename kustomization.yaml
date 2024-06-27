@@ -37,7 +37,7 @@ images:
   newTag: v2.8.0-ffmpeg
 - name: node-red/node-red
   newName: nodered/node-red
-  newTag: 4.0.0
+  newTag: 4.0.1
 - name: obsidian/obsidian
   newName: ghcr.io/sytone/obsidian-remote
   newTag: 0.1.1
