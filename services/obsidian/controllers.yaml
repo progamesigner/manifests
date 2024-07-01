@@ -5,7 +5,7 @@ metadata:
   labels:
     app.kubernetes.io/component: obsidian
     app.kubernetes.io/name: obsidian
-    app.kubernetes.io/part-of: components
+    app.kubernetes.io/part-of: services
   name: obsidian
 spec:
   replicas: 1
@@ -13,13 +13,13 @@ spec:
     matchLabels:
       app.kubernetes.io/component: obsidian
       app.kubernetes.io/name: obsidian
-      app.kubernetes.io/part-of: components
+      app.kubernetes.io/part-of: services
   template:
     metadata:
       labels:
         app.kubernetes.io/component: obsidian
         app.kubernetes.io/name: obsidian
-        app.kubernetes.io/part-of: components
+        app.kubernetes.io/part-of: services
     spec:
       automountServiceAccountToken: false
       containers:
