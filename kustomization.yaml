@@ -47,7 +47,7 @@ images:
 - name: phpmyadmin/phpmyadmin
   newName: phpmyadmin
   newTag: 5.2.1
-- name: proxy/proxy
+- name: proxy/cloudflare-warp
   newName: amirdaaee/cloudflare-warp
   newTag: 2023.10.120-1
 - name: rsshub/rsshub

@@ -3,28 +3,28 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app.kubernetes.io/component: proxy
+    app.kubernetes.io/component: cloudflare-warp
     app.kubernetes.io/name: proxy
     app.kubernetes.io/part-of: components
-  name: proxy
+  name: cloudflare-warp
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app.kubernetes.io/component: proxy
+      app.kubernetes.io/component: cloudflare-warp
       app.kubernetes.io/name: proxy
       app.kubernetes.io/part-of: components
   template:
     metadata:
       labels:
-        app.kubernetes.io/component: proxy
+        app.kubernetes.io/component: cloudflare-warp
         app.kubernetes.io/name: proxy
         app.kubernetes.io/part-of: components
     spec:
       automountServiceAccountToken: false
       containers:
-      - name: proxy
-        image: proxy/proxy:latest
+      - name: cloudflare-warp
+        image: proxy/cloudflare-warp:latest
         ports:
         - name: socks
           containerPort: 1080
