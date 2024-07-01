@@ -109,6 +109,27 @@ apiVersion: v1
 kind: Service
 metadata:
   annotations:
+    kubernetes.progamesigner.dev/hostname: obsidian
+  name: obsidian
+spec:
+  externalTrafficPolicy: Local
+  ports:
+  - name: http
+    port: 3000
+    targetPort: http
+  - name: https
+    port: 3001
+    targetPort: https
+  selector:
+    app.kubernetes.io/component: obsidian
+    app.kubernetes.io/name: obsidian
+    app.kubernetes.io/part-of: services
+  type: LoadBalancer
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
     kubernetes.progamesigner.dev/hostname: postgresql
   name: postgresql
 spec:

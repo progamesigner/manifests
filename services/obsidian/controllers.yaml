@@ -25,11 +25,14 @@ spec:
       containers:
       - name: obsidian
         image: obsidian/obsidian:latest
+        envFrom:
+        - secretRef:
+            name: obsidian
         ports:
         - name: http
-          containerPort: 8080
+          containerPort: 3000
         - name: https
-          containerPort: 8443
+          containerPort: 3001
         resources:
           limits:
             cpu: 1000m
@@ -39,7 +42,7 @@ spec:
             memory: 128Mi
         volumeMounts:
         - name: data
-          mountPath: /config
+          mountPath: /config/.config/obsidian
           subPath: config
         - name: data
           mountPath: /vaults
