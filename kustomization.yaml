@@ -58,10 +58,6 @@ images:
   newTag: 1.23.4
 - name: syncthing/relaysrv
   newName: syncthing/relaysrv
-  newTag: 1.18.6
-- name: tailscale/tailscale
-  newName: ghcr.io/tailscale/tailscale
-  newTag: v1.68.1
 - name: unifi-controller/unifi-controller
   newName: lscr.io/linuxserver/unifi-controller
   newTag: 8.0.24-ls221
