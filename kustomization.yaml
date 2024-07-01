@@ -135,16 +135,16 @@ patches:
       template:
         spec:
           volumes:
-          - name: artefacts
+          - name: artifacts
             emptyDir: null
             hostPath:
               type: DirectoryOrCreate
-              path: /srv/localai-artefacts
+              path: /srv/localai/artifacts
           - name: data
             emptyDir: null
             hostPath:
               type: DirectoryOrCreate
-              path: /srv/localai
+              path: /srv/localai/models
 - patch: |-
     apiVersion: apps/v1
     kind: Deployment

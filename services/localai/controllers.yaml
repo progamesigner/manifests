@@ -5,7 +5,7 @@ metadata:
   labels:
     app.kubernetes.io/component: localai
     app.kubernetes.io/name: localai
-    app.kubernetes.io/part-of: components
+    app.kubernetes.io/part-of: services
   name: localai
 spec:
   replicas: 1
@@ -13,13 +13,13 @@ spec:
     matchLabels:
       app.kubernetes.io/component: localai
       app.kubernetes.io/name: localai
-      app.kubernetes.io/part-of: components
+      app.kubernetes.io/part-of: services
   template:
     metadata:
       labels:
         app.kubernetes.io/component: localai
         app.kubernetes.io/name: localai
-        app.kubernetes.io/part-of: components
+        app.kubernetes.io/part-of: services
     spec:
       automountServiceAccountToken: false
       initContainers:
@@ -50,7 +50,7 @@ spec:
             cpu: 300m
             memory: 128Mi
         volumeMounts:
-        - name: artefacts
+        - name: artifacts
           mountPath: /built
       containers:
       - name: localai
@@ -88,7 +88,7 @@ spec:
             cpu: 300m
             memory: 128Mi
         volumeMounts:
-        - name: artefacts
+        - name: artifacts
           mountPath: /build/local-ai
           readOnly: true
           subPath: local-ai
@@ -96,7 +96,7 @@ spec:
           mountPath: /models
       serviceAccountName: default
       volumes:
-      - name: artefacts
+      - name: artifacts
         emptyDir: {}
       - name: data
         emptyDir: {}
