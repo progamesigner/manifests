@@ -28,44 +28,6 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   annotations:
-    kubernetes.progamesigner.dev/hostname: coder
-    nginx.org/ssl-services: coder
-  name: coder
-spec:
-  ingressClassName: internal-ingress
-  rules:
-  - host: coder.progamesigner.dev
-    http:
-      paths:
-      - backend:
-          service:
-            name: coder
-            port:
-              name: https
-        path: /
-        pathType: Prefix
-  - host: '*.coder.progamesigner.dev'
-    http:
-      paths:
-      - backend:
-          service:
-            name: coder
-            port:
-              name: http
-        path: /
-        pathType: Prefix
-  tls:
-  - hosts:
-    - coder.progamesigner.dev
-    secretName: tls-dev-progamesigner
-  - hosts:
-    - '*.coder.progamesigner.dev'
-    secretName: tls-dev-progamesigner
----
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  annotations:
     kubernetes.progamesigner.dev/hostname: home
     nginx.org/websocket-services: home-assistant
   name: home-assistant

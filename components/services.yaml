@@ -28,9 +28,6 @@ spec:
   - name: http
     port: 3000
     targetPort: http
-  - name: https
-    port: 3443
-    targetPort: https
   selector:
     app.kubernetes.io/component: coder
     app.kubernetes.io/name: coder
@@ -161,7 +158,7 @@ spec:
     port: 8080
     targetPort: proxy
   selector:
-    app.kubernetes.io/component: proxy
+    app.kubernetes.io/component: cloudflare-warp
     app.kubernetes.io/name: proxy
     app.kubernetes.io/part-of: components
 ---

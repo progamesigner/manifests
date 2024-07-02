@@ -16,6 +16,10 @@ components:
 - syncthing
 - unifi-controller
 - vscode-server
+configMapGenerator:
+- name: tunnels
+  files:
+  - haproxy.cfg=haproxy.cfg
 configurations:
 - configurations.yaml
 namespace: default
@@ -24,6 +28,7 @@ resources:
 - ingresses.yaml
 - issuers.yaml
 - services.yaml
+- tunnels.yaml
 secretGenerator:
 - name: cert-manager-cloudflare
   envs:

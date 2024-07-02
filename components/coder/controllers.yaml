@@ -28,22 +28,12 @@ spec:
         env:
         - name: CODER_HTTP_ADDRESS
           value: 0.0.0.0:3000
-        - name: CODER_TLS_ADDRESS
-          value: 0.0.0.0:3443
-        - name: CODER_TLS_CERT_FILE
-          value: /etc/ssl/certs/coder/tls.crt
-        - name: CODER_TLS_ENABLE
-          value: 'true'
-        - name: CODER_TLS_KEY_FILE
-          value: /etc/ssl/certs/coder/tls.key
         envFrom:
         - secretRef:
             name: coder
         ports:
         - name: http
           containerPort: 3000
-        - name: https
-          containerPort: 3443
         resources:
           limits:
             cpu: 300m
@@ -51,18 +41,4 @@ spec:
           requests:
             cpu: 50m
             memory: 64Mi
-        volumeMounts:
-        - name: cert
-          mountPath: /etc/ssl/certs/coder
-          readOnly: true
       serviceAccountName: default
-      volumes:
-      - name: cert
-        secret:
-          secretName: tls-com-progamesigner
-          defaultMode: 420
-          items:
-          - key: tls.crt
-            path: tls.crt
-          - key: tls.key
-            path: tls.key

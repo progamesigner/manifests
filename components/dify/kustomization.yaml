@@ -7,10 +7,6 @@ configMapGenerator:
   - LOG_LEVEL=INFO
   - STORAGE_TYPE=s3
   - VECTOR_STORE=weaviate
-- name: dify-nginx
-  files:
-  - default.conf=nginx/default.conf
-  - proxy.conf=nginx/proxy.conf
 resources:
 - controllers.yaml
 secretGenerator:
