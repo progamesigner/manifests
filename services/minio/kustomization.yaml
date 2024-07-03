@@ -6,5 +6,6 @@ resources:
 secretGenerator:
 - name: minio
   literals:
+  - MINIO_BROWSER_REDIRECT=false
   - MINIO_ROOT_PASSWORD=password
   - MINIO_ROOT_USER=default

@@ -20,6 +20,7 @@ configMapGenerator:
 - name: tunnels
   files:
   - haproxy.cfg=haproxy.cfg
+  - tunnels.map=tunnels.map
 configurations:
 - configurations.yaml
 namespace: default

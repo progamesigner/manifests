@@ -42,24 +42,41 @@ spec:
         app.kubernetes.io/part-of: components
     spec:
       automountServiceAccountToken: false
+      initContainers:
+      - name: check
+        image: tunnels/haproxy:latest
+        command:
+        - haproxy
+        - -c
+        - -f
+        - /usr/local/etc/haproxy/haproxy.cfg
+        volumeMounts:
+        - name: cert
+          mountPath: /etc/ssl/certs/haproxy
+          readOnly: true
+        - name: conf
+          mountPath: /usr/local/etc/haproxy
+          readOnly: true
       containers:
       - name: haproxy
         image: tunnels/haproxy:latest
         ports:
         - name: socks
           containerPort: 1080
+        - name: healthz
+          containerPort: 3000
         - name: http
           containerPort: 8000
         - name: https
           containerPort: 8443
         livenessProbe:
-          failureThreshold: 1
-          exec:
-            command:
-            - pgrep
-            - haproxy
+          failureThreshold: 5
+          httpGet:
+            path: /
+            port: healthz
+            scheme: HTTP
           initialDelaySeconds: 10
-          periodSeconds: 10
+          timeoutSeconds: 5
         resources:
           limits:
             cpu: 100m
@@ -101,3 +118,5 @@ spec:
           items:
           - key: haproxy.cfg
             path: haproxy.cfg
+          - key: tunnels.map
+            path: tunnels.map
