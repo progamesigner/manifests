@@ -63,8 +63,8 @@ spec:
         ports:
         - name: socks
           containerPort: 1080
-        - name: healthz
-          containerPort: 3000
+        - name: stats
+          containerPort: 1999
         - name: http
           containerPort: 8000
         - name: https
@@ -72,14 +72,14 @@ spec:
         livenessProbe:
           failureThreshold: 5
           httpGet:
-            path: /
-            port: healthz
+            path: /stats
+            port: stats
             scheme: HTTP
           initialDelaySeconds: 10
           timeoutSeconds: 5
         resources:
           limits:
-            cpu: 2000m
+            cpu: 300m
             memory: 1Gi
           requests:
             cpu: 30m
