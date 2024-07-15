@@ -48,63 +48,6 @@ apiVersion: v1
 kind: Service
 metadata:
   annotations:
-    metallb.universe.tf/allow-shared-ip: external-ingress
-  labels:
-    kubernetes.io/cluster-service: 'true'
-    kubernetes.io/name: ExternalIngress
-  name: external-ingress
-spec:
-  externalTrafficPolicy: Local
-  loadBalancerIP: 192.168.0.11
-  ports:
-  - name: http
-    port: 80
-    targetPort: 80
-    appProtocol: http
-  - name: https
-    port: 443
-    targetPort: 443
-    appProtocol: https
-  - name: dns-over-tls
-    port: 853
-    targetPort: 853
-    appProtocol: domain-s
-  selector:
-    app.kubernetes.io/component: nginx-ingress
-    app.kubernetes.io/name: external-nginx-ingress
-    app.kubernetes.io/part-of: kubernetes
-  type: LoadBalancer
----
-apiVersion: v1
-kind: Service
-metadata:
-  annotations:
-    metallb.universe.tf/allow-shared-ip: external-ingress
-  name: external-ingress-udp
-spec:
-  externalTrafficPolicy: Local
-  loadBalancerIP: 192.168.0.11
-  ports:
-  - name: https
-    port: 443
-    targetPort: 443
-    protocol: UDP
-    appProtocol: https
-  - name: dns-over-tls
-    port: 853
-    targetPort: 853
-    protocol: UDP
-    appProtocol: domain-s
-  selector:
-    app.kubernetes.io/component: nginx-ingress
-    app.kubernetes.io/name: external-nginx-ingress
-    app.kubernetes.io/part-of: kubernetes
-  type: LoadBalancer
----
-apiVersion: v1
-kind: Service
-metadata:
-  annotations:
     metallb.universe.tf/allow-shared-ip: internal-ingress
   labels:
     kubernetes.io/cluster-service: 'true'
