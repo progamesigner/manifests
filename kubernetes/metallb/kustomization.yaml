@@ -23,18 +23,18 @@ configMapGenerator:
 images:
 - name: metallb/controller
   newName: quay.io/metallb/controller
-  newTag: v0.14.7
+  newTag: v0.14.8
 - name: metallb/speaker
   newName: quay.io/metallb/speaker
-  newTag: v0.14.7
+  newTag: v0.14.8
 resources:
-- https://raw.githubusercontent.com/metallb/metallb/v0.14.7/config/crd/bases/metallb.io_bfdprofiles.yaml
-- https://raw.githubusercontent.com/metallb/metallb/v0.14.7/config/crd/bases/metallb.io_bgpadvertisements.yaml
-- https://raw.githubusercontent.com/metallb/metallb/v0.14.7/config/crd/bases/metallb.io_bgppeers.yaml
-- https://raw.githubusercontent.com/metallb/metallb/v0.14.7/config/crd/bases/metallb.io_communities.yaml
-- https://raw.githubusercontent.com/metallb/metallb/v0.14.7/config/crd/bases/metallb.io_ipaddresspools.yaml
-- https://raw.githubusercontent.com/metallb/metallb/v0.14.7/config/crd/bases/metallb.io_l2advertisements.yaml
-- https://raw.githubusercontent.com/metallb/metallb/v0.14.7/config/crd/bases/metallb.io_servicel2statuses.yaml
+- https://raw.githubusercontent.com/metallb/metallb/v0.14.8/config/crd/bases/metallb.io_bfdprofiles.yaml
+- https://raw.githubusercontent.com/metallb/metallb/v0.14.8/config/crd/bases/metallb.io_bgpadvertisements.yaml
+- https://raw.githubusercontent.com/metallb/metallb/v0.14.8/config/crd/bases/metallb.io_bgppeers.yaml
+- https://raw.githubusercontent.com/metallb/metallb/v0.14.8/config/crd/bases/metallb.io_communities.yaml
+- https://raw.githubusercontent.com/metallb/metallb/v0.14.8/config/crd/bases/metallb.io_ipaddresspools.yaml
+- https://raw.githubusercontent.com/metallb/metallb/v0.14.8/config/crd/bases/metallb.io_l2advertisements.yaml
+- https://raw.githubusercontent.com/metallb/metallb/v0.14.8/config/crd/bases/metallb.io_servicel2statuses.yaml
 
 - controllers.yaml
 - rbac.yaml
