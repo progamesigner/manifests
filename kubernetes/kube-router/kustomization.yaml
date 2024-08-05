@@ -8,7 +8,7 @@ configMapGenerator:
 images:
 - name: kube-router/kube-router
   newName: cloudnativelabs/kube-router
-  newTag: v2.1.3
+  newTag: v2.2.0
 resources:
 - controllers.yaml
 - rbac.yaml
