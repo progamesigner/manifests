@@ -7,7 +7,7 @@ images:
   newTag: v0.107.52
 - name: cloudflared/cloudflared
   newName: cloudflare/cloudflared
-  newTag: 2024.6.1
+  newTag: 2024.8.2
 - name: coder/coder
   newName: ghcr.io/coder/coder
   newTag: v2.11.3
