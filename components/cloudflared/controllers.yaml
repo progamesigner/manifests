@@ -24,7 +24,7 @@ spec:
       automountServiceAccountToken: false
       containers:
       - name: cloudflared
-        image: cloudflared/cloudflared:latest
+        image: network/cloudflared:latest
         args:
         - tunnel
         - run

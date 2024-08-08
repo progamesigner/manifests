@@ -44,7 +44,7 @@ spec:
       automountServiceAccountToken: false
       initContainers:
       - name: check
-        image: tunnels/haproxy:latest
+        image: network/haproxy:latest
         command:
         - haproxy
         - -c
@@ -59,7 +59,7 @@ spec:
           readOnly: true
       containers:
       - name: haproxy
-        image: tunnels/haproxy:latest
+        image: network/haproxy:latest
         ports:
         - name: socks
           containerPort: 1080

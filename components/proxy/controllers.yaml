@@ -24,7 +24,7 @@ spec:
       automountServiceAccountToken: false
       containers:
       - name: cloudflare-warp
-        image: proxy/cloudflare-warp:latest
+        image: network/cloudflare-warp:latest
         ports:
         - name: socks
           containerPort: 1080
