@@ -1,0 +1,645 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/component: protonvpn
+    app.kubernetes.io/name: tailscale
+    app.kubernetes.io/part-of: components
+  name: tailscale-protonvpn-ch
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: protonvpn
+      app.kubernetes.io/name: tailscale
+      app.kubernetes.io/part-of: components
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/component: protonvpn
+        app.kubernetes.io/name: tailscale
+        app.kubernetes.io/part-of: components
+    spec:
+      automountServiceAccountToken: false
+      containers:
+      - name: protonvpn
+        image: network/protonvpn:latest
+        command:
+        - protonwire
+        - connect
+        - --service
+        env:
+        - name: PROTONVPN_SERVER
+          valueFrom:
+            secretKeyRef:
+              name: protonvpn
+              key: PROTONVPN_SERVER_CH
+        - name: WIREGUARD_PRIVATE_KEY
+          valueFrom:
+            secretKeyRef:
+              name: protonvpn
+              key: WIREGUARD_PRIVATE_KEY_CH
+        livenessProbe:
+          exec:
+            command:
+            - protonwire
+            - healthcheck
+            - --service-status-file
+            - --silent
+          initialDelaySeconds: 30
+        resources:
+          limits:
+            cpu: 100m
+            memory: 256Mi
+          requests:
+            cpu: 10m
+            memory: 64Mi
+        securityContext:
+          capabilities:
+            add:
+            - NET_ADMIN
+            drop:
+            - ALL
+        volumeMounts:
+        - name: tmp
+          mountPath: /tmp
+      - name: tailscale
+        image: network/tailscale:latest
+        env:
+        - name: TS_AUTHKEY
+          valueFrom:
+            secretKeyRef:
+              name: tailscale
+              key: TS_AUTHKEY_CH
+        - name: TS_EXTRA_ARGS
+          value: --advertise-exit-node
+        - name: TS_HOSTNAME
+          valueFrom:
+            secretKeyRef:
+              name: tailscale
+              key: TS_HOSTNAME_CH
+        - name: TS_KUBE_SECRET
+          value: tailscale-protonvpn-ch
+        - name: TS_OUTBOUND_HTTP_PROXY_LISTEN
+          value: localhost:8080
+        - name: TS_SOCKS5_SERVER
+          value: localhost:1080
+        ports:
+        - name: socks
+          containerPort: 1080
+        - name: proxy
+          containerPort: 8080
+        resources:
+          limits:
+            cpu: 100m
+            memory: 256Mi
+          requests:
+            cpu: 10m
+            memory: 64Mi
+        securityContext:
+          capabilities:
+            add:
+            - NET_ADMIN
+            - NET_RAW
+            drop:
+            - ALL
+        volumeMounts:
+        - name: service-account
+          mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+          readOnly: true
+      serviceAccountName: default
+      volumes:
+      - name: service-account
+        projected:
+          sources:
+          - configMap:
+              name: kube-root-ca.crt
+          - downwardAPI:
+              items:
+              - path: namespace
+                fieldRef:
+                  fieldPath: metadata.namespace
+          - serviceAccountToken:
+              audience: https://kubernetes.default.svc.cluster.local
+              expirationSeconds: 3600
+              path: token
+      - name: tmp
+        emptyDir:
+          medium: Memory
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/component: protonvpn
+    app.kubernetes.io/name: tailscale
+    app.kubernetes.io/part-of: components
+  name: tailscale-protonvpn-de
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: protonvpn
+      app.kubernetes.io/name: tailscale
+      app.kubernetes.io/part-of: components
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/component: protonvpn
+        app.kubernetes.io/name: tailscale
+        app.kubernetes.io/part-of: components
+    spec:
+      automountServiceAccountToken: false
+      containers:
+      - name: protonvpn
+        image: network/protonvpn:latest
+        command:
+        - protonwire
+        - connect
+        - --service
+        env:
+        - name: PROTONVPN_SERVER
+          valueFrom:
+            secretKeyRef:
+              name: protonvpn
+              key: PROTONVPN_SERVER_DE
+        - name: WIREGUARD_PRIVATE_KEY
+          valueFrom:
+            secretKeyRef:
+              name: protonvpn
+              key: WIREGUARD_PRIVATE_KEY_DE
+        livenessProbe:
+          exec:
+            command:
+            - protonwire
+            - healthcheck
+            - --service-status-file
+            - --silent
+          initialDelaySeconds: 30
+        resources:
+          limits:
+            cpu: 100m
+            memory: 256Mi
+          requests:
+            cpu: 10m
+            memory: 64Mi
+        securityContext:
+          capabilities:
+            add:
+            - NET_ADMIN
+            drop:
+            - ALL
+        volumeMounts:
+        - name: tmp
+          mountPath: /tmp
+      - name: tailscale
+        image: network/tailscale:latest
+        env:
+        - name: TS_AUTHKEY
+          valueFrom:
+            secretKeyRef:
+              name: tailscale
+              key: TS_AUTHKEY_DE
+        - name: TS_EXTRA_ARGS
+          value: --advertise-exit-node
+        - name: TS_HOSTNAME
+          valueFrom:
+            secretKeyRef:
+              name: tailscale
+              key: TS_HOSTNAME_DE
+        - name: TS_KUBE_SECRET
+          value: tailscale-protonvpn-de
+        - name: TS_OUTBOUND_HTTP_PROXY_LISTEN
+          value: localhost:8080
+        - name: TS_SOCKS5_SERVER
+          value: localhost:1080
+        ports:
+        - name: socks
+          containerPort: 1080
+        - name: proxy
+          containerPort: 8080
+        resources:
+          limits:
+            cpu: 100m
+            memory: 256Mi
+          requests:
+            cpu: 10m
+            memory: 64Mi
+        securityContext:
+          capabilities:
+            add:
+            - NET_ADMIN
+            - NET_RAW
+            drop:
+            - ALL
+        volumeMounts:
+        - name: service-account
+          mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+          readOnly: true
+      serviceAccountName: default
+      volumes:
+      - name: service-account
+        projected:
+          sources:
+          - configMap:
+              name: kube-root-ca.crt
+          - downwardAPI:
+              items:
+              - path: namespace
+                fieldRef:
+                  fieldPath: metadata.namespace
+          - serviceAccountToken:
+              audience: https://kubernetes.default.svc.cluster.local
+              expirationSeconds: 3600
+              path: token
+      - name: tmp
+        emptyDir:
+          medium: Memory
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/component: protonvpn
+    app.kubernetes.io/name: tailscale
+    app.kubernetes.io/part-of: components
+  name: tailscale-protonvpn-jp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: protonvpn
+      app.kubernetes.io/name: tailscale
+      app.kubernetes.io/part-of: components
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/component: protonvpn
+        app.kubernetes.io/name: tailscale
+        app.kubernetes.io/part-of: components
+    spec:
+      automountServiceAccountToken: false
+      containers:
+      - name: protonvpn
+        image: network/protonvpn:latest
+        command:
+        - protonwire
+        - connect
+        - --service
+        env:
+        - name: PROTONVPN_SERVER
+          valueFrom:
+            secretKeyRef:
+              name: protonvpn
+              key: PROTONVPN_SERVER_JP
+        - name: WIREGUARD_PRIVATE_KEY
+          valueFrom:
+            secretKeyRef:
+              name: protonvpn
+              key: WIREGUARD_PRIVATE_KEY_JP
+        livenessProbe:
+          exec:
+            command:
+            - protonwire
+            - healthcheck
+            - --service-status-file
+            - --silent
+          initialDelaySeconds: 30
+        resources:
+          limits:
+            cpu: 100m
+            memory: 256Mi
+          requests:
+            cpu: 10m
+            memory: 64Mi
+        securityContext:
+          capabilities:
+            add:
+            - NET_ADMIN
+            drop:
+            - ALL
+        volumeMounts:
+        - name: tmp
+          mountPath: /tmp
+      - name: tailscale
+        image: network/tailscale:latest
+        env:
+        - name: TS_AUTHKEY
+          valueFrom:
+            secretKeyRef:
+              name: tailscale
+              key: TS_AUTHKEY_JP
+        - name: TS_EXTRA_ARGS
+          value: --advertise-exit-node
+        - name: TS_HOSTNAME
+          valueFrom:
+            secretKeyRef:
+              name: tailscale
+              key: TS_HOSTNAME_JP
+        - name: TS_KUBE_SECRET
+          value: tailscale-protonvpn-jp
+        - name: TS_OUTBOUND_HTTP_PROXY_LISTEN
+          value: localhost:8080
+        - name: TS_SOCKS5_SERVER
+          value: localhost:1080
+        ports:
+        - name: socks
+          containerPort: 1080
+        - name: proxy
+          containerPort: 8080
+        resources:
+          limits:
+            cpu: 100m
+            memory: 256Mi
+          requests:
+            cpu: 10m
+            memory: 64Mi
+        securityContext:
+          capabilities:
+            add:
+            - NET_ADMIN
+            - NET_RAW
+            drop:
+            - ALL
+        volumeMounts:
+        - name: service-account
+          mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+          readOnly: true
+      serviceAccountName: default
+      volumes:
+      - name: service-account
+        projected:
+          sources:
+          - configMap:
+              name: kube-root-ca.crt
+          - downwardAPI:
+              items:
+              - path: namespace
+                fieldRef:
+                  fieldPath: metadata.namespace
+          - serviceAccountToken:
+              audience: https://kubernetes.default.svc.cluster.local
+              expirationSeconds: 3600
+              path: token
+      - name: tmp
+        emptyDir:
+          medium: Memory
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/component: protonvpn
+    app.kubernetes.io/name: tailscale
+    app.kubernetes.io/part-of: components
+  name: tailscale-protonvpn-tw
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: protonvpn
+      app.kubernetes.io/name: tailscale
+      app.kubernetes.io/part-of: components
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/component: protonvpn
+        app.kubernetes.io/name: tailscale
+        app.kubernetes.io/part-of: components
+    spec:
+      automountServiceAccountToken: false
+      containers:
+      - name: protonvpn
+        image: network/protonvpn:latest
+        command:
+        - protonwire
+        - connect
+        - --service
+        env:
+        - name: PROTONVPN_SERVER
+          valueFrom:
+            secretKeyRef:
+              name: protonvpn
+              key: PROTONVPN_SERVER_TW
+        - name: WIREGUARD_PRIVATE_KEY
+          valueFrom:
+            secretKeyRef:
+              name: protonvpn
+              key: WIREGUARD_PRIVATE_KEY_TW
+        livenessProbe:
+          exec:
+            command:
+            - protonwire
+            - healthcheck
+            - --service-status-file
+            - --silent
+          initialDelaySeconds: 30
+        resources:
+          limits:
+            cpu: 100m
+            memory: 256Mi
+          requests:
+            cpu: 10m
+            memory: 64Mi
+        securityContext:
+          capabilities:
+            add:
+            - NET_ADMIN
+            drop:
+            - ALL
+        volumeMounts:
+        - name: tmp
+          mountPath: /tmp
+      - name: tailscale
+        image: network/tailscale:latest
+        env:
+        - name: TS_AUTHKEY
+          valueFrom:
+            secretKeyRef:
+              name: tailscale
+              key: TS_AUTHKEY_TW
+        - name: TS_EXTRA_ARGS
+          value: --advertise-exit-node
+        - name: TS_HOSTNAME
+          valueFrom:
+            secretKeyRef:
+              name: tailscale
+              key: TS_HOSTNAME_TW
+        - name: TS_KUBE_SECRET
+          value: tailscale-protonvpn-tw
+        - name: TS_OUTBOUND_HTTP_PROXY_LISTEN
+          value: localhost:8080
+        - name: TS_SOCKS5_SERVER
+          value: localhost:1080
+        ports:
+        - name: socks
+          containerPort: 1080
+        - name: proxy
+          containerPort: 8080
+        resources:
+          limits:
+            cpu: 100m
+            memory: 256Mi
+          requests:
+            cpu: 10m
+            memory: 64Mi
+        securityContext:
+          capabilities:
+            add:
+            - NET_ADMIN
+            - NET_RAW
+            drop:
+            - ALL
+        volumeMounts:
+        - name: service-account
+          mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+          readOnly: true
+      serviceAccountName: default
+      volumes:
+      - name: service-account
+        projected:
+          sources:
+          - configMap:
+              name: kube-root-ca.crt
+          - downwardAPI:
+              items:
+              - path: namespace
+                fieldRef:
+                  fieldPath: metadata.namespace
+          - serviceAccountToken:
+              audience: https://kubernetes.default.svc.cluster.local
+              expirationSeconds: 3600
+              path: token
+      - name: tmp
+        emptyDir:
+          medium: Memory
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/component: protonvpn
+    app.kubernetes.io/name: tailscale
+    app.kubernetes.io/part-of: components
+  name: tailscale-protonvpn-us
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: protonvpn
+      app.kubernetes.io/name: tailscale
+      app.kubernetes.io/part-of: components
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/component: protonvpn
+        app.kubernetes.io/name: tailscale
+        app.kubernetes.io/part-of: components
+    spec:
+      automountServiceAccountToken: false
+      containers:
+      - name: protonvpn
+        image: network/protonvpn:latest
+        command:
+        - protonwire
+        - connect
+        - --service
+        env:
+        - name: PROTONVPN_SERVER
+          valueFrom:
+            secretKeyRef:
+              name: protonvpn
+              key: PROTONVPN_SERVER_US
+        - name: WIREGUARD_PRIVATE_KEY
+          valueFrom:
+            secretKeyRef:
+              name: protonvpn
+              key: WIREGUARD_PRIVATE_KEY_US
+        livenessProbe:
+          exec:
+            command:
+            - protonwire
+            - healthcheck
+            - --service-status-file
+            - --silent
+          initialDelaySeconds: 30
+        resources:
+          limits:
+            cpu: 100m
+            memory: 256Mi
+          requests:
+            cpu: 10m
+            memory: 64Mi
+        securityContext:
+          capabilities:
+            add:
+            - NET_ADMIN
+            drop:
+            - ALL
+        volumeMounts:
+        - name: tmp
+          mountPath: /tmp
+      - name: tailscale
+        image: network/tailscale:latest
+        env:
+        - name: TS_AUTHKEY
+          valueFrom:
+            secretKeyRef:
+              name: tailscale
+              key: TS_AUTHKEY_US
+        - name: TS_EXTRA_ARGS
+          value: --advertise-exit-node
+        - name: TS_HOSTNAME
+          valueFrom:
+            secretKeyRef:
+              name: tailscale
+              key: TS_HOSTNAME_US
+        - name: TS_KUBE_SECRET
+          value: tailscale-protonvpn-us
+        - name: TS_OUTBOUND_HTTP_PROXY_LISTEN
+          value: localhost:8080
+        - name: TS_SOCKS5_SERVER
+          value: localhost:1080
+        ports:
+        - name: socks
+          containerPort: 1080
+        - name: proxy
+          containerPort: 8080
+        resources:
+          limits:
+            cpu: 100m
+            memory: 256Mi
+          requests:
+            cpu: 10m
+            memory: 64Mi
+        securityContext:
+          capabilities:
+            add:
+            - NET_ADMIN
+            - NET_RAW
+            drop:
+            - ALL
+        volumeMounts:
+        - name: service-account
+          mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+          readOnly: true
+      serviceAccountName: default
+      volumes:
+      - name: service-account
+        projected:
+          sources:
+          - configMap:
+              name: kube-root-ca.crt
+          - downwardAPI:
+              items:
+              - path: namespace
+                fieldRef:
+                  fieldPath: metadata.namespace
+          - serviceAccountToken:
+              audience: https://kubernetes.default.svc.cluster.local
+              expirationSeconds: 3600
+              path: token
+      - name: tmp
+        emptyDir:
+          medium: Memory

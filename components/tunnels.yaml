@@ -74,7 +74,6 @@ spec:
           httpGet:
             path: /stats
             port: stats
-            scheme: HTTP
           initialDelaySeconds: 10
           timeoutSeconds: 5
         resources:

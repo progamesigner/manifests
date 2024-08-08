@@ -38,6 +38,12 @@ images:
 - name: network/haproxy
   newName: haproxy
   newTag: 3.0.2-alpine
+- name: network/protonvpn
+  newName: ghcr.io/tprasadtp/protonwire
+  newTag: 7.5.3
+- name: network/tailscale
+  newName: ghcr.io/tailscale/tailscale
+  newTag: v1.70.0
 - name: node-red/node-red
   newName: nodered/node-red
   newTag: 4.0.1
