@@ -31,8 +31,8 @@ spec:
           cp /etc/kube-router/20-kube-router.conflist /etc/cni/net.d/20-kube-router.conflist;
         resources:
           requests:
-            cpu: 50m
-            memory: 16Mi
+            cpu: 1m
+            memory: 1Mi
         volumeMounts:
         - name: cni-conf-dir
           mountPath: /etc/cni/net.d

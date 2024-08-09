@@ -2,7 +2,7 @@
 kind: Role
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  name: tailscale-protonvpn-ch
+  name: tailscale-protonvpn
 rules:
 - apiGroups:
   - ''
@@ -14,141 +14,9 @@ rules:
   - ''
   resourceNames:
   - tailscale-protonvpn-ch
-  resources:
-  - secrets
-  verbs:
-  - get
-  - patch
-  - update
----
-kind: RoleBinding
-apiVersion: rbac.authorization.k8s.io/v1
-metadata:
-  name: tailscale-protonvpn-ch
-roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: Role
-  name: tailscale-protonvpn-ch
-subjects:
-- kind: ServiceAccount
-  name: default
----
-kind: Role
-apiVersion: rbac.authorization.k8s.io/v1
-metadata:
-  name: tailscale-protonvpn-de
-rules:
-- apiGroups:
-  - ''
-  resources:
-  - secrets
-  verbs:
-  - create
-- apiGroups:
-  - ''
-  resourceNames:
   - tailscale-protonvpn-de
-  resources:
-  - secrets
-  verbs:
-  - get
-  - patch
-  - update
----
-kind: RoleBinding
-apiVersion: rbac.authorization.k8s.io/v1
-metadata:
-  name: tailscale-protonvpn-de
-roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: Role
-  name: tailscale-protonvpn-de
-subjects:
-- kind: ServiceAccount
-  name: default
----
-kind: Role
-apiVersion: rbac.authorization.k8s.io/v1
-metadata:
-  name: tailscale-protonvpn-jp
-rules:
-- apiGroups:
-  - ''
-  resources:
-  - secrets
-  verbs:
-  - create
-- apiGroups:
-  - ''
-  resourceNames:
   - tailscale-protonvpn-jp
-  resources:
-  - secrets
-  verbs:
-  - get
-  - patch
-  - update
----
-kind: RoleBinding
-apiVersion: rbac.authorization.k8s.io/v1
-metadata:
-  name: tailscale-protonvpn-jp
-roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: Role
-  name: tailscale-protonvpn-jp
-subjects:
-- kind: ServiceAccount
-  name: default
----
-kind: Role
-apiVersion: rbac.authorization.k8s.io/v1
-metadata:
-  name: tailscale-protonvpn-tw
-rules:
-- apiGroups:
-  - ''
-  resources:
-  - secrets
-  verbs:
-  - create
-- apiGroups:
-  - ''
-  resourceNames:
   - tailscale-protonvpn-tw
-  resources:
-  - secrets
-  verbs:
-  - get
-  - patch
-  - update
----
-kind: RoleBinding
-apiVersion: rbac.authorization.k8s.io/v1
-metadata:
-  name: tailscale-protonvpn-tw
-roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: Role
-  name: tailscale-protonvpn-tw
-subjects:
-- kind: ServiceAccount
-  name: default
----
-kind: Role
-apiVersion: rbac.authorization.k8s.io/v1
-metadata:
-  name: tailscale-protonvpn-us
-rules:
-- apiGroups:
-  - ''
-  resources:
-  - secrets
-  verbs:
-  - create
-- apiGroups:
-  - ''
-  resourceNames:
   - tailscale-protonvpn-us
   resources:
   - secrets
@@ -160,11 +28,11 @@ rules:
 kind: RoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  name: tailscale-protonvpn-us
+  name: tailscale-protonvpn
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
-  name: tailscale-protonvpn-us
+  name: tailscale-protonvpn
 subjects:
 - kind: ServiceAccount
   name: default

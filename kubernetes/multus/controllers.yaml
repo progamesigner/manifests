@@ -54,8 +54,8 @@ spec:
             name: kubernetes
         resources:
           requests:
-            cpu: 50m
-            memory: 16Mi
+            cpu: 1m
+            memory: 1Mi
         volumeMounts:
         - name: cni-conf-dir
           mountPath: /etc/cni/net.d

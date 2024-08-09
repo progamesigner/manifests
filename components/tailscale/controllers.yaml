@@ -22,6 +22,21 @@ spec:
         app.kubernetes.io/part-of: components
     spec:
       automountServiceAccountToken: false
+      initContainers:
+      - name: sysctls
+        image: busybox:latest
+        command:
+        - sh
+        - -c
+        - set -ex;
+          sysctl -w net.ipv4.conf.all.rp_filter=2;
+          sysctl -w net.ipv6.conf.all.disable_ipv6=1;
+        securityContext:
+          privileged: true
+        resources:
+          requests:
+            cpu: 1m
+            memory: 1Mi
       containers:
       - name: protonvpn
         image: network/protonvpn:latest
@@ -40,6 +55,9 @@ spec:
             secretKeyRef:
               name: protonvpn
               key: WIREGUARD_PRIVATE_KEY_CH
+        envFrom:
+        - configMapRef:
+            name: protonvpn
         livenessProbe:
           exec:
             command:
@@ -47,7 +65,8 @@ spec:
             - healthcheck
             - --service-status-file
             - --silent
-          initialDelaySeconds: 30
+          initialDelaySeconds: 60
+          periodSeconds: 30
         resources:
           limits:
             cpu: 100m
@@ -85,6 +104,14 @@ spec:
           value: localhost:8080
         - name: TS_SOCKS5_SERVER
           value: localhost:1080
+        livenessProbe:
+          exec:
+            command:
+            - tailscale
+            - ip
+            - --4
+          initialDelaySeconds: 10
+          periodSeconds: 30
         ports:
         - name: socks
           containerPort: 1080
@@ -151,6 +178,21 @@ spec:
         app.kubernetes.io/part-of: components
     spec:
       automountServiceAccountToken: false
+      initContainers:
+      - name: sysctls
+        image: busybox:latest
+        command:
+        - sh
+        - -c
+        - set -ex;
+          sysctl -w net.ipv4.conf.all.rp_filter=2;
+          sysctl -w net.ipv6.conf.all.disable_ipv6=1;
+        securityContext:
+          privileged: true
+        resources:
+          requests:
+            cpu: 1m
+            memory: 1Mi
       containers:
       - name: protonvpn
         image: network/protonvpn:latest
@@ -169,6 +211,9 @@ spec:
             secretKeyRef:
               name: protonvpn
               key: WIREGUARD_PRIVATE_KEY_DE
+        envFrom:
+        - configMapRef:
+            name: protonvpn
         livenessProbe:
           exec:
             command:
@@ -176,7 +221,8 @@ spec:
             - healthcheck
             - --service-status-file
             - --silent
-          initialDelaySeconds: 30
+          initialDelaySeconds: 60
+          periodSeconds: 30
         resources:
           limits:
             cpu: 100m
@@ -214,6 +260,14 @@ spec:
           value: localhost:8080
         - name: TS_SOCKS5_SERVER
           value: localhost:1080
+        livenessProbe:
+          exec:
+            command:
+            - tailscale
+            - ip
+            - --4
+          initialDelaySeconds: 10
+          periodSeconds: 30
         ports:
         - name: socks
           containerPort: 1080
@@ -280,6 +334,21 @@ spec:
         app.kubernetes.io/part-of: components
     spec:
       automountServiceAccountToken: false
+      initContainers:
+      - name: sysctls
+        image: busybox:latest
+        command:
+        - sh
+        - -c
+        - set -ex;
+          sysctl -w net.ipv4.conf.all.rp_filter=2;
+          sysctl -w net.ipv6.conf.all.disable_ipv6=1;
+        securityContext:
+          privileged: true
+        resources:
+          requests:
+            cpu: 1m
+            memory: 1Mi
       containers:
       - name: protonvpn
         image: network/protonvpn:latest
@@ -298,6 +367,9 @@ spec:
             secretKeyRef:
               name: protonvpn
               key: WIREGUARD_PRIVATE_KEY_JP
+        envFrom:
+        - configMapRef:
+            name: protonvpn
         livenessProbe:
           exec:
             command:
@@ -305,7 +377,8 @@ spec:
             - healthcheck
             - --service-status-file
             - --silent
-          initialDelaySeconds: 30
+          initialDelaySeconds: 60
+          periodSeconds: 30
         resources:
           limits:
             cpu: 100m
@@ -343,6 +416,14 @@ spec:
           value: localhost:8080
         - name: TS_SOCKS5_SERVER
           value: localhost:1080
+        livenessProbe:
+          exec:
+            command:
+            - tailscale
+            - ip
+            - --4
+          initialDelaySeconds: 10
+          periodSeconds: 30
         ports:
         - name: socks
           containerPort: 1080
@@ -409,6 +490,21 @@ spec:
         app.kubernetes.io/part-of: components
     spec:
       automountServiceAccountToken: false
+      initContainers:
+      - name: sysctls
+        image: busybox:latest
+        command:
+        - sh
+        - -c
+        - set -ex;
+          sysctl -w net.ipv4.conf.all.rp_filter=2;
+          sysctl -w net.ipv6.conf.all.disable_ipv6=1;
+        securityContext:
+          privileged: true
+        resources:
+          requests:
+            cpu: 1m
+            memory: 1Mi
       containers:
       - name: protonvpn
         image: network/protonvpn:latest
@@ -427,6 +523,9 @@ spec:
             secretKeyRef:
               name: protonvpn
               key: WIREGUARD_PRIVATE_KEY_TW
+        envFrom:
+        - configMapRef:
+            name: protonvpn
         livenessProbe:
           exec:
             command:
@@ -434,7 +533,8 @@ spec:
             - healthcheck
             - --service-status-file
             - --silent
-          initialDelaySeconds: 30
+          initialDelaySeconds: 60
+          periodSeconds: 30
         resources:
           limits:
             cpu: 100m
@@ -472,6 +572,14 @@ spec:
           value: localhost:8080
         - name: TS_SOCKS5_SERVER
           value: localhost:1080
+        livenessProbe:
+          exec:
+            command:
+            - tailscale
+            - ip
+            - --4
+          initialDelaySeconds: 10
+          periodSeconds: 30
         ports:
         - name: socks
           containerPort: 1080
@@ -538,6 +646,21 @@ spec:
         app.kubernetes.io/part-of: components
     spec:
       automountServiceAccountToken: false
+      initContainers:
+      - name: sysctls
+        image: busybox:latest
+        command:
+        - sh
+        - -c
+        - set -ex;
+          sysctl -w net.ipv4.conf.all.rp_filter=2;
+          sysctl -w net.ipv6.conf.all.disable_ipv6=1;
+        securityContext:
+          privileged: true
+        resources:
+          requests:
+            cpu: 1m
+            memory: 1Mi
       containers:
       - name: protonvpn
         image: network/protonvpn:latest
@@ -556,6 +679,9 @@ spec:
             secretKeyRef:
               name: protonvpn
               key: WIREGUARD_PRIVATE_KEY_US
+        envFrom:
+        - configMapRef:
+            name: protonvpn
         livenessProbe:
           exec:
             command:
@@ -563,7 +689,8 @@ spec:
             - healthcheck
             - --service-status-file
             - --silent
-          initialDelaySeconds: 30
+          initialDelaySeconds: 60
+          periodSeconds: 30
         resources:
           limits:
             cpu: 100m
@@ -601,6 +728,14 @@ spec:
           value: localhost:8080
         - name: TS_SOCKS5_SERVER
           value: localhost:1080
+        livenessProbe:
+          exec:
+            command:
+            - tailscale
+            - ip
+            - --4
+          initialDelaySeconds: 10
+          periodSeconds: 30
         ports:
         - name: socks
           containerPort: 1080

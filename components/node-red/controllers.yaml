@@ -35,12 +35,9 @@ spec:
         - name: data
           mountPath: /data
         resources:
-          limits:
-            cpu: 1500m
-            memory: 512Mi
           requests:
-            cpu: 100m
-            memory: 64Mi
+            cpu: 1m
+            memory: 1Mi
       containers:
       - name: node-red
         image: node-red/node-red:latest

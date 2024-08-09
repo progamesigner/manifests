@@ -36,16 +36,13 @@ spec:
         envFrom:
         - secretRef:
             name: elasticsearch
+        resources:
+          requests:
+            cpu: 1m
+            memory: 1Mi
         volumeMounts:
         - name: data
           mountPath: /usr/share/elasticsearch/data
-        resources:
-          limits:
-            cpu: 1500m
-            memory: 512Mi
-          requests:
-            cpu: 100m
-            memory: 64Mi
       containers:
       - name: elasticsearch
         image: elasticsearch/elasticsearch:latest

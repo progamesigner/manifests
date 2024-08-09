@@ -30,6 +30,10 @@ spec:
         - |
           set -ex;
           chown -R 5050 /var/lib/pgadmin;
+        resources:
+          requests:
+            cpu: 1m
+            memory: 1Mi
         securityContext:
           runAsUser: 0
         volumeMounts:
