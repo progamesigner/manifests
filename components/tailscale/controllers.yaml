@@ -91,8 +91,6 @@ spec:
             secretKeyRef:
               name: tailscale
               key: TS_AUTHKEY_CH
-        - name: TS_EXTRA_ARGS
-          value: --advertise-exit-node
         - name: TS_HOSTNAME
           valueFrom:
             secretKeyRef:
@@ -100,10 +98,9 @@ spec:
               key: TS_HOSTNAME_CH
         - name: TS_KUBE_SECRET
           value: tailscale-protonvpn-ch
-        - name: TS_OUTBOUND_HTTP_PROXY_LISTEN
-          value: localhost:8080
-        - name: TS_SOCKS5_SERVER
-          value: localhost:1080
+        envFrom:
+        - configMapRef:
+            name: tailscale
         livenessProbe:
           exec:
             command:
@@ -247,8 +244,6 @@ spec:
             secretKeyRef:
               name: tailscale
               key: TS_AUTHKEY_DE
-        - name: TS_EXTRA_ARGS
-          value: --advertise-exit-node
         - name: TS_HOSTNAME
           valueFrom:
             secretKeyRef:
@@ -256,10 +251,9 @@ spec:
               key: TS_HOSTNAME_DE
         - name: TS_KUBE_SECRET
           value: tailscale-protonvpn-de
-        - name: TS_OUTBOUND_HTTP_PROXY_LISTEN
-          value: localhost:8080
-        - name: TS_SOCKS5_SERVER
-          value: localhost:1080
+        envFrom:
+        - configMapRef:
+            name: tailscale
         livenessProbe:
           exec:
             command:
@@ -403,8 +397,6 @@ spec:
             secretKeyRef:
               name: tailscale
               key: TS_AUTHKEY_JP
-        - name: TS_EXTRA_ARGS
-          value: --advertise-exit-node
         - name: TS_HOSTNAME
           valueFrom:
             secretKeyRef:
@@ -412,10 +404,9 @@ spec:
               key: TS_HOSTNAME_JP
         - name: TS_KUBE_SECRET
           value: tailscale-protonvpn-jp
-        - name: TS_OUTBOUND_HTTP_PROXY_LISTEN
-          value: localhost:8080
-        - name: TS_SOCKS5_SERVER
-          value: localhost:1080
+        envFrom:
+        - configMapRef:
+            name: tailscale
         livenessProbe:
           exec:
             command:
@@ -559,8 +550,6 @@ spec:
             secretKeyRef:
               name: tailscale
               key: TS_AUTHKEY_TW
-        - name: TS_EXTRA_ARGS
-          value: --advertise-exit-node
         - name: TS_HOSTNAME
           valueFrom:
             secretKeyRef:
@@ -568,10 +557,9 @@ spec:
               key: TS_HOSTNAME_TW
         - name: TS_KUBE_SECRET
           value: tailscale-protonvpn-tw
-        - name: TS_OUTBOUND_HTTP_PROXY_LISTEN
-          value: localhost:8080
-        - name: TS_SOCKS5_SERVER
-          value: localhost:1080
+        envFrom:
+        - configMapRef:
+            name: tailscale
         livenessProbe:
           exec:
             command:
@@ -715,8 +703,6 @@ spec:
             secretKeyRef:
               name: tailscale
               key: TS_AUTHKEY_US
-        - name: TS_EXTRA_ARGS
-          value: --advertise-exit-node
         - name: TS_HOSTNAME
           valueFrom:
             secretKeyRef:
@@ -724,10 +710,9 @@ spec:
               key: TS_HOSTNAME_US
         - name: TS_KUBE_SECRET
           value: tailscale-protonvpn-us
-        - name: TS_OUTBOUND_HTTP_PROXY_LISTEN
-          value: localhost:8080
-        - name: TS_SOCKS5_SERVER
-          value: localhost:1080
+        envFrom:
+        - configMapRef:
+            name: tailscale
         livenessProbe:
           exec:
             command:

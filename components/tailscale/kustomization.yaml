@@ -5,6 +5,11 @@ configMapGenerator:
 - name: protonvpn
   literals:
   - IPCHECK_INTERVAL=1800
+- name: tailscale
+  literals:
+  - TS_EXTRA_ARGS=--advertise-exit-node
+  - TS_OUTBOUND_HTTP_PROXY_LISTEN=localhost:8080
+  - TS_SOCKS5_SERVER=localhost:1080
 resources:
 - controllers.yaml
 - rbac.yaml
