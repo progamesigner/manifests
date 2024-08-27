@@ -10,13 +10,13 @@ images:
   newTag: v2.11.3
 - name: dify/api
   newName: langgenius/dify-api
-  newTag: 0.7.1
+  newTag: 0.7.2
 - name: dify/worker
   newName: langgenius/dify-api
-  newTag: 0.7.1
+  newTag: 0.7.2
 - name: dify/web
   newName: langgenius/dify-web
-  newTag: 0.7.1
+  newTag: 0.7.2
 - name: gloomhaven/client
   newName: gloomhavensecretariat/ghs
   newTag: v0.73.0
