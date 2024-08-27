@@ -5,6 +5,7 @@ configMapGenerator:
 - name: protonvpn
   literals:
   - IPCHECK_INTERVAL=1800
+  - SKIP_DNS_CONFIG=true
 - name: tailscale
   literals:
   - TS_EXTRA_ARGS=--advertise-exit-node
