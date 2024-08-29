@@ -165,6 +165,96 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
+  name: proxy-ch
+spec:
+  ports:
+  - name: socks
+    port: 1080
+    targetPort: socks
+  - name: proxy
+    port: 8080
+    targetPort: proxy
+  selector:
+    app.kubernetes.io/component: tailscale
+    app.kubernetes.io/name: protonvpn
+    app.kubernetes.io/part-of: components
+    kubernetes.progamesigner.dev/vpn-region: ch
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: proxy-de
+spec:
+  ports:
+  - name: socks
+    port: 1080
+    targetPort: socks
+  - name: proxy
+    port: 8080
+    targetPort: proxy
+  selector:
+    app.kubernetes.io/component: tailscale
+    app.kubernetes.io/name: protonvpn
+    app.kubernetes.io/part-of: components
+    kubernetes.progamesigner.dev/vpn-region: de
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: proxy-jp
+spec:
+  ports:
+  - name: socks
+    port: 1080
+    targetPort: socks
+  - name: proxy
+    port: 8080
+    targetPort: proxy
+  selector:
+    app.kubernetes.io/component: tailscale
+    app.kubernetes.io/name: protonvpn
+    app.kubernetes.io/part-of: components
+    kubernetes.progamesigner.dev/vpn-region: jp
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: proxy-tw
+spec:
+  ports:
+  - name: socks
+    port: 1080
+    targetPort: socks
+  - name: proxy
+    port: 8080
+    targetPort: proxy
+  selector:
+    app.kubernetes.io/component: tailscale
+    app.kubernetes.io/name: protonvpn
+    app.kubernetes.io/part-of: components
+    kubernetes.progamesigner.dev/vpn-region: tw
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: proxy-us
+spec:
+  ports:
+  - name: socks
+    port: 1080
+    targetPort: socks
+  - name: proxy
+    port: 8080
+    targetPort: proxy
+  selector:
+    app.kubernetes.io/component: tailscale
+    app.kubernetes.io/name: protonvpn
+    app.kubernetes.io/part-of: components
+    kubernetes.progamesigner.dev/vpn-region: us
+---
+apiVersion: v1
+kind: Service
+metadata:
   name: rsshub
 spec:
   ports:
