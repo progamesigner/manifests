@@ -20,6 +20,10 @@ secretGenerator:
   - DB_PASSWORD=password
   - DB_PORT=5432
   - DB_USERNAME=default
+  - ELASTICSEARCH_HOST=elasticsearch.default.svc.cluster.local
+  - ELASTICSEARCH_PASSWORD=password
+  - ELASTICSEARCH_PORT=9200
+  - ELASTICSEARCH_USERNAME=default
   - REDIS_DB=0
   - REDIS_HOST=redis.default.svc.cluster.local
   - REDIS_PORT=6379
