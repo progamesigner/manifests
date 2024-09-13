@@ -43,7 +43,7 @@ images:
   newTag: 7.5.3
 - name: network/tailscale
   newName: ghcr.io/tailscale/tailscale
-  newTag: v1.72.1
+  newTag: v1.74.0
 - name: node-red/node-red
   newName: nodered/node-red
   newTag: 4.0.1
