@@ -46,8 +46,8 @@ spec:
         - name: data
           mountPath: /opt/vscode-server
         - name: files
-          mountPath: /home/vscode/codespaces
-          subPath: codespaces
+          mountPath: /home/vscode/codes
+          subPath: developer/projects
         - name: files
           mountPath: /home/vscode/dotfiles
           subPath: dotfiles
