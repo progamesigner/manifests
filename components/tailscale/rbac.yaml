@@ -16,6 +16,7 @@ rules:
   - tailscale-protonvpn-ch
   - tailscale-protonvpn-de
   - tailscale-protonvpn-jp
+  - tailscale-protonvpn-nz
   - tailscale-protonvpn-tw
   - tailscale-protonvpn-us
   resources:
