@@ -4,15 +4,15 @@ kind: Component
 images:
 - name: cert-manager/cainjector
   newName: quay.io/jetstack/cert-manager-cainjector
-  newTag: v1.16.0
+  newTag: v1.16.1
 - name: cert-manager/controller
   newName: quay.io/jetstack/cert-manager-controller
-  newTag: v1.16.0
+  newTag: v1.16.1
 - name: cert-manager/webhook
   newName: quay.io/jetstack/cert-manager-webhook
-  newTag: v1.16.0
+  newTag: v1.16.1
 resources:
-- https://github.com/cert-manager/cert-manager/releases/download/v1.16.0/cert-manager.crds.yaml
+- https://github.com/cert-manager/cert-manager/releases/download/v1.16.1/cert-manager.crds.yaml
 
 - controllers.yaml
 - rbac.yaml
