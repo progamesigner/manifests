@@ -4,7 +4,7 @@ kind: Kustomization
 images:
 - name: adguard-home/adguard-home
   newName: adguard/adguardhome
-  newTag: v0.107.53
+  newTag: v0.107.54
 - name: coder/coder
   newName: ghcr.io/coder/coder
   newTag: v2.11.3
