@@ -62,7 +62,8 @@ spec:
       containers:
       - name: multus
         image: multus/multus:latest
-        args:
+        command:
+        - /thin_entrypoint
         - --cni-bin-dir=/opt/cni/bin
         - --cni-conf-dir=/etc/cni/net.d
         - --global-namespaces=default,kube-system
