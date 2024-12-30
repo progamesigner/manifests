@@ -351,7 +351,7 @@ spec:
     app.kubernetes.io/part-of: components
   type: LoadBalancer
 ---
-apiVersion: k8s.nginx.org/v1alpha1
+apiVersion: k8s.nginx.org/v1
 kind: TransportServer
 metadata:
   name: adguard-home
@@ -366,7 +366,7 @@ spec:
     service: adguard-home
     port: 853
 ---
-apiVersion: k8s.nginx.org/v1alpha1
+apiVersion: k8s.nginx.org/v1
 kind: TransportServer
 metadata:
   name: adguard-home-udp
