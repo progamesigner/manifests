@@ -53,13 +53,13 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   annotations:
-    kubernetes.progamesigner.dev/hostname: minio
+    kubernetes.progamesigner.dev/hostname: bucket
     nginx.org/websocket-services: minio
   name: minio
 spec:
   ingressClassName: internal-ingress
   rules:
-  - host: minio.progamesigner.dev
+  - host: bucket.progamesigner.dev
     http:
       paths:
       - backend:
@@ -71,20 +71,20 @@ spec:
         pathType: Prefix
   tls:
   - hosts:
-    - minio.progamesigner.dev
+    - bucket.progamesigner.dev
     secretName: tls-dev-progamesigner
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   annotations:
-    kubernetes.progamesigner.dev/hostname: auto
+    kubernetes.progamesigner.dev/hostname: workflow
     nginx.org/websocket-services: node-red
   name: node-red
 spec:
   ingressClassName: internal-ingress
   rules:
-  - host: auto.progamesigner.dev
+  - host: workflow.progamesigner.dev
     http:
       paths:
       - backend:
@@ -96,7 +96,7 @@ spec:
         pathType: Prefix
   tls:
   - hosts:
-    - auto.progamesigner.dev
+    - workflow.progamesigner.dev
     secretName: tls-dev-progamesigner
 ---
 apiVersion: networking.k8s.io/v1
@@ -193,13 +193,13 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   annotations:
-    kubernetes.progamesigner.dev/hostname: unifi
+    kubernetes.progamesigner.dev/hostname: controller
     nginx.org/ssl-services: unifi-controller
   name: unifi-controller
 spec:
   ingressClassName: internal-ingress
   rules:
-  - host: unifi.progamesigner.dev
+  - host: controller.progamesigner.dev
     http:
       paths:
       - backend:
@@ -211,5 +211,5 @@ spec:
         pathType: Prefix
   tls:
   - hosts:
-    - unifi.progamesigner.dev
+    - controller.progamesigner.dev
     secretName: tls-dev-progamesigner
