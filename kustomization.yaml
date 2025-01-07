@@ -199,11 +199,21 @@ patches:
       template:
         spec:
           volumes:
-          - name: data
+          - name: bin
+            emptyDir: null
+            hostPath:
+              type: DirectoryOrCreate
+              path: /srv/node-red-bin
+          - name: conf
             emptyDir: null
             hostPath:
               type: DirectoryOrCreate
               path: /srv/node-red
+          - name: data
+            emptyDir: null
+            hostPath:
+              type: DirectoryOrCreate
+              path: /srv/node-red-data
           - name: files
             emptyDir: null
             hostPath:

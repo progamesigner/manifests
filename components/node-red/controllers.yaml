@@ -30,10 +30,16 @@ spec:
         - -c
         - |
           set -ex;
-          chown 1000:1000 /data
+          chown 1000:1000 /node-red-bin
+          chown 1000:1000 /node-red-conf
+          chown 1000:1000 /node-red-data
         volumeMounts:
+        - name: bin
+          mountPath: /node-red-bin
+        - name: conf
+          mountPath: /node-red-conf
         - name: data
-          mountPath: /data
+          mountPath: /node-red-data
         resources:
           requests:
             cpu: 1m
@@ -52,13 +58,21 @@ spec:
             cpu: 100m
             memory: 128Mi
         volumeMounts:
-        - name: data
+        - name: bin
+          mountPath: /usr/local/node-red/bin
+        - name: conf
           mountPath: /data
+        - name: data
+          mountPath: /usr/local/share/node-red
         - name: files
           mountPath: /srv
           readOnly: true
       serviceAccountName: default
       volumes:
+      - name: bin
+        emptyDir: {}
+      - name: conf
+        emptyDir: {}
       - name: data
         emptyDir: {}
       - name: files
