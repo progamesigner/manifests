@@ -34,7 +34,7 @@ images:
   newTag: 2023.10.120-1
 - name: network/cloudflared
   newName: cloudflare/cloudflared
-  newTag: 2025.1.1
+  newTag: 2025.2.0
 - name: network/haproxy
   newName: haproxy
   newTag: 3.0.2-alpine
