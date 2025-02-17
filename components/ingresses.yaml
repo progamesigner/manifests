@@ -28,6 +28,31 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   annotations:
+    kubernetes.progamesigner.dev/hostname: dashboard
+    nginx.org/websocket-services: dashboard
+  name: dashboard
+spec:
+  ingressClassName: internal-ingress
+  rules:
+  - host: dashboard.progamesigner.dev
+    http:
+      paths:
+      - backend:
+          service:
+            name: dashboard
+            port:
+              name: http
+        path: /
+        pathType: Prefix
+  tls:
+  - hosts:
+    - dashboard.progamesigner.dev
+    secretName: tls-dev-progamesigner
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
     kubernetes.progamesigner.dev/hostname: home
     nginx.org/websocket-services: home-assistant
   name: home-assistant
