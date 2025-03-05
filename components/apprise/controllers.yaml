@@ -1,0 +1,57 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/component: apprise
+    app.kubernetes.io/name: apprise
+    app.kubernetes.io/part-of: components
+  name: apprise
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: apprise
+      app.kubernetes.io/name: apprise
+      app.kubernetes.io/part-of: components
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/component: apprise
+        app.kubernetes.io/name: apprise
+        app.kubernetes.io/part-of: components
+    spec:
+      automountServiceAccountToken: false
+      containers:
+      - name: apprise
+        image: apprise/apprise:latest
+        env:
+        - name: APPRISE_STATEFUL_MODE
+          value: disabled
+        - name: APPRISE_WORKER_COUNT
+          value: '1'
+        - name: PGID
+          value: '1000'
+        - name: PUID
+          value: '1000'
+        ports:
+        - name: http
+          containerPort: 8000
+        resources:
+          limits:
+            cpu: 500m
+            memory: 256Mi
+          requests:
+            cpu: 100m
+            memory: 128Mi
+        volumeMounts:
+        - name: data
+          mountPath: /attach
+        - name: data
+          mountPath: /config
+        - name: data
+          mountPath: /plugin
+      serviceAccountName: default
+      volumes:
+      - name: data
+        emptyDir: {}

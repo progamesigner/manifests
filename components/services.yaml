@@ -22,6 +22,20 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
+  name: apprise
+spec:
+  ports:
+  - name: http
+    port: 8000
+    targetPort: http
+  selector:
+    app.kubernetes.io/component: apprise
+    app.kubernetes.io/name: apprise
+    app.kubernetes.io/part-of: components
+---
+apiVersion: v1
+kind: Service
+metadata:
   name: coder
 spec:
   ports:
