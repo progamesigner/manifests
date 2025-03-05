@@ -47,9 +47,6 @@ images:
 - name: node-red/node-red
   newName: nodered/node-red
   newTag: 4.0.1
-- name: obsidian/obsidian
-  newName: lscr.io/linuxserver/obsidian
-  newTag: v1.6.5-ls15
 - name: pgadmin/pgadmin
   newName: dpage/pgadmin4
   newTag: '8.14'
@@ -219,20 +216,6 @@ patches:
             hostPath:
               type: Directory
               path: /srv
-- patch: |-
-    apiVersion: apps/v1
-    kind: Deployment
-    metadata:
-      name: obsidian
-    spec:
-      template:
-        spec:
-          volumes:
-          - name: data
-            emptyDir: null
-            hostPath:
-              type: DirectoryOrCreate
-              path: /srv/obsidian
 - patch: |-
     apiVersion: apps/v1
     kind: Deployment

@@ -8,7 +8,6 @@ components:
 - mariadb
 - minio
 - mongodb
-- obsidian
 - postgresql
 - rabbitmq
 - redis
