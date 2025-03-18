@@ -93,6 +93,7 @@ patches:
     metadata:
       name: elasticsearch
     spec:
+      replicas: 0
       template:
         spec:
           volumes:
@@ -329,6 +330,7 @@ patches:
     metadata:
       name: weaviate
     spec:
+      replicas: 0
       template:
         spec:
           volumes:
