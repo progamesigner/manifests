@@ -108,6 +108,7 @@ patches:
     metadata:
       name: gloomhaven
     spec:
+      replicas: 0
       template:
         spec:
           volumes:
@@ -136,6 +137,7 @@ patches:
     metadata:
       name: localai
     spec:
+      replicas: 0
       template:
         spec:
           volumes:
