@@ -56,6 +56,9 @@ images:
 - name: phpmyadmin/phpmyadmin
   newName: phpmyadmin
   newTag: 5.2.1
+- name: redis/insight
+  newName: redis/redisinsight
+  newTag: '2.66'
 - name: rsshub/rsshub
   newName: diygod/rsshub
   newTag: 2024-07-31
@@ -257,6 +260,20 @@ patches:
       name: rabbitmq
     spec:
       replicas: 0
+- patch: |-
+    apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      name: redis-insight
+    spec:
+      template:
+        spec:
+          volumes:
+          - name: data
+            emptyDir: null
+            hostPath:
+              type: DirectoryOrCreate
+              path: /srv/redis-insight
 - patch: |-
     apiVersion: apps/v1
     kind: Deployment

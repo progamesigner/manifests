@@ -13,6 +13,7 @@ components:
 - pgadmin
 - phpmyadmin
 - proxy
+- redis-insight
 - rsshub
 - syncthing
 - tailscale

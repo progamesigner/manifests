@@ -193,6 +193,30 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   annotations:
+    kubernetes.progamesigner.dev/hostname: redis
+  name: redis-insight
+spec:
+  ingressClassName: internal-ingress
+  rules:
+  - host: redis.progamesigner.dev
+    http:
+      paths:
+      - backend:
+          service:
+            name: redis-insight
+            port:
+              name: http
+        path: /
+        pathType: Prefix
+  tls:
+  - hosts:
+    - redis.progamesigner.dev
+    secretName: tls-dev-progamesigner
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
     kubernetes.progamesigner.dev/hostname: syncthing
     nginx.org/ssl-services: syncthing
   name: syncthing

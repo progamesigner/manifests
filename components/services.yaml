@@ -283,6 +283,20 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
+  name: redis-insight
+spec:
+  ports:
+  - name: http
+    port: 5540
+    targetPort: http
+  selector:
+    app.kubernetes.io/component: redis-insight
+    app.kubernetes.io/name: redis-insight
+    app.kubernetes.io/part-of: components
+---
+apiVersion: v1
+kind: Service
+metadata:
   name: rsshub
 spec:
   ports:
