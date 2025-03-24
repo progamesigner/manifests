@@ -148,6 +148,20 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
+  name: mongodb-compass
+spec:
+  ports:
+  - name: http
+    port: 8080
+    targetPort: http
+  selector:
+    app.kubernetes.io/component: mongodb-compass
+    app.kubernetes.io/name: mongodb-compass
+    app.kubernetes.io/part-of: components
+---
+apiVersion: v1
+kind: Service
+metadata:
   name: pgadmin
 spec:
   ports:

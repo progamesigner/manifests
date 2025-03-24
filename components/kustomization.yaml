@@ -9,6 +9,7 @@ components:
 - dify
 - gloomhaven
 - home-assistant
+- mongodb-compass
 - node-red
 - pgadmin
 - phpmyadmin

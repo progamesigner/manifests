@@ -128,6 +128,31 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   annotations:
+    kubernetes.progamesigner.dev/hostname: mongodb
+    nginx.org/websocket-services: mongodb-compass
+  name: mongodb-compass
+spec:
+  ingressClassName: internal-ingress
+  rules:
+  - host: mongodb.progamesigner.dev
+    http:
+      paths:
+      - backend:
+          service:
+            name: mongodb-compass
+            port:
+              name: http
+        path: /
+        pathType: Prefix
+  tls:
+  - hosts:
+    - mongodb.progamesigner.dev
+    secretName: tls-dev-progamesigner
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
     kubernetes.progamesigner.dev/hostname: postgresql
     nginx.org/client-max-body-size: 2G
     nginx.org/proxy-read-timeout: 3600s
