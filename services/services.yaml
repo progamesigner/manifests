@@ -6,6 +6,7 @@ metadata:
     kubernetes.progamesigner.dev/hostname: browserless
   name: browserless
 spec:
+  externalTrafficPolicy: Local
   ports:
   - name: http
     port: 3000
@@ -37,8 +38,11 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
+  annotations:
+    kubernetes.progamesigner.dev/hostname: ai,localai
   name: localai
 spec:
+  externalTrafficPolicy: Local
   ports:
   - name: http
     port: 8080
@@ -47,6 +51,7 @@ spec:
     app.kubernetes.io/component: localai
     app.kubernetes.io/name: localai
     app.kubernetes.io/part-of: services
+  type: LoadBalancer
 ---
 apiVersion: v1
 kind: Service
@@ -70,7 +75,7 @@ apiVersion: v1
 kind: Service
 metadata:
   annotations:
-    kubernetes.progamesigner.dev/hostname: minio
+    kubernetes.progamesigner.dev/hostname: minio,s3
   name: minio
 spec:
   externalTrafficPolicy: Local
