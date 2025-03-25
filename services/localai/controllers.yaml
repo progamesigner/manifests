@@ -22,60 +22,31 @@ spec:
         app.kubernetes.io/part-of: services
     spec:
       automountServiceAccountToken: false
-      initContainers:
-      - name: builder
-        image: localai/localai:latest
-        command:
-        - sh
-        - -c
-        - |
-          set -ex;
-
-          touch /localai/version
-
-          BUILT_VERSION=$(cat /localai/version)
-          IMAGE_VERSION=$(/localai/local-ai --version)
-
-          if [ "$BUILT_VERSION" != "$IMAGE_VERSION" ]; then
-            rm -f /localai/local-ai
-            make build -j4
-            cp local-ai /localai/local-ai
-            /localai/local-ai --version > /localai/version
-          fi
-        resources:
-          limits:
-            cpu: 4000m
-            memory: 4Gi
-          requests:
-            cpu: 300m
-            memory: 128Mi
-        volumeMounts:
-        - name: artifacts
-          mountPath: /localai
       containers:
       - name: localai
         image: localai/localai:latest
         command:
         - /build/local-ai
+        - run
         env:
+        - name: LOCALAI_AUTOLOAD_GALLERIES
+          value: 'true'
+        - name: LOCALAI_DISABLE_WEBUI
+          value: 'true'
         - name: LOCALAI_GALLERIES
           value: |-
             [
-                {
-                    "url": "github:progamesigner/localai-model-gallery/index.yaml",
-                    "name": "progamesigner-model-gallery"
-                },
-                {
-                    "name": "model-gallery",
-                    "url": "github:go-skynet/model-gallery/index.yaml"
-                },
-                {
-                    "url": "github:go-skynet/model-gallery/huggingface.yaml",
-                    "name": "huggingface"
-                }
+              {
+                "name": "progamesigner-model-gallery",
+                "url": "github:progamesigner/localai-model-gallery/index.yaml@main"
+              },
+              {
+                "name":"localai",
+                "url":"github:mudler/LocalAI/gallery/index.yaml@master"
+              }
             ]
-        - name: LOCALAI_MODELS_PATH
-          value: /models
+        - name: LOCALAI_P2P
+          value: 'true'
         - name: LOCALAI_PARALLEL_REQUESTS
           value: 'true'
         ports:
@@ -89,15 +60,9 @@ spec:
             cpu: 300m
             memory: 128Mi
         volumeMounts:
-        - name: artifacts
-          mountPath: /build/local-ai
-          readOnly: true
-          subPath: local-ai
         - name: data
-          mountPath: /models
+          mountPath: /build/models
       serviceAccountName: default
       volumes:
-      - name: artifacts
-        emptyDir: {}
       - name: data
         emptyDir: {}
