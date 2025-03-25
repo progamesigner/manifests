@@ -31,16 +31,16 @@ spec:
         - |
           set -ex;
 
-          touch /built/version
+          touch /localai/version
 
-          BUILT_VERSION=$(cat /built/version)
-          IMAGE_VERSION=$(/build/local-ai --version)
+          BUILT_VERSION=$(cat /localai/version)
+          IMAGE_VERSION=$(/localai/local-ai --version)
 
           if [ "$BUILT_VERSION" != "$IMAGE_VERSION" ]; then
-            rm -f /built/local-ai
+            rm -f /localai/local-ai
             make build -j4
-            cp local-ai /built/local-ai
-            /built/local-ai --version > /built/version
+            cp local-ai /localai/local-ai
+            /localai/local-ai --version > /localai/version
           fi
         resources:
           limits:
@@ -51,15 +51,14 @@ spec:
             memory: 128Mi
         volumeMounts:
         - name: artifacts
-          mountPath: /built
+          mountPath: /localai
       containers:
       - name: localai
         image: localai/localai:latest
         command:
         - /build/local-ai
-        - --parallel-requests
         env:
-        - name: GALLERIES
+        - name: LOCALAI_GALLERIES
           value: |-
             [
                 {
@@ -75,8 +74,10 @@ spec:
                     "name": "huggingface"
                 }
             ]
-        - name: MODELS_PATH
+        - name: LOCALAI_MODELS_PATH
           value: /models
+        - name: LOCALAI_PARALLEL_REQUESTS
+          value: 'true'
         ports:
         - name: http
           containerPort: 8080
