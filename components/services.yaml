@@ -339,15 +339,15 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: unifi-controller
+  name: unifi-network
 spec:
   ports:
   - name: https
     port: 8443
     targetPort: https
   selector:
-    app.kubernetes.io/component: unifi-controller
-    app.kubernetes.io/name: unifi-controller
+    app.kubernetes.io/component: unifi-network
+    app.kubernetes.io/name: unifi-network
     app.kubernetes.io/part-of: components
 ---
 apiVersion: v1

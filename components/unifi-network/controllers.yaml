@@ -3,16 +3,16 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app.kubernetes.io/component: unifi-controller
-    app.kubernetes.io/name: unifi-controller
+    app.kubernetes.io/component: unifi-network
+    app.kubernetes.io/name: unifi-network
     app.kubernetes.io/part-of: components
-  name: unifi-controller
+  name: unifi-network
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app.kubernetes.io/component: unifi-controller
-      app.kubernetes.io/name: unifi-controller
+      app.kubernetes.io/component: unifi-network
+      app.kubernetes.io/name: unifi-network
       app.kubernetes.io/part-of: components
   strategy:
     type: Recreate
@@ -32,13 +32,13 @@ spec:
             }
           ]
       labels:
-        app.kubernetes.io/component: unifi-controller
-        app.kubernetes.io/name: unifi-controller
+        app.kubernetes.io/component: unifi-network
+        app.kubernetes.io/name: unifi-network
         app.kubernetes.io/part-of: components
     spec:
       containers:
-      - name: unifi-controller
-        image: unifi-controller/unifi-controller:latest
+      - name: unifi-network
+        image: unifi/network:latest
         env:
         - name: PUID
           value: '1000'
@@ -46,9 +46,10 @@ spec:
           value: '1000'
         - name: TZ
           value: UTC
+        envFrom:
+        - configMapRef:
+            name: unifi-network
         ports:
-        - name: dns
-          containerPort: 53
         - name: l2discovery
           containerPort: 1900
           protocol: UDP
@@ -58,7 +59,7 @@ spec:
         - name: syslog
           containerPort: 5514
           protocol: UDP
-        - name: speed-test
+        - name: throughput-test
           containerPort: 6789
         - name: inform
           containerPort: 8080

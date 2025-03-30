@@ -18,7 +18,7 @@ components:
 - rsshub
 - syncthing
 - tailscale
-- unifi-controller
+- unifi-network
 - vscode-server
 configMapGenerator:
 - name: tunnels
