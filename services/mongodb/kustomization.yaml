@@ -6,5 +6,6 @@ resources:
 secretGenerator:
 - name: mongodb
   literals:
-  - MONGO_INITDB_ROOT_USERNAME=default
+  - MONGO_AUTHSOURCE=admin
   - MONGO_INITDB_ROOT_PASSWORD=password
+  - MONGO_INITDB_ROOT_USERNAME=default
