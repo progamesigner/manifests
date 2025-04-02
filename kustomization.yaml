@@ -50,6 +50,9 @@ images:
 - name: network/tailscale
   newName: ghcr.io/tailscale/tailscale
   newTag: v1.80.3
+- name: n8n/n8n
+  newName: docker.n8n.io/n8nio/n8n
+  newTag: 1.85.4
 - name: node-red/node-red
   newName: nodered/node-red
   newTag: 4.0.1
@@ -193,6 +196,20 @@ patches:
             hostPath:
               type: DirectoryOrCreate
               path: /srv/mongodb
+- patch: |-
+    apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      name: n8n
+    spec:
+      template:
+        spec:
+          volumes:
+          - name: data
+            emptyDir: null
+            hostPath:
+              type: DirectoryOrCreate
+              path: /srv/n8n
 - patch: |-
     apiVersion: apps/v1
     kind: Deployment

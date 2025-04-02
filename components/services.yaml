@@ -134,6 +134,20 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
+  name: n8n
+spec:
+  ports:
+  - name: http
+    port: 5678
+    targetPort: http
+  selector:
+    app.kubernetes.io/component: n8n
+    app.kubernetes.io/name: n8n
+    app.kubernetes.io/part-of: components
+---
+apiVersion: v1
+kind: Service
+metadata:
   name: node-red
 spec:
   ports:
