@@ -6,6 +6,7 @@ configMapGenerator:
   literals:
   - DB_TYPE=postgresdb
   - GENERIC_TIMEZONE=UTC
+  - N8N_EMAIL_MODE=smtp
   - N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS=true
   - N8N_HIDE_USAGE_PAGE=true
   - N8N_MFA_ENABLED=false
