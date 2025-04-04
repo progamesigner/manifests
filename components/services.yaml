@@ -64,14 +64,28 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: dify-app
+  name: dify-plugin-daemon
 spec:
   ports:
   - name: http
-    port: 80
+    port: 5002
     targetPort: http
   selector:
-    app.kubernetes.io/component: nginx
+    app.kubernetes.io/component: plugin-daemon
+    app.kubernetes.io/name: dify
+    app.kubernetes.io/part-of: components
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: dify-ssrf-proxy
+spec:
+  ports:
+  - name: proxy
+    port: 3128
+    targetPort: proxy
+  selector:
+    app.kubernetes.io/component: ssrf-proxy
     app.kubernetes.io/name: dify
     app.kubernetes.io/part-of: components
 ---

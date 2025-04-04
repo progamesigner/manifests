@@ -14,6 +14,12 @@ images:
 - name: dify/api
   newName: langgenius/dify-api
   newTag: 1.1.3
+- name: dify/plugin-daemon
+  newName: langgenius/dify-plugin-daemon
+  newTag: 0.0.6-local
+- name: dify/ssrf-proxy
+  newName: ubuntu/squid
+  newTag: 6.6-24.04_beta
 - name: dify/worker
   newName: langgenius/dify-api
   newTag: 1.1.3
@@ -95,7 +101,34 @@ patches:
             hostPath:
               type: DirectoryOrCreate
               path: /srv/adguard-home
-
+- patch: |-
+    apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      name: dify-api
+    spec:
+      template:
+        spec:
+          volumes:
+          - name: data
+            emptyDir: null
+            hostPath:
+              type: DirectoryOrCreate
+              path: /srv/dify-api
+- patch: |-
+    apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      name: dify-plugin-daemon
+    spec:
+      template:
+        spec:
+          volumes:
+          - name: data
+            emptyDir: null
+            hostPath:
+              type: DirectoryOrCreate
+              path: /srv/dify-plugin-daemon
 - patch: |-
     apiVersion: apps/v1
     kind: Deployment

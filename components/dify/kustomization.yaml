@@ -4,9 +4,15 @@ kind: Component
 configMapGenerator:
 - name: dify
   literals:
-  - LOG_LEVEL=INFO
+  - MAIL_DEFAULT_SEND_FROM=default@example.com
+  - MAIL_TYPE=smtp
   - STORAGE_TYPE=s3
   - VECTOR_STORE=weaviate
+- name: dify-ssrf-proxy
+  files:
+  - docker-entrypoint.sh=ssrf-proxy-entrypoint.sh
+  - squid.conf=ssrf-proxy.conf
+  - squid.conf.template=ssrf-proxy.conf.template
 resources:
 - controllers.yaml
 secretGenerator:
@@ -15,23 +21,23 @@ secretGenerator:
   - dify.env
   literals:
   - CELERY_BROKER_URL=redis://redis.default.svc.cluster.local:6379/1
-  - DB_DATABASE=dify
   - DB_HOST=postgresql.default.svc.cluster.local
   - DB_PASSWORD=password
   - DB_PORT=5432
   - DB_USERNAME=default
-  - ELASTICSEARCH_HOST=elasticsearch.default.svc.cluster.local
-  - ELASTICSEARCH_PASSWORD=password
-  - ELASTICSEARCH_PORT=9200
-  - ELASTICSEARCH_USERNAME=default
-  - REDIS_DB=0
+  - PLUGIN_DAEMON_API_KEY=password
+  - PLUGIN_DAEMON_SERVER_KEY=password
+  - PLUGIN_DAEMON_URL=http://dify-plugin-daemon.default.svc.cluster.local:5002
+  - PLUGIN_REMOTE_INSTALL_HOST=dify-plugin.default.svc.cluster.local
+  - PLUGIN_REMOTE_INSTALL_PORT=5003
   - REDIS_HOST=redis.default.svc.cluster.local
   - REDIS_PORT=6379
-  - REDIS_USE_SSL=false
   - S3_ACCESS_KEY=default
   - S3_BUCKET_NAME=dify
   - S3_ENDPOINT=http://minio.default.svc.cluster.local:9000
   - S3_REGION=us-east-1
   - S3_SECRET_KEY=password
+  - SSRF_PROXY_HTTP_URL=http://dify-ssrf-proxy.default.svc.cluster.local:3128
+  - SSRF_PROXY_HTTPS_URL=http://dify-ssrf-proxy.default.svc.cluster.local:3128
   - WEAVIATE_API_KEY=password
   - WEAVIATE_ENDPOINT=http://weaviate.default.svc.cluster.local:8080

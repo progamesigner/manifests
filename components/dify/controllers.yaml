@@ -22,28 +22,6 @@ spec:
         app.kubernetes.io/part-of: components
     spec:
       automountServiceAccountToken: false
-      initContainers:
-      - name: migrator
-        image: dify/api:latest
-        command:
-        - sh
-        - -c
-        - |
-          set -ex;
-
-          flask db upgrade
-        envFrom:
-        - configMapRef:
-            name: dify
-        - secretRef:
-            name: dify
-        resources:
-          limits:
-            cpu: 1000m
-            memory: 2Gi
-          requests:
-            cpu: 100m
-            memory: 64Mi
       containers:
       - name: dify-api
         image: dify/api:latest
@@ -53,13 +31,40 @@ spec:
         - name: CONSOLE_API_URL
           value: ''
         - name: CONSOLE_WEB_URL
-          value: ''
-        - name: EDITION
-          value: SELF_HOSTED
-        - name: FORWARDED_ALLOW_IPS
-          value: '*'
+          valueFrom:
+            secretKeyRef:
+              name: dify
+              key: CONSOLE_WEB_URL
+        - name: DB_DATABASE
+          value: dify
+        - name: ENDPOINT_URL_TEMPLATE
+          valueFrom:
+            secretKeyRef:
+              name: dify
+              key: ENDPOINT_URL_TEMPLATE
+        - name: GUNICORN_TIMEOUT
+          value: '360'
+        - name: INNER_API_KEY_FOR_PLUGIN
+          valueFrom:
+            secretKeyRef:
+              name: dify
+              key: PLUGIN_DAEMON_API_KEY
+        - name: MIGRATION_ENABLED
+          value: 'true'
         - name: MODE
           value: api
+        - name: PLUGIN_DAEMON_KEY
+          valueFrom:
+            secretKeyRef:
+              name: dify
+              key: PLUGIN_DAEMON_SERVER_KEY
+        - name: SECRET_KEY
+          valueFrom:
+            secretKeyRef:
+              name: dify
+              key: API_SECRET_KEY
+        - name: SERVER_WORKER_AMOUNT
+          value: '1'
         - name: SERVICE_API_URL
           value: ''
         envFrom:
@@ -77,60 +82,96 @@ spec:
           requests:
             cpu: 100m
             memory: 64Mi
+        volumeMounts:
+        - name: data
+          mountPath: /app/api/storage
+      enableServiceLinks: false
       serviceAccountName: default
+      volumes:
+      - name: data
+        emptyDir: {}
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app.kubernetes.io/component: worker
+    app.kubernetes.io/component: plugin-daemon
     app.kubernetes.io/name: dify
     app.kubernetes.io/part-of: components
-  name: dify-worker
+  name: dify-plugin-daemon
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app.kubernetes.io/component: worker
+      app.kubernetes.io/component: plugin-daemon
       app.kubernetes.io/name: dify
       app.kubernetes.io/part-of: components
   template:
     metadata:
       labels:
-        app.kubernetes.io/component: worker
+        app.kubernetes.io/component: plugin-daemon
         app.kubernetes.io/name: dify
         app.kubernetes.io/part-of: components
     spec:
       automountServiceAccountToken: false
       containers:
-      - name: dify-worker
-        image: dify/worker:latest
+      - name: dify-plugin-daemon
+        image: dify/plugin-daemon:latest
         env:
-        - name: APP_WEB_URL
-          value: ''
-        - name: CONSOLE_API_URL
-          value: ''
-        - name: CONSOLE_WEB_URL
-          value: ''
-        - name: EDITION
-          value: SELF_HOSTED
-        - name: MODE
-          value: worker
-        - name: SERVICE_API_URL
-          value: ''
+        - name: DB_DATABASE
+          value: dify-plugins
+        - name: DIFY_INNER_API_URL
+          value: http://dify-api.default.svc.cluster.local:5001
+        - name: DIFY_INNER_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: dify
+              key: PLUGIN_DAEMON_API_KEY
+        - name: FORCE_VERIFYING_SIGNATURE
+          value: 'true'
+        - name: PLUGIN_REMOTE_INSTALLING_ENABLED
+          value: 'true'
+        - name: PLUGIN_REMOTE_INSTALLING_HOST
+          value: 0.0.0.0
+        - name: PLUGIN_REMOTE_INSTALLING_PORT
+          valueFrom:
+            secretKeyRef:
+              name: dify
+              key: PLUGIN_REMOTE_INSTALL_PORT
+        - name: PLUGIN_WORKING_PATH
+          value: /app/storage/cwd
+        - name: SERVER_PORT
+          value: '5002'
+        - name: SERVER_KEY
+          valueFrom:
+            secretKeyRef:
+              name: dify
+              key: PLUGIN_DAEMON_SERVER_KEY
         envFrom:
         - configMapRef:
             name: dify
         - secretRef:
             name: dify
+        ports:
+        - name: http
+          containerPort: 5002
+        - name: remote-plugins
+          containerPort: 5003
+        volumeMounts:
+        - name: data
+          mountPath: /app/storage
         resources:
           limits:
-            cpu: 1000m
-            memory: 2Gi
-          requests:
             cpu: 100m
+            memory: 256Mi
+          requests:
+            cpu: 10m
             memory: 64Mi
+      enableServiceLinks: false
       serviceAccountName: default
+      volumes:
+      - name: data
+        emptyDir: {}
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -163,16 +204,189 @@ spec:
           value: ''
         - name: CONSOLE_API_URL
           value: ''
-        - name: EDITION
-          value: SELF_HOSTED
+        - name: MARKETPLACE_API_URL
+          value: https://marketplace.dify.ai
+        - name: MARKETPLACE_URL
+          value: https://marketplace.dify.ai
+        - name: PM2_INSTANCES
+          value: '1'
         ports:
         - name: http
           containerPort: 3000
         resources:
           limits:
             cpu: 100m
-            memory: 256Mi
+            memory: 512Mi
           requests:
             cpu: 10m
             memory: 64Mi
+      enableServiceLinks: false
       serviceAccountName: default
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/component: worker
+    app.kubernetes.io/name: dify
+    app.kubernetes.io/part-of: components
+  name: dify-worker
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: worker
+      app.kubernetes.io/name: dify
+      app.kubernetes.io/part-of: components
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/component: worker
+        app.kubernetes.io/name: dify
+        app.kubernetes.io/part-of: components
+    spec:
+      automountServiceAccountToken: false
+      containers:
+      - name: dify-worker
+        image: dify/worker:latest
+        env:
+        - name: APP_WEB_URL
+          value: ''
+        - name: CELERY_WORKER_AMOUNT
+          value: '1'
+        - name: CONSOLE_API_URL
+          value: ''
+        - name: CONSOLE_WEB_URL
+          valueFrom:
+            secretKeyRef:
+              name: dify
+              key: CONSOLE_WEB_URL
+        - name: DB_DATABASE
+          value: dify
+        - name: ENDPOINT_URL_TEMPLATE
+          valueFrom:
+            secretKeyRef:
+              name: dify
+              key: ENDPOINT_URL_TEMPLATE
+        - name: INNER_API_KEY_FOR_PLUGIN
+          valueFrom:
+            secretKeyRef:
+              name: dify
+              key: PLUGIN_DAEMON_API_KEY
+        - name: MODE
+          value: worker
+        - name: PLUGIN_DAEMON_KEY
+          valueFrom:
+            secretKeyRef:
+              name: dify
+              key: PLUGIN_DAEMON_SERVER_KEY
+        - name: SECRET_KEY
+          valueFrom:
+            secretKeyRef:
+              name: dify
+              key: API_SECRET_KEY
+        - name: SERVICE_API_URL
+          value: ''
+        envFrom:
+        - configMapRef:
+            name: dify
+        - secretRef:
+            name: dify
+        resources:
+          limits:
+            cpu: 1000m
+            memory: 2Gi
+          requests:
+            cpu: 100m
+            memory: 64Mi
+        volumeMounts:
+        - name: data
+          mountPath: /app/api/storage
+      enableServiceLinks: false
+      serviceAccountName: default
+      volumes:
+      - name: data
+        emptyDir: {}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/component: ssrf-proxy
+    app.kubernetes.io/name: dify
+    app.kubernetes.io/part-of: components
+  name: dify-ssrf-proxy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: ssrf-proxy
+      app.kubernetes.io/name: dify
+      app.kubernetes.io/part-of: components
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/component: ssrf-proxy
+        app.kubernetes.io/name: dify
+        app.kubernetes.io/part-of: components
+    spec:
+      automountServiceAccountToken: false
+      containers:
+      - name: dify-ssrf-proxy
+        image: dify/ssrf-proxy:latest
+        command:
+        - sh
+        - -c
+        - |
+          cp /docker-entrypoint-mount.sh /docker-entrypoint.sh && \
+          chmod +x /docker-entrypoint.sh && \
+          /docker-entrypoint.sh
+        env:
+        - name: COREDUMP_DIR
+          value: '/var/spool/squid'
+        - name: HTTP_PORT
+          value: '3128'
+        - name: SANDBOX_HOST
+          value: 'sandbox'
+        - name: SANDBOX_PORT
+          value: '8194'
+        - name: REVERSE_PROXY_PORT
+          value: '8194'
+        ports:
+        - name: proxy
+          containerPort: 3128
+        - name: reverse-proxy
+          containerPort: 8194
+        resources:
+          limits:
+            cpu: 100m
+            memory: 128Mi
+          requests:
+            cpu: 10m
+            memory: 64Mi
+        volumeMounts:
+        - name: conf
+          mountPath: /docker-entrypoint-mount.sh
+          subPath: docker-entrypoint.sh
+          readOnly: true
+        - name: conf
+          mountPath: /etc/squid/conf.d/default.conf
+          subPath: squid.conf
+          readOnly: true
+        - name: conf
+          mountPath: /etc/squid/squid.conf.template
+          subPath: squid.conf.template
+          readOnly: true
+      enableServiceLinks: false
+      serviceAccountName: default
+      volumes:
+      - name: conf
+        configMap:
+          name: dify-ssrf-proxy
+          items:
+          - key: docker-entrypoint.sh
+            path: docker-entrypoint.sh
+          - key: squid.conf
+            path: squid.conf
+          - key: squid.conf.template
+            path: squid.conf.template
