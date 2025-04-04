@@ -160,6 +160,7 @@ patches:
     metadata:
       name: mariadb
     spec:
+      replicas: 0
       template:
         spec:
           volumes:
@@ -267,6 +268,13 @@ patches:
             hostPath:
               type: DirectoryOrCreate
               path: /srv/pgadmin
+- patch: |-
+    apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      name: phpmyadmin
+    spec:
+      replicas: 0
 - patch: |-
     apiVersion: apps/v1
     kind: Deployment
