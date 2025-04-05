@@ -21,6 +21,7 @@ spec:
         app.kubernetes.io/name: mongodb-compass
         app.kubernetes.io/part-of: components
     spec:
+      automountServiceAccountToken: false
       containers:
       - name: mongodb-compass
         image: mongodb/compass:latest
@@ -34,9 +35,5 @@ spec:
           requests:
             cpu: 50m
             memory: 32Mi
-      #   volumeMounts:
-      #   - name: data
-      #     mountPath: /data
-      # volumes:
-      # - name: data
-      #   emptyDir: {}
+      enableServiceLinks: false
+      serviceAccountName: default

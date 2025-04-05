@@ -21,6 +21,7 @@ spec:
         app.kubernetes.io/name: pgadmin
         app.kubernetes.io/part-of: components
     spec:
+      automountServiceAccountToken: false
       initContainers:
       - name: chown
         image: busybox:latest
@@ -68,6 +69,8 @@ spec:
         volumeMounts:
         - name: data
           mountPath: /var/lib/pgadmin
+      enableServiceLinks: false
+      serviceAccountName: default
       volumes:
       - name: data
         emptyDir: {}

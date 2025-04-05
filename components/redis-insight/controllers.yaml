@@ -21,6 +21,7 @@ spec:
         app.kubernetes.io/name: redis-insight
         app.kubernetes.io/part-of: components
     spec:
+      automountServiceAccountToken: false
       initContainers:
       - name: chown
         image: busybox:latest
@@ -55,6 +56,8 @@ spec:
         volumeMounts:
         - name: data
           mountPath: /data
+      enableServiceLinks: false
+      serviceAccountName: default
       volumes:
       - name: data
         emptyDir: {}
