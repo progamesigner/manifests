@@ -53,6 +53,7 @@ spec:
         volumeMounts:
         - name: data
           mountPath: /root/.ghs
+      enableServiceLinks: false
       serviceAccountName: default
       volumes:
       - name: data

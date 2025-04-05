@@ -59,6 +59,7 @@ spec:
         volumeMounts:
         - name: data
           mountPath: /home/node/.n8n
+      enableServiceLinks: false
       serviceAccountName: default
       volumes:
       - name: data

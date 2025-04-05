@@ -68,6 +68,7 @@ spec:
         - name: data
           mountPath: /opt/adguardhome/work
           subPath: work
+      enableServiceLinks: false
       serviceAccountName: default
       volumes:
       - name: cert

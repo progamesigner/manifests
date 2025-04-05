@@ -75,6 +75,7 @@ spec:
         - name: dbus
           mountPath: /run/dbus
           readOnly: true
+      enableServiceLinks: false
       serviceAccountName: default
       volumes:
       - name: data

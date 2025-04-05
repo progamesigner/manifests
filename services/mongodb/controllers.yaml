@@ -43,6 +43,7 @@ spec:
           requests:
             cpu: 100m
             memory: 64Mi
+      enableServiceLinks: false
       serviceAccountName: default
       volumes:
       - name: data

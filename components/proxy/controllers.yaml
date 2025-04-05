@@ -43,4 +43,5 @@ spec:
             - NET_ADMIN
             drop:
             - ALL
+      enableServiceLinks: false
       serviceAccountName: default

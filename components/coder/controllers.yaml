@@ -41,4 +41,5 @@ spec:
           requests:
             cpu: 50m
             memory: 64Mi
+      enableServiceLinks: false
       serviceAccountName: default

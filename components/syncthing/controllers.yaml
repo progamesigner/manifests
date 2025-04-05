@@ -43,6 +43,7 @@ spec:
         volumeMounts:
         - name: data
           mountPath: /var/syncthing
+      enableServiceLinks: false
       serviceAccountName: default
       volumes:
       - name: data
@@ -107,6 +108,7 @@ spec:
         volumeMounts:
         - name: data
           mountPath: /var/strelaysrv
+      enableServiceLinks: false
       serviceAccountName: default
       volumes:
       - name: data

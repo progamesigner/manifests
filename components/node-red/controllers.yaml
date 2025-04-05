@@ -67,6 +67,7 @@ spec:
         - name: files
           mountPath: /srv
           readOnly: true
+      enableServiceLinks: false
       serviceAccountName: default
       volumes:
       - name: bin

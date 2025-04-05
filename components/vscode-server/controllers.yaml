@@ -73,6 +73,7 @@ spec:
           mountPath: /home/vscode/.gnupg
         - name: files-ssh
           mountPath: /home/vscode/.dotfiles/.ssh
+      enableServiceLinks: false
       serviceAccountName: default
       volumes:
       - name: data
