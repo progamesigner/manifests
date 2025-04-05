@@ -1,0 +1,47 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: dify-sandbox
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/component: sandbox
+      app.kubernetes.io/name: dify
+      app.kubernetes.io/part-of: components
+  policyTypes:
+  - Egress
+  egress:
+  - to:
+    - ipBlock:
+        cidr: 10.16.0.0/14
+    ports:
+    - port: 53
+      protocol: TCP
+    - port: 53
+      protocol: UDP
+    - port: 3128
+      protocol: TCP
+  - to:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: kube-system
+      podSelector:
+        matchLabels:
+          app.kubernetes.io/component: coredns
+          app.kubernetes.io/name: coredns
+          app.kubernetes.io/part-of: kubernetes
+    ports:
+    - port: 53
+      protocol: TCP
+    - port: 53
+      protocol: UDP
+  - to:
+    - podSelector:
+        matchLabels:
+          app.kubernetes.io/component: ssrf-proxy
+          app.kubernetes.io/name: dify
+          app.kubernetes.io/part-of: components
+    ports:
+    - port: 3128
+      protocol: TCP

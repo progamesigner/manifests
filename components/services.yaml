@@ -78,6 +78,20 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
+  name: dify-sandbox
+spec:
+  ports:
+  - name: http
+    port: 8194
+    targetPort: http
+  selector:
+    app.kubernetes.io/component: sandbox
+    app.kubernetes.io/name: dify
+    app.kubernetes.io/part-of: components
+---
+apiVersion: v1
+kind: Service
+metadata:
   name: dify-ssrf-proxy
 spec:
   ports:

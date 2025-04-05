@@ -177,6 +177,84 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
+    app.kubernetes.io/component: sandbox
+    app.kubernetes.io/name: dify
+    app.kubernetes.io/part-of: components
+  name: dify-sandbox
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: sandbox
+      app.kubernetes.io/name: dify
+      app.kubernetes.io/part-of: components
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/component: sandbox
+        app.kubernetes.io/name: dify
+        app.kubernetes.io/part-of: components
+    spec:
+      automountServiceAccountToken: false
+      containers:
+      - name: dify-sandbox
+        image: dify/sandbox:latest
+        env:
+        - name: API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: dify
+              key: CODE_EXECUTION_API_KEY
+        - name: ENABLE_NETWORK
+          value: 'true'
+        - name: ENABLE_PRELOAD
+          value: 'true'
+        - name: HTTP_PROXY
+          valueFrom:
+            secretKeyRef:
+              name: dify
+              key: SSRF_PROXY_HTTP_URL
+        - name: HTTPS_PROXY
+          valueFrom:
+            secretKeyRef:
+              name: dify
+              key: SSRF_PROXY_HTTPS_URL
+        - name: WORKER_TIMEOUT
+          value: '60'
+        ports:
+        - name: http
+          containerPort: 8194
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8194
+          initialDelaySeconds: 10
+        resources:
+          limits:
+            cpu: 100m
+            memory: 512Mi
+          requests:
+            cpu: 10m
+            memory: 64Mi
+        volumeMounts:
+        - name: conf
+          mountPath: /dependencies/python-requirements.txt
+          subPath: python-requirements.txt
+          readOnly: true
+      enableServiceLinks: false
+      serviceAccountName: default
+      volumes:
+      - name: conf
+        configMap:
+          name: dify-sandbox
+          items:
+          - key: python-requirements.txt
+            path: python-requirements.txt
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
     app.kubernetes.io/component: web
     app.kubernetes.io/name: dify
     app.kubernetes.io/part-of: components
@@ -343,14 +421,14 @@ spec:
           /docker-entrypoint.sh
         env:
         - name: COREDUMP_DIR
-          value: '/var/spool/squid'
+          value: /var/spool/squid
         - name: HTTP_PORT
           value: '3128'
-        - name: SANDBOX_HOST
-          value: 'sandbox'
-        - name: SANDBOX_PORT
-          value: '8194'
         - name: REVERSE_PROXY_PORT
+          value: '8194'
+        - name: SANDBOX_HOST
+          value: dify-sandbox.default.svc.cluster.local
+        - name: SANDBOX_PORT
           value: '8194'
         ports:
         - name: proxy
