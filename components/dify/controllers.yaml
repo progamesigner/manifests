@@ -138,6 +138,11 @@ spec:
             secretKeyRef:
               name: dify
               key: PLUGIN_REMOTE_INSTALL_PORT
+        - name: PLUGIN_STORAGE_TYPE
+          valueFrom:
+            configMapKeyRef:
+              name: dify
+              key: PLUGIN_STORAGE_TYPE
         - name: PLUGIN_WORKING_PATH
           value: /app/storage/cwd
         - name: SERVER_PORT

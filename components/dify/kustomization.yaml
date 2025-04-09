@@ -6,6 +6,7 @@ configMapGenerator:
   literals:
   - MAIL_DEFAULT_SEND_FROM=default@example.com
   - MAIL_TYPE=smtp
+  - PLUGIN_STORAGE_TYPE=local
   - STORAGE_TYPE=s3
   - VECTOR_STORE=weaviate
 - name: dify-sandbox
