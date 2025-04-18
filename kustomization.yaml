@@ -58,7 +58,7 @@ images:
   newTag: 7.5.3
 - name: network/tailscale
   newName: ghcr.io/tailscale/tailscale
-  newTag: v1.80.3
+  newTag: v1.82.0
 - name: n8n/n8n
   newName: docker.n8n.io/n8nio/n8n
   newTag: 1.85.4
