@@ -13,10 +13,10 @@ images:
   newTag: v2.11.3
 - name: dify/api
   newName: langgenius/dify-api
-  newTag: 1.2.0
+  newTag: 1.3.0
 - name: dify/plugin-daemon
   newName: langgenius/dify-plugin-daemon
-  newTag: 0.0.7-local
+  newTag: 0.0.8-local
 - name: dify/sandbox
   newName: langgenius/dify-sandbox
   newTag: 0.2.11
@@ -25,10 +25,10 @@ images:
   newTag: 6.6-24.04_beta
 - name: dify/worker
   newName: langgenius/dify-api
-  newTag: 1.1.3
+  newTag: 1.3.0
 - name: dify/web
   newName: langgenius/dify-web
-  newTag: 1.1.3
+  newTag: 1.3.0
 - name: gloomhaven/client
   newName: gloomhavensecretariat/ghs
   newTag: v0.73.0
