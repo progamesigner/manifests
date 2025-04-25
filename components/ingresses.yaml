@@ -293,7 +293,7 @@ kind: Ingress
 metadata:
   annotations:
     kubernetes.progamesigner.dev/hostname: workflow
-    nginx.org/websocket-services: windmill
+    nginx.org/websocket-services: windmill,windmill-lsp
   name: windmill
 spec:
   ingressClassName: internal-ingress
@@ -301,6 +301,13 @@ spec:
   - host: workflow.progamesigner.dev
     http:
       paths:
+      - backend:
+          service:
+            name: windmill-lsp
+            port:
+              name: lsp
+        path: /ws/
+        pathType: Prefix
       - backend:
           service:
             name: windmill
