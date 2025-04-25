@@ -10,7 +10,6 @@ components:
 - gloomhaven
 - home-assistant
 - mongodb-compass
-- n8n
 - node-red
 - pgadmin
 - phpmyadmin

@@ -8,7 +8,6 @@ components/cloudflare.env
 components/cloudflared/cloudflared.env
 components/coder/coder.env
 components/dify/dify.env
-components/n8n/n8n.env
 components/rsshub/rsshub.env
 components/tailscale/protonvpn.env
 components/tailscale/tailscale.env
