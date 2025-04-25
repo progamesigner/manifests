@@ -21,6 +21,7 @@ components:
 - tailscale
 - unifi-network
 - vscode-server
+- windmill
 configMapGenerator:
 - name: tunnels
   files:

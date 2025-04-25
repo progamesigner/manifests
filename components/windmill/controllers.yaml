@@ -1,0 +1,257 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/component: windmill
+    app.kubernetes.io/name: windmill
+    app.kubernetes.io/part-of: components
+  name: windmill-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: windmill
+      app.kubernetes.io/name: windmill
+      app.kubernetes.io/part-of: components
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/component: windmill
+        app.kubernetes.io/name: windmill
+        app.kubernetes.io/part-of: components
+    spec:
+      automountServiceAccountToken: false
+      containers:
+      - name: windmill-server
+        image: windmill/windmill-server:latest
+        env:
+        - name: MODE
+          value: server
+        envFrom:
+        - configMapRef:
+            name: windmill
+        - secretRef:
+            name: windmill
+        lifecycle:
+          preStop:
+            exec:
+              command:
+              - sh
+              - -c
+              - sleep 30
+        ports:
+        - name: smtp
+          containerPort: 2525
+        - name: http
+          containerPort: 8000
+        - name: metrics
+          containerPort: 8001
+        readinessProbe:
+          httpGet:
+            httpHeaders:
+            - name: Host
+              value: localhost
+            path: /
+            port: 8000
+          initialDelaySeconds: 5
+          periodSeconds: 5
+        resources:
+          limits:
+            cpu: 300m
+            memory: 512Mi
+          requests:
+            cpu: 100m
+            memory: 128Mi
+      enableServiceLinks: false
+      serviceAccountName: default
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/component: windmill-worker
+    app.kubernetes.io/name: windmill
+    app.kubernetes.io/part-of: components
+  name: windmill-worker
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: windmill-worker
+      app.kubernetes.io/name: windmill
+      app.kubernetes.io/part-of: components
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/component: windmill-worker
+        app.kubernetes.io/name: windmill
+        app.kubernetes.io/part-of: components
+    spec:
+      automountServiceAccountToken: false
+      containers:
+      - name: windmill-worker
+        image: windmill/windmill-worker:latest
+        env:
+        - name: MODE
+          value: worker
+        - name: WORKER_GROUP
+          value: default
+        envFrom:
+        - configMapRef:
+            name: windmill
+        - secretRef:
+            name: windmill
+        ports:
+        - name: metrics
+          containerPort: 8001
+        resources:
+          limits:
+            cpu: 1000m
+            memory: 2Gi
+          requests:
+            cpu: 100m
+            memory: 128Mi
+      enableServiceLinks: false
+      serviceAccountName: default
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/component: windmill-native-worker
+    app.kubernetes.io/name: windmill
+    app.kubernetes.io/part-of: components
+  name: windmill-native-worker
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: windmill-native-worker
+      app.kubernetes.io/name: windmill
+      app.kubernetes.io/part-of: components
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/component: windmill-native-worker
+        app.kubernetes.io/name: windmill
+        app.kubernetes.io/part-of: components
+    spec:
+      automountServiceAccountToken: false
+      containers:
+      - name: windmill-worker
+        image: windmill/windmill-worker:latest
+        env:
+        - name: MODE
+          value: worker
+        - name: NUM_WORKERS
+          value: '4'
+        - name: SLEEP_QUEUE
+          value: '200'
+        - name: WORKER_GROUP
+          value: native
+        envFrom:
+        - configMapRef:
+            name: windmill
+        - secretRef:
+            name: windmill
+        ports:
+        - name: metrics
+          containerPort: 8001
+        resources:
+          limits:
+            cpu: 1000m
+            memory: 2Gi
+          requests:
+            cpu: 100m
+            memory: 128Mi
+      enableServiceLinks: false
+      serviceAccountName: default
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/component: windmill-report-worker
+    app.kubernetes.io/name: windmill
+    app.kubernetes.io/part-of: components
+  name: windmill-report-worker
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: windmill-report-worker
+      app.kubernetes.io/name: windmill
+      app.kubernetes.io/part-of: components
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/component: windmill-report-worker
+        app.kubernetes.io/name: windmill
+        app.kubernetes.io/part-of: components
+    spec:
+      automountServiceAccountToken: false
+      containers:
+      - name: windmill-worker
+        image: windmill/windmill-worker:latest
+        env:
+        - name: MODE
+          value: worker
+        - name: WORKER_GROUP
+          value: reports
+        envFrom:
+        - configMapRef:
+            name: windmill
+        - secretRef:
+            name: windmill
+        ports:
+        - name: metrics
+          containerPort: 8001
+        resources:
+          limits:
+            cpu: 1000m
+            memory: 2Gi
+          requests:
+            cpu: 100m
+            memory: 128Mi
+      enableServiceLinks: false
+      serviceAccountName: default
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/component: windmill-lsp
+    app.kubernetes.io/name: windmill
+    app.kubernetes.io/part-of: components
+  name: windmill-lsp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: windmill-lsp
+      app.kubernetes.io/name: windmill
+      app.kubernetes.io/part-of: components
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/component: windmill-lsp
+        app.kubernetes.io/name: windmill
+        app.kubernetes.io/part-of: components
+    spec:
+      automountServiceAccountToken: false
+      containers:
+      - name: windmill-lsp
+        image: windmill/windmill-lsp:latest
+        ports:
+        - name: lsp
+          containerPort: 3001
+        resources:
+          limits:
+            cpu: 1000m
+            memory: 2Gi
+          requests:
+            cpu: 100m
+            memory: 128Mi
+      enableServiceLinks: false
+      serviceAccountName: default

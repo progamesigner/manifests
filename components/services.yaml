@@ -162,20 +162,6 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: n8n
-spec:
-  ports:
-  - name: http
-    port: 5678
-    targetPort: http
-  selector:
-    app.kubernetes.io/component: n8n
-    app.kubernetes.io/name: n8n
-    app.kubernetes.io/part-of: components
----
-apiVersion: v1
-kind: Service
-metadata:
   name: node-red
 spec:
   ports:
@@ -390,6 +376,34 @@ spec:
   selector:
     app.kubernetes.io/component: unifi-network
     app.kubernetes.io/name: unifi-network
+    app.kubernetes.io/part-of: components
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: windmill
+spec:
+  ports:
+  - name: http
+    port: 8000
+    targetPort: http
+  selector:
+    app.kubernetes.io/component: windmill
+    app.kubernetes.io/name: windmill
+    app.kubernetes.io/part-of: components
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: windmill-lsp
+spec:
+  ports:
+  - name: lsp
+    port: 3001
+    targetPort: lsp
+  selector:
+    app.kubernetes.io/component: windmill-lsp
+    app.kubernetes.io/name: windmill
     app.kubernetes.io/part-of: components
 ---
 apiVersion: v1

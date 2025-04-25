@@ -89,6 +89,15 @@ images:
 - name: vscode/server
   newName: ghcr.io/progamesigner/vscode-server
   newTag: 20230422-jammy
+- name: windmill/windmill-lsp
+  newName: ghcr.io/windmill-labs/windmill-lsp
+  newTag: 1.483.2
+- name: windmill/windmill-server
+  newName: ghcr.io/windmill-labs/windmill
+  newTag: 1.483.2
+- name: windmill/windmill-worker
+  newName: ghcr.io/windmill-labs/windmill
+  newTag: 1.483.2
 patches:
 - patch: |-
     apiVersion: apps/v1

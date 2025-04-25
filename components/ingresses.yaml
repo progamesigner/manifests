@@ -103,31 +103,6 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   annotations:
-    kubernetes.progamesigner.dev/hostname: workflow
-    nginx.org/websocket-services: n8n
-  name: n8n
-spec:
-  ingressClassName: internal-ingress
-  rules:
-  - host: workflow.progamesigner.dev
-    http:
-      paths:
-      - backend:
-          service:
-            name: n8n
-            port:
-              name: http
-        path: /
-        pathType: Prefix
-  tls:
-  - hosts:
-    - workflow.progamesigner.dev
-    secretName: tls-dev-progamesigner
----
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  annotations:
     kubernetes.progamesigner.dev/hostname: automation
     nginx.org/websocket-services: node-red
   name: node-red
@@ -311,4 +286,29 @@ spec:
   tls:
   - hosts:
     - network.progamesigner.dev
+    secretName: tls-dev-progamesigner
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    kubernetes.progamesigner.dev/hostname: workflow
+    nginx.org/websocket-services: windmill
+  name: windmill
+spec:
+  ingressClassName: internal-ingress
+  rules:
+  - host: workflow.progamesigner.dev
+    http:
+      paths:
+      - backend:
+          service:
+            name: windmill
+            port:
+              name: http
+        path: /
+        pathType: Prefix
+  tls:
+  - hosts:
+    - workflow.progamesigner.dev
     secretName: tls-dev-progamesigner
