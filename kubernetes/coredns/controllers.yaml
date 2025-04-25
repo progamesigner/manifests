@@ -41,7 +41,6 @@ spec:
           httpGet:
             path: /health
             port: 8080
-            scheme: HTTP
           initialDelaySeconds: 60
           timeoutSeconds: 5
           failureThreshold: 5
@@ -49,7 +48,6 @@ spec:
           httpGet:
             path: /ready
             port: 8181
-            scheme: HTTP
         resources:
           limits:
             cpu: 1000m
