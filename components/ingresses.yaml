@@ -53,6 +53,72 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   annotations:
+    kubernetes.progamesigner.dev/hostname: ai
+  name: dify
+spec:
+  ingressClassName: internal-ingress
+  rules:
+  - host: ai.progamesigner.dev
+    http:
+      paths:
+      - backend:
+          service:
+            name: dify-api
+            port:
+              name: http
+        path: /api/
+        pathType: Prefix
+      - backend:
+          service:
+            name: dify-api
+            port:
+              name: http
+        path: /console/api/
+        pathType: Prefix
+      - backend:
+          service:
+            name: dify-plugin-daemon
+            port:
+              name: http
+        path: /e/
+        pathType: Prefix
+      - backend:
+          service:
+            name: dify-web
+            port:
+              name: http
+        path: /explore/
+        pathType: Prefix
+      - backend:
+          service:
+            name: dify-api
+            port:
+              name: http
+        path: /files/
+        pathType: Prefix
+      - backend:
+          service:
+            name: dify-api
+            port:
+              name: http
+        path: /v1/
+        pathType: Prefix
+      - backend:
+          service:
+            name: dify-web
+            port:
+              name: http
+        path: /
+        pathType: Prefix
+  tls:
+  - hosts:
+    - ai.progamesigner.dev
+    secretName: tls-dev-progamesigner
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
     kubernetes.progamesigner.dev/hostname: home
     nginx.org/websocket-services: home-assistant
   name: home-assistant
