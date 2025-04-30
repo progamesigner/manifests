@@ -10,7 +10,6 @@ images:
   newName: ghcr.io/k8snetworkplumbingwg/multus-cni
   newTag: v4.1.3
 resources:
-- crds/network-attachment-definitions.yaml
-
 - controllers.yaml
+- crds/network-attachment-definitions.yaml
 - rbac.yaml

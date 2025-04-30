@@ -21,11 +21,10 @@ images:
   newName: nginx/nginx-ingress
   newTag: 5.0.0
 resources:
+- controllers.yaml
+- rbac.yaml
 - https://raw.githubusercontent.com/nginx/kubernetes-ingress/v5.0.0/config/crd/bases/k8s.nginx.org_globalconfigurations.yaml
 - https://raw.githubusercontent.com/nginx/kubernetes-ingress/v5.0.0/config/crd/bases/k8s.nginx.org_policies.yaml
 - https://raw.githubusercontent.com/nginx/kubernetes-ingress/v5.0.0/config/crd/bases/k8s.nginx.org_transportservers.yaml
 - https://raw.githubusercontent.com/nginx/kubernetes-ingress/v5.0.0/config/crd/bases/k8s.nginx.org_virtualserverroutes.yaml
 - https://raw.githubusercontent.com/nginx/kubernetes-ingress/v5.0.0/config/crd/bases/k8s.nginx.org_virtualservers.yaml
-
-- controllers.yaml
-- rbac.yaml

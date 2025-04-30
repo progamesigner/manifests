@@ -12,7 +12,6 @@ images:
   newName: quay.io/jetstack/cert-manager-webhook
   newTag: v1.17.2
 resources:
-- https://github.com/cert-manager/cert-manager/releases/download/v1.17.2/cert-manager.crds.yaml
-
 - controllers.yaml
 - rbac.yaml
+- https://github.com/cert-manager/cert-manager/releases/download/v1.17.2/cert-manager.crds.yaml
