@@ -43,6 +43,23 @@ spec:
         volumeMounts:
         - name: data
           mountPath: /usr/share/elasticsearch/data
+      - name: install-plugins
+        image: elasticsearch/elasticsearch:latest
+        command:
+        - sh
+        - -c
+        - |
+          bin/elasticsearch-plugin install --batch analysis-smartcn
+        envFrom:
+        - secretRef:
+            name: elasticsearch
+        resources:
+          requests:
+            cpu: 1m
+            memory: 1Mi
+        volumeMounts:
+        - name: data
+          mountPath: /usr/share/elasticsearch/data
       containers:
       - name: elasticsearch
         image: elasticsearch/elasticsearch:latest
