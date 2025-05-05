@@ -43,7 +43,7 @@ spec:
         volumeMounts:
         - name: data
           mountPath: /usr/share/elasticsearch/data
-      - name: install-plugins
+      - name: init-plugins
         image: elasticsearch/elasticsearch:latest
         command:
         - sh
@@ -60,6 +60,8 @@ spec:
         volumeMounts:
         - name: data
           mountPath: /usr/share/elasticsearch/data
+        - name: plugins
+          mountPath: /usr/share/elasticsearch/plugins
       containers:
       - name: elasticsearch
         image: elasticsearch/elasticsearch:latest
@@ -71,9 +73,6 @@ spec:
           containerPort: 9200
         - name: transport
           containerPort: 9300
-        volumeMounts:
-        - name: data
-          mountPath: /usr/share/elasticsearch/data
         resources:
           limits:
             cpu: 1500m
@@ -81,8 +80,15 @@ spec:
           requests:
             cpu: 100m
             memory: 64Mi
+        volumeMounts:
+        - name: data
+          mountPath: /usr/share/elasticsearch/data
+        - name: plugins
+          mountPath: /usr/share/elasticsearch/plugins
       enableServiceLinks: false
       serviceAccountName: default
       volumes:
       - name: data
+        emptyDir: {}
+      - name: plugins
         emptyDir: {}
