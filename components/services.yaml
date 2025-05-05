@@ -395,6 +395,20 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
+  name: windmill-api
+spec:
+  ports:
+  - name: http
+    port: 8000
+    targetPort: http
+  selector:
+    app.kubernetes.io/component: windmill
+    app.kubernetes.io/name: windmill
+    app.kubernetes.io/part-of: components
+---
+apiVersion: v1
+kind: Service
+metadata:
   name: windmill-lsp
 spec:
   ports:

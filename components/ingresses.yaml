@@ -358,12 +358,23 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   annotations:
-    kubernetes.progamesigner.dev/hostname: workflow
-    nginx.org/websocket-services: windmill,windmill-lsp
+    kubernetes.progamesigner.dev/hostname: api,workflow
+    nginx.org/rewrites: serviceName=windmill-api rewrite=/api/r/default/
+    nginx.org/websocket-services: windmill,windmill-api,windmill-lsp
   name: windmill
 spec:
   ingressClassName: internal-ingress
   rules:
+  - host: api.progamesigner.dev
+    http:
+      paths:
+      - backend:
+          service:
+            name: windmill-api
+            port:
+              name: http
+        path: /
+        pathType: Prefix
   - host: workflow.progamesigner.dev
     http:
       paths:
@@ -383,5 +394,6 @@ spec:
         pathType: Prefix
   tls:
   - hosts:
+    - api.progamesigner.dev
     - workflow.progamesigner.dev
     secretName: tls-dev-progamesigner
