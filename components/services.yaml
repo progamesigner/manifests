@@ -162,20 +162,6 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: node-red
-spec:
-  ports:
-  - name: http
-    port: 1880
-    targetPort: http
-  selector:
-    app.kubernetes.io/component: node-red
-    app.kubernetes.io/name: node-red
-    app.kubernetes.io/part-of: components
----
-apiVersion: v1
-kind: Service
-metadata:
   name: mongodb-compass
 spec:
   ports:

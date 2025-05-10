@@ -59,9 +59,6 @@ images:
 - name: network/tailscale
   newName: ghcr.io/tailscale/tailscale
   newTag: v1.82.0
-- name: node-red/node-red
-  newName: nodered/node-red
-  newTag: 4.0.1
 - name: pgadmin/pgadmin
   newName: dpage/pgadmin4
   newTag: '8.14'
@@ -239,35 +236,6 @@ patches:
             hostPath:
               type: DirectoryOrCreate
               path: /srv/mongodb
-- patch: |-
-    apiVersion: apps/v1
-    kind: Deployment
-    metadata:
-      name: node-red
-    spec:
-      template:
-        spec:
-          volumes:
-          - name: bin
-            emptyDir: null
-            hostPath:
-              type: DirectoryOrCreate
-              path: /srv/node-red-bin
-          - name: conf
-            emptyDir: null
-            hostPath:
-              type: DirectoryOrCreate
-              path: /srv/node-red
-          - name: data
-            emptyDir: null
-            hostPath:
-              type: DirectoryOrCreate
-              path: /srv/node-red-data
-          - name: files
-            emptyDir: null
-            hostPath:
-              type: Directory
-              path: /srv
 - patch: |-
     apiVersion: apps/v1
     kind: Deployment
