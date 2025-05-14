@@ -19,7 +19,7 @@ images:
   newTag: 0.0.9-local
 - name: dify/sandbox
   newName: langgenius/dify-sandbox
-  newTag: 0.2.11
+  newTag: 0.2.12
 - name: dify/ssrf-proxy
   newName: ubuntu/squid
   newTag: 6.6-24.04_beta
