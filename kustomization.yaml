@@ -37,7 +37,7 @@ images:
   newTag: v0.72.10
 - name: home-assistant/home-assistant
   newName: ghcr.io/home-assistant/home-assistant
-  newTag: 2025.5.1
+  newTag: v2025.5.1
 - name: localai/localai
   newName: quay.io/go-skynet/local-ai
   newTag: v2.26.0-ffmpeg
