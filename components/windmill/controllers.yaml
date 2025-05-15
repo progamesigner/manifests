@@ -145,7 +145,7 @@ spec:
         - name: MODE
           value: worker
         - name: NUM_WORKERS
-          value: '4'
+          value: '1'
         - name: SLEEP_QUEUE
           value: '200'
         - name: WORKER_GROUP
