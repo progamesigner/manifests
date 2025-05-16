@@ -16,7 +16,7 @@ images:
   newTag: 1.4.0
 - name: dify/plugin-daemon
   newName: langgenius/dify-plugin-daemon
-  newTag: 0.0.10-local
+  newTag: 0.1.0-local
 - name: dify/sandbox
   newName: langgenius/dify-sandbox
   newTag: 0.2.12
