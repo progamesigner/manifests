@@ -387,6 +387,13 @@ patches:
     apiVersion: apps/v1
     kind: Deployment
     metadata:
+      name: windmill-worker
+    spec:
+      replicas: 4
+- patch: |-
+    apiVersion: apps/v1
+    kind: Deployment
+    metadata:
       name: windmill-report-worker
     spec:
       replicas: 4
