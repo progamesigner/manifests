@@ -21,44 +21,6 @@ spec:
         app.kubernetes.io/part-of: kubernetes
     spec:
       automountServiceAccountToken: true
-      initContainers:
-      - name: install-cni
-        image: busybox:latest
-        command:
-        - sh
-        - -c
-        - |
-          set -ex;
-          mkdir -p /etc/cni/net.d/multus.d;
-          cat > /etc/cni/net.d/multus.d/multus.kubeconfig <<EOF
-          apiVersion: v1
-          kind: Config
-          clusters:
-          - name: multus
-            cluster:
-              server: https://${KUBERNETES_SERVICE_HOST}:${KUBERNETES_SERVICE_PORT}
-              certificate-authority-data: $(cat /var/run/secrets/kubernetes.io/serviceaccount/ca.crt | base64 | tr -d '\n')
-          users:
-          - name: multus
-            user:
-              token: $(cat /var/run/secrets/kubernetes.io/serviceaccount/token | tr -d '\n')
-          contexts:
-          - name: multus
-            context:
-              cluster: multus
-              user: multus
-          current-context: multus
-          EOF
-        envFrom:
-        - configMapRef:
-            name: kubernetes
-        resources:
-          requests:
-            cpu: 1m
-            memory: 1Mi
-        volumeMounts:
-        - name: cni-conf-dir
-          mountPath: /etc/cni/net.d
       containers:
       - name: multus
         image: multus/multus:latest
@@ -69,6 +31,9 @@ spec:
         - --global-namespaces=default,kube-system
         - --multus-conf-file=/etc/multus/10-multus.conflist
         - --namespace-isolation=true
+        envFrom:
+        - configMapRef:
+            name: kubernetes
         resources:
           limits:
             cpu: 100m
