@@ -126,6 +126,13 @@ rules:
   - list
   - watch
 - apiGroups:
+  - metallb.io
+  resources:
+  - servicel2statuses
+  - servicel2statuses/status
+  verbs:
+  - '*'
+- apiGroups:
   - ''
   resources:
   - events
