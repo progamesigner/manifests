@@ -48,6 +48,9 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: metadata.name
+        envFrom:
+        - configMapRef:
+            name: kubernetes
         ports:
         - name: monitor
           containerPort: 7472
@@ -132,6 +135,9 @@ spec:
         - --deployment=metallb-controller
         - --ml-secret-name=metallb-memberlist
         - --webhook-mode=disabled
+        envFrom:
+        - configMapRef:
+            name: kubernetes
         ports:
         - name: monitor
           containerPort: 7472
