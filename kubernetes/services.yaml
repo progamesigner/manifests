@@ -10,7 +10,8 @@ spec:
   ports:
   - name: monitor
     port: 9402
-    targetPort: 9402
+    protocol: TCP
+    targetPort: monitor
   selector:
     app.kubernetes.io/component: controller
     app.kubernetes.io/name: cert-manager
@@ -29,16 +30,18 @@ metadata:
 spec:
   clusterIP: 10.16.0.8
   ports:
-  - name: dns
+  - name: dns-tcp
     port: 53
-    targetPort: 53
+    protocol: TCP
+    targetPort: dns-tcp
   - name: dns-udp
     port: 53
-    targetPort: 53
     protocol: UDP
+    targetPort: dns-udp
   - name: monitor
     port: 9153
-    targetPort: 9153
+    protocol: TCP
+    targetPort: monitor
   selector:
     app.kubernetes.io/component: coredns
     app.kubernetes.io/name: coredns
@@ -47,52 +50,60 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  annotations:
-    metallb.io/allow-shared-ip: nginx-ingress
   labels:
     kubernetes.io/cluster-service: 'true'
-    kubernetes.io/name: Ingress
-  name: nginx-ingress
+    kubernetes.io/name: DNS
+  name: cluster-dns
 spec:
-  loadBalancerIP: 192.168.32.11
+  loadBalancerIP: 192.168.32.8
   ports:
-  - name: http
-    port: 80
-    targetPort: 80
-    appProtocol: http
-  - name: https
-    port: 443
-    targetPort: 443
-    appProtocol: https
-  - name: dns-over-tls
-    port: 853
-    targetPort: 853
-    appProtocol: domain-s
+  - name: dns-tcp
+    port: 53
+    protocol: TCP
+    targetPort: dns-tcp
+  - name: dns-udp
+    port: 53
+    protocol: UDP
+    targetPort: dns-udp
   selector:
-    app.kubernetes.io/component: nginx-ingress
-    app.kubernetes.io/name: nginx-ingress
+    app.kubernetes.io/component: coredns
+    app.kubernetes.io/name: coredns
     app.kubernetes.io/part-of: kubernetes
   type: LoadBalancer
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  annotations:
-    metallb.io/allow-shared-ip: nginx-ingress
-  name: nginx-ingress-udp
+  labels:
+    kubernetes.io/cluster-service: 'true'
+    kubernetes.io/name: Ingress
+  name: cluster-ingress
 spec:
   loadBalancerIP: 192.168.32.11
   ports:
-  - name: https
+  - name: http
+    port: 80
+    protocol: TCP
+    targetPort: http
+    appProtocol: http
+  - name: https-tcp
     port: 443
-    targetPort: 443
-    protocol: UDP
+    protocol: TCP
+    targetPort: https-tcp
     appProtocol: https
-  - name: dns-over-tls
-    port: 853
-    targetPort: 853
+  - name: https-udp
+    port: 443
     protocol: UDP
-    appProtocol: domain-s
+    targetPort: https-udp
+    appProtocol: https
+  - name: dns-tls-tcp
+    port: 853
+    protocol: TCP
+    targetPort: dns-tls-tcp
+  - name: dns-tls-udp
+    port: 853
+    protocol: UDP
+    targetPort: dns-tls-udp
   selector:
     app.kubernetes.io/component: nginx-ingress
     app.kubernetes.io/name: nginx-ingress
@@ -105,9 +116,9 @@ metadata:
   name: nginx-ingress
 spec:
   listeners:
-  - name: dns-over-tls
+  - name: dns-tls-tcp
     port: 853
     protocol: TCP
-  - name: dns-over-tls-udp
+  - name: dns-tls-udp
     port: 853
     protocol: UDP

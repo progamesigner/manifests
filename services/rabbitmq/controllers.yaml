@@ -30,32 +30,46 @@ spec:
         ports:
         - name: mqtt
           containerPort: 1883
+          protocol: TCP
         - name: epmd
           containerPort: 4369
+          protocol: TCP
         - name: amqp
           containerPort: 5671
+          protocol: TCP
         - name: amqp-tls
           containerPort: 5672
+          protocol: TCP
         - name: stream
           containerPort: 5551
+          protocol: TCP
         - name: stream-tls
           containerPort: 5552
+          protocol: TCP
         - name: https
           containerPort: 15671
+          protocol: TCP
         - name: http
           containerPort: 15672
+          protocol: TCP
         - name: stomp
           containerPort: 61613
+          protocol: TCP
         - name: stomp-tls
           containerPort: 61613
+          protocol: TCP
         - name: mqtt-tls
           containerPort: 8883
+          protocol: TCP
         - name: stomp-ws
           containerPort: 15674
+          protocol: TCP
         - name: mqtt-ws
           containerPort: 15675
+          protocol: TCP
         - name: monitor
           containerPort: 15692
+          protocol: TCP
         resources:
           limits:
             cpu: 1500m

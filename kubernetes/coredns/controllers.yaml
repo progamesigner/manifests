@@ -30,13 +30,21 @@ spec:
         - -conf
         - /etc/coredns/Corefile
         ports:
-        - name: dns
+        - name: dns-tcp
           containerPort: 53
+          protocol: TCP
         - name: dns-udp
           containerPort: 53
           protocol: UDP
         - name: monitor
           containerPort: 9153
+          protocol: TCP
+        - name: liveness
+          containerPort: 8080
+          protocol: TCP
+        - name: readiness
+          containerPort: 8181
+          protocol: TCP
         livenessProbe:
           httpGet:
             path: /health

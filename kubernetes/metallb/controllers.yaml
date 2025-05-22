@@ -61,8 +61,10 @@ spec:
         ports:
         - name: monitor
           containerPort: 7472
-        - name: memberlist
+          protocol: TCP
+        - name: memberlist-tcp
           containerPort: 7946
+          protocol: TCP
         - name: memberlist-udp
           containerPort: 7946
           protocol: UDP
@@ -145,8 +147,10 @@ spec:
         ports:
         - name: monitor
           containerPort: 7472
+          protocol: TCP
         - name: webhook
           containerPort: 9443
+          protocol: TCP
         livenessProbe:
           httpGet:
             path: /metrics

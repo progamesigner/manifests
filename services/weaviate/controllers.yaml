@@ -36,6 +36,7 @@ spec:
         ports:
         - name: weaviate
           containerPort: 8080
+          protocol: TCP
         volumeMounts:
         - name: data
           mountPath: /var/lib/weaviate

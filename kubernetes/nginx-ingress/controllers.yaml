@@ -8,6 +8,7 @@ metadata:
     app.kubernetes.io/part-of: kubernetes
   name: nginx-ingress
 spec:
+  replicas: 2
   selector:
     matchLabels:
       app.kubernetes.io/component: nginx-ingress
@@ -56,7 +57,7 @@ spec:
         - -enable-prometheus-metrics=true
         - -enable-snippets=true
         - -enable-tls-passthrough=true
-        - -external-service=nginx-ingress
+        - -external-service=cluster-ingress
         - -global-configuration=$(POD_NAMESPACE)/nginx-ingress
         - -ingress-class=nginx-ingress
         - -leader-election-lock-name=nginx-ingress-controller-leader
@@ -78,14 +79,28 @@ spec:
         ports:
         - name: http
           containerPort: 80
-        - name: https
+          protocol: TCP
+        - name: https-tcp
           containerPort: 443
+          protocol: TCP
+        - name: https-udp
+          containerPort: 443
+          protocol: UDP
+        - name: dns-tls-tcp
+          containerPort: 853
+          protocol: TCP
+        - name: dns-tls-udp
+          containerPort: 853
+          protocol: UDP
         - name: status
           containerPort: 8080
+          protocol: TCP
         - name: readiness
           containerPort: 8081
+          protocol: TCP
         - name: monitor
           containerPort: 9113
+          protocol: TCP
         readinessProbe:
           failureThreshold: 3
           httpGet:

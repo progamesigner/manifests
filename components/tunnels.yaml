@@ -7,12 +7,19 @@ spec:
   ports:
   - name: http
     port: 80
+    protocol: TCP
     targetPort: http
-  - name: https
+  - name: https-tcp
     port: 443
-    targetPort: https
+    protocol: TCP
+    targetPort: https-tcp
+  - name: https-udp
+    port: 443
+    protocol: UDP
+    targetPort: https-udp
   - name: socks
     port: 1080
+    protocol: TCP
     targetPort: socks
   selector:
     app.kubernetes.io/component: haproxy
@@ -63,12 +70,19 @@ spec:
         ports:
         - name: socks
           containerPort: 1080
+          protocol: TCP
         - name: stats
           containerPort: 1999
+          protocol: TCP
         - name: http
           containerPort: 8000
-        - name: https
+          protocol: TCP
+        - name: https-tcp
           containerPort: 8443
+          protocol: TCP
+        - name: https-udp
+          containerPort: 8443
+          protocol: UDP
         livenessProbe:
           failureThreshold: 5
           httpGet:

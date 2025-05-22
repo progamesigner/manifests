@@ -33,6 +33,7 @@ spec:
         ports:
         - name: mariadb
           containerPort: 3306
+          protocol: TCP
         volumeMounts:
         - name: data
           mountPath: /var/lib/mysql

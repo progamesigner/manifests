@@ -14,23 +14,8 @@ spec:
       app.kubernetes.io/component: unifi-network
       app.kubernetes.io/name: unifi-network
       app.kubernetes.io/part-of: components
-  strategy:
-    type: Recreate
   template:
     metadata:
-      annotations:
-        k8s.v1.cni.cncf.io/networks: |
-          [
-            {
-              "name": "cluster",
-              "namespace": "kube-system"
-            },
-            {
-              "name": "local",
-              "namespace": "kube-system",
-              "mac": "7A:22:25:01:04:02"
-            }
-          ]
       labels:
         app.kubernetes.io/component: unifi-network
         app.kubernetes.io/name: unifi-network
@@ -51,7 +36,10 @@ spec:
         - configMapRef:
             name: unifi-network
         ports:
-        - name: l2discovery
+        - name: snmp
+          containerPort: 161
+          protocol: UDP
+        - name: l2-discovery
           containerPort: 1900
           protocol: UDP
         - name: stun
@@ -60,16 +48,21 @@ spec:
         - name: syslog
           containerPort: 5514
           protocol: UDP
-        - name: throughput-test
+        - name: speed-test
           containerPort: 6789
+          protocol: TCP
         - name: inform
           containerPort: 8080
+          protocol: TCP
         - name: https
           containerPort: 8443
+          protocol: TCP
         - name: https-redirect
           containerPort: 8843
+          protocol: TCP
         - name: http-redirect
           containerPort: 8880
+          protocol: TCP
         - name: discovery
           containerPort: 10001
           protocol: UDP

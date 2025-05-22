@@ -39,8 +39,10 @@ spec:
         ports:
         - name: minio
           containerPort: 9000
-        - name: minio-console
+          protocol: TCP
+        - name: console
           containerPort: 9090
+          protocol: TCP
         volumeMounts:
         - name: data
           mountPath: /var/lib/minio

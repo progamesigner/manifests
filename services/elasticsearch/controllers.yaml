@@ -71,8 +71,10 @@ spec:
         ports:
         - name: elasticsearch
           containerPort: 9200
+          protocol: TCP
         - name: transport
           containerPort: 9300
+          protocol: TCP
         resources:
           limits:
             cpu: 1500m

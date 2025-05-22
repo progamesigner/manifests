@@ -9,6 +9,7 @@ spec:
   ports:
   - name: http
     port: 3000
+    protocol: TCP
     targetPort: http
   selector:
     app.kubernetes.io/component: browserless
@@ -26,6 +27,7 @@ spec:
   ports:
   - name: elasticsearch
     port: 9200
+    protocol: TCP
     targetPort: elasticsearch
   selector:
     app.kubernetes.io/component: elasticsearch
@@ -43,6 +45,7 @@ spec:
   ports:
   - name: http
     port: 8080
+    protocol: TCP
     targetPort: http
   selector:
     app.kubernetes.io/component: localai
@@ -60,6 +63,7 @@ spec:
   ports:
   - name: mariadb
     port: 3306
+    protocol: TCP
     targetPort: mariadb
   selector:
     app.kubernetes.io/component: mariadb
@@ -77,10 +81,12 @@ spec:
   ports:
   - name: minio
     port: 9000
+    protocol: TCP
     targetPort: minio
-  - name: minio-console
+  - name: console
     port: 9090
-    targetPort: minio-console
+    protocol: TCP
+    targetPort: console
   selector:
     app.kubernetes.io/component: minio
     app.kubernetes.io/name: minio
@@ -97,6 +103,7 @@ spec:
   ports:
   - name: mongodb
     port: 27017
+    protocol: TCP
     targetPort: mongodb
   selector:
     app.kubernetes.io/component: mongodb
@@ -114,6 +121,7 @@ spec:
   ports:
   - name: postgresql
     port: 5432
+    protocol: TCP
     targetPort: postgresql
   selector:
     app.kubernetes.io/component: postgresql
@@ -131,6 +139,7 @@ spec:
   ports:
   - name: amqp-tls
     port: 5672
+    protocol: TCP
     targetPort: amqp-tls
   selector:
     app.kubernetes.io/component: rabbitmq
@@ -148,6 +157,7 @@ spec:
   ports:
   - name: redis
     port: 6379
+    protocol: TCP
     targetPort: redis
   selector:
     app.kubernetes.io/component: redis
@@ -165,6 +175,7 @@ spec:
   ports:
   - name: weaviate
     port: 8080
+    protocol: TCP
     targetPort: weaviate
   selector:
     app.kubernetes.io/component: weaviate

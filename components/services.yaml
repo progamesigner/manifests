@@ -5,15 +5,30 @@ metadata:
   name: adguard-home
 spec:
   ports:
-  - name: https
+  - name: https-tcp
     port: 443
-    targetPort: https
-  - name: dns-tls
+    protocol: TCP
+    targetPort: https-tcp
+  - name: https-udp
+    port: 443
+    protocol: UDP
+    targetPort: https-udp
+  - name: dns-tls-tcp
     port: 853
-    targetPort: dns-tls
-  - name: dnscrypt
+    protocol: TCP
+    targetPort: dns-tls-tcp
+  - name: dns-tls-udp
+    port: 853
+    protocol: UDP
+    targetPort: dns-tls-udp
+  - name: dnscrypt-tcp
     port: 5443
-    targetPort: dnscrypt
+    protocol: TCP
+    targetPort: dnscrypt-tcp
+  - name: dnscrypt-udp
+    port: 5443
+    protocol: UDP
+    targetPort: dnscrypt-udp
   selector:
     app.kubernetes.io/component: adguard-home
     app.kubernetes.io/name: adguard-home
@@ -27,6 +42,7 @@ spec:
   ports:
   - name: http
     port: 8000
+    protocol: TCP
     targetPort: http
   selector:
     app.kubernetes.io/component: apprise
@@ -41,6 +57,7 @@ spec:
   ports:
   - name: http
     port: 3000
+    protocol: TCP
     targetPort: http
   selector:
     app.kubernetes.io/component: coder
@@ -55,6 +72,7 @@ spec:
   ports:
   - name: http
     port: 5001
+    protocol: TCP
     targetPort: http
   selector:
     app.kubernetes.io/component: api
@@ -69,6 +87,7 @@ spec:
   ports:
   - name: http
     port: 5002
+    protocol: TCP
     targetPort: http
   selector:
     app.kubernetes.io/component: plugin-daemon
@@ -83,6 +102,7 @@ spec:
   ports:
   - name: http
     port: 8194
+    protocol: TCP
     targetPort: http
   selector:
     app.kubernetes.io/component: sandbox
@@ -97,6 +117,7 @@ spec:
   ports:
   - name: proxy
     port: 3128
+    protocol: TCP
     targetPort: proxy
   selector:
     app.kubernetes.io/component: ssrf-proxy
@@ -111,6 +132,7 @@ spec:
   ports:
   - name: http
     port: 3000
+    protocol: TCP
     targetPort: http
   selector:
     app.kubernetes.io/component: web
@@ -125,6 +147,7 @@ spec:
   ports:
   - name: http
     port: 8080
+    protocol: TCP
     targetPort: http
   selector:
     app.kubernetes.io/component: secretariat
@@ -139,6 +162,7 @@ spec:
   ports:
   - name: http
     port: 8123
+    protocol: TCP
     targetPort: http
   selector:
     app.kubernetes.io/component: home-assistant
@@ -153,6 +177,7 @@ spec:
   ports:
   - name: http
     port: 8123
+    protocol: TCP
     targetPort: http
   selector:
     app.kubernetes.io/component: home-assistant
@@ -167,6 +192,7 @@ spec:
   ports:
   - name: http
     port: 8080
+    protocol: TCP
     targetPort: http
   selector:
     app.kubernetes.io/component: mongodb-compass
@@ -181,6 +207,7 @@ spec:
   ports:
   - name: http
     port: 80
+    protocol: TCP
     targetPort: http
   selector:
     app.kubernetes.io/component: pgadmin
@@ -195,6 +222,7 @@ spec:
   ports:
   - name: http
     port: 80
+    protocol: TCP
     targetPort: http
   selector:
     app.kubernetes.io/component: phpmyadmin
@@ -209,9 +237,11 @@ spec:
   ports:
   - name: socks
     port: 1080
+    protocol: TCP
     targetPort: socks
   - name: proxy
     port: 8080
+    protocol: TCP
     targetPort: proxy
   selector:
     app.kubernetes.io/component: cloudflare-warp
@@ -226,9 +256,11 @@ spec:
   ports:
   - name: socks
     port: 1080
+    protocol: TCP
     targetPort: socks
   - name: proxy
     port: 8080
+    protocol: TCP
     targetPort: proxy
   selector:
     app.kubernetes.io/component: tailscale
@@ -244,9 +276,11 @@ spec:
   ports:
   - name: socks
     port: 1080
+    protocol: TCP
     targetPort: socks
   - name: proxy
     port: 8080
+    protocol: TCP
     targetPort: proxy
   selector:
     app.kubernetes.io/component: tailscale
@@ -262,9 +296,11 @@ spec:
   ports:
   - name: socks
     port: 1080
+    protocol: TCP
     targetPort: socks
   - name: proxy
     port: 8080
+    protocol: TCP
     targetPort: proxy
   selector:
     app.kubernetes.io/component: tailscale
@@ -280,9 +316,11 @@ spec:
   ports:
   - name: socks
     port: 1080
+    protocol: TCP
     targetPort: socks
   - name: proxy
     port: 8080
+    protocol: TCP
     targetPort: proxy
   selector:
     app.kubernetes.io/component: tailscale
@@ -298,9 +336,11 @@ spec:
   ports:
   - name: socks
     port: 1080
+    protocol: TCP
     targetPort: socks
   - name: proxy
     port: 8080
+    protocol: TCP
     targetPort: proxy
   selector:
     app.kubernetes.io/component: tailscale
@@ -316,6 +356,7 @@ spec:
   ports:
   - name: http
     port: 5540
+    protocol: TCP
     targetPort: http
   selector:
     app.kubernetes.io/component: redis-insight
@@ -330,6 +371,7 @@ spec:
   ports:
   - name: http
     port: 1200
+    protocol: TCP
     targetPort: http
   selector:
     app.kubernetes.io/component: rsshub
@@ -344,6 +386,7 @@ spec:
   ports:
   - name: http
     port: 8384
+    protocol: TCP
     targetPort: http
   selector:
     app.kubernetes.io/component: syncthing
@@ -358,6 +401,7 @@ spec:
   ports:
   - name: https
     port: 8443
+    protocol: TCP
     targetPort: https
   selector:
     app.kubernetes.io/component: unifi-network
@@ -372,6 +416,7 @@ spec:
   ports:
   - name: http
     port: 8000
+    protocol: TCP
     targetPort: http
   selector:
     app.kubernetes.io/component: windmill
@@ -386,6 +431,7 @@ spec:
   ports:
   - name: http
     port: 8000
+    protocol: TCP
     targetPort: http
   selector:
     app.kubernetes.io/component: windmill
@@ -400,6 +446,7 @@ spec:
   ports:
   - name: lsp
     port: 3001
+    protocol: TCP
     targetPort: lsp
   selector:
     app.kubernetes.io/component: windmill-lsp
@@ -409,27 +456,35 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  annotations:
-    metallb.io/allow-shared-ip: adguard-home-dns
-  labels:
-    kubernetes.io/cluster-service: 'true'
-    kubernetes.io/name: AdGuardHome
-  name: adguard-home-dns
+  name: local-unifi-network
 spec:
-  loadBalancerIP: 192.168.32.8
+  loadBalancerIP: 192.168.0.2
   ports:
-  - name: dns
+  - name: inform
+    port: 8080
+    protocol: TCP
+    targetPort: inform
+  selector:
+    app.kubernetes.io/component: unifi-network
+    app.kubernetes.io/name: unifi-network
+    app.kubernetes.io/part-of: components
+  type: LoadBalancer
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: local-dns
+spec:
+  loadBalancerIP: 192.168.0.8
+  ports:
+  - name: dns-tcp
     port: 53
-    targetPort: 53
-    appProtocol: domain-s
-  - name: http
-    port: 80
-    targetPort: 80
-    appProtocol: http
-  - name: https
-    port: 443
-    targetPort: 443
-    appProtocol: https
+    protocol: TCP
+    targetPort: dns-tcp
+  - name: dns-udp
+    port: 53
+    protocol: UDP
+    targetPort: dns-udp
   selector:
     app.kubernetes.io/component: adguard-home
     app.kubernetes.io/name: adguard-home
@@ -439,57 +494,20 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  annotations:
-    metallb.io/allow-shared-ip: adguard-home-dns
-  name: adguard-home-dns-udp
+  name: local-relaysrv
 spec:
-  loadBalancerIP: 192.168.32.8
+  loadBalancerIP: 192.168.0.10
   ports:
-  - name: dns
-    port: 53
-    targetPort: 53
-    protocol: UDP
-    appProtocol: domain-s
-  - name: https
-    port: 443
-    targetPort: 443
-    protocol: UDP
-    appProtocol: https
+  - name: relaysrv
+    port: 22067
+    protocol: TCP
+    targetPort: relaysrv
+  - name: relaysrv-status
+    port: 22070
+    protocol: TCP
+    targetPort: relaysrv-status
   selector:
-    app.kubernetes.io/component: adguard-home
-    app.kubernetes.io/name: adguard-home
+    app.kubernetes.io/component: syncthing-relay
+    app.kubernetes.io/name: syncthing
     app.kubernetes.io/part-of: components
   type: LoadBalancer
----
-apiVersion: k8s.nginx.org/v1
-kind: TransportServer
-metadata:
-  name: adguard-home
-spec:
-  action:
-    pass: adguard-home
-  listener:
-    name: dns-over-tls
-    protocol: TCP
-  upstreams:
-  - name: adguard-home
-    service: adguard-home
-    port: 853
----
-apiVersion: k8s.nginx.org/v1
-kind: TransportServer
-metadata:
-  name: adguard-home-udp
-spec:
-  action:
-    pass: adguard-home
-  listener:
-    name: dns-over-tls-udp
-    protocol: UDP
-  upstreams:
-  - name: adguard-home
-    service: adguard-home
-    port: 853
-  upstreamParameters:
-    udpRequests: 1
-    udpResponses: 1

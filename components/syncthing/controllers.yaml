@@ -64,23 +64,8 @@ spec:
       app.kubernetes.io/component: syncthing-relay
       app.kubernetes.io/name: syncthing
       app.kubernetes.io/part-of: components
-  strategy:
-    type: Recreate
   template:
     metadata:
-      annotations:
-        k8s.v1.cni.cncf.io/networks: |
-          [
-            {
-              "name": "cluster",
-              "namespace": "kube-system"
-            },
-            {
-              "name": "local",
-              "namespace": "kube-system",
-              "mac": "7A:22:25:01:04:10"
-            }
-          ]
       labels:
         app.kubernetes.io/component: syncthing-relay
         app.kubernetes.io/name: syncthing

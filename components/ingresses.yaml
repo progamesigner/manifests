@@ -16,7 +16,7 @@ spec:
           service:
             name: adguard-home
             port:
-              name: https
+              name: https-tcp
         path: /
         pathType: Prefix
   tls:
