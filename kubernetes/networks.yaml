@@ -19,6 +19,14 @@ spec:
   autoAssign: false
 ---
 apiVersion: metallb.io/v1beta1
+kind: L2Advertisement
+metadata:
+  name: advertisement
+spec:
+  ipAddressPools:
+  - managed-ip-address-pool
+---
+apiVersion: metallb.io/v1beta1
 kind: BGPAdvertisement
 metadata:
   name: advertisement
@@ -26,26 +34,6 @@ spec:
   ipAddressPools:
   - default-ip-address-pool
   - managed-ip-address-pool
----
-apiVersion: k8s.cni.cncf.io/v1
-kind: NetworkAttachmentDefinition
-metadata:
-  name: cluster
-spec:
-  config: |
-    {
-      "name": "vhost0",
-      "type": "ptp",
-      "ipam": {
-        "type": "host-local",
-        "subnet": "10.20.0.0/24",
-        "routes": [
-          {
-            "dst": "10.16.0.0/14"
-          }
-        ]
-      }
-    }
 ---
 apiVersion: k8s.cni.cncf.io/v1
 kind: NetworkAttachmentDefinition
