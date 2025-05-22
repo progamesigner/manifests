@@ -7,7 +7,7 @@ metadata:
     nginx.org/ssl-services: adguard-home
   name: adguard-home
 spec:
-  ingressClassName: internal-ingress
+  ingressClassName: nginx-ingress
   rules:
   - host: adguard.progamesigner.dev
     http:
@@ -32,7 +32,7 @@ metadata:
     nginx.org/websocket-services: dashboard
   name: dashboard
 spec:
-  ingressClassName: internal-ingress
+  ingressClassName: nginx-ingress
   rules:
   - host: dashboard.progamesigner.dev
     http:
@@ -56,7 +56,7 @@ metadata:
     kubernetes.progamesigner.dev/hostname: ai
   name: dify
 spec:
-  ingressClassName: internal-ingress
+  ingressClassName: nginx-ingress
   rules:
   - host: ai.progamesigner.dev
     http:
@@ -123,7 +123,7 @@ metadata:
     nginx.org/websocket-services: home-assistant
   name: home-assistant
 spec:
-  ingressClassName: internal-ingress
+  ingressClassName: nginx-ingress
   rules:
   - host: home.progamesigner.dev
     http:
@@ -148,7 +148,7 @@ metadata:
     nginx.org/websocket-services: minio
   name: minio
 spec:
-  ingressClassName: internal-ingress
+  ingressClassName: nginx-ingress
   rules:
   - host: bucket.progamesigner.dev
     http:
@@ -173,7 +173,7 @@ metadata:
     nginx.org/websocket-services: mongodb-compass
   name: mongodb-compass
 spec:
-  ingressClassName: internal-ingress
+  ingressClassName: nginx-ingress
   rules:
   - host: mongodb.progamesigner.dev
     http:
@@ -200,7 +200,7 @@ metadata:
     nginx.org/proxy-send-timeout: 3600s
   name: pgadmin
 spec:
-  ingressClassName: internal-ingress
+  ingressClassName: nginx-ingress
   rules:
   - host: postgresql.progamesigner.dev
     http:
@@ -227,7 +227,7 @@ metadata:
     nginx.org/proxy-send-timeout: 3600s
   name: phpmyadmin
 spec:
-  ingressClassName: internal-ingress
+  ingressClassName: nginx-ingress
   rules:
   - host: mariadb.progamesigner.dev
     http:
@@ -262,7 +262,7 @@ metadata:
     kubernetes.progamesigner.dev/hostname: redis
   name: redis-insight
 spec:
-  ingressClassName: internal-ingress
+  ingressClassName: nginx-ingress
   rules:
   - host: redis.progamesigner.dev
     http:
@@ -287,7 +287,7 @@ metadata:
     nginx.org/ssl-services: syncthing
   name: syncthing
 spec:
-  ingressClassName: internal-ingress
+  ingressClassName: nginx-ingress
   rules:
   - host: syncthing.progamesigner.dev
     http:
@@ -312,7 +312,7 @@ metadata:
     nginx.org/ssl-services: unifi-network
   name: unifi-network
 spec:
-  ingressClassName: internal-ingress
+  ingressClassName: nginx-ingress
   rules:
   - host: network.progamesigner.dev
     http:
@@ -338,7 +338,7 @@ metadata:
     nginx.org/websocket-services: windmill,windmill-api,windmill-lsp
   name: windmill
 spec:
-  ingressClassName: internal-ingress
+  ingressClassName: nginx-ingress
   rules:
   - host: api.progamesigner.dev
     http:

@@ -4,14 +4,14 @@ kind: Deployment
 metadata:
   labels:
     app.kubernetes.io/component: nginx-ingress
-    app.kubernetes.io/name: internal-nginx-ingress
+    app.kubernetes.io/name: nginx-ingress
     app.kubernetes.io/part-of: kubernetes
-  name: internal-nginx-ingress
+  name: nginx-ingress
 spec:
   selector:
     matchLabels:
       app.kubernetes.io/component: nginx-ingress
-      app.kubernetes.io/name: internal-nginx-ingress
+      app.kubernetes.io/name: nginx-ingress
       app.kubernetes.io/part-of: kubernetes
   template:
     metadata:
@@ -21,7 +21,7 @@ spec:
         prometheus.io/scrape: 'true'
       labels:
         app.kubernetes.io/component: nginx-ingress
-        app.kubernetes.io/name: internal-nginx-ingress
+        app.kubernetes.io/name: nginx-ingress
         app.kubernetes.io/part-of: kubernetes
     spec:
       automountServiceAccountToken: true
@@ -56,10 +56,10 @@ spec:
         - -enable-prometheus-metrics=true
         - -enable-snippets=true
         - -enable-tls-passthrough=true
-        - -external-service=internal-ingress
-        - -global-configuration=$(POD_NAMESPACE)/internal-nginx-ingress
-        - -ingress-class=internal-ingress
-        - -leader-election-lock-name=internal-ingress-controller-leader
+        - -external-service=nginx-ingress
+        - -global-configuration=$(POD_NAMESPACE)/nginx-ingress
+        - -ingress-class=nginx-ingress
+        - -leader-election-lock-name=nginx-ingress-controller-leader
         - -nginx-configmaps=$(POD_NAMESPACE)/$(NGINX_INGRESS_CONFIG)
         - -report-ingress-status=true
         env:
