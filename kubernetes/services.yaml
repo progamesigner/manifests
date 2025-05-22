@@ -111,9 +111,3 @@ spec:
   - name: dns-over-tls-udp
     port: 853
     protocol: UDP
----
-apiVersion: k8s.nginx.org/v1
-kind: GlobalConfiguration
-metadata:
-  name: external-nginx-ingress
-spec: {}
