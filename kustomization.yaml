@@ -101,6 +101,15 @@ patches:
     spec:
       template:
         spec:
+          affinity:
+            nodeAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                nodeSelectorTerms:
+                - matchExpressions:
+                  - key: kubernetes.progamesigner.dev/network-workload
+                    operator: Exists
+                  - key: kubernetes.progamesigner.dev/local-disk
+                    operator: Exists
           volumes:
           - name: data
             emptyDir: null
@@ -111,16 +120,19 @@ patches:
     apiVersion: apps/v1
     kind: Deployment
     metadata:
-      name: dify-api
+      name: cloudflare-warp
     spec:
       template:
         spec:
-          volumes:
-          - name: data
-            emptyDir: null
-            hostPath:
-              type: DirectoryOrCreate
-              path: /srv/dify-api
+          affinity:
+            nodeAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                nodeSelectorTerms:
+                - matchExpressions:
+                  - key: kubernetes.io/arch
+                    operator: In
+                    values:
+                    - amd64
 - patch: |-
     apiVersion: apps/v1
     kind: Deployment
@@ -129,6 +141,13 @@ patches:
     spec:
       template:
         spec:
+          affinity:
+            nodeAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                nodeSelectorTerms:
+                - matchExpressions:
+                  - key: kubernetes.progamesigner.dev/local-disk
+                    operator: Exists
           volumes:
           - name: data
             emptyDir: null
@@ -144,6 +163,13 @@ patches:
       replicas: 0
       template:
         spec:
+          affinity:
+            nodeAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                nodeSelectorTerms:
+                - matchExpressions:
+                  - key: kubernetes.progamesigner.dev/local-disk
+                    operator: Exists
           volumes:
           - name: data
             emptyDir: null
@@ -159,6 +185,13 @@ patches:
       replicas: 0
       template:
         spec:
+          affinity:
+            nodeAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                nodeSelectorTerms:
+                - matchExpressions:
+                  - key: kubernetes.progamesigner.dev/local-disk
+                    operator: Exists
           volumes:
           - name: data
             emptyDir: null
@@ -173,6 +206,15 @@ patches:
     spec:
       template:
         spec:
+          affinity:
+            nodeAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                nodeSelectorTerms:
+                - matchExpressions:
+                  - key: kubernetes.progamesigner.dev/controller-workload
+                    operator: Exists
+                  - key: kubernetes.progamesigner.dev/local-disk
+                    operator: Exists
           volumes:
           - name: data
             emptyDir: null
@@ -185,8 +227,16 @@ patches:
     metadata:
       name: localai
     spec:
+      replicas: 0
       template:
         spec:
+          affinity:
+            nodeAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                nodeSelectorTerms:
+                - matchExpressions:
+                  - key: kubernetes.progamesigner.dev/local-disk
+                    operator: Exists
           volumes:
           - name: data
             emptyDir: null
@@ -202,6 +252,13 @@ patches:
       replicas: 0
       template:
         spec:
+          affinity:
+            nodeAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                nodeSelectorTerms:
+                - matchExpressions:
+                  - key: kubernetes.progamesigner.dev/local-disk
+                    operator: Exists
           volumes:
           - name: data
             emptyDir: null
@@ -216,6 +273,13 @@ patches:
     spec:
       template:
         spec:
+          affinity:
+            nodeAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                nodeSelectorTerms:
+                - matchExpressions:
+                  - key: kubernetes.progamesigner.dev/local-disk
+                    operator: Exists
           volumes:
           - name: data
             emptyDir: null
@@ -230,6 +294,13 @@ patches:
     spec:
       template:
         spec:
+          affinity:
+            nodeAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                nodeSelectorTerms:
+                - matchExpressions:
+                  - key: kubernetes.progamesigner.dev/local-disk
+                    operator: Exists
           volumes:
           - name: data
             emptyDir: null
@@ -244,6 +315,13 @@ patches:
     spec:
       template:
         spec:
+          affinity:
+            nodeAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                nodeSelectorTerms:
+                - matchExpressions:
+                  - key: kubernetes.progamesigner.dev/local-disk
+                    operator: Exists
           volumes:
           - name: data
             emptyDir: null
@@ -258,6 +336,13 @@ patches:
     spec:
       template:
         spec:
+          affinity:
+            nodeAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                nodeSelectorTerms:
+                - matchExpressions:
+                  - key: kubernetes.progamesigner.dev/local-disk
+                    operator: Exists
           volumes:
           - name: data
             emptyDir: null
@@ -286,6 +371,13 @@ patches:
     spec:
       template:
         spec:
+          affinity:
+            nodeAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                nodeSelectorTerms:
+                - matchExpressions:
+                  - key: kubernetes.progamesigner.dev/local-disk
+                    operator: Exists
           volumes:
           - name: data
             emptyDir: null
@@ -300,6 +392,15 @@ patches:
     spec:
       template:
         spec:
+          affinity:
+            nodeAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                nodeSelectorTerms:
+                - matchExpressions:
+                  - key: kubernetes.progamesigner.dev/controller-workload
+                    operator: Exists
+                  - key: kubernetes.progamesigner.dev/local-disk
+                    operator: Exists
           volumes:
           - name: data
             emptyDir: null
@@ -314,6 +415,15 @@ patches:
     spec:
       template:
         spec:
+          affinity:
+            nodeAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                nodeSelectorTerms:
+                - matchExpressions:
+                  - key: kubernetes.progamesigner.dev/network-workload
+                    operator: Exists
+                  - key: kubernetes.progamesigner.dev/local-disk
+                    operator: Exists
           volumes:
           - name: data
             emptyDir: null
@@ -328,6 +438,15 @@ patches:
     spec:
       template:
         spec:
+          affinity:
+            nodeAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                nodeSelectorTerms:
+                - matchExpressions:
+                  - key: kubernetes.progamesigner.dev/controller-workload
+                    operator: Exists
+                  - key: kubernetes.progamesigner.dev/local-disk
+                    operator: Exists
           volumes:
           - name: data
             emptyDir: null
@@ -342,6 +461,13 @@ patches:
     spec:
       template:
         spec:
+          affinity:
+            nodeAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                nodeSelectorTerms:
+                - matchExpressions:
+                  - key: kubernetes.progamesigner.dev/local-disk
+                    operator: Exists
           volumes:
           - name: data
             emptyDir: null
@@ -377,6 +503,13 @@ patches:
       replicas: 0
       template:
         spec:
+          affinity:
+            nodeAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                nodeSelectorTerms:
+                - matchExpressions:
+                  - key: kubernetes.progamesigner.dev/local-disk
+                    operator: Exists
           volumes:
           - name: data
             emptyDir: null

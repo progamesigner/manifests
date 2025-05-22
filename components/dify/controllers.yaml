@@ -82,14 +82,8 @@ spec:
           requests:
             cpu: 100m
             memory: 64Mi
-        volumeMounts:
-        - name: data
-          mountPath: /app/api/storage
       enableServiceLinks: false
       serviceAccountName: default
-      volumes:
-      - name: data
-        emptyDir: {}
 ---
 apiVersion: apps/v1
 kind: Deployment
