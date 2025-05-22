@@ -6,7 +6,6 @@ metadata:
     kubernetes.progamesigner.dev/hostname: browserless
   name: browserless
 spec:
-  externalTrafficPolicy: Local
   ports:
   - name: http
     port: 3000
@@ -24,7 +23,6 @@ metadata:
     kubernetes.progamesigner.dev/hostname: elasticsearch
   name: elasticsearch
 spec:
-  externalTrafficPolicy: Local
   ports:
   - name: elasticsearch
     port: 9200
@@ -42,7 +40,6 @@ metadata:
     kubernetes.progamesigner.dev/hostname: ai,localai
   name: localai
 spec:
-  externalTrafficPolicy: Local
   ports:
   - name: http
     port: 8080
@@ -60,7 +57,6 @@ metadata:
     kubernetes.progamesigner.dev/hostname: mariadb,mysql
   name: mariadb
 spec:
-  externalTrafficPolicy: Local
   ports:
   - name: mariadb
     port: 3306
@@ -78,7 +74,6 @@ metadata:
     kubernetes.progamesigner.dev/hostname: minio,s3
   name: minio
 spec:
-  externalTrafficPolicy: Local
   ports:
   - name: minio
     port: 9000
@@ -99,7 +94,6 @@ metadata:
     kubernetes.progamesigner.dev/hostname: mongodb
   name: mongodb
 spec:
-  externalTrafficPolicy: Local
   ports:
   - name: mongodb
     port: 27017
@@ -117,7 +111,6 @@ metadata:
     kubernetes.progamesigner.dev/hostname: postgresql
   name: postgresql
 spec:
-  externalTrafficPolicy: Local
   ports:
   - name: postgresql
     port: 5432
@@ -135,7 +128,6 @@ metadata:
     kubernetes.progamesigner.dev/hostname: rabbitmq
   name: rabbitmq
 spec:
-  externalTrafficPolicy: Local
   ports:
   - name: amqp-tls
     port: 5672
@@ -153,7 +145,6 @@ metadata:
     kubernetes.progamesigner.dev/hostname: redis
   name: redis
 spec:
-  externalTrafficPolicy: Local
   ports:
   - name: redis
     port: 6379
@@ -171,7 +162,6 @@ metadata:
     kubernetes.progamesigner.dev/hostname: weaviate
   name: weaviate
 spec:
-  externalTrafficPolicy: Local
   ports:
   - name: weaviate
     port: 8080
