@@ -28,6 +28,16 @@ spec:
       - name: speaker
         image: metallb/speaker:latest
         env:
+        - name: KUBERNETES_SERVICE_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: kubernetes
+              key: KUBERNETES_SERVICE_HOST
+        - name: KUBERNETES_SERVICE_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: kubernetes
+              key: KUBERNETES_SERVICE_PORT
         - name: METALLB_HOST
           valueFrom:
             fieldRef:
@@ -48,9 +58,6 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: metadata.name
-        envFrom:
-        - configMapRef:
-            name: kubernetes
         ports:
         - name: monitor
           containerPort: 7472
@@ -135,9 +142,6 @@ spec:
         - --deployment=metallb-controller
         - --ml-secret-name=metallb-memberlist
         - --webhook-mode=disabled
-        envFrom:
-        - configMapRef:
-            name: kubernetes
         ports:
         - name: monitor
           containerPort: 7472

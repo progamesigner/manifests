@@ -49,13 +49,20 @@ spec:
         env:
         - name: KUBE_ROUTER_CNI_CONF_FILE
           value: /etc/cni/net.d/20-kube-router.conflist
+        - name: KUBERNETES_SERVICE_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: kubernetes
+              key: KUBERNETES_SERVICE_HOST
+        - name: KUBERNETES_SERVICE_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: kubernetes
+              key: KUBERNETES_SERVICE_PORT
         - name: NODE_NAME
           valueFrom:
             fieldRef:
               fieldPath: spec.nodeName
-        envFrom:
-        - configMapRef:
-            name: kubernetes
         livenessProbe:
           httpGet:
             path: /healthz

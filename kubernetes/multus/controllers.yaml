@@ -31,9 +31,17 @@ spec:
         - --global-namespaces=default,kube-system
         - --multus-conf-file=/etc/multus/10-multus.conflist
         - --namespace-isolation=true
-        envFrom:
-        - configMapRef:
-            name: kubernetes
+        env:
+        - name: KUBERNETES_SERVICE_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: kubernetes
+              key: KUBERNETES_SERVICE_HOST
+        - name: KUBERNETES_SERVICE_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: kubernetes
+              key: KUBERNETES_SERVICE_PORT
         resources:
           limits:
             cpu: 100m
