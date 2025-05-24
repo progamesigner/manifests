@@ -21,6 +21,22 @@ spec:
         app.kubernetes.io/part-of: kubernetes
     spec:
       automountServiceAccountToken: true
+      initContainers:
+      - name: install-multus
+        image: multus/multus:latest
+        args:
+        - /install_multus
+        - --type=thin
+        resources:
+          requests:
+            cpu: 1m
+            memory: 1Mi
+        securityContext:
+          privileged: true
+        volumeMounts:
+        - name: cni-bin-dir
+          mountPath: /host/opt/cni/bin
+          mountPropagation: Bidirectional
       containers:
       - name: multus
         image: multus/multus:latest

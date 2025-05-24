@@ -32,12 +32,12 @@ spec:
         - set -ex;
           sysctl -w net.ipv4.conf.all.rp_filter=2;
           sysctl -w net.ipv6.conf.all.disable_ipv6=1;
-        securityContext:
-          privileged: true
         resources:
           requests:
             cpu: 1m
             memory: 1Mi
+        securityContext:
+          privileged: true
       containers:
       - name: protonvpn
         image: network/protonvpn:latest
@@ -187,12 +187,12 @@ spec:
         - set -ex;
           sysctl -w net.ipv4.conf.all.rp_filter=2;
           sysctl -w net.ipv6.conf.all.disable_ipv6=1;
-        securityContext:
-          privileged: true
         resources:
           requests:
             cpu: 1m
             memory: 1Mi
+        securityContext:
+          privileged: true
       containers:
       - name: protonvpn
         image: network/protonvpn:latest
@@ -342,12 +342,12 @@ spec:
         - set -ex;
           sysctl -w net.ipv4.conf.all.rp_filter=2;
           sysctl -w net.ipv6.conf.all.disable_ipv6=1;
-        securityContext:
-          privileged: true
         resources:
           requests:
             cpu: 1m
             memory: 1Mi
+        securityContext:
+          privileged: true
       containers:
       - name: protonvpn
         image: network/protonvpn:latest
@@ -497,12 +497,12 @@ spec:
         - set -ex;
           sysctl -w net.ipv4.conf.all.rp_filter=2;
           sysctl -w net.ipv6.conf.all.disable_ipv6=1;
-        securityContext:
-          privileged: true
         resources:
           requests:
             cpu: 1m
             memory: 1Mi
+        securityContext:
+          privileged: true
       containers:
       - name: protonvpn
         image: network/protonvpn:latest
@@ -652,12 +652,12 @@ spec:
         - set -ex;
           sysctl -w net.ipv4.conf.all.rp_filter=2;
           sysctl -w net.ipv6.conf.all.disable_ipv6=1;
-        securityContext:
-          privileged: true
         resources:
           requests:
             cpu: 1m
             memory: 1Mi
+        securityContext:
+          privileged: true
       containers:
       - name: protonvpn
         image: network/protonvpn:latest

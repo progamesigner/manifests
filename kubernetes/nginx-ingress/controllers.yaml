@@ -38,6 +38,10 @@ spec:
           openssl req -newkey rsa:2048 -x509 -sha512 -days 365 -nodes -subj "/O=Acme Co/CN=Kubernetes Ingress Controller Fake Certificate" -out /opt/nginx/secrets/default.crt -keyout /opt/nginx/secrets/default.key;
           cat /opt/nginx/secrets/default.crt /opt/nginx/secrets/default.key > /opt/nginx/secrets/default;
           rm -fv /opt/nginx/secrets/default.crt /opt/nginx/secrets/default.key;
+        resources:
+          requests:
+            cpu: 1m
+            memory: 1Mi
         securityContext:
           allowPrivilegeEscalation: false
           capabilities:

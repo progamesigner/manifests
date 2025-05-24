@@ -50,13 +50,17 @@ spec:
     spec:
       automountServiceAccountToken: false
       initContainers:
-      - name: check
+      - name: validation
         image: network/haproxy:latest
         command:
         - haproxy
         - -c
         - -f
         - /usr/local/etc/haproxy/haproxy.cfg
+        resources:
+          requests:
+            cpu: 1m
+            memory: 1Mi
         volumeMounts:
         - name: cert
           mountPath: /etc/ssl/certs/haproxy

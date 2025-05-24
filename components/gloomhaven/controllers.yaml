@@ -23,7 +23,7 @@ spec:
     spec:
       automountServiceAccountToken: false
       initContainers:
-      - name: client
+      - name: copy
         image: gloomhaven/client:latest
         command:
         - sh
@@ -34,6 +34,10 @@ spec:
           if [ -f /root/.ghs/server.json ]; then
             cp /root/.ghs/server.json /root/.ghs/gloomhavensecretariat/assets/server.json
           fi
+        resources:
+          requests:
+            cpu: 1m
+            memory: 1Mi
         volumeMounts:
         - name: data
           mountPath: /root/.ghs
