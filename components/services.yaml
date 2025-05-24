@@ -456,23 +456,6 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: local-unifi-network
-spec:
-  loadBalancerIP: 192.168.0.2
-  ports:
-  - name: inform
-    port: 8080
-    protocol: TCP
-    targetPort: inform
-  selector:
-    app.kubernetes.io/component: unifi-network
-    app.kubernetes.io/name: unifi-network
-    app.kubernetes.io/part-of: components
-  type: LoadBalancer
----
-apiVersion: v1
-kind: Service
-metadata:
   name: local-dns
 spec:
   loadBalancerIP: 192.168.0.8
@@ -494,26 +477,9 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: local-iot
-spec:
-  loadBalancerIP: 192.168.0.9
-  ports:
-  - name: http
-    port: 8123
-    protocol: TCP
-    targetPort: http
-  selector:
-    app.kubernetes.io/component: home-assistant
-    app.kubernetes.io/name: home-assistant
-    app.kubernetes.io/part-of: components
-  type: LoadBalancer
----
-apiVersion: v1
-kind: Service
-metadata:
   name: local-relaysrv
 spec:
-  loadBalancerIP: 192.168.0.10
+  loadBalancerIP: 192.168.0.9
   ports:
   - name: relaysrv
     port: 22067
