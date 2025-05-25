@@ -4,21 +4,21 @@ kind: Deployment
 metadata:
   labels:
     app.kubernetes.io/component: tailscale
-    app.kubernetes.io/name: protonvpn
+    app.kubernetes.io/name: wireguard
     app.kubernetes.io/part-of: components
-  name: tailscale-protonvpn-ch
+  name: tailscale-wireguard-ch
 spec:
   replicas: 1
   selector:
     matchLabels:
       app.kubernetes.io/component: tailscale
-      app.kubernetes.io/name: protonvpn
+      app.kubernetes.io/name: wireguard
       app.kubernetes.io/part-of: components
   template:
     metadata:
       labels:
         app.kubernetes.io/component: tailscale
-        app.kubernetes.io/name: protonvpn
+        app.kubernetes.io/name: wireguard
         app.kubernetes.io/part-of: components
         kubernetes.progamesigner.dev/vpn-region: ch
     spec:
@@ -31,7 +31,7 @@ spec:
         - -c
         - set -ex;
           sysctl -w net.ipv4.conf.all.rp_filter=2;
-          sysctl -w net.ipv6.conf.all.disable_ipv6=1;
+          sysctl -w net.ipv4.conf.all.src_valid_mark=1;
         resources:
           requests:
             cpu: 1m
@@ -39,66 +39,29 @@ spec:
         securityContext:
           privileged: true
       containers:
-      - name: protonvpn
-        image: network/protonvpn:latest
-        command:
-        - protonwire
-        - connect
-        - --service
-        env:
-        - name: PROTONVPN_SERVER
-          valueFrom:
-            secretKeyRef:
-              name: protonvpn
-              key: PROTONVPN_SERVER_CH
-        - name: WIREGUARD_PRIVATE_KEY
-          valueFrom:
-            secretKeyRef:
-              name: protonvpn
-              key: WIREGUARD_PRIVATE_KEY_CH
-        envFrom:
-        - configMapRef:
-            name: protonvpn
-        livenessProbe:
-          exec:
-            command:
-            - protonwire
-            - healthcheck
-            - --service-status-file
-            - --silent
-          initialDelaySeconds: 60
-          periodSeconds: 30
-        resources:
-          limits:
-            cpu: 100m
-            memory: 256Mi
-          requests:
-            cpu: 10m
-            memory: 64Mi
-        securityContext:
-          capabilities:
-            add:
-            - NET_ADMIN
-            drop:
-            - ALL
-        volumeMounts:
-        - name: tmp
-          mountPath: /tmp
       - name: tailscale
         image: network/tailscale:latest
         env:
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: POD_UID
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.uid
         - name: TS_AUTHKEY
           valueFrom:
             secretKeyRef:
               name: tailscale
-              key: TS_AUTHKEY_CH
+              key: TS_AUTHKEY
         - name: TS_HOSTNAME
           valueFrom:
             secretKeyRef:
               name: tailscale
               key: TS_HOSTNAME_CH
         - name: TS_KUBE_SECRET
-          value: tailscale-protonvpn-ch
+          value: tailscale-wireguard-ch
         envFrom:
         - configMapRef:
             name: tailscale
@@ -133,6 +96,36 @@ spec:
         - name: service-account
           mountPath: /var/run/secrets/kubernetes.io/serviceaccount
           readOnly: true
+      - name: wireguard
+        image: network/wireguard:latest
+        envFrom:
+        - configMapRef:
+            name: wireguard
+        livenessProbe:
+          exec:
+            command:
+            - sh
+            - -c
+            - wg show wg0 | grep -q "latest handshake:"
+          initialDelaySeconds: 10
+          periodSeconds: 30
+        resources:
+          limits:
+            cpu: 100m
+            memory: 256Mi
+          requests:
+            cpu: 10m
+            memory: 64Mi
+        securityContext:
+          capabilities:
+            add:
+            - NET_ADMIN
+            - NET_RAW
+            drop:
+            - ALL
+        volumeMounts:
+        - name: wireguard
+          mountPath: /etc/wireguard
       enableServiceLinks: false
       serviceAccountName: default
       volumes:
@@ -150,30 +143,34 @@ spec:
               audience: https://kubernetes.default.svc.cluster.local
               expirationSeconds: 3600
               path: token
-      - name: tmp
-        emptyDir:
-          medium: Memory
+      - name: wireguard
+        secret:
+          secretName: wireguard
+          defaultMode: 400
+          items:
+          - key: protonvpn.ch.conf
+            path: wg0.conf
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
     app.kubernetes.io/component: tailscale
-    app.kubernetes.io/name: protonvpn
+    app.kubernetes.io/name: wireguard
     app.kubernetes.io/part-of: components
-  name: tailscale-protonvpn-de
+  name: tailscale-wireguard-de
 spec:
   replicas: 1
   selector:
     matchLabels:
       app.kubernetes.io/component: tailscale
-      app.kubernetes.io/name: protonvpn
+      app.kubernetes.io/name: wireguard
       app.kubernetes.io/part-of: components
   template:
     metadata:
       labels:
         app.kubernetes.io/component: tailscale
-        app.kubernetes.io/name: protonvpn
+        app.kubernetes.io/name: wireguard
         app.kubernetes.io/part-of: components
         kubernetes.progamesigner.dev/vpn-region: de
     spec:
@@ -186,7 +183,7 @@ spec:
         - -c
         - set -ex;
           sysctl -w net.ipv4.conf.all.rp_filter=2;
-          sysctl -w net.ipv6.conf.all.disable_ipv6=1;
+          sysctl -w net.ipv4.conf.all.src_valid_mark=1;
         resources:
           requests:
             cpu: 1m
@@ -194,66 +191,29 @@ spec:
         securityContext:
           privileged: true
       containers:
-      - name: protonvpn
-        image: network/protonvpn:latest
-        command:
-        - protonwire
-        - connect
-        - --service
-        env:
-        - name: PROTONVPN_SERVER
-          valueFrom:
-            secretKeyRef:
-              name: protonvpn
-              key: PROTONVPN_SERVER_DE
-        - name: WIREGUARD_PRIVATE_KEY
-          valueFrom:
-            secretKeyRef:
-              name: protonvpn
-              key: WIREGUARD_PRIVATE_KEY_DE
-        envFrom:
-        - configMapRef:
-            name: protonvpn
-        livenessProbe:
-          exec:
-            command:
-            - protonwire
-            - healthcheck
-            - --service-status-file
-            - --silent
-          initialDelaySeconds: 60
-          periodSeconds: 30
-        resources:
-          limits:
-            cpu: 100m
-            memory: 256Mi
-          requests:
-            cpu: 10m
-            memory: 64Mi
-        securityContext:
-          capabilities:
-            add:
-            - NET_ADMIN
-            drop:
-            - ALL
-        volumeMounts:
-        - name: tmp
-          mountPath: /tmp
       - name: tailscale
         image: network/tailscale:latest
         env:
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: POD_UID
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.uid
         - name: TS_AUTHKEY
           valueFrom:
             secretKeyRef:
               name: tailscale
-              key: TS_AUTHKEY_DE
+              key: TS_AUTHKEY
         - name: TS_HOSTNAME
           valueFrom:
             secretKeyRef:
               name: tailscale
               key: TS_HOSTNAME_DE
         - name: TS_KUBE_SECRET
-          value: tailscale-protonvpn-de
+          value: tailscale-wireguard-de
         envFrom:
         - configMapRef:
             name: tailscale
@@ -288,6 +248,36 @@ spec:
         - name: service-account
           mountPath: /var/run/secrets/kubernetes.io/serviceaccount
           readOnly: true
+      - name: wireguard
+        image: network/wireguard:latest
+        envFrom:
+        - configMapRef:
+            name: wireguard
+        livenessProbe:
+          exec:
+            command:
+            - sh
+            - -c
+            - wg show wg0 | grep -q "latest handshake:"
+          initialDelaySeconds: 10
+          periodSeconds: 30
+        resources:
+          limits:
+            cpu: 100m
+            memory: 256Mi
+          requests:
+            cpu: 10m
+            memory: 64Mi
+        securityContext:
+          capabilities:
+            add:
+            - NET_ADMIN
+            - NET_RAW
+            drop:
+            - ALL
+        volumeMounts:
+        - name: wireguard
+          mountPath: /etc/wireguard
       enableServiceLinks: false
       serviceAccountName: default
       volumes:
@@ -305,30 +295,34 @@ spec:
               audience: https://kubernetes.default.svc.cluster.local
               expirationSeconds: 3600
               path: token
-      - name: tmp
-        emptyDir:
-          medium: Memory
+      - name: wireguard
+        secret:
+          secretName: wireguard
+          defaultMode: 400
+          items:
+          - key: protonvpn.de.conf
+            path: wg0.conf
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
     app.kubernetes.io/component: tailscale
-    app.kubernetes.io/name: protonvpn
+    app.kubernetes.io/name: wireguard
     app.kubernetes.io/part-of: components
-  name: tailscale-protonvpn-jp
+  name: tailscale-wireguard-jp
 spec:
   replicas: 1
   selector:
     matchLabels:
       app.kubernetes.io/component: tailscale
-      app.kubernetes.io/name: protonvpn
+      app.kubernetes.io/name: wireguard
       app.kubernetes.io/part-of: components
   template:
     metadata:
       labels:
         app.kubernetes.io/component: tailscale
-        app.kubernetes.io/name: protonvpn
+        app.kubernetes.io/name: wireguard
         app.kubernetes.io/part-of: components
         kubernetes.progamesigner.dev/vpn-region: jp
     spec:
@@ -341,7 +335,7 @@ spec:
         - -c
         - set -ex;
           sysctl -w net.ipv4.conf.all.rp_filter=2;
-          sysctl -w net.ipv6.conf.all.disable_ipv6=1;
+          sysctl -w net.ipv4.conf.all.src_valid_mark=1;
         resources:
           requests:
             cpu: 1m
@@ -349,66 +343,29 @@ spec:
         securityContext:
           privileged: true
       containers:
-      - name: protonvpn
-        image: network/protonvpn:latest
-        command:
-        - protonwire
-        - connect
-        - --service
-        env:
-        - name: PROTONVPN_SERVER
-          valueFrom:
-            secretKeyRef:
-              name: protonvpn
-              key: PROTONVPN_SERVER_JP
-        - name: WIREGUARD_PRIVATE_KEY
-          valueFrom:
-            secretKeyRef:
-              name: protonvpn
-              key: WIREGUARD_PRIVATE_KEY_JP
-        envFrom:
-        - configMapRef:
-            name: protonvpn
-        livenessProbe:
-          exec:
-            command:
-            - protonwire
-            - healthcheck
-            - --service-status-file
-            - --silent
-          initialDelaySeconds: 60
-          periodSeconds: 30
-        resources:
-          limits:
-            cpu: 100m
-            memory: 256Mi
-          requests:
-            cpu: 10m
-            memory: 64Mi
-        securityContext:
-          capabilities:
-            add:
-            - NET_ADMIN
-            drop:
-            - ALL
-        volumeMounts:
-        - name: tmp
-          mountPath: /tmp
       - name: tailscale
         image: network/tailscale:latest
         env:
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: POD_UID
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.uid
         - name: TS_AUTHKEY
           valueFrom:
             secretKeyRef:
               name: tailscale
-              key: TS_AUTHKEY_JP
+              key: TS_AUTHKEY
         - name: TS_HOSTNAME
           valueFrom:
             secretKeyRef:
               name: tailscale
               key: TS_HOSTNAME_JP
         - name: TS_KUBE_SECRET
-          value: tailscale-protonvpn-jp
+          value: tailscale-wireguard-jp
         envFrom:
         - configMapRef:
             name: tailscale
@@ -443,6 +400,36 @@ spec:
         - name: service-account
           mountPath: /var/run/secrets/kubernetes.io/serviceaccount
           readOnly: true
+      - name: wireguard
+        image: network/wireguard:latest
+        envFrom:
+        - configMapRef:
+            name: wireguard
+        livenessProbe:
+          exec:
+            command:
+            - sh
+            - -c
+            - wg show wg0 | grep -q "latest handshake:"
+          initialDelaySeconds: 10
+          periodSeconds: 30
+        resources:
+          limits:
+            cpu: 100m
+            memory: 256Mi
+          requests:
+            cpu: 10m
+            memory: 64Mi
+        securityContext:
+          capabilities:
+            add:
+            - NET_ADMIN
+            - NET_RAW
+            drop:
+            - ALL
+        volumeMounts:
+        - name: wireguard
+          mountPath: /etc/wireguard
       enableServiceLinks: false
       serviceAccountName: default
       volumes:
@@ -460,30 +447,34 @@ spec:
               audience: https://kubernetes.default.svc.cluster.local
               expirationSeconds: 3600
               path: token
-      - name: tmp
-        emptyDir:
-          medium: Memory
+      - name: wireguard
+        secret:
+          secretName: wireguard
+          defaultMode: 400
+          items:
+          - key: protonvpn.jp.conf
+            path: wg0.conf
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
     app.kubernetes.io/component: tailscale
-    app.kubernetes.io/name: protonvpn
+    app.kubernetes.io/name: wireguard
     app.kubernetes.io/part-of: components
-  name: tailscale-protonvpn-tw
+  name: tailscale-wireguard-tw
 spec:
   replicas: 1
   selector:
     matchLabels:
       app.kubernetes.io/component: tailscale
-      app.kubernetes.io/name: protonvpn
+      app.kubernetes.io/name: wireguard
       app.kubernetes.io/part-of: components
   template:
     metadata:
       labels:
         app.kubernetes.io/component: tailscale
-        app.kubernetes.io/name: protonvpn
+        app.kubernetes.io/name: wireguard
         app.kubernetes.io/part-of: components
         kubernetes.progamesigner.dev/vpn-region: tw
     spec:
@@ -496,7 +487,7 @@ spec:
         - -c
         - set -ex;
           sysctl -w net.ipv4.conf.all.rp_filter=2;
-          sysctl -w net.ipv6.conf.all.disable_ipv6=1;
+          sysctl -w net.ipv4.conf.all.src_valid_mark=1;
         resources:
           requests:
             cpu: 1m
@@ -504,66 +495,29 @@ spec:
         securityContext:
           privileged: true
       containers:
-      - name: protonvpn
-        image: network/protonvpn:latest
-        command:
-        - protonwire
-        - connect
-        - --service
-        env:
-        - name: PROTONVPN_SERVER
-          valueFrom:
-            secretKeyRef:
-              name: protonvpn
-              key: PROTONVPN_SERVER_TW
-        - name: WIREGUARD_PRIVATE_KEY
-          valueFrom:
-            secretKeyRef:
-              name: protonvpn
-              key: WIREGUARD_PRIVATE_KEY_TW
-        envFrom:
-        - configMapRef:
-            name: protonvpn
-        livenessProbe:
-          exec:
-            command:
-            - protonwire
-            - healthcheck
-            - --service-status-file
-            - --silent
-          initialDelaySeconds: 60
-          periodSeconds: 30
-        resources:
-          limits:
-            cpu: 100m
-            memory: 256Mi
-          requests:
-            cpu: 10m
-            memory: 64Mi
-        securityContext:
-          capabilities:
-            add:
-            - NET_ADMIN
-            drop:
-            - ALL
-        volumeMounts:
-        - name: tmp
-          mountPath: /tmp
       - name: tailscale
         image: network/tailscale:latest
         env:
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: POD_UID
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.uid
         - name: TS_AUTHKEY
           valueFrom:
             secretKeyRef:
               name: tailscale
-              key: TS_AUTHKEY_TW
+              key: TS_AUTHKEY
         - name: TS_HOSTNAME
           valueFrom:
             secretKeyRef:
               name: tailscale
               key: TS_HOSTNAME_TW
         - name: TS_KUBE_SECRET
-          value: tailscale-protonvpn-tw
+          value: tailscale-wireguard-tw
         envFrom:
         - configMapRef:
             name: tailscale
@@ -598,6 +552,36 @@ spec:
         - name: service-account
           mountPath: /var/run/secrets/kubernetes.io/serviceaccount
           readOnly: true
+      - name: wireguard
+        image: network/wireguard:latest
+        envFrom:
+        - configMapRef:
+            name: wireguard
+        livenessProbe:
+          exec:
+            command:
+            - sh
+            - -c
+            - wg show wg0 | grep -q "latest handshake:"
+          initialDelaySeconds: 10
+          periodSeconds: 30
+        resources:
+          limits:
+            cpu: 100m
+            memory: 256Mi
+          requests:
+            cpu: 10m
+            memory: 64Mi
+        securityContext:
+          capabilities:
+            add:
+            - NET_ADMIN
+            - NET_RAW
+            drop:
+            - ALL
+        volumeMounts:
+        - name: wireguard
+          mountPath: /etc/wireguard
       enableServiceLinks: false
       serviceAccountName: default
       volumes:
@@ -615,30 +599,34 @@ spec:
               audience: https://kubernetes.default.svc.cluster.local
               expirationSeconds: 3600
               path: token
-      - name: tmp
-        emptyDir:
-          medium: Memory
+      - name: wireguard
+        secret:
+          secretName: wireguard
+          defaultMode: 400
+          items:
+          - key: protonvpn.tw.conf
+            path: wg0.conf
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
     app.kubernetes.io/component: tailscale
-    app.kubernetes.io/name: protonvpn
+    app.kubernetes.io/name: wireguard
     app.kubernetes.io/part-of: components
-  name: tailscale-protonvpn-us
+  name: tailscale-wireguard-us
 spec:
   replicas: 1
   selector:
     matchLabels:
       app.kubernetes.io/component: tailscale
-      app.kubernetes.io/name: protonvpn
+      app.kubernetes.io/name: wireguard
       app.kubernetes.io/part-of: components
   template:
     metadata:
       labels:
         app.kubernetes.io/component: tailscale
-        app.kubernetes.io/name: protonvpn
+        app.kubernetes.io/name: wireguard
         app.kubernetes.io/part-of: components
         kubernetes.progamesigner.dev/vpn-region: us
     spec:
@@ -651,7 +639,7 @@ spec:
         - -c
         - set -ex;
           sysctl -w net.ipv4.conf.all.rp_filter=2;
-          sysctl -w net.ipv6.conf.all.disable_ipv6=1;
+          sysctl -w net.ipv4.conf.all.src_valid_mark=1;
         resources:
           requests:
             cpu: 1m
@@ -659,66 +647,29 @@ spec:
         securityContext:
           privileged: true
       containers:
-      - name: protonvpn
-        image: network/protonvpn:latest
-        command:
-        - protonwire
-        - connect
-        - --service
-        env:
-        - name: PROTONVPN_SERVER
-          valueFrom:
-            secretKeyRef:
-              name: protonvpn
-              key: PROTONVPN_SERVER_US
-        - name: WIREGUARD_PRIVATE_KEY
-          valueFrom:
-            secretKeyRef:
-              name: protonvpn
-              key: WIREGUARD_PRIVATE_KEY_US
-        envFrom:
-        - configMapRef:
-            name: protonvpn
-        livenessProbe:
-          exec:
-            command:
-            - protonwire
-            - healthcheck
-            - --service-status-file
-            - --silent
-          initialDelaySeconds: 60
-          periodSeconds: 30
-        resources:
-          limits:
-            cpu: 100m
-            memory: 256Mi
-          requests:
-            cpu: 10m
-            memory: 64Mi
-        securityContext:
-          capabilities:
-            add:
-            - NET_ADMIN
-            drop:
-            - ALL
-        volumeMounts:
-        - name: tmp
-          mountPath: /tmp
       - name: tailscale
         image: network/tailscale:latest
         env:
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: POD_UID
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.uid
         - name: TS_AUTHKEY
           valueFrom:
             secretKeyRef:
               name: tailscale
-              key: TS_AUTHKEY_US
+              key: TS_AUTHKEY
         - name: TS_HOSTNAME
           valueFrom:
             secretKeyRef:
               name: tailscale
               key: TS_HOSTNAME_US
         - name: TS_KUBE_SECRET
-          value: tailscale-protonvpn-us
+          value: tailscale-wireguard-us
         envFrom:
         - configMapRef:
             name: tailscale
@@ -753,6 +704,36 @@ spec:
         - name: service-account
           mountPath: /var/run/secrets/kubernetes.io/serviceaccount
           readOnly: true
+      - name: wireguard
+        image: network/wireguard:latest
+        envFrom:
+        - configMapRef:
+            name: wireguard
+        livenessProbe:
+          exec:
+            command:
+            - sh
+            - -c
+            - wg show wg0 | grep -q "latest handshake:"
+          initialDelaySeconds: 10
+          periodSeconds: 30
+        resources:
+          limits:
+            cpu: 100m
+            memory: 256Mi
+          requests:
+            cpu: 10m
+            memory: 64Mi
+        securityContext:
+          capabilities:
+            add:
+            - NET_ADMIN
+            - NET_RAW
+            drop:
+            - ALL
+        volumeMounts:
+        - name: wireguard
+          mountPath: /etc/wireguard
       enableServiceLinks: false
       serviceAccountName: default
       volumes:
@@ -770,6 +751,10 @@ spec:
               audience: https://kubernetes.default.svc.cluster.local
               expirationSeconds: 3600
               path: token
-      - name: tmp
-        emptyDir:
-          medium: Memory
+      - name: wireguard
+        secret:
+          secretName: wireguard
+          defaultMode: 400
+          items:
+          - key: protonvpn.us.conf
+            path: wg0.conf

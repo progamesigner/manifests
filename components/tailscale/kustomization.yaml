@@ -2,22 +2,25 @@
 apiVersion: kustomize.config.k8s.io/v1alpha1
 kind: Component
 configMapGenerator:
-- name: protonvpn
-  literals:
-  - IPCHECK_INTERVAL=1800
-  - SKIP_DNS_CONFIG=true
 - name: tailscale
   literals:
   - TS_EXTRA_ARGS=--advertise-exit-node
   - TS_OUTBOUND_HTTP_PROXY_LISTEN=:8080
   - TS_SOCKS5_SERVER=:1080
+- name: wireguard
+  literals:
+  - LOCAL_SUBNETS=100.64.0.0/10,172.16.0.0/12,192.168.0.0/16,10.16.0.0/14
 resources:
 - controllers.yaml
 - rbac.yaml
 secretGenerator:
-- name: protonvpn
-  envs:
-  - protonvpn.env
 - name: tailscale
   envs:
   - tailscale.env
+- name: wireguard
+  files:
+  - protonvpn.ch.conf=protonvpn.ch.conf
+  - protonvpn.de.conf=protonvpn.de.conf
+  - protonvpn.jp.conf=protonvpn.jp.conf
+  - protonvpn.tw.conf=protonvpn.tw.conf
+  - protonvpn.us.conf=protonvpn.us.conf

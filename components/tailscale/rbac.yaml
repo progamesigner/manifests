@@ -12,12 +12,20 @@ rules:
   - create
 - apiGroups:
   - ''
+  resources:
+  - events
+  verbs:
+  - create
+  - get
+  - patch
+- apiGroups:
+  - ''
   resourceNames:
-  - tailscale-protonvpn-ch
-  - tailscale-protonvpn-de
-  - tailscale-protonvpn-jp
-  - tailscale-protonvpn-tw
-  - tailscale-protonvpn-us
+  - tailscale-wireguard-ch
+  - tailscale-wireguard-de
+  - tailscale-wireguard-jp
+  - tailscale-wireguard-tw
+  - tailscale-wireguard-us
   resources:
   - secrets
   verbs:

@@ -53,12 +53,12 @@ images:
 - name: network/haproxy
   newName: haproxy
   newTag: 3.0.2-alpine
-- name: network/protonvpn
-  newName: ghcr.io/tprasadtp/protonwire
-  newTag: 7.5.3
 - name: network/tailscale
   newName: ghcr.io/tailscale/tailscale
   newTag: v1.82.0
+- name: network/wireguard
+  newName: ghcr.io/jordanpotter/docker-wireguard
+  newTag: 2025-05-20
 - name: pgadmin/pgadmin
   newName: dpage/pgadmin4
   newTag: '8.14'
