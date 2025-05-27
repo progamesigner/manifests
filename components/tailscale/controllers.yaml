@@ -22,7 +22,7 @@ spec:
         app.kubernetes.io/part-of: components
         kubernetes.progamesigner.dev/vpn-region: ch
     spec:
-      automountServiceAccountToken: false
+      automountServiceAccountToken: true
       initContainers:
       - name: sysctls
         image: busybox:latest
@@ -92,10 +92,6 @@ spec:
             - NET_RAW
             drop:
             - ALL
-        volumeMounts:
-        - name: service-account
-          mountPath: /var/run/secrets/kubernetes.io/serviceaccount
-          readOnly: true
       - name: wireguard
         image: network/wireguard:latest
         envFrom:
@@ -129,20 +125,6 @@ spec:
       enableServiceLinks: false
       serviceAccountName: default
       volumes:
-      - name: service-account
-        projected:
-          sources:
-          - configMap:
-              name: kube-root-ca.crt
-          - downwardAPI:
-              items:
-              - path: namespace
-                fieldRef:
-                  fieldPath: metadata.namespace
-          - serviceAccountToken:
-              audience: https://kubernetes.default.svc.cluster.local
-              expirationSeconds: 3600
-              path: token
       - name: wireguard
         secret:
           secretName: wireguard
@@ -174,7 +156,7 @@ spec:
         app.kubernetes.io/part-of: components
         kubernetes.progamesigner.dev/vpn-region: de
     spec:
-      automountServiceAccountToken: false
+      automountServiceAccountToken: true
       initContainers:
       - name: sysctls
         image: busybox:latest
@@ -244,10 +226,6 @@ spec:
             - NET_RAW
             drop:
             - ALL
-        volumeMounts:
-        - name: service-account
-          mountPath: /var/run/secrets/kubernetes.io/serviceaccount
-          readOnly: true
       - name: wireguard
         image: network/wireguard:latest
         envFrom:
@@ -281,20 +259,6 @@ spec:
       enableServiceLinks: false
       serviceAccountName: default
       volumes:
-      - name: service-account
-        projected:
-          sources:
-          - configMap:
-              name: kube-root-ca.crt
-          - downwardAPI:
-              items:
-              - path: namespace
-                fieldRef:
-                  fieldPath: metadata.namespace
-          - serviceAccountToken:
-              audience: https://kubernetes.default.svc.cluster.local
-              expirationSeconds: 3600
-              path: token
       - name: wireguard
         secret:
           secretName: wireguard
@@ -326,7 +290,7 @@ spec:
         app.kubernetes.io/part-of: components
         kubernetes.progamesigner.dev/vpn-region: jp
     spec:
-      automountServiceAccountToken: false
+      automountServiceAccountToken: true
       initContainers:
       - name: sysctls
         image: busybox:latest
@@ -396,10 +360,6 @@ spec:
             - NET_RAW
             drop:
             - ALL
-        volumeMounts:
-        - name: service-account
-          mountPath: /var/run/secrets/kubernetes.io/serviceaccount
-          readOnly: true
       - name: wireguard
         image: network/wireguard:latest
         envFrom:
@@ -433,20 +393,6 @@ spec:
       enableServiceLinks: false
       serviceAccountName: default
       volumes:
-      - name: service-account
-        projected:
-          sources:
-          - configMap:
-              name: kube-root-ca.crt
-          - downwardAPI:
-              items:
-              - path: namespace
-                fieldRef:
-                  fieldPath: metadata.namespace
-          - serviceAccountToken:
-              audience: https://kubernetes.default.svc.cluster.local
-              expirationSeconds: 3600
-              path: token
       - name: wireguard
         secret:
           secretName: wireguard
@@ -478,7 +424,7 @@ spec:
         app.kubernetes.io/part-of: components
         kubernetes.progamesigner.dev/vpn-region: tw
     spec:
-      automountServiceAccountToken: false
+      automountServiceAccountToken: true
       initContainers:
       - name: sysctls
         image: busybox:latest
@@ -548,10 +494,6 @@ spec:
             - NET_RAW
             drop:
             - ALL
-        volumeMounts:
-        - name: service-account
-          mountPath: /var/run/secrets/kubernetes.io/serviceaccount
-          readOnly: true
       - name: wireguard
         image: network/wireguard:latest
         envFrom:
@@ -585,20 +527,6 @@ spec:
       enableServiceLinks: false
       serviceAccountName: default
       volumes:
-      - name: service-account
-        projected:
-          sources:
-          - configMap:
-              name: kube-root-ca.crt
-          - downwardAPI:
-              items:
-              - path: namespace
-                fieldRef:
-                  fieldPath: metadata.namespace
-          - serviceAccountToken:
-              audience: https://kubernetes.default.svc.cluster.local
-              expirationSeconds: 3600
-              path: token
       - name: wireguard
         secret:
           secretName: wireguard
@@ -630,7 +558,7 @@ spec:
         app.kubernetes.io/part-of: components
         kubernetes.progamesigner.dev/vpn-region: us
     spec:
-      automountServiceAccountToken: false
+      automountServiceAccountToken: true
       initContainers:
       - name: sysctls
         image: busybox:latest
@@ -700,10 +628,6 @@ spec:
             - NET_RAW
             drop:
             - ALL
-        volumeMounts:
-        - name: service-account
-          mountPath: /var/run/secrets/kubernetes.io/serviceaccount
-          readOnly: true
       - name: wireguard
         image: network/wireguard:latest
         envFrom:
@@ -737,20 +661,6 @@ spec:
       enableServiceLinks: false
       serviceAccountName: default
       volumes:
-      - name: service-account
-        projected:
-          sources:
-          - configMap:
-              name: kube-root-ca.crt
-          - downwardAPI:
-              items:
-              - path: namespace
-                fieldRef:
-                  fieldPath: metadata.namespace
-          - serviceAccountToken:
-              audience: https://kubernetes.default.svc.cluster.local
-              expirationSeconds: 3600
-              path: token
       - name: wireguard
         secret:
           secretName: wireguard
