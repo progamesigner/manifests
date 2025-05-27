@@ -16,7 +16,7 @@ images:
   newTag: 1.4.0
 - name: dify/plugin-daemon
   newName: langgenius/dify-plugin-daemon
-  newTag: 0.1.0-local
+  newTag: 0.1.1-local
 - name: dify/sandbox
   newName: langgenius/dify-sandbox
   newTag: 0.2.12
@@ -58,7 +58,7 @@ images:
   newTag: v1.82.0
 - name: network/wireguard
   newName: ghcr.io/jordanpotter/docker-wireguard
-  newTag: 2025-05-20
+  newTag: '2025-05-20'
 - name: pgadmin/pgadmin
   newName: dpage/pgadmin4
   newTag: '8.14'
