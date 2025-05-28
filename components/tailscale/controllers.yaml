@@ -65,6 +65,11 @@ spec:
         envFrom:
         - configMapRef:
             name: tailscale
+        ports:
+        - name: socks
+          containerPort: 1080
+        - name: proxy
+          containerPort: 8080
         livenessProbe:
           exec:
             command:
@@ -73,11 +78,6 @@ spec:
             - --4
           initialDelaySeconds: 10
           periodSeconds: 30
-        ports:
-        - name: socks
-          containerPort: 1080
-        - name: proxy
-          containerPort: 8080
         resources:
           limits:
             cpu: 100m
@@ -199,6 +199,11 @@ spec:
         envFrom:
         - configMapRef:
             name: tailscale
+        ports:
+        - name: socks
+          containerPort: 1080
+        - name: proxy
+          containerPort: 8080
         livenessProbe:
           exec:
             command:
@@ -207,11 +212,6 @@ spec:
             - --4
           initialDelaySeconds: 10
           periodSeconds: 30
-        ports:
-        - name: socks
-          containerPort: 1080
-        - name: proxy
-          containerPort: 8080
         resources:
           limits:
             cpu: 100m
@@ -333,6 +333,11 @@ spec:
         envFrom:
         - configMapRef:
             name: tailscale
+        ports:
+        - name: socks
+          containerPort: 1080
+        - name: proxy
+          containerPort: 8080
         livenessProbe:
           exec:
             command:
@@ -341,11 +346,6 @@ spec:
             - --4
           initialDelaySeconds: 10
           periodSeconds: 30
-        ports:
-        - name: socks
-          containerPort: 1080
-        - name: proxy
-          containerPort: 8080
         resources:
           limits:
             cpu: 100m
@@ -467,6 +467,11 @@ spec:
         envFrom:
         - configMapRef:
             name: tailscale
+        ports:
+        - name: socks
+          containerPort: 1080
+        - name: proxy
+          containerPort: 8080
         livenessProbe:
           exec:
             command:
@@ -475,11 +480,6 @@ spec:
             - --4
           initialDelaySeconds: 10
           periodSeconds: 30
-        ports:
-        - name: socks
-          containerPort: 1080
-        - name: proxy
-          containerPort: 8080
         resources:
           limits:
             cpu: 100m
@@ -601,6 +601,11 @@ spec:
         envFrom:
         - configMapRef:
             name: tailscale
+        ports:
+        - name: socks
+          containerPort: 1080
+        - name: proxy
+          containerPort: 8080
         livenessProbe:
           exec:
             command:
@@ -609,11 +614,6 @@ spec:
             - --4
           initialDelaySeconds: 10
           periodSeconds: 30
-        ports:
-        - name: socks
-          containerPort: 1080
-        - name: proxy
-          containerPort: 8080
         resources:
           limits:
             cpu: 100m

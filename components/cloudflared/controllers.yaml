@@ -36,10 +36,14 @@ spec:
         envFrom:
         - secretRef:
             name: cloudflared
+        ports:
+        - name: liveness
+          containerPort: 2000
+          protocol: TCP
         livenessProbe:
           httpGet:
             path: /ready
-            port: 2000
+            port: liveness
           initialDelaySeconds: 10
         resources:
           limits:

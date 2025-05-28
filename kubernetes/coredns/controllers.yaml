@@ -48,14 +48,14 @@ spec:
         livenessProbe:
           httpGet:
             path: /health
-            port: 8080
+            port: liveness
           initialDelaySeconds: 60
           timeoutSeconds: 5
           failureThreshold: 5
         readinessProbe:
           httpGet:
             path: /ready
-            port: 8181
+            port: readiness
         resources:
           limits:
             cpu: 1000m

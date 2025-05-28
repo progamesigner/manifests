@@ -63,10 +63,14 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: spec.nodeName
+        ports:
+        - name: liveness
+          containerPort: 20244
+          protocol: TCP
         livenessProbe:
           httpGet:
             path: /healthz
-            port: 20244
+            port: liveness
           initialDelaySeconds: 10
           periodSeconds: 3
         resources:
