@@ -52,6 +52,24 @@ kind: Service
 metadata:
   labels:
     kubernetes.io/cluster-service: 'true'
+    kubernetes.io/name: Metrics
+  name: metrics-server
+spec:
+  ports:
+  - name: https
+    port: 443
+    protocol: TCP
+    targetPort: https
+  selector:
+    app.kubernetes.io/component: metrics-server
+    app.kubernetes.io/name: metrics-server
+    app.kubernetes.io/part-of: kubernetes
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    kubernetes.io/cluster-service: 'true'
     kubernetes.io/name: DNS
   name: cluster-dns
 spec:
@@ -109,6 +127,20 @@ spec:
     app.kubernetes.io/name: nginx-ingress
     app.kubernetes.io/part-of: kubernetes
   type: LoadBalancer
+---
+apiVersion: apiregistration.k8s.io/v1
+kind: APIService
+metadata:
+  annotations:
+    cert-manager.io/inject-ca-from: kube-system/metrics-server
+  name: v1beta1.metrics.k8s.io
+spec:
+  group: metrics.k8s.io
+  groupPriorityMinimum: 100
+  service:
+    name: metrics-server
+  version: v1beta1
+  versionPriority: 100
 ---
 apiVersion: k8s.nginx.org/v1
 kind: GlobalConfiguration

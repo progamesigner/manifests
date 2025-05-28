@@ -1,0 +1,102 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/component: metrics-server
+    app.kubernetes.io/name: metrics-server
+    app.kubernetes.io/part-of: kubernetes
+  name: metrics-server
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: metrics-server
+      app.kubernetes.io/name: metrics-server
+      app.kubernetes.io/part-of: kubernetes
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 1
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/component: metrics-server
+        app.kubernetes.io/name: metrics-server
+        app.kubernetes.io/part-of: kubernetes
+    spec:
+      containers:
+      - name: metrics-server
+        image: metrics-server/metrics-server:latest
+        args:
+        - --cert-dir=/tmp
+        - --kubelet-certificate-authority=/etc/kubernetes/pki/ca.crt
+        - --kubelet-use-node-status-port
+        - --metric-resolution=15s
+        - --secure-port=10250
+        - --tls-cert-file=/tls-certs/tls.crt
+        - --tls-private-key-file=/tls-certs/tls.key
+        ports:
+        - name: https
+          containerPort: 10250
+          protocol: TCP
+        livenessProbe:
+          httpGet:
+            path: /livez
+            port: https
+            scheme: HTTPS
+          initialDelaySeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /readyz
+            port: https
+            scheme: HTTPS
+          initialDelaySeconds: 10
+        resources:
+          limits:
+            cpu: 200m
+            memory: 200Mi
+          requests:
+            cpu: 10m
+            memory: 32Mi
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+          readOnlyRootFilesystem: true
+          runAsNonRoot: true
+          runAsUser: 1000
+          seccompProfile:
+            type: RuntimeDefault
+        volumeMounts:
+        - name: ca
+          mountPath: /etc/kubernetes/pki/ca.crt
+          readOnly: false
+        - name: certs
+          mountPath: /tls-certs
+          readOnly: true
+        - name: tmp
+          mountPath: /tmp
+      dnsConfig:
+        searches:
+        - progamesigner.net
+      nodeSelector:
+        kubernetes.io/os: linux
+      priorityClassName: system-cluster-critical
+      serviceAccountName: metrics-server
+      volumes:
+      - name: ca
+        hostPath:
+          type: File
+          path: /etc/kubernetes/pki/ca.crt
+      - name: certs
+        secret:
+          secretName: metrics-server
+          defaultMode: 420
+          items:
+          - key: tls.crt
+            path: tls.crt
+          - key: tls.key
+            path: tls.key
+      - name: tmp
+        emptyDir: {}

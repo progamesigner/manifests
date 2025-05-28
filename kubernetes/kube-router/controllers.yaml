@@ -116,5 +116,5 @@ spec:
           path: /lib/modules
       - name: xtables-lock
         hostPath:
-          path: /var/run/xtables.lock
           type: FileOrCreate
+          path: /var/run/xtables.lock

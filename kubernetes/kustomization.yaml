@@ -6,12 +6,14 @@ components:
 - coredns
 - kube-router
 - metallb
+- metrics-server
 - multus
 - nginx-ingress
 configurations:
 - configurations.yaml
 namespace: kube-system
 resources:
+- certificates.yaml
 - ingressclasses.yaml
 - networks.yaml
 - services.yaml
