@@ -458,7 +458,6 @@ kind: Service
 metadata:
   name: local-dns
 spec:
-  loadBalancerIP: 192.168.0.8
   ports:
   - name: dns-tcp
     port: 53
@@ -479,7 +478,6 @@ kind: Service
 metadata:
   name: local-relaysrv
 spec:
-  loadBalancerIP: 192.168.0.9
   ports:
   - name: relaysrv
     port: 22067

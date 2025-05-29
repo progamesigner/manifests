@@ -77,9 +77,6 @@ spec:
           readOnly: true
         - name: tmp
           mountPath: /tmp
-      dnsConfig:
-        searches:
-        - progamesigner.net
       nodeSelector:
         kubernetes.io/os: linux
       priorityClassName: system-cluster-critical

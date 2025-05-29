@@ -73,7 +73,6 @@ metadata:
     kubernetes.io/name: DNS
   name: cluster-dns
 spec:
-  loadBalancerIP: 192.168.32.8
   ports:
   - name: dns-tcp
     port: 53
@@ -97,7 +96,6 @@ metadata:
     kubernetes.io/name: Ingress
   name: cluster-ingress
 spec:
-  loadBalancerIP: 192.168.32.11
   ports:
   - name: http
     port: 80

@@ -12,6 +12,32 @@ components:
 configurations:
 - configurations.yaml
 namespace: kube-system
+patches:
+- patch: |-
+    apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      name: metrics-server
+    spec:
+      template:
+        spec:
+          dnsConfig:
+            searches:
+            - progamesigner.net
+- patch: |-
+    apiVersion: v1
+    kind: Service
+    metadata:
+      name: cluster-dns
+    spec:
+      loadBalancerIP: 192.168.32.8
+- patch: |-
+    apiVersion: v1
+    kind: Service
+    metadata:
+      name: cluster-ingress
+    spec:
+      loadBalancerIP: 192.168.32.11
 resources:
 - certificates.yaml
 - ingressclasses.yaml
