@@ -22,7 +22,7 @@ spec:
     spec:
       automountServiceAccountToken: true
       initContainers:
-      - name: install-cni
+      - name: setup
         image: busybox:latest
         command:
         - sh

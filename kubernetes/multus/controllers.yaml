@@ -22,7 +22,7 @@ spec:
     spec:
       automountServiceAccountToken: true
       initContainers:
-      - name: install-multus
+      - name: setup
         image: multus/multus:latest
         args:
         - /install_multus

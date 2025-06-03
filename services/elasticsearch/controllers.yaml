@@ -25,7 +25,7 @@ spec:
     spec:
       automountServiceAccountToken: false
       initContainers:
-      - name: init-elasticsearch
+      - name: chown
         image: busybox:latest
         command:
         - sh
@@ -43,7 +43,7 @@ spec:
         volumeMounts:
         - name: data
           mountPath: /usr/share/elasticsearch/data
-      - name: init-plugins
+      - name: setup
         image: elasticsearch/elasticsearch:latest
         command:
         - sh

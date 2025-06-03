@@ -23,7 +23,7 @@ spec:
     spec:
       automountServiceAccountToken: false
       initContainers:
-      - name: copy
+      - name: setup
         image: gloomhaven/client:latest
         command:
         - sh

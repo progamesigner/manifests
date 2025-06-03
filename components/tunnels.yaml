@@ -50,7 +50,7 @@ spec:
     spec:
       automountServiceAccountToken: false
       initContainers:
-      - name: validation
+      - name: check
         image: network/haproxy:latest
         command:
         - haproxy

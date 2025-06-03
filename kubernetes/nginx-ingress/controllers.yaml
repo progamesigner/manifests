@@ -27,7 +27,7 @@ spec:
     spec:
       automountServiceAccountToken: true
       initContainers:
-      - name: init-nginx
+      - name: setup
         image: nginx-ingress/nginx-ingress:latest
         command:
         - sh
