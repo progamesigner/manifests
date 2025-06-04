@@ -10,11 +10,18 @@ spec:
 apiVersion: metallb.io/v1beta1
 kind: IPAddressPool
 metadata:
-  name: managed-ip-address-pool
+  name: local-ip-address-pool
 spec:
   addresses:
   - 192.168.0.1-192.168.0.15
-  - 192.168.16.1-192.168.16.15
+  autoAssign: false
+---
+apiVersion: metallb.io/v1beta1
+kind: IPAddressPool
+metadata:
+  name: managed-ip-address-pool
+spec:
+  addresses:
   - 192.168.32.1-192.168.32.15
   autoAssign: false
 ---
@@ -24,7 +31,7 @@ metadata:
   name: advertisement
 spec:
   ipAddressPools:
-  - managed-ip-address-pool
+  - local-ip-address-pool
 ---
 apiVersion: metallb.io/v1beta1
 kind: BGPAdvertisement
