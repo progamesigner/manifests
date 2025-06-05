@@ -30,7 +30,7 @@ spec:
         - -c
         - |
           set -ex;
-          cp -R /usr/share/nginx/html/. /root/.ghs/gloomhavensecretariat
+          cp -LRv /usr/share/nginx/html/. /root/.ghs/gloomhavensecretariat
           if [ -f /root/.ghs/server.json ]; then
             cp /root/.ghs/server.json /root/.ghs/gloomhavensecretariat/assets/server.json
           fi
