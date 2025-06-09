@@ -89,6 +89,10 @@ spec:
     port: 5002
     protocol: TCP
     targetPort: http
+  - name: remote-plugins
+    port: 5003
+    protocol: TCP
+    targetPort: remote-plugins
   selector:
     app.kubernetes.io/component: plugin-daemon
     app.kubernetes.io/name: dify

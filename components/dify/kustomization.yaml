@@ -35,7 +35,7 @@ secretGenerator:
   - PLUGIN_DAEMON_API_KEY=password
   - PLUGIN_DAEMON_SERVER_KEY=password
   - PLUGIN_DAEMON_URL=http://dify-plugin-daemon.default.svc.cluster.local:5002
-  - PLUGIN_REMOTE_INSTALL_HOST=dify-plugin.default.svc.cluster.local
+  - PLUGIN_REMOTE_INSTALL_HOST=dify-plugin-daemon.default.svc.cluster.local
   - PLUGIN_REMOTE_INSTALL_PORT=5003
   - REDIS_HOST=redis.default.svc.cluster.local
   - REDIS_PORT=6379
