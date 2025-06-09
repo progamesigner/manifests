@@ -1,0 +1,415 @@
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  labels:
+    app.kubernetes.io/component: mon
+    app.kubernetes.io/name: ceph
+    app.kubernetes.io/part-of: kubernetes
+  name: ceph-mon
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: mon
+      app.kubernetes.io/name: ceph
+      app.kubernetes.io/part-of: kubernetes
+  serviceName: ceph-mon
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/component: mon
+        app.kubernetes.io/name: ceph
+        app.kubernetes.io/part-of: kubernetes
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: ceph.kubernetes.progamesigner.dev/mon
+                operator: Exists
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: app.kubernetes.io/component
+                operator: In
+                values:
+                - mon
+              - key: app.kubernetes.io/name
+                operator: In
+                values:
+                - ceph
+              - key: app.kubernetes.io/part-of
+                operator: In
+                values:
+                - kubernetes
+            topologyKey: kubernetes.io/hostname
+      automountServiceAccountToken: true
+      initContainers:
+      - name: chown
+        image: busybox:latest
+        command:
+        - sh
+        - -c
+        - |
+          set -ex;
+
+          if [ ${POD_ORDINAL} -eq 0 ] && [ ! -d /var/lib/ceph/mon/ceph-${CEPH_NAME} ]; then
+            cat <<EOF > /etc/ceph/ceph.conf
+          [global]
+          fsid = ${CEPH_FSID}
+          mon_dns_srv_name = ceph-mon_ceph-mon.${POD_NAMESPACE}.svc.cluster.local
+          mon_host = ${POD_IP}
+          mon_initial_members = ${CEPH_NAME}
+          EOF
+          else
+            cat <<EOF > /etc/ceph/ceph.conf
+          [global]
+          fsid = ${CEPH_FSID}
+          mon_dns_srv_name = ceph-mon_ceph-mon.${POD_NAMESPACE}.svc.cluster.local
+          EOF
+          fi
+
+          cat <<EOF >> /etc/ceph/ceph.conf
+          [mon]
+          err_to_stderr = true
+          log_stderr_prefix = debug
+          log_to_file = false
+          log_to_stderr = true
+          mon_cluster_log_to_file = false
+          mon_cluster_log_to_stderr = true
+          [mon.${CEPH_NAME}]
+          public_addr = ${POD_IP}
+          EOF
+
+          cp -LRv /mnt/ceph/. /etc/ceph;
+
+          mkdir -p /var/lib/ceph/mon/ceph-${CEPH_NAME};
+
+          chown -R 167:167 /etc/ceph;
+          chown -R 167:167 /var/lib/ceph/mon/ceph-${CEPH_NAME};
+        env:
+        - name: CEPH_FSID
+          valueFrom:
+            secretKeyRef:
+              name: ceph
+              key: fsid
+        - name: CEPH_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: spec.nodeName
+        - name: POD_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.podIP
+        - name: POD_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        - name: POD_ORDINAL
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.labels['apps.kubernetes.io/pod-index']
+        resources:
+          requests:
+            cpu: 1m
+            memory: 1Mi
+        volumeMounts:
+        - name: ceph
+          mountPath: /mnt/ceph
+          readOnly: true
+        - name: conf
+          mountPath: /etc/ceph
+        - name: data
+          mountPath: /var/lib/ceph
+      - name: setup
+        image: ceph/ceph:latest
+        command:
+        - ceph-mon
+        args:
+        - --id=$(CEPH_NAME)
+        - --keyring=/etc/ceph/ceph.mon.keyring
+        - --mkfs
+        - --setgroup=ceph
+        - --setuser=ceph
+        env:
+        - name: CEPH_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: spec.nodeName
+        - name: POD_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.podIP
+        resources:
+          requests:
+            cpu: 1m
+            memory: 1Mi
+        volumeMounts:
+        - name: conf
+          mountPath: /etc/ceph
+          readOnly: true
+        - name: data
+          mountPath: /var/lib/ceph
+      containers:
+      - name: mon
+        image: ceph/ceph:latest
+        command:
+        - ceph-mon
+        args:
+        - --foreground
+        - --id=$(CEPH_NAME)
+        - --setgroup=ceph
+        - --setuser=ceph
+        env:
+        - name: CEPH_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: spec.nodeName
+        ports:
+        - name: ceph-mon
+          containerPort: 3300
+          protocol: TCP
+        - name: ceph-mon-v1
+          containerPort: 6789
+          protocol: TCP
+        lifecycle:
+          preStop:
+            exec:
+              command:
+              - sh
+              - -c
+              - |
+                ceph mon remove ${CEPH_NAME};
+                sleep 10;
+        startupProbe:
+          exec:
+            command:
+            - sh
+            - -c
+            - |
+              output="$(ceph --admin-daemon /run/ceph/ceph-mon.${CEPH_NAME}.asok mon_status 2>&1)"
+              rc=$?
+              if [ $rc -ne 0 ]; then
+                echo "ceph daemon health check failed with the following output:"
+                echo "$output" | sed -e 's/^/> /g'
+                exit $rc
+              fi
+          initialDelaySeconds: 15
+          periodSeconds: 60
+          timeoutSeconds: 30
+        livenessProbe:
+          exec:
+            command:
+            - sh
+            - -c
+            - |
+              output="$(ceph --admin-daemon /run/ceph/ceph-mon.${CEPH_NAME}.asok mon_status 2>&1)"
+              rc=$?
+              if [ $rc -ne 0 ]; then
+                echo "ceph daemon health check failed with the following output:"
+                echo "$output" | sed -e 's/^/> /g'
+                exit $rc
+              fi
+          initialDelaySeconds: 15
+          periodSeconds: 60
+          timeoutSeconds: 30
+        resources:
+          limits:
+            cpu: 300m
+            memory: 256Mi
+          requests:
+            cpu: 100m
+            memory: 32Mi
+        volumeMounts:
+        - name: conf
+          mountPath: /etc/ceph
+          readOnly: true
+        - name: data
+          mountPath: /var/lib/ceph
+      priorityClassName: system-cluster-critical
+      serviceAccountName: ceph
+      volumes:
+      - name: ceph
+        hostPath:
+          path: /etc/ceph
+      - name: conf
+        emptyDir: {}
+      - name: data
+        hostPath:
+          path: /var/lib/ceph
+  updateStrategy:
+    type: OnDelete
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/component: mgr
+    app.kubernetes.io/name: ceph
+    app.kubernetes.io/part-of: kubernetes
+  name: ceph-mgr
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: mgr
+      app.kubernetes.io/name: ceph
+      app.kubernetes.io/part-of: kubernetes
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/component: mgr
+        app.kubernetes.io/name: ceph
+        app.kubernetes.io/part-of: kubernetes
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: ceph.kubernetes.progamesigner.dev/mgr
+                operator: Exists
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: app.kubernetes.io/component
+                operator: In
+                values:
+                - mgr
+              - key: app.kubernetes.io/name
+                operator: In
+                values:
+                - ceph
+              - key: app.kubernetes.io/part-of
+                operator: In
+                values:
+                - kubernetes
+            topologyKey: kubernetes.io/hostname
+      automountServiceAccountToken: true
+      initContainers:
+      - name: chown
+        image: busybox:latest
+        command:
+        - sh
+        - -c
+        - |
+          set -ex;
+
+          cat <<EOF >> /etc/ceph/ceph.conf
+          [global]
+          fsid = ${CEPH_FSID}
+          mon_dns_srv_name = ceph-mon_ceph-mon.${POD_NAMESPACE}.svc.cluster.local
+
+          [mgr.${CEPH_NAME}]
+          mgr_initial_modules = dashboard iostat nfs prometheus restful
+          EOF
+
+          cp -LRv /mnt/ceph/. /etc/ceph;
+
+          mkdir -p /var/lib/ceph/mgr/ceph-${CEPH_NAME};
+
+          chown -R 167:167 /etc/ceph;
+          chown -R 167:167 /var/lib/ceph/mgr/ceph-${CEPH_NAME};
+        env:
+        - name: CEPH_FSID
+          valueFrom:
+            secretKeyRef:
+              name: ceph
+              key: fsid
+        - name: CEPH_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: spec.nodeName
+        - name: POD_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        resources:
+          requests:
+            cpu: 1m
+            memory: 1Mi
+        volumeMounts:
+        - name: ceph
+          mountPath: /mnt/ceph
+          readOnly: true
+        - name: conf
+          mountPath: /etc/ceph
+        - name: data
+          mountPath: /var/lib/ceph
+      - name: setup
+        image: ceph/ceph:latest
+        command:
+        - sh
+        - -c
+        - |
+          set -ex;
+
+          while ! ceph mon dump; do
+            echo "Waiting for mon to be ready...";
+            sleep 5;
+          done
+
+          ceph auth add mgr.$(CEPH_NAME) mon 'allow profile mgr' osd 'allow *' mds 'allow *';
+          ceph auth get mgr.$(CEPH_NAME) > /var/lib/ceph/mgr/ceph-${CEPH_NAME}/keyring;
+        env:
+        - name: CEPH_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: spec.nodeName
+        resources:
+          requests:
+            cpu: 1m
+            memory: 1Mi
+        volumeMounts:
+        - name: conf
+          mountPath: /etc/ceph
+          readOnly: true
+        - name: data
+          mountPath: /var/lib/ceph
+      containers:
+      - name: mgr
+        image: ceph/ceph:latest
+        command:
+        - ceph-mgr
+        args:
+        - --foreground
+        - --id=$(CEPH_NAME)
+        - --setgroup=ceph
+        - --setuser=ceph
+        env:
+        - name: CEPH_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: spec.nodeName
+        ports:
+        - name: http
+          containerPort: 8443
+          protocol: TCP
+        resources:
+          limits:
+            cpu: 300m
+            memory: 512Mi
+          requests:
+            cpu: 100m
+            memory: 32Mi
+        volumeMounts:
+        - name: conf
+          mountPath: /etc/ceph
+          readOnly: true
+        - name: data
+          mountPath: /var/lib/ceph
+      priorityClassName: system-cluster-critical
+      serviceAccountName: ceph
+      volumes:
+      - name: ceph
+        hostPath:
+          path: /etc/ceph
+      - name: conf
+        emptyDir: {}
+      - name: data
+        hostPath:
+          path: /var/lib/ceph
