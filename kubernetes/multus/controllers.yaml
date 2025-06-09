@@ -75,7 +75,7 @@ spec:
         - name: conf
           mountPath: /etc/multus
       hostNetwork: true
-      priorityClassName: system-node-critical
+      priorityClassName: system-cluster-critical
       serviceAccountName: multus
       tolerations:
       - effect: NoSchedule
