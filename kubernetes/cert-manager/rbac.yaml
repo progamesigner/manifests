@@ -187,15 +187,23 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: system:cert-manager:controller:challenges
+  name: system:cert-manager:controller:challenges:dns01
 rules:
 - apiGroups:
-  - acme.cert-manager.io
+  - ''
   resources:
-  - challenges
-  - challenges/status
+  - events
   verbs:
-  - update
+  - create
+  - patch
+- apiGroups:
+  - ''
+  resources:
+  - secrets
+  verbs:
+  - get
+  - list
+  - watch
 - apiGroups:
   - acme.cert-manager.io
   resources:
@@ -204,6 +212,20 @@ rules:
   - get
   - list
   - watch
+- apiGroups:
+  - acme.cert-manager.io
+  resources:
+  - challenges
+  - challenges/status
+  verbs:
+  - patch
+  - update
+- apiGroups:
+  - acme.cert-manager.io
+  resources:
+  - challenges/finalizers
+  verbs:
+  - update
 - apiGroups:
   - cert-manager.io
   resources:
@@ -213,14 +235,12 @@ rules:
   - get
   - list
   - watch
-- apiGroups:
-  - ''
-  resources:
-  - secrets
-  verbs:
-  - get
-  - list
-  - watch
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: system:cert-manager:controller:challenges:http01
+rules:
 - apiGroups:
   - ''
   resources:
@@ -240,9 +260,17 @@ rules:
   - list
   - watch
 - apiGroups:
-  - networking.k8s.io
+  - ''
   resources:
-  - ingresses
+  - secrets
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - gateway.networking.k8s.io
+  resources:
+  - httproutes
   verbs:
   - create
   - delete
@@ -251,9 +279,9 @@ rules:
   - update
   - watch
 - apiGroups:
-  - networking.x-k8s.io
+  - networking.k8s.io
   resources:
-  - httproutes
+  - ingresses
   verbs:
   - create
   - delete
@@ -270,13 +298,30 @@ rules:
 - apiGroups:
   - acme.cert-manager.io
   resources:
+  - challenges
+  - challenges/status
+  verbs:
+  - patch
+  - update
+- apiGroups:
+  - acme.cert-manager.io
+  resources:
+  - challenges
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - acme.cert-manager.io
+  resources:
   - challenges/finalizers
   verbs:
   - update
 - apiGroups:
-  - ''
+  - cert-manager.io
   resources:
-  - secrets
+  - clusterissuers
+  - issuers
   verbs:
   - get
   - list
@@ -665,11 +710,23 @@ subjects:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: system:cert-manager:controller:challenges
+  name: system:cert-manager:controller:challenges:dns01
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: system:cert-manager:controller:challenges
+  name: system:cert-manager:controller:challenges:dns01
+subjects:
+- kind: ServiceAccount
+  name: cert-manager-controller
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: system:cert-manager:controller:challenges:http01
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: system:cert-manager:controller:challenges:http01
 subjects:
 - kind: ServiceAccount
   name: cert-manager-controller
