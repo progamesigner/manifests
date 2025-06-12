@@ -47,10 +47,10 @@ spec:
           mountPath: /var/lib/minio
         resources:
           limits:
-            cpu: 1500m
-            memory: 512Mi
+            cpu: 1000m
+            memory: 1Gi
           requests:
-            cpu: 100m
+            cpu: 150m
             memory: 64Mi
       enableServiceLinks: false
       serviceAccountName: default

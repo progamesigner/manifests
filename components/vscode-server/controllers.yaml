@@ -38,9 +38,9 @@ spec:
         resources:
           limits:
             cpu: 4000m
-            memory: 8Gi
+            memory: 16Gi
           requests:
-            cpu: 250m
+            cpu: 500m
             memory: 512Mi
         volumeMounts:
         - name: data

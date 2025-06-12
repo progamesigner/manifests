@@ -70,10 +70,10 @@ spec:
           protocol: TCP
         resources:
           limits:
-            cpu: 300m
-            memory: 128Mi
+            cpu: 500m
+            memory: 256Mi
           requests:
-            cpu: 50m
+            cpu: 100m
             memory: 64Mi
         volumeMounts:
         - name: cert

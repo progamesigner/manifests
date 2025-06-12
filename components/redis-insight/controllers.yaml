@@ -48,11 +48,11 @@ spec:
           containerPort: 5540
         resources:
           limits:
-            cpu: 500m
-            memory: 256Mi
+            cpu: 1000m
+            memory: 2Gi
           requests:
-            cpu: 50m
-            memory: 32Mi
+            cpu: 100m
+            memory: 64Mi
         volumeMounts:
         - name: data
           mountPath: /data

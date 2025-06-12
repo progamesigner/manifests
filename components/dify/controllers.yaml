@@ -77,11 +77,11 @@ spec:
           containerPort: 5001
         resources:
           limits:
-            cpu: 200m
+            cpu: 2000m
             memory: 2Gi
           requests:
-            cpu: 100m
-            memory: 64Mi
+            cpu: 300m
+            memory: 128Mi
       enableServiceLinks: false
       serviceAccountName: default
 ---
@@ -162,10 +162,10 @@ spec:
         resources:
           limits:
             cpu: 2000m
-            memory: 512Mi
+            memory: 2Gi
           requests:
-            cpu: 100m
-            memory: 64Mi
+            cpu: 300m
+            memory: 256Mi
       enableServiceLinks: false
       serviceAccountName: default
       volumes:
@@ -230,11 +230,11 @@ spec:
           initialDelaySeconds: 10
         resources:
           limits:
-            cpu: 100m
-            memory: 512Mi
+            cpu: 1000m
+            memory: 1Gi
           requests:
-            cpu: 10m
-            memory: 64Mi
+            cpu: 100m
+            memory: 128Mi
         volumeMounts:
         - name: conf
           mountPath: /dependencies/python-requirements.txt
@@ -292,11 +292,11 @@ spec:
           containerPort: 3000
         resources:
           limits:
-            cpu: 100m
+            cpu: 500m
             memory: 512Mi
           requests:
-            cpu: 10m
-            memory: 64Mi
+            cpu: 100m
+            memory: 128Mi
       enableServiceLinks: false
       serviceAccountName: default
 ---
@@ -371,11 +371,11 @@ spec:
             name: dify
         resources:
           limits:
-            cpu: 1000m
+            cpu: 2000m
             memory: 2Gi
           requests:
-            cpu: 100m
-            memory: 64Mi
+            cpu: 300m
+            memory: 256Mi
         volumeMounts:
         - name: data
           mountPath: /app/api/storage
@@ -436,11 +436,11 @@ spec:
           containerPort: 8194
         resources:
           limits:
+            cpu: 300m
+            memory: 256Mi
+          requests:
             cpu: 100m
             memory: 128Mi
-          requests:
-            cpu: 10m
-            memory: 64Mi
         volumeMounts:
         - name: conf
           mountPath: /docker-entrypoint-mount.sh

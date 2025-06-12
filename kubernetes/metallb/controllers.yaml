@@ -80,11 +80,11 @@ spec:
           initialDelaySeconds: 10
         resources:
           limits:
+            cpu: 300m
+            memory: 256Mi
+          requests:
             cpu: 100m
             memory: 32Mi
-          requests:
-            cpu: 50m
-            memory: 16Mi
         securityContext:
           allowPrivilegeEscalation: false
           capabilities:
@@ -163,11 +163,11 @@ spec:
           initialDelaySeconds: 10
         resources:
           limits:
+            cpu: 300m
+            memory: 128Mi
+          requests:
             cpu: 100m
             memory: 32Mi
-          requests:
-            cpu: 50m
-            memory: 16Mi
         securityContext:
           allowPrivilegeEscalation: false
           capabilities:

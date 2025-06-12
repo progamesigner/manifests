@@ -59,7 +59,7 @@ spec:
             memory: 16Gi
           requests:
             cpu: 300m
-            memory: 128Mi
+            memory: 256Mi
         volumeMounts:
         - name: data
           mountPath: /build/models

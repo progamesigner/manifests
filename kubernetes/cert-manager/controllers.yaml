@@ -35,11 +35,11 @@ spec:
               fieldPath: metadata.namespace
         resources:
           limits:
+            cpu: 300m
+            memory: 128Mi
+          requests:
             cpu: 100m
             memory: 32Mi
-          requests:
-            cpu: 50m
-            memory: 16Mi
       securityContext:
         runAsNonRoot: true
       serviceAccountName: cert-manager-cainjector
@@ -89,11 +89,11 @@ spec:
           protocol: TCP
         resources:
           limits:
+            cpu: 300m
+            memory: 128Mi
+          requests:
             cpu: 100m
             memory: 32Mi
-          requests:
-            cpu: 50m
-            memory: 16Mi
       securityContext:
         runAsNonRoot: true
       serviceAccountName: cert-manager-controller

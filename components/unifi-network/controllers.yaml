@@ -68,10 +68,10 @@ spec:
           protocol: UDP
         resources:
           limits:
-            cpu: 1000m
+            cpu: 2000m
             memory: 2Gi
           requests:
-            cpu: 50m
+            cpu: 300m
             memory: 1Gi
         volumeMounts:
         - name: data

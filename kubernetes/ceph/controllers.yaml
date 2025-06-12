@@ -395,7 +395,7 @@ spec:
             memory: 512Mi
           requests:
             cpu: 100m
-            memory: 32Mi
+            memory: 64Mi
         volumeMounts:
         - name: conf
           mountPath: /etc/ceph

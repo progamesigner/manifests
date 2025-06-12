@@ -80,10 +80,10 @@ spec:
           periodSeconds: 30
         resources:
           limits:
-            cpu: 100m
+            cpu: 300m
             memory: 256Mi
           requests:
-            cpu: 10m
+            cpu: 100m
             memory: 64Mi
         securityContext:
           capabilities:
@@ -107,10 +107,10 @@ spec:
           periodSeconds: 30
         resources:
           limits:
-            cpu: 100m
+            cpu: 300m
             memory: 256Mi
           requests:
-            cpu: 10m
+            cpu: 100m
             memory: 64Mi
         securityContext:
           capabilities:
@@ -214,10 +214,10 @@ spec:
           periodSeconds: 30
         resources:
           limits:
-            cpu: 100m
+            cpu: 300m
             memory: 256Mi
           requests:
-            cpu: 10m
+            cpu: 100m
             memory: 64Mi
         securityContext:
           capabilities:
@@ -241,10 +241,10 @@ spec:
           periodSeconds: 30
         resources:
           limits:
-            cpu: 100m
+            cpu: 300m
             memory: 256Mi
           requests:
-            cpu: 10m
+            cpu: 100m
             memory: 64Mi
         securityContext:
           capabilities:
@@ -348,10 +348,10 @@ spec:
           periodSeconds: 30
         resources:
           limits:
-            cpu: 100m
+            cpu: 300m
             memory: 256Mi
           requests:
-            cpu: 10m
+            cpu: 100m
             memory: 64Mi
         securityContext:
           capabilities:
@@ -375,10 +375,10 @@ spec:
           periodSeconds: 30
         resources:
           limits:
-            cpu: 100m
+            cpu: 300m
             memory: 256Mi
           requests:
-            cpu: 10m
+            cpu: 100m
             memory: 64Mi
         securityContext:
           capabilities:
@@ -482,10 +482,10 @@ spec:
           periodSeconds: 30
         resources:
           limits:
-            cpu: 100m
+            cpu: 300m
             memory: 256Mi
           requests:
-            cpu: 10m
+            cpu: 100m
             memory: 64Mi
         securityContext:
           capabilities:
@@ -509,10 +509,10 @@ spec:
           periodSeconds: 30
         resources:
           limits:
-            cpu: 100m
+            cpu: 300m
             memory: 256Mi
           requests:
-            cpu: 10m
+            cpu: 100m
             memory: 64Mi
         securityContext:
           capabilities:
@@ -616,10 +616,10 @@ spec:
           periodSeconds: 30
         resources:
           limits:
-            cpu: 100m
+            cpu: 300m
             memory: 256Mi
           requests:
-            cpu: 10m
+            cpu: 100m
             memory: 64Mi
         securityContext:
           capabilities:
@@ -643,10 +643,10 @@ spec:
           periodSeconds: 30
         resources:
           limits:
-            cpu: 100m
+            cpu: 300m
             memory: 256Mi
           requests:
-            cpu: 10m
+            cpu: 100m
             memory: 64Mi
         securityContext:
           capabilities:

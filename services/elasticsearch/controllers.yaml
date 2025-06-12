@@ -77,11 +77,11 @@ spec:
           protocol: TCP
         resources:
           limits:
-            cpu: 1500m
+            cpu: 2000m
             memory: 2Gi
           requests:
-            cpu: 100m
-            memory: 64Mi
+            cpu: 150m
+            memory: 256Mi
         volumeMounts:
         - name: data
           mountPath: /usr/share/elasticsearch/data
