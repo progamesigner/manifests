@@ -69,7 +69,7 @@ images:
   newName: redis/redisinsight
   newTag: '2.66'
 - name: rsshub/rsshub
-  newName: diygod/rsshub
+  newName: diygod/
   newTag: '2025-06-20'
 - name: syncthing/relaysrv
   newName: syncthing/relaysrv
@@ -85,13 +85,13 @@ images:
   newTag: 20230422-jammy
 - name: windmill/windmill-lsp
   newName: ghcr.io/windmill-labs/windmill-lsp
-  newTag: 1.499.0
+  newTag: 1.500.2
 - name: windmill/windmill-server
   newName: ghcr.io/windmill-labs/windmill
-  newTag: 1.499.0
+  newTag: 1.500.2
 - name: windmill/windmill-worker
   newName: ghcr.io/windmill-labs/windmill
-  newTag: 1.499.0
+  newTag: 1.500.2
 patches:
 - patch: |-
     apiVersion: apps/v1
