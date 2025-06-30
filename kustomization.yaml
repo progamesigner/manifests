@@ -45,6 +45,9 @@ images:
 - name: localai/localai
   newName: quay.io/go-skynet/local-ai
   newTag: v2.26.0-ffmpeg
+- name: metascraper/metascraper
+  newName: ghcr.io/progamesigner/metascraper-api
+  newTag: v1.0.0
 - name: mongodb/compass
   newName: haohanyang/compass-web
   newTag: 0.1.1

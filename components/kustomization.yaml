@@ -10,6 +10,7 @@ components:
 - firecrawl
 - gloomhaven
 - home-assistant
+- metascraper
 - mongodb-compass
 - pgadmin
 - phpmyadmin
