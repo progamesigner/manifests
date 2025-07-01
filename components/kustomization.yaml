@@ -9,7 +9,6 @@ components:
 - dify
 - gloomhaven
 - home-assistant
-- metascraper
 - mongodb-compass
 - pgadmin
 - phpmyadmin

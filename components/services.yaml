@@ -191,21 +191,6 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: metascraper
-spec:
-  ports:
-  - name: http
-    port: 3000
-    protocol: TCP
-    targetPort: http
-  selector:
-    app.kubernetes.io/component: metascraper
-    app.kubernetes.io/name: metascraper
-    app.kubernetes.io/part-of: components
----
-apiVersion: v1
-kind: Service
-metadata:
   name: mongodb-compass
 spec:
   ports:
