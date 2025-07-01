@@ -7,7 +7,6 @@ components:
 - cloudflared
 - coder
 - dify
-- firecrawl
 - gloomhaven
 - home-assistant
 - metascraper

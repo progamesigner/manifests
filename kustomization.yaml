@@ -29,10 +29,6 @@ images:
 - name: dify/worker
   newName: langgenius/dify-api
   newTag: 1.5.0
-- name: firecrawl/api
-  newName: ghcr.io/mendableai/firecrawl
-- name: firecrawl/worker
-  newName: ghcr.io/mendableai/firecrawl
 - name: gloomhaven/client
   newName: gloomhavensecretariat/ghs
   newTag: v0.73.0
@@ -183,40 +179,6 @@ patches:
             hostPath:
               type: DirectoryOrCreate
               path: /srv/elasticsearch
-- patch: |-
-    apiVersion: apps/v1
-    kind: Deployment
-    metadata:
-      name: firecrawl-api
-    spec:
-      template:
-        spec:
-          affinity:
-            nodeAffinity:
-              requiredDuringSchedulingIgnoredDuringExecution:
-                nodeSelectorTerms:
-                - matchExpressions:
-                  - key: kubernetes.io/arch
-                    operator: In
-                    values:
-                    - amd64
-- patch: |-
-    apiVersion: apps/v1
-    kind: Deployment
-    metadata:
-      name: firecrawl-worker
-    spec:
-      template:
-        spec:
-          affinity:
-            nodeAffinity:
-              requiredDuringSchedulingIgnoredDuringExecution:
-                nodeSelectorTerms:
-                - matchExpressions:
-                  - key: kubernetes.io/arch
-                    operator: In
-                    values:
-                    - amd64
 - patch: |-
     apiVersion: apps/v1
     kind: Deployment
