@@ -4,6 +4,7 @@ kind: Component
 configMapGenerator:
 - name: dify
   literals:
+  - CODE_MAX_DEPTH=10
   - MAIL_DEFAULT_SEND_FROM=default@example.com
   - MAIL_TYPE=smtp
   - PLUGIN_STORAGE_TYPE=local
