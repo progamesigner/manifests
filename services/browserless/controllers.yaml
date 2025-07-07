@@ -25,6 +25,9 @@ spec:
       containers:
       - name: browserless
         image: browserless/browserless:latest
+        env:
+        - name: TIMEOUT
+          value: '120000'
         envFrom:
         - secretRef:
             name: browserless
