@@ -15,7 +15,7 @@ components:
 images:
 - name: browserless/browserless
   newName: ghcr.io/browserless/multi
-  newTag: v2.14.0
+  newTag: v2.32.1
 - name: elasticsearch/elasticsearch
   newName: docker.elastic.co/elasticsearch/elasticsearch
   newTag: 8.7.0
