@@ -120,6 +120,13 @@ patches:
     apiVersion: apps/v1
     kind: Deployment
     metadata:
+      name: browserless
+    spec:
+      replicas: 2
+- patch: |-
+    apiVersion: apps/v1
+    kind: Deployment
+    metadata:
       name: cloudflare-warp
     spec:
       template:
