@@ -389,6 +389,91 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
+    app.kubernetes.io/component: scheduler
+    app.kubernetes.io/name: dify
+    app.kubernetes.io/part-of: components
+  name: dify-scheduler
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: scheduler
+      app.kubernetes.io/name: dify
+      app.kubernetes.io/part-of: components
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/component: scheduler
+        app.kubernetes.io/name: dify
+        app.kubernetes.io/part-of: components
+    spec:
+      automountServiceAccountToken: false
+      containers:
+      - name: dify-scheduler
+        image: dify/scheduler:latest
+        env:
+        - name: APP_WEB_URL
+          value: ''
+        - name: CELERY_WORKER_AMOUNT
+          value: '1'
+        - name: CONSOLE_API_URL
+          value: ''
+        - name: CONSOLE_WEB_URL
+          valueFrom:
+            secretKeyRef:
+              name: dify
+              key: CONSOLE_WEB_URL
+        - name: DB_DATABASE
+          value: dify
+        - name: ENDPOINT_URL_TEMPLATE
+          valueFrom:
+            secretKeyRef:
+              name: dify
+              key: ENDPOINT_URL_TEMPLATE
+        - name: INNER_API_KEY_FOR_PLUGIN
+          valueFrom:
+            secretKeyRef:
+              name: dify
+              key: PLUGIN_DAEMON_API_KEY
+        - name: MODE
+          value: beat
+        - name: PLUGIN_DAEMON_KEY
+          valueFrom:
+            secretKeyRef:
+              name: dify
+              key: PLUGIN_DAEMON_SERVER_KEY
+        - name: SECRET_KEY
+          valueFrom:
+            secretKeyRef:
+              name: dify
+              key: API_SECRET_KEY
+        - name: SERVICE_API_URL
+          value: ''
+        envFrom:
+        - configMapRef:
+            name: dify
+        - secretRef:
+            name: dify
+        resources:
+          limits:
+            cpu: 500m
+            memory: 512Mi
+          requests:
+            cpu: 100m
+            memory: 64Mi
+        volumeMounts:
+        - name: data
+          mountPath: /app/api/storage
+      enableServiceLinks: false
+      serviceAccountName: default
+      volumes:
+      - name: data
+        emptyDir: {}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
     app.kubernetes.io/component: ssrf-proxy
     app.kubernetes.io/name: dify
     app.kubernetes.io/part-of: components
