@@ -20,6 +20,9 @@ images:
 - name: dify/sandbox
   newName: langgenius/dify-sandbox
   newTag: 0.2.12
+- name: dify/scheduler
+  newName: langgenius/dify-api
+  newTag: 1.7.0
 - name: dify/ssrf-proxy
   newName: ubuntu/squid
   newTag: 6.6-24.04_beta
