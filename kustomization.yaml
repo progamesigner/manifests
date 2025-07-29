@@ -14,6 +14,9 @@ images:
 - name: dify/api
   newName: langgenius/dify-api
   newTag: 1.7.1
+- name: dify/migration
+  newName: langgenius/dify-api
+  newTag: 1.7.1
 - name: dify/plugin-daemon
   newName: langgenius/dify-plugin-daemon
   newTag: 0.2.0-local
@@ -164,6 +167,21 @@ patches:
             hostPath:
               type: DirectoryOrCreate
               path: /srv/dify-plugin-daemon
+- patch: |-
+    apiVersion: batch/v1
+    kind: Job
+    metadata:
+      name: dify-migration
+    spec:
+      template:
+        spec:
+          affinity:
+            nodeAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                nodeSelectorTerms:
+                - matchExpressions:
+                  - key: kubernetes.progamesigner.dev/controller-workload
+                    operator: Exists
 - patch: |-
     apiVersion: apps/v1
     kind: Deployment
