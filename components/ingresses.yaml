@@ -144,31 +144,6 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   annotations:
-    kubernetes.progamesigner.dev/hostname: bucket
-    nginx.org/websocket-services: minio
-  name: minio
-spec:
-  ingressClassName: nginx-ingress
-  rules:
-  - host: bucket.progamesigner.dev
-    http:
-      paths:
-      - backend:
-          service:
-            name: minio
-            port:
-              name: minio-console
-        path: /
-        pathType: Prefix
-  tls:
-  - hosts:
-    - bucket.progamesigner.dev
-    secretName: tls-dev-progamesigner
----
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  annotations:
     kubernetes.progamesigner.dev/hostname: media
     nginx.org/rewrites: serviceName=windmill-api rewrite=/api/r/default/files/
   name: media
