@@ -450,12 +450,14 @@ spec:
         env:
         - name: APP_API_URL
           value: ''
+        - name: CONSOLE_API_URL
+          value: ''
         - name: MARKETPLACE_API_URL
           value: https://marketplace.dify.ai
         - name: MARKETPLACE_URL
           value: https://marketplace.dify.ai
         - name: PM2_INSTANCES
-          value: '1'
+          value: '2'
         ports:
         - name: http
           containerPort: 3000
