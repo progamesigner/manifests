@@ -48,7 +48,7 @@ spec:
               name: dify
               key: API_SECRET_KEY
         - name: SERVER_WORKER_AMOUNT
-          value: '1'
+          value: '2'
         envFrom:
         - configMapRef:
             name: dify
@@ -497,7 +497,7 @@ spec:
         image: dify/worker:latest
         env:
         - name: CELERY_WORKER_AMOUNT
-          value: '1'
+          value: '2'
         - name: DB_DATABASE
           value: dify
         - name: INNER_API_KEY_FOR_PLUGIN
