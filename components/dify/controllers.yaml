@@ -457,7 +457,7 @@ spec:
         - name: MARKETPLACE_URL
           value: https://marketplace.dify.ai
         - name: PM2_INSTANCES
-          value: '2'
+          value: '1'
         ports:
         - name: http
           containerPort: 3000
