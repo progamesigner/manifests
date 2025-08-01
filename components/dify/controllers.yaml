@@ -64,14 +64,8 @@ spec:
           requests:
             cpu: 300m
             memory: 128Mi
-        volumeMounts:
-        - name: data
-          mountPath: /app/api/storage
       enableServiceLinks: false
       serviceAccountName: default
-      volumes:
-      - name: data
-        emptyDir: {}
 ---
 apiVersion: batch/v1
 kind: Job
@@ -535,11 +529,5 @@ spec:
           requests:
             cpu: 300m
             memory: 256Mi
-        volumeMounts:
-        - name: data
-          mountPath: /app/api/storage
       enableServiceLinks: false
       serviceAccountName: default
-      volumes:
-      - name: data
-        emptyDir: {}
