@@ -68,11 +68,11 @@ spec:
           protocol: UDP
         resources:
           limits:
-            cpu: 2000m
-            memory: 2Gi
+            cpu: 4000m
+            memory: 8Gi
           requests:
-            cpu: 300m
-            memory: 1Gi
+            cpu: 500m
+            memory: 2Gi
         volumeMounts:
         - name: data
           mountPath: /config
