@@ -72,7 +72,7 @@ spec:
             memory: 8Gi
           requests:
             cpu: 500m
-            memory: 2Gi
+            memory: 1Gi
         volumeMounts:
         - name: data
           mountPath: /config

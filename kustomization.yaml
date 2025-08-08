@@ -112,7 +112,7 @@ patches:
               requiredDuringSchedulingIgnoredDuringExecution:
                 nodeSelectorTerms:
                 - matchExpressions:
-                  - key: kubernetes.progamesigner.dev/network-workload
+                  - key: workload.kubernetes.progamesigner.dev/network
                     operator: Exists
                   - key: kubernetes.progamesigner.dev/local-disk
                     operator: Exists
@@ -180,7 +180,7 @@ patches:
               requiredDuringSchedulingIgnoredDuringExecution:
                 nodeSelectorTerms:
                 - matchExpressions:
-                  - key: kubernetes.progamesigner.dev/controller-workload
+                  - key: workload.kubernetes.progamesigner.dev/database
                     operator: Exists
 - patch: |-
     apiVersion: apps/v1
@@ -239,7 +239,7 @@ patches:
               requiredDuringSchedulingIgnoredDuringExecution:
                 nodeSelectorTerms:
                 - matchExpressions:
-                  - key: kubernetes.progamesigner.dev/controller-workload
+                  - key: workload.kubernetes.progamesigner.dev/controller
                     operator: Exists
                   - key: kubernetes.progamesigner.dev/local-disk
                     operator: Exists
@@ -425,7 +425,7 @@ patches:
               requiredDuringSchedulingIgnoredDuringExecution:
                 nodeSelectorTerms:
                 - matchExpressions:
-                  - key: kubernetes.progamesigner.dev/controller-workload
+                  - key: workload.kubernetes.progamesigner.dev/controller
                     operator: Exists
                   - key: kubernetes.progamesigner.dev/local-disk
                     operator: Exists
@@ -448,7 +448,7 @@ patches:
               requiredDuringSchedulingIgnoredDuringExecution:
                 nodeSelectorTerms:
                 - matchExpressions:
-                  - key: kubernetes.progamesigner.dev/network-workload
+                  - key: workload.kubernetes.progamesigner.dev/network
                     operator: Exists
                   - key: kubernetes.progamesigner.dev/local-disk
                     operator: Exists
@@ -471,7 +471,7 @@ patches:
               requiredDuringSchedulingIgnoredDuringExecution:
                 nodeSelectorTerms:
                 - matchExpressions:
-                  - key: kubernetes.progamesigner.dev/controller-workload
+                  - key: workload.kubernetes.progamesigner.dev/controller
                     operator: Exists
                   - key: kubernetes.progamesigner.dev/local-disk
                     operator: Exists
