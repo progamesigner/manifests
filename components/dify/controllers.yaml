@@ -62,8 +62,8 @@ spec:
             cpu: 2000m
             memory: 2Gi
           requests:
-            cpu: 300m
-            memory: 128Mi
+            cpu: 500m
+            memory: 256Mi
       enableServiceLinks: false
       serviceAccountName: default
 ---
@@ -104,7 +104,7 @@ spec:
             cpu: 2000m
             memory: 2Gi
           requests:
-            cpu: 300m
+            cpu: 500m
             memory: 256Mi
       enableServiceLinks: false
       restartPolicy: Never
@@ -186,7 +186,7 @@ spec:
             cpu: 2000m
             memory: 2Gi
           requests:
-            cpu: 300m
+            cpu: 500m
             memory: 256Mi
         volumeMounts:
         - name: data
@@ -334,7 +334,7 @@ spec:
             memory: 512Mi
           requests:
             cpu: 100m
-            memory: 64Mi
+            memory: 128Mi
       enableServiceLinks: false
       serviceAccountName: default
 ---
@@ -463,10 +463,10 @@ spec:
           containerPort: 3000
         resources:
           limits:
-            cpu: 500m
+            cpu: 1000m
             memory: 512Mi
           requests:
-            cpu: 100m
+            cpu: 300m
             memory: 128Mi
       enableServiceLinks: false
       serviceAccountName: default
@@ -526,10 +526,10 @@ spec:
             name: dify
         resources:
           limits:
-            cpu: 2000m
-            memory: 2Gi
+            cpu: 500m
+            memory: 512Mi
           requests:
-            cpu: 300m
-            memory: 256Mi
+            cpu: 100m
+            memory: 128Mi
       enableServiceLinks: false
       serviceAccountName: default
