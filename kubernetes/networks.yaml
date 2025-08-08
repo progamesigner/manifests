@@ -32,6 +32,9 @@ metadata:
 spec:
   ipAddressPools:
   - local-ip-address-pool
+  nodeSelectors:
+  - matchLabels:
+      workload.kubernetes.progamesigner.dev/network: ''
 ---
 apiVersion: metallb.io/v1beta1
 kind: BGPAdvertisement
