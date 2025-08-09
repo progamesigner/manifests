@@ -34,7 +34,7 @@ spec:
   - local-ip-address-pool
   nodeSelectors:
   - matchLabels:
-      workload.kubernetes.progamesigner.dev/network: ''
+      workload.kubernetes.progamesigner.dev/controller: ''
 ---
 apiVersion: metallb.io/v1beta1
 kind: BGPAdvertisement
