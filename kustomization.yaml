@@ -76,7 +76,7 @@ images:
   newTag: '2.66'
 - name: rsshub/rsshub
   newName: diygod/rsshub
-  newTag: '2025-08-12'
+  newTag: '2025-08-13'
 - name: syncthing/relaysrv
   newName: syncthing/relaysrv
   newTag: 1.18.6
