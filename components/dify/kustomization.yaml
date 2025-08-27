@@ -21,7 +21,10 @@ configMapGenerator:
   - SERVICE_API_URL=''
   - SQLALCHEMY_POOL_PRE_PING=true
   - STORAGE_TYPE=s3
+  - SWAGGER_UI_ENABLED=true
   - VECTOR_STORE=weaviate
+  - WORKFLOW_LOG_CLEANUP_ENABLED=true
+  - WORKFLOW_LOG_RETENTION_DAYS=7
 - name: dify-sandbox
   files:
   - python-requirements.txt=sandbox-python-requirements.txt
