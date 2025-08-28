@@ -109,6 +109,7 @@ spec:
       enableServiceLinks: false
       restartPolicy: Never
       serviceAccountName: default
+  ttlSecondsAfterFinished: 30
 ---
 apiVersion: apps/v1
 kind: Deployment
