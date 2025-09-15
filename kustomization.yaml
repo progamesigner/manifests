@@ -91,7 +91,7 @@ images:
   newTag: 20230422-jammy
 - name: windmill/windmill-lsp
   newName: ghcr.io/windmill-labs/windmill-lsp
-  newTag: 1.542.3
+  newTag: 1.542.4
 - name: windmill/windmill-server
   newName: ghcr.io/windmill-labs/windmill
   newTag: 1.542.4
