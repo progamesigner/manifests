@@ -555,9 +555,16 @@ patches:
     apiVersion: apps/v1
     kind: Deployment
     metadata:
-      name: windmill-report-worker
+      name: windmill-browser-worker
     spec:
       replicas: 2
+- patch: |-
+    apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      name: windmill-native-worker
+    spec:
+      replicas: 0
 resources:
 - components
 - kubernetes

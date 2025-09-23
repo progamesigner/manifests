@@ -119,6 +119,55 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
+    app.kubernetes.io/component: windmill-browser-worker
+    app.kubernetes.io/name: windmill
+    app.kubernetes.io/part-of: components
+  name: windmill-browser-worker
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: windmill-browser-worker
+      app.kubernetes.io/name: windmill
+      app.kubernetes.io/part-of: components
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/component: windmill-browser-worker
+        app.kubernetes.io/name: windmill
+        app.kubernetes.io/part-of: components
+    spec:
+      automountServiceAccountToken: false
+      containers:
+      - name: windmill-worker
+        image: windmill/windmill-worker:latest
+        env:
+        - name: MODE
+          value: worker
+        - name: WORKER_GROUP
+          value: reports
+        envFrom:
+        - configMapRef:
+            name: windmill
+        - secretRef:
+            name: windmill
+        ports:
+        - name: metrics
+          containerPort: 8001
+        resources:
+          limits:
+            cpu: 2000m
+            memory: 2Gi
+          requests:
+            cpu: 300m
+            memory: 256Mi
+      enableServiceLinks: false
+      serviceAccountName: default
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
     app.kubernetes.io/component: windmill-native-worker
     app.kubernetes.io/name: windmill
     app.kubernetes.io/part-of: components
@@ -150,55 +199,6 @@ spec:
           value: '200'
         - name: WORKER_GROUP
           value: native
-        envFrom:
-        - configMapRef:
-            name: windmill
-        - secretRef:
-            name: windmill
-        ports:
-        - name: metrics
-          containerPort: 8001
-        resources:
-          limits:
-            cpu: 2000m
-            memory: 2Gi
-          requests:
-            cpu: 300m
-            memory: 256Mi
-      enableServiceLinks: false
-      serviceAccountName: default
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  labels:
-    app.kubernetes.io/component: windmill-report-worker
-    app.kubernetes.io/name: windmill
-    app.kubernetes.io/part-of: components
-  name: windmill-report-worker
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app.kubernetes.io/component: windmill-report-worker
-      app.kubernetes.io/name: windmill
-      app.kubernetes.io/part-of: components
-  template:
-    metadata:
-      labels:
-        app.kubernetes.io/component: windmill-report-worker
-        app.kubernetes.io/name: windmill
-        app.kubernetes.io/part-of: components
-    spec:
-      automountServiceAccountToken: false
-      containers:
-      - name: windmill-worker
-        image: windmill/windmill-worker:latest
-        env:
-        - name: MODE
-          value: worker
-        - name: WORKER_GROUP
-          value: reports
         envFrom:
         - configMapRef:
             name: windmill
