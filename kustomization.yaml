@@ -19,7 +19,7 @@ images:
   newTag: 1.9.1
 - name: dify/plugin-daemon
   newName: langgenius/dify-plugin-daemon
-  newTag: 0.3.2-local
+  newTag: 0.3.3-local
 - name: dify/sandbox
   newName: langgenius/dify-sandbox
   newTag: 0.2.12
@@ -85,13 +85,13 @@ images:
   newTag: 2.0.3
 - name: unifi/network
   newName: lscr.io/linuxserver/unifi-network-application
-  newTag: 9.4.19-ls104
+  newTag: 9.5.21-ls105
 - name: vscode/server
   newName: ghcr.io/progamesigner/vscode-server
   newTag: 20230422-jammy
 - name: windmill/windmill-lsp
   newName: ghcr.io/windmill-labs/windmill-lsp
-  newTag: 1.563.3
+  newTag: 1.563.4
 - name: windmill/windmill-server
   newName: ghcr.io/windmill-labs/windmill
   newTag: 1.564.0
