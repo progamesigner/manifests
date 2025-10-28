@@ -4,7 +4,7 @@ kind: Kustomization
 images:
 - name: adguard-home/adguard-home
   newName: adguard/adguardhome
-  newTag: v0.107.67
+  newTag: v0.107.68
 - name: apprise/apprise
   newName: caronc/apprise
   newTag: 1.1.8
@@ -13,28 +13,28 @@ images:
   newTag: v2.11.3
 - name: dify/api
   newName: langgenius/dify-api
-  newTag: 1.9.1
+  newTag: 1.9.2
 - name: dify/migration
   newName: langgenius/dify-api
-  newTag: 1.9.1
+  newTag: 1.9.2
 - name: dify/plugin-daemon
   newName: langgenius/dify-plugin-daemon
-  newTag: 0.3.1-local
+  newTag: 0.3.3-local
 - name: dify/sandbox
   newName: langgenius/dify-sandbox
   newTag: 0.2.12
 - name: dify/scheduler
   newName: langgenius/dify-api
-  newTag: 1.9.1
+  newTag: 1.9.2
 - name: dify/ssrf-proxy
   newName: ubuntu/squid
   newTag: 6.6-24.04_beta
 - name: dify/web
   newName: langgenius/dify-web
-  newTag: 1.9.1
+  newTag: 1.9.2
 - name: dify/worker
   newName: langgenius/dify-api
-  newTag: 1.9.1
+  newTag: 1.9.2
 - name: gloomhaven/client
   newName: gloomhavensecretariat/ghs
   newTag: v0.73.0
@@ -43,7 +43,7 @@ images:
   newTag: v0.72.10
 - name: home-assistant/home-assistant
   newName: ghcr.io/home-assistant/home-assistant
-  newTag: 2025.10.1
+  newTag: 2025.10.4
 - name: localai/localai
   newName: quay.io/go-skynet/local-ai
   newTag: v2.26.0-ffmpeg
@@ -55,7 +55,7 @@ images:
   newTag: 2023.10.120-1
 - name: network/cloudflared
   newName: cloudflare/cloudflared
-  newTag: 2025.9.1
+  newTag: 2025.10.0
 - name: network/haproxy
   newName: haproxy
   newTag: 3.0.2-alpine
@@ -76,7 +76,7 @@ images:
   newTag: '2.66'
 - name: rsshub/rsshub
   newName: diygod/rsshub
-  newTag: '2025-10-07'
+  newTag: '2025-10-27'
 - name: syncthing/relaysrv
   newName: syncthing/relaysrv
   newTag: 2.0.3
@@ -85,13 +85,13 @@ images:
   newTag: 2.0.3
 - name: unifi/network
   newName: lscr.io/linuxserver/unifi-network-application
-  newTag: 9.4.19-ls104
+  newTag: v9.5.21-ls106
 - name: vscode/server
   newName: ghcr.io/progamesigner/vscode-server
   newTag: 20230422-jammy
 - name: windmill/windmill-lsp
   newName: ghcr.io/windmill-labs/windmill-lsp
-  newTag: 1.557.0
+  newTag: 1.567.1
 - name: windmill/windmill-server
   newName: ghcr.io/windmill-labs/windmill
   newTag: 1.558.1
