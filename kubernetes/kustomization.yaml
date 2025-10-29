@@ -2,6 +2,7 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 components:
+- ceph
 - cert-manager
 - coredns
 - kube-router
@@ -24,6 +25,34 @@ patches:
           dnsConfig:
             searches:
             - progamesigner.net
+- patch: |-
+    apiVersion: v1
+    kind: Service
+    metadata:
+      name: ceph-mon-a
+    spec:
+      clusterIP: 10.16.0.5
+- patch: |-
+    apiVersion: v1
+    kind: Service
+    metadata:
+      name: ceph-mon-b
+    spec:
+      clusterIP: 10.16.0.6
+- patch: |-
+    apiVersion: v1
+    kind: Service
+    metadata:
+      name: ceph-mon-c
+    spec:
+      clusterIP: 10.16.0.7
+- patch: |-
+    apiVersion: v1
+    kind: Service
+    metadata:
+      name: coredns
+    spec:
+      clusterIP: 10.16.0.8
 - patch: |-
     apiVersion: v1
     kind: Service

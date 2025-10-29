@@ -2,6 +2,60 @@
 apiVersion: v1
 kind: Service
 metadata:
+  name: ceph-mon-a
+spec:
+  ports:
+  - name: ceph-mon
+    port: 3300
+    protocol: TCP
+  - name: ceph-mon-v1
+    port: 6789
+    protocol: TCP
+  selector:
+    app.kubernetes.io/component: mon
+    app.kubernetes.io/name: ceph
+    app.kubernetes.io/part-of: kubernetes
+    ceph.kubernetes.progamesigner.dev/mon: a
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ceph-mon-b
+spec:
+  ports:
+  - name: ceph-mon
+    port: 3300
+    protocol: TCP
+  - name: ceph-mon-v1
+    port: 6789
+    protocol: TCP
+  selector:
+    app.kubernetes.io/component: mon
+    app.kubernetes.io/name: ceph
+    app.kubernetes.io/part-of: kubernetes
+    ceph.kubernetes.progamesigner.dev/mon: b
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ceph-mon-c
+spec:
+  ports:
+  - name: ceph-mon
+    port: 3300
+    protocol: TCP
+  - name: ceph-mon-v1
+    port: 6789
+    protocol: TCP
+  selector:
+    app.kubernetes.io/component: mon
+    app.kubernetes.io/name: ceph
+    app.kubernetes.io/part-of: kubernetes
+    ceph.kubernetes.progamesigner.dev/mon: c
+---
+apiVersion: v1
+kind: Service
+metadata:
   labels:
     kubernetes.io/cluster-service: 'true'
     kubernetes.io/name: CertManager
@@ -28,7 +82,6 @@ metadata:
     kubernetes.io/name: CoreDNS
   name: coredns
 spec:
-  clusterIP: 10.16.0.8
   ports:
   - name: dns-tcp
     port: 53

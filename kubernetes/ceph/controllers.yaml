@@ -1,51 +1,38 @@
 ---
 apiVersion: apps/v1
-kind: StatefulSet
+kind: Deployment
 metadata:
   labels:
     app.kubernetes.io/component: mon
     app.kubernetes.io/name: ceph
     app.kubernetes.io/part-of: kubernetes
-  name: ceph-mon
+  name: ceph-mon-a
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       app.kubernetes.io/component: mon
       app.kubernetes.io/name: ceph
       app.kubernetes.io/part-of: kubernetes
-  serviceName: ceph-mon
+  strategy:
+    rollingUpdate:
+      maxSurge: 0
+      maxUnavailable: 100%
   template:
     metadata:
       labels:
         app.kubernetes.io/component: mon
         app.kubernetes.io/name: ceph
         app.kubernetes.io/part-of: kubernetes
+        ceph.kubernetes.progamesigner.dev/mon: a
     spec:
       affinity:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
             nodeSelectorTerms:
             - matchExpressions:
-              - key: ceph.kubernetes.progamesigner.dev/mon
+              - key: mon.ceph.kubernetes.progamesigner.dev/a
                 operator: Exists
-        podAntiAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-          - labelSelector:
-              matchExpressions:
-              - key: app.kubernetes.io/component
-                operator: In
-                values:
-                - mon
-              - key: app.kubernetes.io/name
-                operator: In
-                values:
-                - ceph
-              - key: app.kubernetes.io/part-of
-                operator: In
-                values:
-                - kubernetes
-            topologyKey: kubernetes.io/hostname
       automountServiceAccountToken: true
       initContainers:
       - name: chown
@@ -56,72 +43,27 @@ spec:
         - |
           set -ex;
 
-          if [ ${POD_ORDINAL} -eq 0 ] && [ ! -d /var/lib/ceph/mon/ceph-${CEPH_NAME} ]; then
-            cat <<EOF > /etc/ceph/ceph.conf
-          [global]
-          fsid = ${CEPH_FSID}
-          mon_dns_srv_name = ceph-mon_ceph-mon.${POD_NAMESPACE}.svc.cluster.local
-          mon_host = ${POD_IP}
-          mon_initial_members = ${CEPH_NAME}
-          EOF
-          else
-            cat <<EOF > /etc/ceph/ceph.conf
-          [global]
-          fsid = ${CEPH_FSID}
-          mon_dns_srv_name = ceph-mon_ceph-mon.${POD_NAMESPACE}.svc.cluster.local
-          EOF
-          fi
-
-          cat <<EOF >> /etc/ceph/ceph.conf
-          [mon]
-          err_to_stderr = true
-          log_stderr_prefix = debug
-          log_to_file = false
-          log_to_stderr = true
-          mon_cluster_log_to_file = false
-          mon_cluster_log_to_stderr = true
-          [mon.${CEPH_NAME}]
-          public_addr = ${POD_IP}
-          EOF
-
-          cp -LRv /mnt/ceph/. /etc/ceph;
+          cp -LRv /mnt/ceph/ceph.conf /etc/ceph/ceph.conf;
 
           mkdir -p /var/lib/ceph/mon/ceph-${CEPH_NAME};
 
           chown -R 167:167 /etc/ceph;
           chown -R 167:167 /var/lib/ceph/mon/ceph-${CEPH_NAME};
         env:
-        - name: CEPH_FSID
-          valueFrom:
-            secretKeyRef:
-              name: ceph
-              key: fsid
         - name: CEPH_NAME
           valueFrom:
             fieldRef:
-              fieldPath: spec.nodeName
-        - name: POD_IP
-          valueFrom:
-            fieldRef:
-              fieldPath: status.podIP
-        - name: POD_NAMESPACE
-          valueFrom:
-            fieldRef:
-              fieldPath: metadata.namespace
-        - name: POD_ORDINAL
-          valueFrom:
-            fieldRef:
-              fieldPath: metadata.labels['apps.kubernetes.io/pod-index']
+              fieldPath: metadata.labels['ceph.kubernetes.progamesigner.dev/mon']
         resources:
           requests:
             cpu: 1m
             memory: 1Mi
         volumeMounts:
         - name: ceph
+          mountPath: /etc/ceph
+        - name: conf
           mountPath: /mnt/ceph
           readOnly: true
-        - name: conf
-          mountPath: /etc/ceph
         - name: data
           mountPath: /var/lib/ceph
       - name: setup
@@ -138,17 +80,13 @@ spec:
         - name: CEPH_NAME
           valueFrom:
             fieldRef:
-              fieldPath: spec.nodeName
-        - name: POD_IP
-          valueFrom:
-            fieldRef:
-              fieldPath: status.podIP
+              fieldPath: metadata.labels['ceph.kubernetes.progamesigner.dev/mon']
         resources:
           requests:
             cpu: 1m
             memory: 1Mi
         volumeMounts:
-        - name: conf
+        - name: ceph
           mountPath: /etc/ceph
           readOnly: true
         - name: data
@@ -161,13 +99,18 @@ spec:
         args:
         - --foreground
         - --id=$(CEPH_NAME)
+        - --public-bind-addr=$(POD_IP)
         - --setgroup=ceph
         - --setuser=ceph
         env:
         - name: CEPH_NAME
           valueFrom:
             fieldRef:
-              fieldPath: spec.nodeName
+              fieldPath: metadata.labels['ceph.kubernetes.progamesigner.dev/mon']
+        - name: POD_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.podIP
         ports:
         - name: ceph-mon
           containerPort: 3300
@@ -175,15 +118,6 @@ spec:
         - name: ceph-mon-v1
           containerPort: 6789
           protocol: TCP
-        lifecycle:
-          preStop:
-            exec:
-              command:
-              - sh
-              - -c
-              - |
-                ceph mon remove ${CEPH_NAME};
-                sleep 10;
         startupProbe:
           exec:
             command:
@@ -224,7 +158,7 @@ spec:
             cpu: 100m
             memory: 32Mi
         volumeMounts:
-        - name: conf
+        - name: ceph
           mountPath: /etc/ceph
           readOnly: true
         - name: data
@@ -236,12 +170,374 @@ spec:
         hostPath:
           path: /etc/ceph
       - name: conf
-        emptyDir: {}
+        configMap:
+          name: ceph
+          items:
+          - key: ceph.conf
+            path: ceph.conf
       - name: data
         hostPath:
           path: /var/lib/ceph
-  updateStrategy:
-    type: OnDelete
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/component: mon
+    app.kubernetes.io/name: ceph
+    app.kubernetes.io/part-of: kubernetes
+  name: ceph-mon-b
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: mon
+      app.kubernetes.io/name: ceph
+      app.kubernetes.io/part-of: kubernetes
+  strategy:
+    rollingUpdate:
+      maxSurge: 0
+      maxUnavailable: 100%
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/component: mon
+        app.kubernetes.io/name: ceph
+        app.kubernetes.io/part-of: kubernetes
+        ceph.kubernetes.progamesigner.dev/mon: b
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: mon.ceph.kubernetes.progamesigner.dev/b
+                operator: Exists
+      automountServiceAccountToken: true
+      initContainers:
+      - name: chown
+        image: busybox:latest
+        command:
+        - sh
+        - -c
+        - |
+          set -ex;
+
+          cp -LRv /mnt/ceph/ceph.conf /etc/ceph/ceph.conf;
+
+          mkdir -p /var/lib/ceph/mon/ceph-${CEPH_NAME};
+
+          chown -R 167:167 /etc/ceph;
+          chown -R 167:167 /var/lib/ceph/mon/ceph-${CEPH_NAME};
+        env:
+        - name: CEPH_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.labels['ceph.kubernetes.progamesigner.dev/mon']
+        resources:
+          requests:
+            cpu: 1m
+            memory: 1Mi
+        volumeMounts:
+        - name: ceph
+          mountPath: /etc/ceph
+        - name: conf
+          mountPath: /mnt/ceph
+          readOnly: true
+        - name: data
+          mountPath: /var/lib/ceph
+      - name: setup
+        image: ceph/ceph:latest
+        command:
+        - ceph-mon
+        args:
+        - --id=$(CEPH_NAME)
+        - --keyring=/etc/ceph/ceph.mon.keyring
+        - --mkfs
+        - --setgroup=ceph
+        - --setuser=ceph
+        env:
+        - name: CEPH_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.labels['ceph.kubernetes.progamesigner.dev/mon']
+        resources:
+          requests:
+            cpu: 1m
+            memory: 1Mi
+        volumeMounts:
+        - name: ceph
+          mountPath: /etc/ceph
+          readOnly: true
+        - name: data
+          mountPath: /var/lib/ceph
+      containers:
+      - name: mon
+        image: ceph/ceph:latest
+        command:
+        - ceph-mon
+        args:
+        - --foreground
+        - --id=$(CEPH_NAME)
+        - --public-bind-addr=$(POD_IP)
+        - --setgroup=ceph
+        - --setuser=ceph
+        env:
+        - name: CEPH_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.labels['ceph.kubernetes.progamesigner.dev/mon']
+        - name: POD_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.podIP
+        ports:
+        - name: ceph-mon
+          containerPort: 3300
+          protocol: TCP
+        - name: ceph-mon-v1
+          containerPort: 6789
+          protocol: TCP
+        startupProbe:
+          exec:
+            command:
+            - sh
+            - -c
+            - |
+              output="$(ceph --admin-daemon /run/ceph/ceph-mon.${CEPH_NAME}.asok mon_status 2>&1)"
+              rc=$?
+              if [ $rc -ne 0 ]; then
+                echo "ceph daemon health check failed with the following output:"
+                echo "$output" | sed -e 's/^/> /g'
+                exit $rc
+              fi
+          initialDelaySeconds: 15
+          periodSeconds: 60
+          timeoutSeconds: 30
+        livenessProbe:
+          exec:
+            command:
+            - sh
+            - -c
+            - |
+              output="$(ceph --admin-daemon /run/ceph/ceph-mon.${CEPH_NAME}.asok mon_status 2>&1)"
+              rc=$?
+              if [ $rc -ne 0 ]; then
+                echo "ceph daemon health check failed with the following output:"
+                echo "$output" | sed -e 's/^/> /g'
+                exit $rc
+              fi
+          initialDelaySeconds: 15
+          periodSeconds: 60
+          timeoutSeconds: 30
+        resources:
+          limits:
+            cpu: 300m
+            memory: 256Mi
+          requests:
+            cpu: 100m
+            memory: 32Mi
+        volumeMounts:
+        - name: ceph
+          mountPath: /etc/ceph
+          readOnly: true
+        - name: data
+          mountPath: /var/lib/ceph
+      priorityClassName: system-cluster-critical
+      serviceAccountName: ceph
+      volumes:
+      - name: ceph
+        hostPath:
+          path: /etc/ceph
+      - name: conf
+        configMap:
+          name: ceph
+          items:
+          - key: ceph.conf
+            path: ceph.conf
+      - name: data
+        hostPath:
+          path: /var/lib/ceph
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/component: mon
+    app.kubernetes.io/name: ceph
+    app.kubernetes.io/part-of: kubernetes
+  name: ceph-mon-c
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: mon
+      app.kubernetes.io/name: ceph
+      app.kubernetes.io/part-of: kubernetes
+  strategy:
+    rollingUpdate:
+      maxSurge: 0
+      maxUnavailable: 100%
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/component: mon
+        app.kubernetes.io/name: ceph
+        app.kubernetes.io/part-of: kubernetes
+        ceph.kubernetes.progamesigner.dev/mon: c
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: mon.ceph.kubernetes.progamesigner.dev/c
+                operator: Exists
+      automountServiceAccountToken: true
+      initContainers:
+      - name: chown
+        image: busybox:latest
+        command:
+        - sh
+        - -c
+        - |
+          set -ex;
+
+          cp -LRv /mnt/ceph/ceph.conf /etc/ceph/ceph.conf;
+
+          mkdir -p /var/lib/ceph/mon/ceph-${CEPH_NAME};
+
+          chown -R 167:167 /etc/ceph;
+          chown -R 167:167 /var/lib/ceph/mon/ceph-${CEPH_NAME};
+        env:
+        - name: CEPH_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.labels['ceph.kubernetes.progamesigner.dev/mon']
+        resources:
+          requests:
+            cpu: 1m
+            memory: 1Mi
+        volumeMounts:
+        - name: ceph
+          mountPath: /etc/ceph
+        - name: conf
+          mountPath: /mnt/ceph
+          readOnly: true
+        - name: data
+          mountPath: /var/lib/ceph
+      - name: setup
+        image: ceph/ceph:latest
+        command:
+        - ceph-mon
+        args:
+        - --id=$(CEPH_NAME)
+        - --keyring=/etc/ceph/ceph.mon.keyring
+        - --mkfs
+        - --setgroup=ceph
+        - --setuser=ceph
+        env:
+        - name: CEPH_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.labels['ceph.kubernetes.progamesigner.dev/mon']
+        resources:
+          requests:
+            cpu: 1m
+            memory: 1Mi
+        volumeMounts:
+        - name: ceph
+          mountPath: /etc/ceph
+          readOnly: true
+        - name: data
+          mountPath: /var/lib/ceph
+      containers:
+      - name: mon
+        image: ceph/ceph:latest
+        command:
+        - ceph-mon
+        args:
+        - --foreground
+        - --id=$(CEPH_NAME)
+        - --public-bind-addr=$(POD_IP)
+        - --setgroup=ceph
+        - --setuser=ceph
+        env:
+        - name: CEPH_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.labels['ceph.kubernetes.progamesigner.dev/mon']
+        - name: POD_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.podIP
+        ports:
+        - name: ceph-mon
+          containerPort: 3300
+          protocol: TCP
+        - name: ceph-mon-v1
+          containerPort: 6789
+          protocol: TCP
+        startupProbe:
+          exec:
+            command:
+            - sh
+            - -c
+            - |
+              output="$(ceph --admin-daemon /run/ceph/ceph-mon.${CEPH_NAME}.asok mon_status 2>&1)"
+              rc=$?
+              if [ $rc -ne 0 ]; then
+                echo "ceph daemon health check failed with the following output:"
+                echo "$output" | sed -e 's/^/> /g'
+                exit $rc
+              fi
+          initialDelaySeconds: 15
+          periodSeconds: 60
+          timeoutSeconds: 30
+        livenessProbe:
+          exec:
+            command:
+            - sh
+            - -c
+            - |
+              output="$(ceph --admin-daemon /run/ceph/ceph-mon.${CEPH_NAME}.asok mon_status 2>&1)"
+              rc=$?
+              if [ $rc -ne 0 ]; then
+                echo "ceph daemon health check failed with the following output:"
+                echo "$output" | sed -e 's/^/> /g'
+                exit $rc
+              fi
+          initialDelaySeconds: 15
+          periodSeconds: 60
+          timeoutSeconds: 30
+        resources:
+          limits:
+            cpu: 300m
+            memory: 256Mi
+          requests:
+            cpu: 100m
+            memory: 32Mi
+        volumeMounts:
+        - name: ceph
+          mountPath: /etc/ceph
+          readOnly: true
+        - name: data
+          mountPath: /var/lib/ceph
+      priorityClassName: system-cluster-critical
+      serviceAccountName: ceph
+      volumes:
+      - name: ceph
+        hostPath:
+          path: /etc/ceph
+      - name: conf
+        configMap:
+          name: ceph
+          items:
+          - key: ceph.conf
+            path: ceph.conf
+      - name: data
+        hostPath:
+          path: /var/lib/ceph
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -250,9 +546,9 @@ metadata:
     app.kubernetes.io/component: mgr
     app.kubernetes.io/name: ceph
     app.kubernetes.io/part-of: kubernetes
-  name: ceph-mgr
+  name: ceph-mgr-a
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app.kubernetes.io/component: mgr
@@ -264,31 +560,15 @@ spec:
         app.kubernetes.io/component: mgr
         app.kubernetes.io/name: ceph
         app.kubernetes.io/part-of: kubernetes
+        ceph.kubernetes.progamesigner.dev/mgr: a
     spec:
       affinity:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
             nodeSelectorTerms:
             - matchExpressions:
-              - key: ceph.kubernetes.progamesigner.dev/mgr
+              - key: mgr.ceph.kubernetes.progamesigner.dev/a
                 operator: Exists
-        podAntiAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-          - labelSelector:
-              matchExpressions:
-              - key: app.kubernetes.io/component
-                operator: In
-                values:
-                - mgr
-              - key: app.kubernetes.io/name
-                operator: In
-                values:
-                - ceph
-              - key: app.kubernetes.io/part-of
-                operator: In
-                values:
-                - kubernetes
-            topologyKey: kubernetes.io/hostname
       automountServiceAccountToken: true
       initContainers:
       - name: chown
@@ -299,45 +579,27 @@ spec:
         - |
           set -ex;
 
-          cat <<EOF >> /etc/ceph/ceph.conf
-          [global]
-          fsid = ${CEPH_FSID}
-          mon_dns_srv_name = ceph-mon_ceph-mon.${POD_NAMESPACE}.svc.cluster.local
-
-          [mgr.${CEPH_NAME}]
-          mgr_initial_modules = dashboard iostat nfs prometheus restful
-          EOF
-
-          cp -LRv /mnt/ceph/. /etc/ceph;
+          cp -LRv /mnt/ceph/ceph.conf /etc/ceph/ceph.conf;
 
           mkdir -p /var/lib/ceph/mgr/ceph-${CEPH_NAME};
 
           chown -R 167:167 /etc/ceph;
           chown -R 167:167 /var/lib/ceph/mgr/ceph-${CEPH_NAME};
         env:
-        - name: CEPH_FSID
-          valueFrom:
-            secretKeyRef:
-              name: ceph
-              key: fsid
         - name: CEPH_NAME
           valueFrom:
             fieldRef:
-              fieldPath: spec.nodeName
-        - name: POD_NAMESPACE
-          valueFrom:
-            fieldRef:
-              fieldPath: metadata.namespace
+              fieldPath: metadata.labels['ceph.kubernetes.progamesigner.dev/mgr']
         resources:
           requests:
             cpu: 1m
             memory: 1Mi
         volumeMounts:
         - name: ceph
+          mountPath: /etc/ceph
+        - name: conf
           mountPath: /mnt/ceph
           readOnly: true
-        - name: conf
-          mountPath: /etc/ceph
         - name: data
           mountPath: /var/lib/ceph
       - name: setup
@@ -359,13 +621,13 @@ spec:
         - name: CEPH_NAME
           valueFrom:
             fieldRef:
-              fieldPath: spec.nodeName
+              fieldPath: metadata.labels['ceph.kubernetes.progamesigner.dev/mgr']
         resources:
           requests:
             cpu: 1m
             memory: 1Mi
         volumeMounts:
-        - name: conf
+        - name: ceph
           mountPath: /etc/ceph
           readOnly: true
         - name: data
@@ -384,7 +646,148 @@ spec:
         - name: CEPH_NAME
           valueFrom:
             fieldRef:
-              fieldPath: spec.nodeName
+              fieldPath: metadata.labels['ceph.kubernetes.progamesigner.dev/mgr']
+        ports:
+        - name: https
+          containerPort: 8443
+          protocol: TCP
+        resources:
+          limits:
+            cpu: 300m
+            memory: 512Mi
+          requests:
+            cpu: 100m
+            memory: 64Mi
+        volumeMounts:
+        - name: ceph
+          mountPath: /etc/ceph
+          readOnly: true
+        - name: data
+          mountPath: /var/lib/ceph
+      priorityClassName: system-cluster-critical
+      serviceAccountName: ceph
+      volumes:
+      - name: ceph
+        hostPath:
+          path: /etc/ceph
+      - name: conf
+        configMap:
+          name: ceph
+          items:
+          - key: ceph.conf
+            path: ceph.conf
+      - name: data
+        hostPath:
+          path: /var/lib/ceph
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/component: mgr
+    app.kubernetes.io/name: ceph
+    app.kubernetes.io/part-of: kubernetes
+  name: ceph-mgr-b
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: mgr
+      app.kubernetes.io/name: ceph
+      app.kubernetes.io/part-of: kubernetes
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/component: mgr
+        app.kubernetes.io/name: ceph
+        app.kubernetes.io/part-of: kubernetes
+        ceph.kubernetes.progamesigner.dev/mgr: b
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: mgr.ceph.kubernetes.progamesigner.dev/b
+                operator: Exists
+      automountServiceAccountToken: true
+      initContainers:
+      - name: chown
+        image: busybox:latest
+        command:
+        - sh
+        - -c
+        - |
+          set -ex;
+
+          cp -LRv /mnt/ceph/ceph.conf /etc/ceph/ceph.conf;
+
+          mkdir -p /var/lib/ceph/mgr/ceph-${CEPH_NAME};
+
+          chown -R 167:167 /etc/ceph;
+          chown -R 167:167 /var/lib/ceph/mgr/ceph-${CEPH_NAME};
+        env:
+        - name: CEPH_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.labels['ceph.kubernetes.progamesigner.dev/mgr']
+        resources:
+          requests:
+            cpu: 1m
+            memory: 1Mi
+        volumeMounts:
+        - name: ceph
+          mountPath: /etc/ceph
+        - name: conf
+          mountPath: /mnt/ceph
+          readOnly: true
+        - name: data
+          mountPath: /var/lib/ceph
+      - name: setup
+        image: ceph/ceph:latest
+        command:
+        - sh
+        - -c
+        - |
+          set -ex;
+
+          while ! ceph mon dump; do
+            echo "Waiting for mon to be ready...";
+            sleep 5;
+          done
+
+          ceph auth add mgr.$(CEPH_NAME) mon 'allow profile mgr' osd 'allow *' mds 'allow *';
+          ceph auth get mgr.$(CEPH_NAME) > /var/lib/ceph/mgr/ceph-${CEPH_NAME}/keyring;
+        env:
+        - name: CEPH_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.labels['ceph.kubernetes.progamesigner.dev/mgr']
+        resources:
+          requests:
+            cpu: 1m
+            memory: 1Mi
+        volumeMounts:
+        - name: ceph
+          mountPath: /etc/ceph
+          readOnly: true
+        - name: data
+          mountPath: /var/lib/ceph
+      containers:
+      - name: mgr
+        image: ceph/ceph:latest
+        command:
+        - ceph-mgr
+        args:
+        - --foreground
+        - --id=$(CEPH_NAME)
+        - --setgroup=ceph
+        - --setuser=ceph
+        env:
+        - name: CEPH_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.labels['ceph.kubernetes.progamesigner.dev/mgr']
         ports:
         - name: http
           containerPort: 8443
@@ -397,7 +800,7 @@ spec:
             cpu: 100m
             memory: 64Mi
         volumeMounts:
-        - name: conf
+        - name: ceph
           mountPath: /etc/ceph
           readOnly: true
         - name: data
@@ -409,7 +812,11 @@ spec:
         hostPath:
           path: /etc/ceph
       - name: conf
-        emptyDir: {}
+        configMap:
+          name: ceph
+          items:
+          - key: ceph.conf
+            path: ceph.conf
       - name: data
         hostPath:
           path: /var/lib/ceph
