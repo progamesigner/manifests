@@ -4,7 +4,7 @@ kind: Kustomization
 images:
 - name: adguard-home/adguard-home
   newName: adguard/adguardhome
-  newTag: v0.107.68
+  newTag: v0.107.69
 - name: apprise/apprise
   newName: caronc/apprise
   newTag: 1.1.8
