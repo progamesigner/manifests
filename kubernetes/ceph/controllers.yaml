@@ -615,8 +615,10 @@ spec:
             sleep 5;
           done
 
-          ceph auth add mgr.$(CEPH_NAME) mon 'allow profile mgr' osd 'allow *' mds 'allow *';
-          ceph auth get mgr.$(CEPH_NAME) > /var/lib/ceph/mgr/ceph-${CEPH_NAME}/keyring;
+          if [ ! -f /var/lib/ceph/mgr/ceph-${CEPH_NAME}/keyring ]; then
+            ceph auth add mgr.$(CEPH_NAME) mon 'allow profile mgr' osd 'allow *' mds 'allow *';
+            ceph auth get mgr.$(CEPH_NAME) > /var/lib/ceph/mgr/ceph-${CEPH_NAME}/keyring;
+          fi
         env:
         - name: CEPH_NAME
           valueFrom:
@@ -654,10 +656,10 @@ spec:
         resources:
           limits:
             cpu: 300m
-            memory: 512Mi
+            memory: 2Gi
           requests:
             cpu: 100m
-            memory: 64Mi
+            memory: 256Mi
         volumeMounts:
         - name: ceph
           mountPath: /etc/ceph
@@ -756,8 +758,10 @@ spec:
             sleep 5;
           done
 
-          ceph auth add mgr.$(CEPH_NAME) mon 'allow profile mgr' osd 'allow *' mds 'allow *';
-          ceph auth get mgr.$(CEPH_NAME) > /var/lib/ceph/mgr/ceph-${CEPH_NAME}/keyring;
+          if [ ! -f /var/lib/ceph/mgr/ceph-${CEPH_NAME}/keyring ]; then
+            ceph auth add mgr.$(CEPH_NAME) mon 'allow profile mgr' osd 'allow *' mds 'allow *';
+            ceph auth get mgr.$(CEPH_NAME) > /var/lib/ceph/mgr/ceph-${CEPH_NAME}/keyring;
+          fi
         env:
         - name: CEPH_NAME
           valueFrom:
@@ -795,10 +799,10 @@ spec:
         resources:
           limits:
             cpu: 300m
-            memory: 512Mi
+            memory: 2Gi
           requests:
             cpu: 100m
-            memory: 64Mi
+            memory: 256Mi
         volumeMounts:
         - name: ceph
           mountPath: /etc/ceph
