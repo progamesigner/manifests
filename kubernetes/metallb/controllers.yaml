@@ -121,6 +121,7 @@ metadata:
     app.kubernetes.io/part-of: kubernetes
   name: metallb-controller
 spec:
+  replicas: 1
   selector:
     matchLabels:
       app.kubernetes.io/component: controller
@@ -136,6 +137,24 @@ spec:
         app.kubernetes.io/name: metallb
         app.kubernetes.io/part-of: kubernetes
     spec:
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: app.kubernetes.io/component
+                operator: In
+                values:
+                - controller
+              - key: app.kubernetes.io/name
+                operator: In
+                values:
+                - metallb
+              - key: app.kubernetes.io/part-of
+                operator: In
+                values:
+                - kubernetes
+            topologyKey: kubernetes.io/hostname
       automountServiceAccountToken: true
       containers:
       - name: controller
