@@ -4,3 +4,23 @@ nameReference:
   fieldSpecs:
   - kind: Deployment
     path: spec/template/metadata/annotations/nginx.org\/nginx-configmaps
+- kind: Secret
+  version: v1
+  fieldSpecs:
+  - kind: StorageClass
+    path: parameters/csi.storage.k8s.io\/controller-expand-secret-name
+- kind: Secret
+  version: v1
+  fieldSpecs:
+  - kind: StorageClass
+    path: parameters/csi.storage.k8s.io\/controller-publish-secret-name
+- kind: Secret
+  version: v1
+  fieldSpecs:
+  - kind: StorageClass
+    path: parameters/csi.storage.k8s.io\/node-stage-secret-name
+- kind: Secret
+  version: v1
+  fieldSpecs:
+  - kind: StorageClass
+    path: parameters/csi.storage.k8s.io\/provisioner-secret-name

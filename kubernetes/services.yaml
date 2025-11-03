@@ -2,6 +2,36 @@
 apiVersion: v1
 kind: Service
 metadata:
+  name: ceph-csi-rbd-nodeplugin
+spec:
+  ports:
+  - name: metrics
+    port: 8080
+    protocol: TCP
+    targetPort: metrics
+  selector:
+    app.kubernetes.io/component: rbd-nodeplugin
+    app.kubernetes.io/name: ceph-csi
+    app.kubernetes.io/part-of: kubernetes
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: ceph-csi-rbd-provisioner
+spec:
+  ports:
+  - name: metrics
+    port: 8080
+    protocol: TCP
+    targetPort: metrics
+  selector:
+    app.kubernetes.io/component: rbd-provisioner
+    app.kubernetes.io/name: ceph-csi
+    app.kubernetes.io/part-of: kubernetes
+---
+apiVersion: v1
+kind: Service
+metadata:
   name: ceph-mon-a
 spec:
   ports:
