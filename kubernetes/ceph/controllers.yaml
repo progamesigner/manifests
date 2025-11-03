@@ -43,7 +43,8 @@ spec:
         - |
           set -ex;
 
-          cp -LRv /mnt/ceph/ceph.conf /etc/ceph/ceph.conf;
+          cp -LRv /mnt/ceph/*.keyring /etc/ceph/;
+          cp -LRv /mnt/ceph-conf/ceph.conf /etc/ceph/ceph.conf;
 
           mkdir -p /var/lib/ceph/mon/ceph-${CEPH_NAME};
 
@@ -60,10 +61,13 @@ spec:
             memory: 1Mi
         volumeMounts:
         - name: ceph
-          mountPath: /etc/ceph
-        - name: conf
           mountPath: /mnt/ceph
           readOnly: true
+        - name: ceph-conf
+          mountPath: /mnt/ceph-conf
+          readOnly: true
+        - name: conf
+          mountPath: /etc/ceph
         - name: data
           mountPath: /var/lib/ceph
       - name: setup
@@ -86,7 +90,7 @@ spec:
             cpu: 1m
             memory: 1Mi
         volumeMounts:
-        - name: ceph
+        - name: conf
           mountPath: /etc/ceph
           readOnly: true
         - name: data
@@ -158,7 +162,7 @@ spec:
             cpu: 100m
             memory: 32Mi
         volumeMounts:
-        - name: ceph
+        - name: conf
           mountPath: /etc/ceph
           readOnly: true
         - name: data
@@ -169,12 +173,14 @@ spec:
       - name: ceph
         hostPath:
           path: /etc/ceph
-      - name: conf
+      - name: ceph-conf
         configMap:
           name: ceph
           items:
           - key: ceph.conf
             path: ceph.conf
+      - name: conf
+        emptyDir: {}
       - name: data
         hostPath:
           path: /var/lib/ceph
@@ -223,7 +229,8 @@ spec:
         - |
           set -ex;
 
-          cp -LRv /mnt/ceph/ceph.conf /etc/ceph/ceph.conf;
+          cp -LRv /mnt/ceph/*.keyring /etc/ceph/;
+          cp -LRv /mnt/ceph-conf/ceph.conf /etc/ceph/ceph.conf;
 
           mkdir -p /var/lib/ceph/mon/ceph-${CEPH_NAME};
 
@@ -240,12 +247,13 @@ spec:
             memory: 1Mi
         volumeMounts:
         - name: ceph
-          mountPath: /etc/ceph
-        - name: conf
           mountPath: /mnt/ceph
           readOnly: true
-        - name: data
-          mountPath: /var/lib/ceph
+        - name: ceph-conf
+          mountPath: /mnt/ceph-conf
+          readOnly: true
+        - name: conf
+          mountPath: /etc/ceph
       - name: setup
         image: ceph/ceph:latest
         command:
@@ -266,7 +274,7 @@ spec:
             cpu: 1m
             memory: 1Mi
         volumeMounts:
-        - name: ceph
+        - name: conf
           mountPath: /etc/ceph
           readOnly: true
         - name: data
@@ -338,7 +346,7 @@ spec:
             cpu: 100m
             memory: 32Mi
         volumeMounts:
-        - name: ceph
+        - name: conf
           mountPath: /etc/ceph
           readOnly: true
         - name: data
@@ -349,12 +357,14 @@ spec:
       - name: ceph
         hostPath:
           path: /etc/ceph
-      - name: conf
+      - name: ceph-conf
         configMap:
           name: ceph
           items:
           - key: ceph.conf
             path: ceph.conf
+      - name: conf
+        emptyDir: {}
       - name: data
         hostPath:
           path: /var/lib/ceph
@@ -403,7 +413,8 @@ spec:
         - |
           set -ex;
 
-          cp -LRv /mnt/ceph/ceph.conf /etc/ceph/ceph.conf;
+          cp -LRv /mnt/ceph/*.keyring /etc/ceph/;
+          cp -LRv /mnt/ceph-conf/ceph.conf /etc/ceph/ceph.conf;
 
           mkdir -p /var/lib/ceph/mon/ceph-${CEPH_NAME};
 
@@ -420,12 +431,13 @@ spec:
             memory: 1Mi
         volumeMounts:
         - name: ceph
-          mountPath: /etc/ceph
-        - name: conf
           mountPath: /mnt/ceph
           readOnly: true
-        - name: data
-          mountPath: /var/lib/ceph
+        - name: ceph-conf
+          mountPath: /mnt/ceph-conf
+          readOnly: true
+        - name: conf
+          mountPath: /etc/ceph
       - name: setup
         image: ceph/ceph:latest
         command:
@@ -446,7 +458,7 @@ spec:
             cpu: 1m
             memory: 1Mi
         volumeMounts:
-        - name: ceph
+        - name: conf
           mountPath: /etc/ceph
           readOnly: true
         - name: data
@@ -518,7 +530,7 @@ spec:
             cpu: 100m
             memory: 32Mi
         volumeMounts:
-        - name: ceph
+        - name: conf
           mountPath: /etc/ceph
           readOnly: true
         - name: data
@@ -529,12 +541,14 @@ spec:
       - name: ceph
         hostPath:
           path: /etc/ceph
-      - name: conf
+      - name: ceph-conf
         configMap:
           name: ceph
           items:
           - key: ceph.conf
             path: ceph.conf
+      - name: conf
+        emptyDir: {}
       - name: data
         hostPath:
           path: /var/lib/ceph
@@ -579,7 +593,8 @@ spec:
         - |
           set -ex;
 
-          cp -LRv /mnt/ceph/ceph.conf /etc/ceph/ceph.conf;
+          cp -LRv /mnt/ceph/*.keyring /etc/ceph/;
+          cp -LRv /mnt/ceph-conf/ceph.conf /etc/ceph/ceph.conf;
 
           mkdir -p /var/lib/ceph/mgr/ceph-${CEPH_NAME};
 
@@ -596,10 +611,13 @@ spec:
             memory: 1Mi
         volumeMounts:
         - name: ceph
-          mountPath: /etc/ceph
-        - name: conf
           mountPath: /mnt/ceph
           readOnly: true
+        - name: ceph-conf
+          mountPath: /mnt/ceph-conf
+          readOnly: true
+        - name: conf
+          mountPath: /etc/ceph
         - name: data
           mountPath: /var/lib/ceph
       - name: setup
@@ -629,7 +647,7 @@ spec:
             cpu: 1m
             memory: 1Mi
         volumeMounts:
-        - name: ceph
+        - name: conf
           mountPath: /etc/ceph
           readOnly: true
         - name: data
@@ -661,7 +679,7 @@ spec:
             cpu: 100m
             memory: 256Mi
         volumeMounts:
-        - name: ceph
+        - name: conf
           mountPath: /etc/ceph
           readOnly: true
         - name: data
@@ -672,12 +690,14 @@ spec:
       - name: ceph
         hostPath:
           path: /etc/ceph
-      - name: conf
+      - name: ceph-conf
         configMap:
           name: ceph
           items:
           - key: ceph.conf
             path: ceph.conf
+      - name: conf
+        emptyDir: {}
       - name: data
         hostPath:
           path: /var/lib/ceph
@@ -722,7 +742,8 @@ spec:
         - |
           set -ex;
 
-          cp -LRv /mnt/ceph/ceph.conf /etc/ceph/ceph.conf;
+          cp -LRv /mnt/ceph/*.keyring /etc/ceph/;
+          cp -LRv /mnt/ceph-conf/ceph.conf /etc/ceph/ceph.conf;
 
           mkdir -p /var/lib/ceph/mgr/ceph-${CEPH_NAME};
 
@@ -739,10 +760,13 @@ spec:
             memory: 1Mi
         volumeMounts:
         - name: ceph
-          mountPath: /etc/ceph
-        - name: conf
           mountPath: /mnt/ceph
           readOnly: true
+        - name: ceph-conf
+          mountPath: /mnt/ceph-conf
+          readOnly: true
+        - name: conf
+          mountPath: /etc/ceph
         - name: data
           mountPath: /var/lib/ceph
       - name: setup
@@ -804,7 +828,7 @@ spec:
             cpu: 100m
             memory: 256Mi
         volumeMounts:
-        - name: ceph
+        - name: conf
           mountPath: /etc/ceph
           readOnly: true
         - name: data
@@ -815,12 +839,14 @@ spec:
       - name: ceph
         hostPath:
           path: /etc/ceph
-      - name: conf
+      - name: ceph-conf
         configMap:
           name: ceph
           items:
           - key: ceph.conf
             path: ceph.conf
+      - name: conf
+        emptyDir: {}
       - name: data
         hostPath:
           path: /var/lib/ceph
@@ -869,7 +895,8 @@ spec:
         - |
           set -ex;
 
-          cp -LRv /mnt/ceph/ceph.conf /etc/ceph/ceph.conf;
+          cp -LRv /mnt/ceph/*.keyring /etc/ceph/;
+          cp -LRv /mnt/ceph-conf/ceph.conf /etc/ceph/ceph.conf;
 
           mkdir -p /var/lib/ceph/osd/ceph-${CEPH_NAME};
 
@@ -886,10 +913,13 @@ spec:
             memory: 1Mi
         volumeMounts:
         - name: ceph
-          mountPath: /etc/ceph
-        - name: conf
           mountPath: /mnt/ceph
           readOnly: true
+        - name: ceph-conf
+          mountPath: /mnt/ceph-conf
+          readOnly: true
+        - name: conf
+          mountPath: /etc/ceph
         - name: data
           mountPath: /var/lib/ceph
       - name: setup
@@ -930,7 +960,7 @@ spec:
         securityContext:
           privileged: true
         volumeMounts:
-        - name: ceph
+        - name: conf
           mountPath: /etc/ceph
           readOnly: true
         - name: data
@@ -972,7 +1002,7 @@ spec:
         securityContext:
           privileged: true
         volumeMounts:
-        - name: ceph
+        - name: conf
           mountPath: /etc/ceph
           readOnly: true
         - name: data
@@ -987,12 +1017,14 @@ spec:
       - name: ceph
         hostPath:
           path: /etc/ceph
-      - name: conf
+      - name: ceph-conf
         configMap:
           name: ceph
           items:
           - key: ceph.conf
             path: ceph.conf
+      - name: conf
+        emptyDir: {}
       - name: data
         hostPath:
           path: /var/lib/ceph
@@ -1052,7 +1084,8 @@ spec:
         - |
           set -ex;
 
-          cp -LRv /mnt/ceph/ceph.conf /etc/ceph/ceph.conf;
+          cp -LRv /mnt/ceph/*.keyring /etc/ceph/;
+          cp -LRv /mnt/ceph-conf/ceph.conf /etc/ceph/ceph.conf;
 
           mkdir -p /var/lib/ceph/osd/ceph-${CEPH_NAME};
 
@@ -1069,10 +1102,13 @@ spec:
             memory: 1Mi
         volumeMounts:
         - name: ceph
-          mountPath: /etc/ceph
-        - name: conf
           mountPath: /mnt/ceph
           readOnly: true
+        - name: ceph-conf
+          mountPath: /mnt/ceph-conf
+          readOnly: true
+        - name: conf
+          mountPath: /etc/ceph
         - name: data
           mountPath: /var/lib/ceph
       - name: setup
@@ -1113,7 +1149,7 @@ spec:
         securityContext:
           privileged: true
         volumeMounts:
-        - name: ceph
+        - name: conf
           mountPath: /etc/ceph
           readOnly: true
         - name: data
@@ -1155,7 +1191,7 @@ spec:
         securityContext:
           privileged: true
         volumeMounts:
-        - name: ceph
+        - name: conf
           mountPath: /etc/ceph
           readOnly: true
         - name: data
@@ -1170,12 +1206,14 @@ spec:
       - name: ceph
         hostPath:
           path: /etc/ceph
-      - name: conf
+      - name: ceph-conf
         configMap:
           name: ceph
           items:
           - key: ceph.conf
             path: ceph.conf
+      - name: conf
+        emptyDir: {}
       - name: data
         hostPath:
           path: /var/lib/ceph
@@ -1235,7 +1273,8 @@ spec:
         - |
           set -ex;
 
-          cp -LRv /mnt/ceph/ceph.conf /etc/ceph/ceph.conf;
+          cp -LRv /mnt/ceph/*.keyring /etc/ceph/;
+          cp -LRv /mnt/ceph-conf/ceph.conf /etc/ceph/ceph.conf;
 
           mkdir -p /var/lib/ceph/osd/ceph-${CEPH_NAME};
 
@@ -1252,10 +1291,13 @@ spec:
             memory: 1Mi
         volumeMounts:
         - name: ceph
-          mountPath: /etc/ceph
-        - name: conf
           mountPath: /mnt/ceph
           readOnly: true
+        - name: ceph-conf
+          mountPath: /mnt/ceph-conf
+          readOnly: true
+        - name: conf
+          mountPath: /etc/ceph
         - name: data
           mountPath: /var/lib/ceph
       - name: setup
@@ -1296,7 +1338,7 @@ spec:
         securityContext:
           privileged: true
         volumeMounts:
-        - name: ceph
+        - name: conf
           mountPath: /etc/ceph
           readOnly: true
         - name: data
@@ -1338,7 +1380,7 @@ spec:
         securityContext:
           privileged: true
         volumeMounts:
-        - name: ceph
+        - name: conf
           mountPath: /etc/ceph
           readOnly: true
         - name: data
@@ -1353,12 +1395,14 @@ spec:
       - name: ceph
         hostPath:
           path: /etc/ceph
-      - name: conf
+      - name: ceph-conf
         configMap:
           name: ceph
           items:
           - key: ceph.conf
             path: ceph.conf
+      - name: conf
+        emptyDir: {}
       - name: data
         hostPath:
           path: /var/lib/ceph
@@ -1418,7 +1462,8 @@ spec:
         - |
           set -ex;
 
-          cp -LRv /mnt/ceph/ceph.conf /etc/ceph/ceph.conf;
+          cp -LRv /mnt/ceph/*.keyring /etc/ceph/;
+          cp -LRv /mnt/ceph-conf/ceph.conf /etc/ceph/ceph.conf;
 
           mkdir -p /var/lib/ceph/osd/ceph-${CEPH_NAME};
 
@@ -1435,10 +1480,13 @@ spec:
             memory: 1Mi
         volumeMounts:
         - name: ceph
-          mountPath: /etc/ceph
-        - name: conf
           mountPath: /mnt/ceph
           readOnly: true
+        - name: ceph-conf
+          mountPath: /mnt/ceph-conf
+          readOnly: true
+        - name: conf
+          mountPath: /etc/ceph
         - name: data
           mountPath: /var/lib/ceph
       - name: setup
@@ -1479,7 +1527,7 @@ spec:
         securityContext:
           privileged: true
         volumeMounts:
-        - name: ceph
+        - name: conf
           mountPath: /etc/ceph
           readOnly: true
         - name: data
@@ -1521,7 +1569,7 @@ spec:
         securityContext:
           privileged: true
         volumeMounts:
-        - name: ceph
+        - name: conf
           mountPath: /etc/ceph
           readOnly: true
         - name: data
@@ -1536,12 +1584,14 @@ spec:
       - name: ceph
         hostPath:
           path: /etc/ceph
-      - name: conf
+      - name: ceph-conf
         configMap:
           name: ceph
           items:
           - key: ceph.conf
             path: ceph.conf
+      - name: conf
+        emptyDir: {}
       - name: data
         hostPath:
           path: /var/lib/ceph
