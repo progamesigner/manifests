@@ -1182,6 +1182,23 @@ spec:
             - matchExpressions:
               - key: ceph.kubernetes.progamesigner.dev/radosgw
                 operator: Exists
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: app.kubernetes.io/component
+                operator: In
+                values:
+                - radosgw
+              - key: app.kubernetes.io/name
+                operator: In
+                values:
+                - ceph
+              - key: app.kubernetes.io/part-of
+                operator: In
+                values:
+                - kubernetes
+            topologyKey: kubernetes.io/hostname
       automountServiceAccountToken: true
       initContainers:
       - name: chown
@@ -2203,7 +2220,7 @@ spec:
             cpu: 300m
             memory: 512Mi
           requests:
-            cpu: 100m
+            cpu: 50m
             memory: 64Mi
         volumeMounts:
         - name: socket
@@ -2231,7 +2248,7 @@ spec:
             cpu: 300m
             memory: 512Mi
           requests:
-            cpu: 100m
+            cpu: 10m
             memory: 64Mi
         volumeMounts:
         - name: socket
@@ -2262,7 +2279,7 @@ spec:
             cpu: 300m
             memory: 512Mi
           requests:
-            cpu: 100m
+            cpu: 10m
             memory: 64Mi
         volumeMounts:
         - name: socket
@@ -2292,7 +2309,7 @@ spec:
             cpu: 300m
             memory: 512Mi
           requests:
-            cpu: 100m
+            cpu: 10m
             memory: 64Mi
         volumeMounts:
         - name: socket
@@ -2322,7 +2339,7 @@ spec:
             cpu: 300m
             memory: 512Mi
           requests:
-            cpu: 100m
+            cpu: 10m
             memory: 64Mi
         volumeMounts:
         - name: socket
@@ -2521,7 +2538,7 @@ spec:
             cpu: 300m
             memory: 512Mi
           requests:
-            cpu: 100m
+            cpu: 50m
             memory: 64Mi
         volumeMounts:
         - name: socket
@@ -2544,7 +2561,7 @@ spec:
             cpu: 300m
             memory: 512Mi
           requests:
-            cpu: 100m
+            cpu: 10m
             memory: 64Mi
         securityContext:
           allowPrivilegeEscalation: true
@@ -2756,7 +2773,7 @@ spec:
             cpu: 300m
             memory: 512Mi
           requests:
-            cpu: 100m
+            cpu: 50m
             memory: 64Mi
         volumeMounts:
         - name: conf
@@ -2789,7 +2806,7 @@ spec:
             cpu: 300m
             memory: 512Mi
           requests:
-            cpu: 100m
+            cpu: 50m
             memory: 64Mi
         volumeMounts:
         - name: socket
@@ -2818,7 +2835,7 @@ spec:
             cpu: 300m
             memory: 512Mi
           requests:
-            cpu: 100m
+            cpu: 10m
             memory: 64Mi
         volumeMounts:
         - name: socket
@@ -2850,7 +2867,7 @@ spec:
             cpu: 300m
             memory: 512Mi
           requests:
-            cpu: 100m
+            cpu: 10m
             memory: 64Mi
         volumeMounts:
         - name: socket
@@ -2880,7 +2897,7 @@ spec:
             cpu: 300m
             memory: 512Mi
           requests:
-            cpu: 100m
+            cpu: 10m
             memory: 64Mi
         volumeMounts:
         - name: socket
@@ -2910,7 +2927,7 @@ spec:
             cpu: 300m
             memory: 512Mi
           requests:
-            cpu: 100m
+            cpu: 10m
             memory: 64Mi
         volumeMounts:
         - name: socket
@@ -3109,7 +3126,7 @@ spec:
             cpu: 300m
             memory: 512Mi
           requests:
-            cpu: 100m
+            cpu: 50m
             memory: 64Mi
         volumeMounts:
         - name: socket
@@ -3132,7 +3149,7 @@ spec:
             cpu: 300m
             memory: 512Mi
           requests:
-            cpu: 100m
+            cpu: 10m
             memory: 64Mi
         securityContext:
           allowPrivilegeEscalation: true
@@ -3349,7 +3366,7 @@ spec:
             cpu: 300m
             memory: 512Mi
           requests:
-            cpu: 100m
+            cpu: 50m
             memory: 64Mi
         volumeMounts:
         - name: socket
@@ -3381,7 +3398,7 @@ spec:
             cpu: 300m
             memory: 512Mi
           requests:
-            cpu: 100m
+            cpu: 10m
             memory: 64Mi
         volumeMounts:
         - name: socket
@@ -3411,7 +3428,7 @@ spec:
             cpu: 300m
             memory: 512Mi
           requests:
-            cpu: 100m
+            cpu: 10m
             memory: 64Mi
         volumeMounts:
         - name: socket
@@ -3441,7 +3458,7 @@ spec:
             cpu: 300m
             memory: 512Mi
           requests:
-            cpu: 100m
+            cpu: 10m
             memory: 64Mi
         volumeMounts:
         - name: socket
@@ -3640,7 +3657,7 @@ spec:
             cpu: 300m
             memory: 512Mi
           requests:
-            cpu: 100m
+            cpu: 50m
             memory: 64Mi
         volumeMounts:
         - name: socket
@@ -3663,7 +3680,7 @@ spec:
             cpu: 300m
             memory: 512Mi
           requests:
-            cpu: 100m
+            cpu: 10m
             memory: 64Mi
         securityContext:
           allowPrivilegeEscalation: true
