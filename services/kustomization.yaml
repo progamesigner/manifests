@@ -7,7 +7,6 @@ components:
 - elasticsearch
 - localai
 - mariadb
-- minio
 - mongodb
 - postgresql
 - rabbitmq
@@ -26,8 +25,6 @@ images:
 - name: mariadb/mariadb
   newName: mariadb
   newTag: 10.11.2
-- name: minio/minio
-  newName: quay.io/minio/minio
 - name: mongodb/mongodb
   newName: mongo
   newTag: 6.0.5
