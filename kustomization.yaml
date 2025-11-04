@@ -186,28 +186,6 @@ patches:
     apiVersion: apps/v1
     kind: Deployment
     metadata:
-      name: elasticsearch
-    spec:
-      replicas: 0
-      template:
-        spec:
-          affinity:
-            nodeAffinity:
-              requiredDuringSchedulingIgnoredDuringExecution:
-                nodeSelectorTerms:
-                - matchExpressions:
-                  - key: kubernetes.progamesigner.dev/local-disk
-                    operator: Exists
-          volumes:
-          - name: data
-            emptyDir: null
-            hostPath:
-              type: DirectoryOrCreate
-              path: /srv/elasticsearch
-- patch: |-
-    apiVersion: apps/v1
-    kind: Deployment
-    metadata:
       name: gloomhaven
     spec:
       replicas: 0

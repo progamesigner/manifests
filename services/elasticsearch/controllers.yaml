@@ -1,6 +1,6 @@
 ---
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   labels:
     app.kubernetes.io/component: elasticsearch
@@ -14,8 +14,7 @@ spec:
       app.kubernetes.io/component: elasticsearch
       app.kubernetes.io/name: elasticsearch
       app.kubernetes.io/part-of: services
-  strategy:
-    type: Recreate
+  serviceName: headless-elasticsearch
   template:
     metadata:
       labels:
@@ -32,6 +31,7 @@ spec:
         - -c
         - |
           set -ex;
+
           chown 1000:1000 /usr/share/elasticsearch/data;
         envFrom:
         - secretRef:
@@ -90,7 +90,15 @@ spec:
       enableServiceLinks: false
       serviceAccountName: default
       volumes:
-      - name: data
-        emptyDir: {}
       - name: plugins
         emptyDir: {}
+  volumeClaimTemplates:
+  - metadata:
+      name: data
+    spec:
+      accessModes:
+      - ReadWriteOnce
+      resources:
+        requests:
+          storage: 128Gi
+      storageClassName: ceph-rbd
