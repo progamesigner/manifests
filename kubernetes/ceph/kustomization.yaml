@@ -30,10 +30,14 @@ images:
 - name: csi/snapshotter
   newName: registry.k8s.io/sig-storage/csi-snapshotter
   newTag: v8.4.0
+- name: csi-addons/controller
+  newName: quay.io/csiaddons/k8s-controller
+  newTag: v0.13.0
 resources:
 - controllers.yaml
 - drivers.yaml
 - rbac.yaml
+- https://github.com/csi-addons/kubernetes-csi-addons/releases/download/v0.13.0/crds.yaml
 - https://raw.githubusercontent.com/kubernetes-csi/external-snapshotter/v8.4.0/client/config/crd/groupsnapshot.storage.k8s.io_volumegroupsnapshotclasses.yaml
 - https://raw.githubusercontent.com/kubernetes-csi/external-snapshotter/v8.4.0/client/config/crd/groupsnapshot.storage.k8s.io_volumegroupsnapshotcontents.yaml
 - https://raw.githubusercontent.com/kubernetes-csi/external-snapshotter/v8.4.0/client/config/crd/groupsnapshot.storage.k8s.io_volumegroupsnapshots.yaml

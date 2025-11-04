@@ -24,6 +24,11 @@ kind: ServiceAccount
 metadata:
   name: ceph-csi-rbd-provisioner
 ---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: csi-addons-controller
+---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
@@ -451,6 +456,225 @@ rules:
   - get
 ---
 apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: csi-addons-controller
+rules:
+- apiGroups:
+  - ''
+  resources:
+  - events
+  verbs:
+  - create
+  - patch
+- apiGroups:
+  - ''
+  resources:
+  - namespaces
+  - pods
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - ''
+  resources:
+  - persistentvolumeclaims
+  verbs:
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - ''
+  resources:
+  - persistentvolumeclaims/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - ''
+  resources:
+  - persistentvolumes
+  verbs:
+  - get
+  - list
+  - update
+  - watch
+- apiGroups:
+  - coordination.k8s.io
+  resources:
+  - leases
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - csiaddons.openshift.io
+  resources:
+  - csiaddonsnodes
+  - encryptionkeyrotationcronjobs
+  - encryptionkeyrotationjobs
+  - networkfenceclasses
+  - networkfences
+  - reclaimspacecronjobs
+  - reclaimspacejobs
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - csiaddons.openshift.io
+  resources:
+  - csiaddonsnodes/finalizers
+  - encryptionkeyrotationcronjobs/finalizers
+  - encryptionkeyrotationjobs/finalizers
+  - networkfenceclasses/finalizers
+  - networkfences/finalizers
+  - reclaimspacecronjobs/finalizers
+  - reclaimspacejobs/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - csiaddons.openshift.io
+  resources:
+  - csiaddonsnodes/status
+  - encryptionkeyrotationcronjobs/status
+  - encryptionkeyrotationjobs/status
+  - networkfenceclasses/status
+  - networkfences/status
+  - reclaimspacecronjobs/status
+  - reclaimspacejobs/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - replication.storage.openshift.io
+  resources:
+  - volumegroupreplicationclasses
+  - volumereplicationclasses
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - replication.storage.openshift.io
+  resources:
+  - volumegroupreplicationcontents
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - replication.storage.openshift.io
+  resources:
+  - volumegroupreplicationcontents/finalizers
+  - volumegroupreplications/finalizers
+  - volumereplications/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - replication.storage.openshift.io
+  resources:
+  - volumegroupreplicationcontents/status
+  - volumegroupreplications/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - replication.storage.openshift.io
+  resources:
+  - volumegroupreplications
+  verbs:
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - replication.storage.openshift.io
+  resources:
+  - volumereplications
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - update
+  - watch
+- apiGroups:
+  - replication.storage.openshift.io
+  resources:
+  - volumereplications/status
+  verbs:
+  - get
+  - list
+  - update
+- apiGroups:
+  - storage.k8s.io
+  resources:
+  - storageclasses
+  - volumeattachments
+  verbs:
+  - get
+  - list
+  - watch
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: csi-addons-networkfenceclasses-editor
+rules:
+- apiGroups:
+  - csiaddons.openshift.io
+  resources:
+  - networkfenceclasses
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - csiaddons.openshift.io
+  resources:
+  - networkfenceclasses/status
+  verbs:
+  - get
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: csi-addons-networkfenceclasses-viewer
+rules:
+- apiGroups:
+  - csiaddons.openshift.io
+  resources:
+  - networkfenceclasses
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - csiaddons.openshift.io
+  resources:
+  - networkfenceclasses/status
+  verbs:
+  - get
+---
+apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
   name: ceph-csi-cephfs-provisioner
@@ -500,6 +724,43 @@ rules:
   - delete
   - get
   - list
+  - update
+  - watch
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: csi-addons-leader-election
+rules:
+- apiGroups:
+  - ''
+  resources:
+  - configmaps
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - ''
+  resources:
+  - events
+  verbs:
+  - create
+  - patch
+- apiGroups:
+  - coordination.k8s.io
+  resources:
+  - leases
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
   - update
   - watch
 ---
@@ -512,8 +773,8 @@ roleRef:
   kind: ClusterRole
   name: ceph-csi-cephfs-nodeplugin
 subjects:
-  - kind: ServiceAccount
-    name: ceph-csi-cephfs-nodeplugin
+- kind: ServiceAccount
+  name: ceph-csi-cephfs-nodeplugin
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
@@ -524,8 +785,8 @@ roleRef:
   kind: ClusterRole
   name: ceph-csi-cephfs-provisioner
 subjects:
-  - kind: ServiceAccount
-    name: ceph-csi-cephfs-provisioner
+- kind: ServiceAccount
+  name: ceph-csi-cephfs-provisioner
 ---
 kind: ClusterRoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
@@ -536,8 +797,8 @@ roleRef:
   kind: ClusterRole
   name: ceph-csi-rbd-nodeplugin
 subjects:
-  - kind: ServiceAccount
-    name: ceph-csi-rbd-nodeplugin
+- kind: ServiceAccount
+  name: ceph-csi-rbd-nodeplugin
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
@@ -548,8 +809,20 @@ roleRef:
   kind: ClusterRole
   name: ceph-csi-rbd-provisioner
 subjects:
-  - kind: ServiceAccount
-    name: ceph-csi-rbd-provisioner
+- kind: ServiceAccount
+  name: ceph-csi-rbd-provisioner
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: system:csi-addons:controller
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: csi-addons-controller
+subjects:
+- kind: ServiceAccount
+  name: csi-addons-controller
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
@@ -560,8 +833,8 @@ roleRef:
   kind: Role
   name: ceph-csi-cephfs-provisioner
 subjects:
-  - kind: ServiceAccount
-    name: ceph-csi-cephfs-provisioner
+- kind: ServiceAccount
+  name: ceph-csi-cephfs-provisioner
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
@@ -572,5 +845,17 @@ roleRef:
   kind: Role
   name: ceph-csi-rbd-provisioner
 subjects:
-  - kind: ServiceAccount
-    name: ceph-csi-rbd-provisioner
+- kind: ServiceAccount
+  name: ceph-csi-rbd-provisioner
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: system:csi-addons:leader-election
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: csi-addons-leader-election
+subjects:
+- kind: ServiceAccount
+  name: csi-addons-controller
