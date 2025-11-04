@@ -146,20 +146,6 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: ceph-radosgw
-spec:
-  ports:
-  - name: http
-    port: 7480
-    protocol: TCP
-  selector:
-    app.kubernetes.io/component: radosgw
-    app.kubernetes.io/name: ceph
-    app.kubernetes.io/part-of: kubernetes
----
-apiVersion: v1
-kind: Service
-metadata:
   labels:
     kubernetes.io/cluster-service: 'true'
     kubernetes.io/name: CertManager
