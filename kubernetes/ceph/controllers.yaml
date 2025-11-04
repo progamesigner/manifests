@@ -2185,7 +2185,7 @@ spec:
         image: ceph/csi:latest
         args:
         - --endpoint=$(CSI_ADDRESS)
-        - --metricsport=8681
+        - --metricsport=8680
         - --type=liveness
         env:
         - name: CSI_ADDRESS
@@ -2196,7 +2196,7 @@ spec:
               fieldPath: status.podIP
         ports:
         - name: metrics
-          containerPort: 8681
+          containerPort: 8680
           protocol: TCP
         resources:
           limits:
@@ -3091,7 +3091,7 @@ spec:
         image: ceph/csi:latest
         args:
         - --endpoint=$(CSI_ADDRESS)
-        - --metricsport=8680
+        - --metricsport=8682
         - --type=liveness
         env:
         - name: CSI_ADDRESS
@@ -3102,7 +3102,7 @@ spec:
               fieldPath: status.podIP
         ports:
         - name: metrics
-          containerPort: 8680
+          containerPort: 8682
           protocol: TCP
         resources:
           limits:
@@ -3200,6 +3200,537 @@ spec:
       - name: socket
         hostPath:
           path: /var/lib/kubelet/plugins/rbd.csi.ceph.com
+          type: DirectoryOrCreate
+      - name: sys
+        hostPath:
+          path: /sys
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/component: nfs-provisioner
+    app.kubernetes.io/name: ceph-csi
+    app.kubernetes.io/part-of: kubernetes
+  name: ceph-csi-nfs-provisioner
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: nfs-provisioner
+      app.kubernetes.io/name: ceph-csi
+      app.kubernetes.io/part-of: kubernetes
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/component: nfs-provisioner
+        app.kubernetes.io/name: ceph-csi
+        app.kubernetes.io/part-of: kubernetes
+    spec:
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: app.kubernetes.io/component
+                operator: In
+                values:
+                - nfs-provisioner
+              - key: app.kubernetes.io/name
+                operator: In
+                values:
+                - ceph-csi
+              - key: app.kubernetes.io/part-of
+                operator: In
+                values:
+                - kubernetes
+            topologyKey: kubernetes.io/hostname
+      automountServiceAccountToken: true
+      initContainers:
+      - name: chown
+        image: busybox:latest
+        command:
+        - sh
+        - -c
+        - |
+          set -ex;
+
+          cp -LRv /mnt/ceph/*.keyring /etc/ceph/;
+          cp -LRv /mnt/ceph-conf/ceph.conf /etc/ceph/ceph.conf;
+          cp -LRv /mnt/ceph-csi-conf/* /etc/ceph-csi-config/;
+
+          touch /etc/ceph/keyring;
+
+          chown -R 167:167 /etc/ceph;
+          chown -R 167:167 /etc/ceph-csi-config;
+        resources:
+          requests:
+            cpu: 1m
+            memory: 1Mi
+        volumeMounts:
+        - name: ceph
+          mountPath: /mnt/ceph
+          readOnly: true
+        - name: ceph-conf
+          mountPath: /mnt/ceph-conf
+          readOnly: true
+        - name: ceph-csi-conf
+          mountPath: /mnt/ceph-csi-conf
+          readOnly: true
+        - name: conf
+          mountPath: /etc/ceph
+        - name: conf-csi
+          mountPath: /etc/ceph-csi-config
+      containers:
+      - name: ceph-csi
+        image: ceph/csi:latest
+        args:
+        - --controllerserver=true
+        - --csi-addons-endpoint=$(CSI_ADDONS_ADDRESS)
+        - --drivername=nfs.csi.ceph.com
+        - --enable-fencing=true
+        - --endpoint=$(CSI_PROVISIONER_ADDRESS)
+        - --nodeid=$(NODE_ID)
+        - --pidlimit=-1
+        - --type=nfs
+        - --v=5
+        env:
+        - name: CSI_ADDONS_ADDRESS
+          value: unix:///csi/csi-addons.sock
+        - name: CSI_PROVISIONER_ADDRESS
+          value: unix:///csi/csi-provisioner.sock
+        - name: NODE_ID
+          valueFrom:
+            fieldRef:
+              fieldPath: spec.nodeName
+        resources:
+          limits:
+            cpu: 300m
+            memory: 512Mi
+          requests:
+            cpu: 100m
+            memory: 64Mi
+        volumeMounts:
+        - name: conf
+          mountPath: /etc/ceph
+        - name: conf-csi
+          mountPath: /etc/ceph-csi-config
+          readOnly: true
+        - name: dev
+          mountPath: /dev
+        - name: keys
+          mountPath: /tmp/csi/keys
+        - name: modules
+          mountPath: /lib/modules
+          readOnly: true
+        - name: socket
+          mountPath: /csi
+        - name: sys
+          mountPath: /sys
+      - name: ceph-csi-prometheus
+        image: ceph/csi:latest
+        args:
+        - --endpoint=$(CSI_ADDRESS)
+        - --metricsport=8680
+        - --type=liveness
+        env:
+        - name: CSI_ADDRESS
+          value: unix:///csi/csi-provisioner.sock
+        - name: POD_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.podIP
+        ports:
+        - name: metrics
+          containerPort: 8680
+          protocol: TCP
+        resources:
+          limits:
+            cpu: 300m
+            memory: 512Mi
+          requests:
+            cpu: 100m
+            memory: 64Mi
+        volumeMounts:
+        - name: socket
+          mountPath: /csi
+      - name: csi-provisioner
+        image: csi/provisioner:latest
+        args:
+        - --csi-address=$(CSI_ADDRESS)
+        - --default-fstype=ext4
+        - --extra-create-metadata=true
+        - --feature-gates=HonorPVReclaimPolicy=true
+        - --http-endpoint=$(POD_IP):8091
+        - --immediate-topology=false
+        - --leader-election=true
+        - --v=1
+        env:
+        - name: CSI_ADDRESS
+          value: unix:///csi/csi-provisioner.sock
+        - name: POD_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.podIP
+        ports:
+        - name: provisioner
+          containerPort: 8091
+          protocol: TCP
+        resources:
+          limits:
+            cpu: 300m
+            memory: 512Mi
+          requests:
+            cpu: 100m
+            memory: 64Mi
+        volumeMounts:
+        - name: socket
+          mountPath: /csi
+      - name: csi-resizer
+        image: csi/resizer:latest
+        args:
+        - --csi-address=$(CSI_ADDRESS)
+        - --leader-election=true
+        - --handle-volume-inuse-error=false
+        - --feature-gates=RecoverVolumeExpansionFailure=true
+        - --http-endpoint=$(POD_IP):8092
+        - --v=1
+        env:
+        - name: CSI_ADDRESS
+          value: unix:///csi/csi-provisioner.sock
+        - name: POD_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.podIP
+        ports:
+        - name: resizer
+          containerPort: 8092
+          protocol: TCP
+        resources:
+          limits:
+            cpu: 300m
+            memory: 512Mi
+          requests:
+            cpu: 100m
+            memory: 64Mi
+        volumeMounts:
+        - name: socket
+          mountPath: /csi
+      - name: csi-snapshotter
+        image: csi/snapshotter:latest
+        args:
+        - --csi-address=$(CSI_ADDRESS)
+        - --extra-create-metadata=true
+        - --feature-gates=CSIVolumeGroupSnapshot=true
+        - --http-endpoint=$(POD_IP):8093
+        - --leader-election=true
+        - --v=1
+        env:
+        - name: CSI_ADDRESS
+          value: unix:///csi/csi-provisioner.sock
+        - name: POD_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.podIP
+        ports:
+        - name: snapshotter
+          containerPort: 8093
+          protocol: TCP
+        resources:
+          limits:
+            cpu: 300m
+            memory: 512Mi
+          requests:
+            cpu: 100m
+            memory: 64Mi
+        volumeMounts:
+        - name: socket
+          mountPath: /csi
+      priorityClassName: system-cluster-critical
+      serviceAccountName: ceph-csi-nfs-provisioner
+      volumes:
+      - name: ceph
+        hostPath:
+          path: /etc/ceph
+      - name: ceph-conf
+        configMap:
+          name: ceph
+          items:
+          - key: ceph.conf
+            path: ceph.conf
+      - name: ceph-csi-conf
+        configMap:
+          name: ceph-csi
+          items:
+          - key: config.json
+            path: config.json
+      - name: conf
+        emptyDir: {}
+      - name: conf-csi
+        emptyDir: {}
+      - name: dev
+        hostPath:
+          path: /dev
+      - name: keys
+        emptyDir:
+          medium: Memory
+      - name: modules
+        hostPath:
+          path: /lib/modules
+      - name: socket
+        emptyDir:
+          medium: Memory
+      - name: sys
+        hostPath:
+          path: /sys
+---
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  labels:
+    app.kubernetes.io/component: nfs-nodeplugin
+    app.kubernetes.io/name: ceph-csi
+    app.kubernetes.io/part-of: kubernetes
+  name: ceph-csi-nfs-nodeplugin
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: nfs-nodeplugin
+      app.kubernetes.io/name: ceph-csi
+      app.kubernetes.io/part-of: kubernetes
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/component: nfs-nodeplugin
+        app.kubernetes.io/name: ceph-csi
+        app.kubernetes.io/part-of: kubernetes
+    spec:
+      automountServiceAccountToken: true
+      initContainers:
+      - name: chown
+        image: busybox:latest
+        command:
+        - sh
+        - -c
+        - |
+          set -ex;
+
+          cp -LRv /mnt/ceph/*.keyring /etc/ceph/;
+          cp -LRv /mnt/ceph-conf/ceph.conf /etc/ceph/ceph.conf;
+          cp -LRv /mnt/ceph-csi-conf/* /etc/ceph-csi-config/;
+
+          touch /etc/ceph/keyring;
+
+          chown -R 167:167 /etc/ceph;
+          chown -R 167:167 /etc/ceph-csi-config;
+        resources:
+          requests:
+            cpu: 1m
+            memory: 1Mi
+        volumeMounts:
+        - name: ceph
+          mountPath: /mnt/ceph
+          readOnly: true
+        - name: ceph-conf
+          mountPath: /mnt/ceph-conf
+          readOnly: true
+        - name: ceph-csi-conf
+          mountPath: /mnt/ceph-csi-conf
+          readOnly: true
+        - name: conf
+          mountPath: /etc/ceph
+        - name: conf-csi
+          mountPath: /etc/ceph-csi-config
+      containers:
+      - name: ceph-csi
+        image: ceph/csi:latest
+        args:
+        - --csi-addons-endpoint=$(CSI_ADDONS_ADDRESS)
+        - --drivername=nfs.csi.ceph.com
+        - --enable-fencing=true
+        - --endpoint=$(CSI_ADDRESS)
+        - --nodeid=$(NODE_ID)
+        - --nodeserver=true
+        - --pluginpath=/var/lib/kubelet/plugins
+        - --stagingpath=/var/lib/kubelet/plugins/kubernetes.io/csi/
+        - --type=nfs
+        - --v=5
+        env:
+        - name: CSI_ADDONS_ADDRESS
+          value: unix:///csi/csi-addons.sock
+        - name: CSI_ADDRESS
+          value: unix:///csi/csi.sock
+        - name: KUBERNETES_SERVICE_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: kubernetes
+              key: KUBERNETES_SERVICE_HOST
+        - name: KUBERNETES_SERVICE_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: kubernetes
+              key: KUBERNETES_SERVICE_PORT
+        - name: NODE_ID
+          valueFrom:
+            fieldRef:
+              fieldPath: spec.nodeName
+        resources:
+          limits:
+            cpu: 300m
+            memory: 512Mi
+          requests:
+            cpu: 100m
+            memory: 32Mi
+        securityContext:
+          allowPrivilegeEscalation: true
+          capabilities:
+            add:
+            - SYS_ADMIN
+          privileged: true
+        volumeMounts:
+        - name: conf
+          mountPath: /etc/ceph
+          readOnly: true
+        - name: conf-csi
+          mountPath: /etc/ceph-csi-config
+          readOnly: true
+        - name: dev
+          mountPath: /dev
+        - name: keys
+          mountPath: /tmp/csi/keys
+        - name: logs
+          mountPath: /var/log/ceph
+        - name: modules
+          mountPath: /lib/modules
+          readOnly: true
+        - name: mount
+          mountPath: /run/mount
+        - name: plugins
+          mountPath: /var/lib/kubelet/plugins
+          mountPropagation: Bidirectional
+        - name: pods
+          mountPath: /var/lib/kubelet/pods
+          mountPropagation: Bidirectional
+        - name: selinux
+          mountPath: /etc/selinux
+          readOnly: true
+        - name: socket
+          mountPath: /csi
+        - name: sys
+          mountPath: /sys
+      - name: ceph-csi-prometheus
+        image: ceph/csi:latest
+        args:
+        - --endpoint=$(CSI_ADDRESS)
+        - --metricsport=8683
+        - --type=liveness
+        env:
+        - name: CSI_ADDRESS
+          value: unix:///csi/csi.sock
+        - name: POD_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.podIP
+        ports:
+        - name: metrics
+          containerPort: 8683
+          protocol: TCP
+        resources:
+          limits:
+            cpu: 300m
+            memory: 512Mi
+          requests:
+            cpu: 100m
+            memory: 64Mi
+        volumeMounts:
+        - name: socket
+          mountPath: /csi
+      - name: csi-registrar
+        image: csi/registrar:latest
+        args:
+        - --csi-address=$(CSI_ADDRESS)
+        - --kubelet-registration-path=/var/lib/kubelet/plugins/nfs.csi.ceph.com/csi.sock
+        - --v=1
+        env:
+        - name: CSI_ADDRESS
+          value: unix:///csi/csi.sock
+        - name: KUBE_NODE_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: spec.nodeName
+        resources:
+          limits:
+            cpu: 300m
+            memory: 512Mi
+          requests:
+            cpu: 100m
+            memory: 64Mi
+        securityContext:
+          allowPrivilegeEscalation: true
+          privileged: true
+        volumeMounts:
+        - name: socket
+          mountPath: /csi
+        - name: registration
+          mountPath: /registration
+      hostNetwork: true
+      hostPID: true
+      priorityClassName: system-cluster-critical
+      serviceAccountName: ceph-csi-nfs-nodeplugin
+      volumes:
+      - name: ceph
+        hostPath:
+          path: /etc/ceph
+      - name: ceph-conf
+        configMap:
+          name: ceph
+          items:
+          - key: ceph.conf
+            path: ceph.conf
+      - name: ceph-csi-conf
+        configMap:
+          name: ceph-csi
+          items:
+          - key: config.json
+            path: config.json
+      - name: conf
+        emptyDir: {}
+      - name: conf-csi
+        emptyDir: {}
+      - name: dev
+        hostPath:
+          path: /dev
+      - name: keys
+        emptyDir:
+          medium: Memory
+      - name: logs
+        hostPath:
+          path: /var/log/ceph
+          type: DirectoryOrCreate
+      - name: modules
+        hostPath:
+          path: /lib/modules
+      - name: mount
+        hostPath:
+          path: /run/mount
+      - name: plugins
+        hostPath:
+          path: /var/lib/kubelet/plugins
+          type: DirectoryOrCreate
+      - name: pods
+        hostPath:
+          path: /var/lib/kubelet/pods
+          type: DirectoryOrCreate
+      - name: registration
+        hostPath:
+          path: /var/lib/kubelet/plugins_registry/
+          type: DirectoryOrCreate
+      - name: selinux
+        hostPath:
+          path: /etc/selinux
+      - name: socket
+        hostPath:
+          path: /var/lib/kubelet/plugins/nfs.csi.ceph.com
           type: DirectoryOrCreate
       - name: sys
         hostPath:

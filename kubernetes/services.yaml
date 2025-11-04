@@ -62,6 +62,36 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
+  name: ceph-csi-nfs-nodeplugin
+spec:
+  ports:
+  - name: metrics
+    port: 8080
+    protocol: TCP
+    targetPort: metrics
+  selector:
+    app.kubernetes.io/component: nfs-nodeplugin
+    app.kubernetes.io/name: ceph-csi
+    app.kubernetes.io/part-of: kubernetes
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: ceph-csi-nfs-provisioner
+spec:
+  ports:
+  - name: metrics
+    port: 8080
+    protocol: TCP
+    targetPort: metrics
+  selector:
+    app.kubernetes.io/component: nfs-provisioner
+    app.kubernetes.io/name: ceph-csi
+    app.kubernetes.io/part-of: kubernetes
+---
+apiVersion: v1
+kind: Service
+metadata:
   name: ceph-mon-a
 spec:
   ports:
