@@ -817,7 +817,7 @@ spec:
             fieldRef:
               fieldPath: metadata.labels['ceph.kubernetes.progamesigner.dev/mgr']
         ports:
-        - name: http
+        - name: https
           containerPort: 8443
           protocol: TCP
         resources:
@@ -1269,8 +1269,8 @@ spec:
             fieldRef:
               fieldPath: spec.nodeName
         ports:
-        - name: https
-          containerPort: 8443
+        - name: http
+          containerPort: 7480
           protocol: TCP
         resources:
           limits:
