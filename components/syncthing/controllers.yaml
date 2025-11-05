@@ -71,6 +71,13 @@ spec:
         app.kubernetes.io/name: syncthing
         app.kubernetes.io/part-of: components
     spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: workload.kubernetes.progamesigner.dev/network
+                operator: Exists
       automountServiceAccountToken: false
       containers:
       - name: syncthing-relay
@@ -97,4 +104,5 @@ spec:
       serviceAccountName: default
       volumes:
       - name: data
-        emptyDir: {}
+        persistentVolumeClaim:
+          claimName: syncthing-relay
