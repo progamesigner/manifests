@@ -83,6 +83,13 @@ spec:
         app.kubernetes.io/name: dify
         app.kubernetes.io/part-of: components
     spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: workload.kubernetes.progamesigner.dev/database
+                operator: Exists
       automountServiceAccountToken: false
       containers:
       - name: dify-migration
@@ -196,7 +203,8 @@ spec:
       serviceAccountName: default
       volumes:
       - name: data
-        emptyDir: {}
+        persistentVolumeClaim:
+          claimName: dify-plugin-daemon
 ---
 apiVersion: apps/v1
 kind: Deployment

@@ -37,6 +37,7 @@ configMapGenerator:
 resources:
 - controllers.yaml
 - policies.yaml
+- storages.yaml
 secretGenerator:
 - name: dify
   envs:

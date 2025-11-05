@@ -150,42 +150,6 @@ patches:
     apiVersion: apps/v1
     kind: Deployment
     metadata:
-      name: dify-plugin-daemon
-    spec:
-      template:
-        spec:
-          affinity:
-            nodeAffinity:
-              requiredDuringSchedulingIgnoredDuringExecution:
-                nodeSelectorTerms:
-                - matchExpressions:
-                  - key: kubernetes.progamesigner.dev/local-disk
-                    operator: Exists
-          volumes:
-          - name: data
-            emptyDir: null
-            hostPath:
-              type: DirectoryOrCreate
-              path: /srv/dify-plugin-daemon
-- patch: |-
-    apiVersion: batch/v1
-    kind: Job
-    metadata:
-      name: dify-migration
-    spec:
-      template:
-        spec:
-          affinity:
-            nodeAffinity:
-              requiredDuringSchedulingIgnoredDuringExecution:
-                nodeSelectorTerms:
-                - matchExpressions:
-                  - key: workload.kubernetes.progamesigner.dev/database
-                    operator: Exists
-- patch: |-
-    apiVersion: apps/v1
-    kind: Deployment
-    metadata:
       name: gloomhaven
     spec:
       replicas: 0
