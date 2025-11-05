@@ -22,6 +22,25 @@ spec:
         app.kubernetes.io/part-of: components
     spec:
       automountServiceAccountToken: false
+      initContainers:
+      - name: chown
+        image: vscode/server:latest
+        command:
+        - sh
+        - -c
+        - |
+          set -ex;
+
+          chown -R vscode:vscode /opt/vscode-server;
+        resources:
+          requests:
+            cpu: 1m
+            memory: 1Mi
+        securityContext:
+          runAsUser: 0
+        volumeMounts:
+        - name: data
+          mountPath: /opt/vscode-server
       containers:
       - name: vscode-server
         image: vscode/server:latest
