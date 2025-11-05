@@ -425,31 +425,11 @@ patches:
                   - key: kubernetes.progamesigner.dev/local-disk
                     operator: Exists
           volumes:
-          - name: data
-            emptyDir: null
-            hostPath:
-              type: DirectoryOrCreate
-              path: /srv/vscode-server
           - name: files
             emptyDir: null
             hostPath:
               type: Directory
               path: /srv/syncthing
-          - name: files-git
-            emptyDir: null
-            hostPath:
-              type: Directory
-              path: /srv/dev-tunnel-git
-          - name: files-gpg
-            emptyDir: null
-            hostPath:
-              type: Directory
-              path: /srv/dev-tunnel-gpg
-          - name: files-ssh
-            emptyDir: null
-            hostPath:
-              type: Directory
-              path: /srv/dev-tunnel-ssh
 - patch: |-
     apiVersion: apps/v1
     kind: Deployment

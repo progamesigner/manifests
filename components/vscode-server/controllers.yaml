@@ -77,12 +77,16 @@ spec:
       serviceAccountName: default
       volumes:
       - name: data
-        emptyDir: {}
+        persistentVolumeClaim:
+          claimName: vscode-server
       - name: files
         emptyDir: {}
       - name: files-git
-        emptyDir: {}
+        persistentVolumeClaim:
+          claimName: dev-tunnel-git
       - name: files-gpg
-        emptyDir: {}
+        persistentVolumeClaim:
+          claimName: dev-tunnel-gpg
       - name: files-ssh
-        emptyDir: {}
+        persistentVolumeClaim:
+          claimName: dev-tunnel-ssh
