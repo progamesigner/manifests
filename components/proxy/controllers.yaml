@@ -21,6 +21,15 @@ spec:
         app.kubernetes.io/name: proxy
         app.kubernetes.io/part-of: components
     spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: kubernetes.io/arch
+                operator: In
+                values:
+                - amd64
       automountServiceAccountToken: false
       containers:
       - name: cloudflare-warp
