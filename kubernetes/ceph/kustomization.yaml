@@ -47,9 +47,9 @@ resources:
 secretGenerator:
 - name: ceph-csi-cephfs
   literals:
-  - userID=default.cephfs
-  - userKey=AQBZmQppGxxlGxAA+4Ltp2CUSrmSnftz0DhqRQ==
+  - userID=ceph-csi-cephfs
+  - userKey=AQB7sAppNEruJhAAVYNN4fTKxJ1VUbc6DyN0NA==
 - name: ceph-csi-rbd
   literals:
-  - userID=default.rbd
-  - userKey=AQA2mgppwcziMhAAB6Yot7LIZllH7paDwIkTEw==
+  - userID=ceph-csi-rbd
+  - userKey=AQCLsApphTlZDhAALsLbUvN1zUlBsuio3DCefQ==

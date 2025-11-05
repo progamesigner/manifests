@@ -78,8 +78,6 @@ spec:
         - --id=$(CEPH_NAME)
         - --keyring=/etc/ceph/ceph.mon.keyring
         - --mkfs
-        - --setgroup=ceph
-        - --setuser=ceph
         env:
         - name: CEPH_NAME
           valueFrom:
@@ -157,7 +155,7 @@ spec:
         resources:
           limits:
             cpu: 300m
-            memory: 256Mi
+            memory: 512Mi
           requests:
             cpu: 100m
             memory: 32Mi
@@ -254,6 +252,8 @@ spec:
           readOnly: true
         - name: conf
           mountPath: /etc/ceph
+        - name: data
+          mountPath: /var/lib/ceph
       - name: setup
         image: ceph/ceph:latest
         command:
@@ -262,8 +262,6 @@ spec:
         - --id=$(CEPH_NAME)
         - --keyring=/etc/ceph/ceph.mon.keyring
         - --mkfs
-        - --setgroup=ceph
-        - --setuser=ceph
         env:
         - name: CEPH_NAME
           valueFrom:
@@ -341,7 +339,7 @@ spec:
         resources:
           limits:
             cpu: 300m
-            memory: 256Mi
+            memory: 512Mi
           requests:
             cpu: 100m
             memory: 32Mi
@@ -438,6 +436,8 @@ spec:
           readOnly: true
         - name: conf
           mountPath: /etc/ceph
+        - name: data
+          mountPath: /var/lib/ceph
       - name: setup
         image: ceph/ceph:latest
         command:
@@ -446,8 +446,6 @@ spec:
         - --id=$(CEPH_NAME)
         - --keyring=/etc/ceph/ceph.mon.keyring
         - --mkfs
-        - --setgroup=ceph
-        - --setuser=ceph
         env:
         - name: CEPH_NAME
           valueFrom:
@@ -525,7 +523,7 @@ spec:
         resources:
           limits:
             cpu: 300m
-            memory: 256Mi
+            memory: 512Mi
           requests:
             cpu: 100m
             memory: 32Mi
@@ -2276,19 +2274,14 @@ spec:
       - name: ceph-csi
         image: ceph/csi:latest
         args:
-        - --csi-addons-endpoint=$(CSI_ADDONS_ADDRESS)
         - --drivername=cephfs.csi.ceph.com
         - --enable-fencing=true
         - --endpoint=$(CSI_ADDRESS)
         - --nodeid=$(NODE_ID)
         - --nodeserver=true
-        - --pluginpath=/var/lib/kubelet/plugins
-        - --stagingpath=/var/lib/kubelet/plugins/kubernetes.io/csi/
         - --type=cephfs
         - --v=5
         env:
-        - name: CSI_ADDONS_ADDRESS
-          value: unix:///csi/csi-addons.sock
         - name: CSI_ADDRESS
           value: unix:///csi/csi.sock
         - name: KUBERNETES_SERVICE_HOST
@@ -2336,6 +2329,8 @@ spec:
           readOnly: true
         - name: mount
           mountPath: /run/mount
+        - name: mountinfo
+          mountPath: /csi/mountinfo
         - name: plugins
           mountPath: /var/lib/kubelet/plugins
           mountPropagation: Bidirectional
@@ -2444,6 +2439,10 @@ spec:
       - name: mount
         hostPath:
           path: /run/mount
+      - name: mountinfo
+        hostPath:
+          path: /var/lib/kubelet/plugins/cephfs.csi.ceph.com/mountinfo
+          type: DirectoryOrCreate
       - name: plugins
         hostPath:
           path: /var/lib/kubelet/plugins
@@ -3395,14 +3394,11 @@ spec:
       - name: ceph-csi
         image: ceph/csi:latest
         args:
-        - --csi-addons-endpoint=$(CSI_ADDONS_ADDRESS)
         - --drivername=nfs.csi.ceph.com
         - --enable-fencing=true
         - --endpoint=$(CSI_ADDRESS)
         - --nodeid=$(NODE_ID)
         - --nodeserver=true
-        - --pluginpath=/var/lib/kubelet/plugins
-        - --stagingpath=/var/lib/kubelet/plugins/kubernetes.io/csi/
         - --type=nfs
         - --v=5
         env:
