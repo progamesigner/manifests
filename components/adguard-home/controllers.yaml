@@ -21,6 +21,13 @@ spec:
         app.kubernetes.io/name: adguard-home
         app.kubernetes.io/part-of: components
     spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: workload.kubernetes.progamesigner.dev/network
+                operator: Exists
       automountServiceAccountToken: false
       containers:
       - name: adguard-home
@@ -98,4 +105,5 @@ spec:
           - key: tls.key
             path: tls.key
       - name: data
-        emptyDir: {}
+        persistentVolumeClaim:
+          claimName: adguard-home
