@@ -61,4 +61,5 @@ spec:
       serviceAccountName: default
       volumes:
       - name: data
-        emptyDir: {}
+        persistentVolumeClaim:
+          claimName: gloomhaven
