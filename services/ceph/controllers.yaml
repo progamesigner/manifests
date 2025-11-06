@@ -59,11 +59,6 @@ spec:
           cp -LRv /mnt/ceph-conf/ceph.conf /etc/ceph/ceph.conf;
 
           chown -R 167:167 /etc/ceph;
-        env:
-        - name: CEPH_NAME
-          valueFrom:
-            fieldRef:
-              fieldPath: spec.nodeName
         resources:
           requests:
             cpu: 1m
@@ -77,8 +72,6 @@ spec:
           readOnly: true
         - name: conf
           mountPath: /etc/ceph
-        - name: data
-          mountPath: /var/lib/ceph
       - name: setup
         image: ceph/ceph:latest
         command:
@@ -93,13 +86,8 @@ spec:
           done
 
           mkdir -p /var/lib/ceph/radosgw/ceph-${CEPH_NAME};
-
-          if [ ! -f /var/lib/ceph/radosgw/ceph-${CEPH_NAME}/keyring ]; then
-            ceph-authtool --create-keyring /var/lib/ceph/radosgw/ceph-${CEPH_NAME}/keyring --gen-key -n client.${CEPH_NAME};
-            sleep 5;
-            ceph auth add client.${CEPH_NAME} mon 'allow rw' osd 'allow rwx' -i /var/lib/ceph/radosgw/ceph-${CEPH_NAME}/keyring;
-          fi
-
+          ceph-authtool --create-keyring /var/lib/ceph/radosgw/ceph-${CEPH_NAME}/keyring --gen-key -n client.${CEPH_NAME};
+          ceph auth add client.${CEPH_NAME} mon 'allow rw' osd 'allow rwx' -i /var/lib/ceph/radosgw/ceph-${CEPH_NAME}/keyring;
           chown -R 167:167 /var/lib/ceph/radosgw/ceph-${CEPH_NAME};
         env:
         - name: CEPH_NAME
@@ -130,7 +118,7 @@ spec:
         - name: CEPH_NAME
           valueFrom:
             fieldRef:
-              fieldPath: spec.nodeName
+              fieldPath: metadata.name
         ports:
         - name: http
           containerPort: 7480
@@ -164,5 +152,4 @@ spec:
       - name: conf
         emptyDir: {}
       - name: data
-        hostPath:
-          path: /var/lib/ceph
+        emptyDir: {}
