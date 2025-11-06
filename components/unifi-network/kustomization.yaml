@@ -12,3 +12,4 @@ configMapGenerator:
   - MONGO_USER=default
 resources:
 - controllers.yaml
+- storages.yaml

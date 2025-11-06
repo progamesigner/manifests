@@ -21,6 +21,13 @@ spec:
         app.kubernetes.io/name: unifi-network
         app.kubernetes.io/part-of: components
     spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: workload.kubernetes.progamesigner.dev/controller
+                operator: Exists
       automountServiceAccountToken: false
       containers:
       - name: unifi-network
@@ -80,4 +87,5 @@ spec:
       serviceAccountName: default
       volumes:
       - name: data
-        emptyDir: {}
+        persistentVolumeClaim:
+          claimName: unifi-network
