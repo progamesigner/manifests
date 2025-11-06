@@ -115,7 +115,7 @@ patches:
       replicas: 0
 - patch: |-
     apiVersion: apps/v1
-    kind: Deployment
+    kind: StatefulSet
     metadata:
       name: rabbitmq
     spec:

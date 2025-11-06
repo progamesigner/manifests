@@ -1,6 +1,6 @@
 ---
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   labels:
     app.kubernetes.io/component: redis
@@ -14,8 +14,7 @@ spec:
       app.kubernetes.io/component: redis
       app.kubernetes.io/name: redis
       app.kubernetes.io/part-of: services
-  strategy:
-    type: Recreate
+  serviceName: headless-redis
   template:
     metadata:
       labels:

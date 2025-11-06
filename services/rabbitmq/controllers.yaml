@@ -1,6 +1,6 @@
 ---
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   labels:
     app.kubernetes.io/component: rabbitmq
@@ -14,8 +14,7 @@ spec:
       app.kubernetes.io/component: rabbitmq
       app.kubernetes.io/name: rabbitmq
       app.kubernetes.io/part-of: services
-  strategy:
-    type: Recreate
+  serviceName: headless-rabbitmq
   template:
     metadata:
       labels:
