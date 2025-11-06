@@ -21,6 +21,13 @@ spec:
         app.kubernetes.io/name: home-assistant
         app.kubernetes.io/part-of: components
     spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: workload.kubernetes.progamesigner.dev/controller
+                operator: Exists
       automountServiceAccountToken: false
       containers:
       - name: home-assistant
@@ -64,7 +71,8 @@ spec:
       serviceAccountName: default
       volumes:
       - name: data
-        emptyDir: {}
+        persistentVolumeClaim:
+          claimName: home-assistant
       - name: dbus
         hostPath:
           path: /run/dbus
