@@ -182,27 +182,6 @@ patches:
     apiVersion: apps/v1
     kind: Deployment
     metadata:
-      name: pgadmin
-    spec:
-      template:
-        spec:
-          affinity:
-            nodeAffinity:
-              requiredDuringSchedulingIgnoredDuringExecution:
-                nodeSelectorTerms:
-                - matchExpressions:
-                  - key: kubernetes.progamesigner.dev/local-disk
-                    operator: Exists
-          volumes:
-          - name: data
-            emptyDir: null
-            hostPath:
-              type: DirectoryOrCreate
-              path: /srv/pgadmin
-- patch: |-
-    apiVersion: apps/v1
-    kind: Deployment
-    metadata:
       name: rabbitmq
     spec:
       replicas: 0
