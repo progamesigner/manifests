@@ -189,50 +189,6 @@ patches:
     apiVersion: apps/v1
     kind: Deployment
     metadata:
-      name: syncthing
-    spec:
-      template:
-        spec:
-          affinity:
-            nodeAffinity:
-              requiredDuringSchedulingIgnoredDuringExecution:
-                nodeSelectorTerms:
-                - matchExpressions:
-                  - key: workload.kubernetes.progamesigner.dev/controller
-                    operator: Exists
-                  - key: kubernetes.progamesigner.dev/local-disk
-                    operator: Exists
-          volumes:
-          - name: data
-            emptyDir: null
-            hostPath:
-              type: DirectoryOrCreate
-              path: /srv/syncthing
-- patch: |-
-    apiVersion: apps/v1
-    kind: Deployment
-    metadata:
-      name: vscode-server
-    spec:
-      template:
-        spec:
-          affinity:
-            nodeAffinity:
-              requiredDuringSchedulingIgnoredDuringExecution:
-                nodeSelectorTerms:
-                - matchExpressions:
-                  - key: kubernetes.progamesigner.dev/local-disk
-                    operator: Exists
-          volumes:
-          - name: files
-            emptyDir: null
-            hostPath:
-              type: Directory
-              path: /srv/syncthing
-- patch: |-
-    apiVersion: apps/v1
-    kind: Deployment
-    metadata:
       name: windmill-worker
     spec:
       replicas: 4

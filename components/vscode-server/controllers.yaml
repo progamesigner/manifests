@@ -99,7 +99,8 @@ spec:
         persistentVolumeClaim:
           claimName: vscode-server
       - name: files
-        emptyDir: {}
+        persistentVolumeClaim:
+          claimName: syncthing
       - name: files-git
         persistentVolumeClaim:
           claimName: dev-tunnel-git

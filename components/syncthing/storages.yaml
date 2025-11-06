@@ -2,6 +2,18 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
+  name: syncthing
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 256Gi
+  storageClassName: ceph-cephfs
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
   name: syncthing-relay
 spec:
   accessModes:
