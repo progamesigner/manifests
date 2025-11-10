@@ -43,7 +43,7 @@ images:
   newTag: v0.72.10
 - name: home-assistant/home-assistant
   newName: ghcr.io/home-assistant/home-assistant
-  newTag: 2025.11.0
+  newTag: 2025.11.1
 - name: localai/localai
   newName: quay.io/go-skynet/local-ai
   newTag: v2.26.0-ffmpeg
@@ -55,7 +55,7 @@ images:
   newTag: 2023.10.120-1
 - name: network/cloudflared
   newName: cloudflare/cloudflared
-  newTag: 2025.10.1
+  newTag: 2025.11.1
 - name: network/haproxy
   newName: haproxy
   newTag: 3.0.2-alpine
@@ -76,7 +76,7 @@ images:
   newTag: '2.66'
 - name: rsshub/rsshub
   newName: diygod/rsshub
-  newTag: '2025-11-07'
+  newTag: '2025-11-09'
 - name: syncthing/relaysrv
   newName: syncthing/relaysrv
   newTag: 2.0.3
@@ -91,7 +91,7 @@ images:
   newTag: 20230422-jammy
 - name: windmill/windmill-lsp
   newName: ghcr.io/windmill-labs/windmill-lsp
-  newTag: 1.573.4
+  newTag: 1.574.0
 - name: windmill/windmill-server
   newName: ghcr.io/windmill-labs/windmill
   newTag: 1.574.1
