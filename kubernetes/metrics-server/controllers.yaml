@@ -106,7 +106,7 @@ spec:
           path: /etc/kubernetes/pki/ca.crt
       - name: certs
         secret:
-          secretName: metrics-server
+          secretName: tls-metrics-server
           defaultMode: 420
           items:
           - key: tls.crt

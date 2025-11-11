@@ -2,28 +2,28 @@
 apiVersion: cert-manager.io/v1
 kind: Issuer
 metadata:
-  name: metrics-server
+  name: ceph-radosgw
 spec:
   selfSigned: {}
 ---
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: metrics-server
+  name: ceph-radosgw
 spec:
-  commonName: metrics-server
+  commonName: ceph-radosgw
   dnsNames:
-  - metrics-server.kube-system
-  - metrics-server.kube-system.svc
-  - metrics-server.kube-system.svc.cluster.local
+  - radosgw.default
+  - radosgw.default.svc
+  - radosgw.default.svc.cluster.local
   issuerRef:
     group: cert-manager.io
     kind: Issuer
-    name: metrics-server
+    name: ceph-radosgw
   privateKey:
     algorithm: RSA
     size: 2048
-  secretName: tls-metrics-server
+  secretName: tls-ceph-radosgw
   usages:
   - client auth
   - server auth

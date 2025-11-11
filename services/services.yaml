@@ -80,9 +80,21 @@ metadata:
 spec:
   ports:
   - name: http
+    port: 80
+    protocol: TCP
+    targetPort: http
+  - name: https
+    port: 443
+    protocol: TCP
+    targetPort: https
+  - name: incluster-http
     port: 7480
     protocol: TCP
     targetPort: http
+  - name: incluster-https
+    port: 8443
+    protocol: TCP
+    targetPort: https
   selector:
     app.kubernetes.io/component: radosgw
     app.kubernetes.io/name: ceph
