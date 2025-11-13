@@ -15,6 +15,7 @@ components:
 - proxy
 - redis-insight
 - rsshub
+- seafile
 - syncthing
 - tailscale
 - unifi-network

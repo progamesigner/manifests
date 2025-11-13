@@ -1,0 +1,44 @@
+---
+apiVersion: kustomize.config.k8s.io/v1alpha1
+kind: Component
+configMapGenerator:
+- name: seafile
+  literals:
+  - CACHE_PROVIDER=redis
+  - MD_FILE_COUNT_LIMIT=100000
+  - S3_AWS_REGION=us-east-1
+  - S3_BLOCK_BUCKET=seafile-blocks
+  - S3_COMMIT_BUCKET=seafile-commits
+  - S3_FS_BUCKET=seafile-filesystems
+  - S3_MD_BUCKET=seafile-metadata
+  - S3_PATH_STYLE_REQUEST=true
+  - S3_SS_BUCKET=seafile-seasearch
+  - S3_USE_HTTPS=true
+  - S3_USE_V4_SIGNATURE=true
+  - SEAF_SERVER_STORAGE_TYPE=s3
+  - SEAFILE_LOG_TO_STDOUT=true
+  - SEAFILE_SERVER_HOSTNAME=drive.progamesigner.dev
+  - SEAFILE_SERVER_PROTOCOL=https
+  - SITE_ROOT=/
+  - TIME_ZONE=UTC
+resources:
+- controllers.yaml
+- storages.yaml
+secretGenerator:
+- name: seafile
+  envs:
+  - seafile.env
+  literals:
+  - REDIS_HOST=redis.default.svc.cluster.local
+  - REDIS_PASSWORD=
+  - REDIS_PORT=6379
+  - S3_HOST=radosgw.default.svc.cluster.local
+  - S3_KEY_ID=default
+  - S3_SECRET_KEY=password
+  - SEAFILE_MYSQL_DB_CCNET_DB_NAME=ccnet
+  - SEAFILE_MYSQL_DB_HOST=mariadb.default.svc.cluster.local
+  - SEAFILE_MYSQL_DB_PASSWORD=password
+  - SEAFILE_MYSQL_DB_PORT=3306
+  - SEAFILE_MYSQL_DB_SEAFILE_DB_NAME=seafile
+  - SEAFILE_MYSQL_DB_SEAHUB_DB_NAME=seahub
+  - SEAFILE_MYSQL_DB_USER=default

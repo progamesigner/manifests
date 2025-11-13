@@ -3,6 +3,7 @@ components/cloudflared/cloudflared.env
 components/coder/coder.env
 components/dify/dify.env
 components/rsshub/rsshub.env
+components/seafile/seafile.env
 components/tailscale/protonvpn.ch.conf
 components/tailscale/protonvpn.de.conf
 components/tailscale/protonvpn.jp.conf

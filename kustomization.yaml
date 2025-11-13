@@ -77,6 +77,12 @@ images:
 - name: rsshub/rsshub
   newName: diygod/rsshub
   newTag: '2025-11-12'
+- name: seafile/backend
+  newName: seafileltd/seafile-pro-mc
+  newTag: 13.0-latest
+- name: seafile/frontend
+  newName: seafileltd/seafile-pro-mc
+  newTag: 13.0-latest
 - name: syncthing/relaysrv
   newName: syncthing/relaysrv
   newTag: 2.0.3
