@@ -5,7 +5,16 @@ configMapGenerator:
 - name: seafile
   literals:
   - CACHE_PROVIDER=redis
+  - ENABLE_METADATA_MANAGEMENT=true
+  - ENABLE_NOTIFICATION_SERVER=true
+  - ENABLE_SEADOC=true
+  - MD_CHECK_UPDATE_INTERVAL=30m
   - MD_FILE_COUNT_LIMIT=100000
+  - MD_LOG_LEVEL=info
+  - MD_MAX_CACHE_SIZE=1GB
+  - MD_PORT=${MD_PORT:-8084}
+  - MD_STORAGE_TYPE=s3
+  - NOTIFICATION_SERVER_LOG_LEVEL=info
   - S3_AWS_REGION=us-east-1
   - S3_BLOCK_BUCKET=seafile-blocks
   - S3_COMMIT_BUCKET=seafile-commits
@@ -20,6 +29,7 @@ configMapGenerator:
   - SEAFILE_SERVER_HOSTNAME=drive.progamesigner.dev
   - SEAFILE_SERVER_PROTOCOL=https
   - SITE_ROOT=/
+  - THUMBNAIL_IMAGE_ORIGINAL_SIZE_LIMIT=256
   - TIME_ZONE=UTC
 resources:
 - controllers.yaml
@@ -29,6 +39,8 @@ secretGenerator:
   envs:
   - seafile.env
   literals:
+  - METADATA_SERVER_URL=http://seafile-metadata.default.svc.cluster.local:8084
+  - INNER_NOTIFICATION_SERVER_URL=http://seafile-notification.default.svc.cluster.local:8083
   - REDIS_HOST=redis.default.svc.cluster.local
   - REDIS_PASSWORD=
   - REDIS_PORT=6379

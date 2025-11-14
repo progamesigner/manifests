@@ -284,6 +284,7 @@ kind: Ingress
 metadata:
   annotations:
     kubernetes.progamesigner.dev/hostname: drive
+    nginx.org/websocket-services: seafile-notification,seafile-seadoc
   name: seafile
 spec:
   ingressClassName: nginx-ingress
@@ -291,6 +292,41 @@ spec:
   - host: drive.progamesigner.dev
     http:
       paths:
+      - backend:
+          service:
+            name: seafile-notification
+            port:
+              name: http
+        path: /notification/ping
+        pathType: Prefix
+      - backend:
+          service:
+            name: seafile-notification
+            port:
+              name: http
+        path: /notification/
+        pathType: Prefix
+      - backend:
+          service:
+            name: seafile-seadoc
+            port:
+              name: http
+        path: /sdoc-server/
+        pathType: Prefix
+      - backend:
+          service:
+            name: seafile-seadoc
+            port:
+              name: http
+        path: /socket.io/
+        pathType: Prefix
+      - backend:
+          service:
+            name: seafile-thumbnail
+            port:
+              name: http
+        path: /thumbnail/
+        pathType: Prefix
       - backend:
           service:
             name: seafile

@@ -83,6 +83,18 @@ images:
 - name: seafile/frontend
   newName: seafileltd/seafile-pro-mc
   newTag: 13.0-latest
+- name: seafile/notification
+  newName: seafileltd/notification-server
+  newTag: 13.0-latest
+- name: seafile/metadata
+  newName: seafileltd/seafile-md-server
+  newTag: 13.0-latest
+- name: seafile/seadoc
+  newName: seafileltd/sdoc-server
+  newTag: 2.0-latest
+- name: seafile/thumbnail
+  newName: seafileltd/thumbnail-server
+  newTag: 13.0-latest
 - name: syncthing/relaysrv
   newName: syncthing/relaysrv
   newTag: 2.0.3

@@ -400,6 +400,66 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
+  name: seafile-notification
+spec:
+  ports:
+  - name: http
+    port: 8083
+    protocol: TCP
+    targetPort: http
+  selector:
+    app.kubernetes.io/component: notification
+    app.kubernetes.io/name: seafile
+    app.kubernetes.io/part-of: components
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: seafile-metadata
+spec:
+  ports:
+  - name: http
+    port: 8084
+    protocol: TCP
+    targetPort: http
+  selector:
+    app.kubernetes.io/component: metadata
+    app.kubernetes.io/name: seafile
+    app.kubernetes.io/part-of: components
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: seafile-seadoc
+spec:
+  ports:
+  - name: http
+    port: 80
+    protocol: TCP
+    targetPort: http
+  selector:
+    app.kubernetes.io/component: seadoc
+    app.kubernetes.io/name: seafile
+    app.kubernetes.io/part-of: components
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: seafile-thumbnail
+spec:
+  ports:
+  - name: http
+    port: 80
+    protocol: TCP
+    targetPort: http
+  selector:
+    app.kubernetes.io/component: thumbnail
+    app.kubernetes.io/name: seafile
+    app.kubernetes.io/part-of: components
+---
+apiVersion: v1
+kind: Service
+metadata:
   name: syncthing
 spec:
   ports:
