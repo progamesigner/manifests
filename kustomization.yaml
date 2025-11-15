@@ -43,7 +43,7 @@ images:
   newTag: v0.72.10
 - name: home-assistant/home-assistant
   newName: ghcr.io/home-assistant/home-assistant
-  newTag: 2025.11.1
+  newTag: 2025.11.2
 - name: localai/localai
   newName: quay.io/go-skynet/local-ai
   newTag: v2.26.0-ffmpeg
@@ -83,11 +83,11 @@ images:
 - name: seafile/frontend
   newName: seafileltd/seafile-pro-mc
   newTag: 13.0-latest
-- name: seafile/notification
-  newName: seafileltd/notification-server
-  newTag: 13.0-latest
 - name: seafile/metadata
   newName: seafileltd/seafile-md-server
+  newTag: 13.0-latest
+- name: seafile/notification
+  newName: seafileltd/notification-server
   newTag: 13.0-latest
 - name: seafile/seadoc
   newName: seafileltd/sdoc-server
