@@ -83,11 +83,11 @@ images:
 - name: seafile/frontend
   newName: seafileltd/seafile-pro-mc
   newTag: 13.0-latest
-- name: seafile/notification
-  newName: seafileltd/notification-server
-  newTag: 13.0-latest
 - name: seafile/metadata
   newName: seafileltd/seafile-md-server
+  newTag: 13.0-latest
+- name: seafile/notification
+  newName: seafileltd/notification-server
   newTag: 13.0-latest
 - name: seafile/seadoc
   newName: seafileltd/sdoc-server
@@ -112,10 +112,10 @@ images:
   newTag: 1.575.4
 - name: windmill/windmill-server
   newName: ghcr.io/windmill-labs/windmill
-  newTag: 1.575.4
+  newTag: 1.576.1
 - name: windmill/windmill-worker
   newName: ghcr.io/windmill-labs/windmill
-  newTag: 1.575.4
+  newTag: 1.576.1
 patches:
 - patch: |-
     apiVersion: apps/v1
