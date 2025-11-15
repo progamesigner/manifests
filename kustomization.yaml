@@ -76,18 +76,18 @@ images:
   newTag: '2.66'
 - name: rsshub/rsshub
   newName: diygod/rsshub
-  newTag: '2025-11-13'
+  newTag: '2025-11-14'
 - name: seafile/backend
   newName: seafileltd/seafile-pro-mc
   newTag: 13.0-latest
 - name: seafile/frontend
   newName: seafileltd/seafile-pro-mc
   newTag: 13.0-latest
-- name: seafile/notification
-  newName: seafileltd/notification-server
-  newTag: 13.0-latest
 - name: seafile/metadata
   newName: seafileltd/seafile-md-server
+  newTag: 13.0-latest
+- name: seafile/notification
+  newName: seafileltd/notification-server
   newTag: 13.0-latest
 - name: seafile/seadoc
   newName: seafileltd/sdoc-server
