@@ -112,10 +112,10 @@ images:
   newTag: 1.575.4
 - name: windmill/windmill-server
   newName: ghcr.io/windmill-labs/windmill
-  newTag: 1.575.4
+  newTag: 1.576.3
 - name: windmill/windmill-worker
   newName: ghcr.io/windmill-labs/windmill
-  newTag: 1.575.4
+  newTag: 1.576.3
 patches:
 - patch: |-
     apiVersion: apps/v1
