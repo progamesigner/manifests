@@ -31,7 +31,7 @@ spec:
         - |
           set -ex;
 
-          chown -R vscode:vscode /opt/vscode-server;
+          chown -R vscode:vscode /home/vscode/.vscode-cli;
         resources:
           requests:
             cpu: 1m
@@ -40,20 +40,16 @@ spec:
           runAsUser: 0
         volumeMounts:
         - name: data
-          mountPath: /opt/vscode-server
+          mountPath: /home/vscode/.vscode-cli
       containers:
       - name: vscode-server
         image: vscode/server:latest
         args:
         - --accept-server-license-terms
-        - --name=$(VSCODE_SERVER_NAME)
+        - --name=default
         env:
-        - name: VSCODE_CLI_DATA_DIR
-          value: /opt/vscode-server
-        - name: VSCODE_SERVER_NAME
-          valueFrom:
-            fieldRef:
-              fieldPath: spec.nodeName
+        - name: VSCODE_CLI_USE_FILE_KEYCHAIN
+          value: 'true'
         resources:
           limits:
             cpu: 4000m
@@ -63,22 +59,10 @@ spec:
             memory: 512Mi
         volumeMounts:
         - name: data
-          mountPath: /opt/vscode-server
+          mountPath: /home/vscode/.vscode-cli
         - name: files
           mountPath: /home/vscode/codes
           subPath: developer/projects
-        - name: files
-          mountPath: /home/vscode/dotfiles
-          subPath: dotfiles
-        - name: files
-          mountPath: /home/vscode/.docker
-          subPath: dotfiles/.docker
-        - name: files
-          mountPath: /home/vscode/.kube
-          subPath: dotfiles/.kubernetes
-        - name: files
-          mountPath: /home/vscode/.ssh
-          subPath: dotfiles/.ssh
         - name: files
           mountPath: /home/vscode/.gitattributes
           subPath: dotfiles/git/attributes
@@ -91,7 +75,7 @@ spec:
         - name: files-gpg
           mountPath: /home/vscode/.gnupg
         - name: files-ssh
-          mountPath: /home/vscode/.dotfiles/.ssh
+          mountPath: /home/vscode/.ssh
       enableServiceLinks: false
       serviceAccountName: default
       volumes:
