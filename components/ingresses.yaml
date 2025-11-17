@@ -298,14 +298,14 @@ spec:
             port:
               name: http
         path: /notification/ping
-        pathType: Prefix
+        pathType: Exact
       - backend:
           service:
             name: seafile-notification
             port:
               name: http
-        path: /notification/
-        pathType: Prefix
+        path: /notification
+        pathType: Exact
       - backend:
           service:
             name: seafile-seadoc
@@ -318,8 +318,8 @@ spec:
             name: seafile-seadoc
             port:
               name: http
-        path: /socket.io/
-        pathType: Prefix
+        path: /socket.io
+        pathType: Exact
       - backend:
           service:
             name: seafile-thumbnail
