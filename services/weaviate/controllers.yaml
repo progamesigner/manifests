@@ -36,6 +36,9 @@ spec:
         - name: weaviate
           containerPort: 8080
           protocol: TCP
+        - name: grpc
+          containerPort: 8081
+          protocol: TCP
         volumeMounts:
         - name: data
           mountPath: /var/lib/weaviate
