@@ -8,6 +8,9 @@ images:
 - name: apprise/apprise
   newName: caronc/apprise
   newTag: 1.1.8
+- name: clamav/clamav
+  newName: clamav/clamav
+  newTag: 1.5.1
 - name: coder/coder
   newName: ghcr.io/coder/coder
   newTag: v2.11.3

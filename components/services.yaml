@@ -52,6 +52,21 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
+  name: clamav
+spec:
+  ports:
+  - name: clamd
+    port: 3310
+    protocol: TCP
+    targetPort: clamd
+  selector:
+    app.kubernetes.io/component: clamav
+    app.kubernetes.io/name: clamav
+    app.kubernetes.io/part-of: components
+---
+apiVersion: v1
+kind: Service
+metadata:
   name: coder
 spec:
   ports:
