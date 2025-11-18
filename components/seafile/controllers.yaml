@@ -30,7 +30,8 @@ spec:
         - -c
         - set -ex;
 
-          chown -R root:root /shared
+          chown -R 8000:8000 /shared;
+          chmod -R a+rwx /shared;
         resources:
           requests:
             cpu: 1m
@@ -60,6 +61,8 @@ spec:
       - name: seafile
         image: seafile/backend:latest
         env:
+        - name: AWS_CA_BUNDLE
+          value: /etc/ssl/certs/ca-certificates.crt
         - name: CLUSTER_MODE
           value: 'backend'
         - name: CLUSTER_SERVER
@@ -80,6 +83,9 @@ spec:
         - name: certs
           mountPath: /etc/ssl/certs
           readOnly: true
+        - name: conf
+          mountPath: /etc/clamav/clamd.conf
+          subPath: clamd.conf
         - name: data
           mountPath: /shared
       enableServiceLinks: false
@@ -94,6 +100,12 @@ spec:
             path: ca.crt
       - name: certs
         emptyDir: {}
+      - name: conf
+        configMap:
+          name: seafile
+          items:
+          - key: clamd.conf
+            path: clamd.conf
       - name: data
         persistentVolumeClaim:
           claimName: seafile
@@ -122,21 +134,6 @@ spec:
     spec:
       automountServiceAccountToken: true
       initContainers:
-      - name: chown
-        image: busybox:latest
-        command:
-        - sh
-        - -c
-        - set -ex;
-
-          chown -R root:root /shared
-        resources:
-          requests:
-            cpu: 1m
-            memory: 1Mi
-        volumeMounts:
-        - name: data
-          mountPath: /shared
       - name: setup
         image: seafile/frontend:latest
         command:
@@ -159,6 +156,8 @@ spec:
       - name: seafile
         image: seafile/frontend:latest
         env:
+        - name: AWS_CA_BUNDLE
+          value: /etc/ssl/certs/ca-certificates.crt
         - name: CLUSTER_MODE
           value: 'frontend'
         - name: CLUSTER_SERVER
@@ -172,6 +171,14 @@ spec:
         - name: http
           containerPort: 80
           protocol: TCP
+        - name: seafile
+          containerPort: 8080
+          protocol: TCP
+        readinessProbe:
+          tcpSocket:
+            port: seafile
+          initialDelaySeconds: 30
+          periodSeconds: 15
         resources:
           limits:
             cpu: 4000m
@@ -183,6 +190,9 @@ spec:
         - name: certs
           mountPath: /etc/ssl/certs
           readOnly: true
+        - name: conf
+          mountPath: /etc/clamav/clamd.conf
+          subPath: clamd.conf
         - name: data
           mountPath: /shared
       enableServiceLinks: false
@@ -197,6 +207,12 @@ spec:
             path: ca.crt
       - name: certs
         emptyDir: {}
+      - name: conf
+        configMap:
+          name: seafile
+          items:
+          - key: clamd.conf
+            path: clamd.conf
       - name: data
         persistentVolumeClaim:
           claimName: seafile
@@ -224,22 +240,6 @@ spec:
         app.kubernetes.io/part-of: components
     spec:
       automountServiceAccountToken: true
-      initContainers:
-      - name: chown
-        image: busybox:latest
-        command:
-        - sh
-        - -c
-        - set -ex;
-
-          chown -R root:root /shared
-        resources:
-          requests:
-            cpu: 1m
-            memory: 1Mi
-        volumeMounts:
-        - name: data
-          mountPath: /shared
       containers:
       - name: seafile
         image: seafile/notification:latest
@@ -293,22 +293,6 @@ spec:
         app.kubernetes.io/part-of: components
     spec:
       automountServiceAccountToken: true
-      initContainers:
-      - name: chown
-        image: busybox:latest
-        command:
-        - sh
-        - -c
-        - set -ex;
-
-          chown -R root:root /shared
-        resources:
-          requests:
-            cpu: 1m
-            memory: 1Mi
-        volumeMounts:
-        - name: data
-          mountPath: /shared
       containers:
       - name: seafile
         image: seafile/metadata:latest
@@ -369,7 +353,8 @@ spec:
         - -c
         - set -ex;
 
-          chown -R root:root /shared
+          chown -R 8000:8000 /shared;
+          chmod -R a+rwx /shared;
         resources:
           requests:
             cpu: 1m
@@ -433,25 +418,30 @@ spec:
     spec:
       automountServiceAccountToken: true
       initContainers:
-      - name: chown
-        image: busybox:latest
+      - name: setup
+        image: seafile/thumbnail:latest
         command:
         - sh
         - -c
         - set -ex;
 
-          chown -R root:root /shared
+          update-ca-certificates
         resources:
           requests:
             cpu: 1m
             memory: 1Mi
         volumeMounts:
-        - name: data
-          mountPath: /shared
+        - name: ca
+          mountPath: /usr/local/share/ca-certificates
+          readOnly: true
+        - name: certs
+          mountPath: /etc/ssl/certs
       containers:
       - name: seafile
         image: seafile/thumbnail:latest
         env:
+        - name: AWS_CA_BUNDLE
+          value: /etc/ssl/certs/ca-certificates.crt
         - name: INNER_SEAHUB_SERVICE_URL
           value: http://seafile.default.svc.cluster.local
         envFrom:
@@ -471,11 +461,23 @@ spec:
             cpu: 100m
             memory: 64Mi
         volumeMounts:
+        - name: certs
+          mountPath: /etc/ssl/certs
+          readOnly: true
         - name: data
           mountPath: /shared
       enableServiceLinks: false
       serviceAccountName: default
       volumes:
+      - name: ca
+        secret:
+          secretName: tls-ceph-radosgw
+          defaultMode: 420
+          items:
+          - key: ca.crt
+            path: ca.crt
+      - name: certs
+        emptyDir: {}
       - name: data
         persistentVolumeClaim:
           claimName: seafile

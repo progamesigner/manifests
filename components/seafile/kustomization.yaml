@@ -3,6 +3,8 @@ apiVersion: kustomize.config.k8s.io/v1alpha1
 kind: Component
 configMapGenerator:
 - name: seafile
+  files:
+  - clamd.conf=clamd.conf
   literals:
   - CACHE_PROVIDER=redis
   - ENABLE_METADATA_MANAGEMENT=true
@@ -12,8 +14,8 @@ configMapGenerator:
   - MD_FILE_COUNT_LIMIT=100000
   - MD_LOG_LEVEL=info
   - MD_MAX_CACHE_SIZE=1GB
-  - MD_PORT=${MD_PORT:-8084}
   - MD_STORAGE_TYPE=s3
+  - NON_ROOT=true
   - NOTIFICATION_SERVER_LOG_LEVEL=info
   - S3_AWS_REGION=us-east-1
   - S3_BLOCK_BUCKET=seafile-blocks
@@ -21,7 +23,6 @@ configMapGenerator:
   - S3_FS_BUCKET=seafile-filesystems
   - S3_MD_BUCKET=seafile-metadata
   - S3_PATH_STYLE_REQUEST=true
-  - S3_SS_BUCKET=seafile-seasearch
   - S3_USE_HTTPS=true
   - S3_USE_V4_SIGNATURE=true
   - SEAF_SERVER_STORAGE_TYPE=s3

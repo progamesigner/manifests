@@ -318,8 +318,8 @@ spec:
             name: seafile-seadoc
             port:
               name: http
-        path: /socket.io
-        pathType: Exact
+        path: /socket.io/
+        pathType: Prefix
       - backend:
           service:
             name: seafile-thumbnail
