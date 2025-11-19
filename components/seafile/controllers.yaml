@@ -67,6 +67,10 @@ spec:
           value: 'backend'
         - name: CLUSTER_SERVER
           value: 'true'
+        - name: SEAFILE_LOG_TO_STDOUT
+          value: 'true'
+        - name: TIME_ZONE
+          value: UTC
         envFrom:
         - configMapRef:
             name: seafile
@@ -162,6 +166,10 @@ spec:
           value: 'frontend'
         - name: CLUSTER_SERVER
           value: 'true'
+        - name: SEAFILE_LOG_TO_STDOUT
+          value: 'true'
+        - name: TIME_ZONE
+          value: UTC
         envFrom:
         - configMapRef:
             name: seafile
@@ -243,11 +251,18 @@ spec:
       containers:
       - name: seafile
         image: seafile/notification:latest
+        env:
+        - name: NOTIFICATION_SERVER_LOG_LEVEL
+          value: info
+        - name: SEAFILE_LOG_TO_STDOUT
+          value: 'true'
+        - name: TIME_ZONE
+          value: UTC
         envFrom:
         - configMapRef:
             name: seafile
         - secretRef:
-            name: seafile
+            name: seafile-notification
         ports:
         - name: http
           containerPort: 8083
@@ -293,14 +308,40 @@ spec:
         app.kubernetes.io/part-of: components
     spec:
       automountServiceAccountToken: true
+      initContainers:
+      - name: setup
+        image: seafile/metadata:latest
+        command:
+        - sh
+        - -c
+        - set -ex;
+
+          update-ca-certificates
+        resources:
+          requests:
+            cpu: 1m
+            memory: 1Mi
+        volumeMounts:
+        - name: ca
+          mountPath: /usr/local/share/ca-certificates
+          readOnly: true
+        - name: certs
+          mountPath: /etc/ssl/certs
       containers:
       - name: seafile
         image: seafile/metadata:latest
+        env:
+        - name: MD_LOG_LEVEL
+          value: info
+        - name: SEAFILE_LOG_TO_STDOUT
+          value: 'true'
+        - name: TIME_ZONE
+          value: UTC
         envFrom:
         - configMapRef:
             name: seafile
         - secretRef:
-            name: seafile
+            name: seafile-metadata
         ports:
         - name: http
           containerPort: 8084
@@ -313,11 +354,23 @@ spec:
             cpu: 100m
             memory: 64Mi
         volumeMounts:
+        - name: certs
+          mountPath: /etc/ssl/certs
+          readOnly: true
         - name: data
           mountPath: /shared
       enableServiceLinks: false
       serviceAccountName: default
       volumes:
+      - name: ca
+        secret:
+          secretName: tls-ceph-radosgw
+          defaultMode: 420
+          items:
+          - key: ca.crt
+            path: ca.crt
+      - name: certs
+        emptyDir: {}
       - name: data
         persistentVolumeClaim:
           claimName: seafile
@@ -345,34 +398,17 @@ spec:
         app.kubernetes.io/part-of: components
     spec:
       automountServiceAccountToken: true
-      initContainers:
-      - name: chown
-        image: busybox:latest
-        command:
-        - sh
-        - -c
-        - set -ex;
-
-          chown -R 8000:8000 /shared;
-          chmod -R a+rwx /shared;
-        resources:
-          requests:
-            cpu: 1m
-            memory: 1Mi
-        volumeMounts:
-        - name: data
-          mountPath: /shared
       containers:
       - name: seafile
         image: seafile/seadoc:latest
         env:
-        - name: INNER_SEAHUB_SERVICE_URL
-          value: http://seafile.default.svc.cluster.local
+        - name: TIME_ZONE
+          value: UTC
         envFrom:
         - configMapRef:
             name: seafile
         - secretRef:
-            name: seafile
+            name: seafile-seadoc
         ports:
         - name: http
           containerPort: 80
@@ -387,12 +423,13 @@ spec:
         volumeMounts:
         - name: data
           mountPath: /shared
+          subPath: seafile
       enableServiceLinks: false
       serviceAccountName: default
       volumes:
       - name: data
         persistentVolumeClaim:
-          claimName: seafile-seadoc
+          claimName: seafile
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -442,13 +479,15 @@ spec:
         env:
         - name: AWS_CA_BUNDLE
           value: /etc/ssl/certs/ca-certificates.crt
-        - name: INNER_SEAHUB_SERVICE_URL
-          value: http://seafile.default.svc.cluster.local
+        - name: SEAFILE_LOG_TO_STDOUT
+          value: 'true'
+        - name: TIME_ZONE
+          value: UTC
         envFrom:
         - configMapRef:
             name: seafile
         - secretRef:
-            name: seafile
+            name: seafile-thumbnail
         ports:
         - name: http
           containerPort: 80

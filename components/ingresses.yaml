@@ -284,7 +284,8 @@ kind: Ingress
 metadata:
   annotations:
     kubernetes.progamesigner.dev/hostname: drive
-    nginx.org/websocket-services: seafile-notification,seafile-seadoc
+    nginx.org/rewrites: serviceName=seafile-seadoc rewrite=/
+    nginx.org/websocket-services: seafile-notification,seafile-seadoc-websocket
   name: seafile
 spec:
   ingressClassName: nginx-ingress
@@ -315,7 +316,7 @@ spec:
         pathType: Prefix
       - backend:
           service:
-            name: seafile-seadoc
+            name: seafile-seadoc-websocket
             port:
               name: http
         path: /socket.io/

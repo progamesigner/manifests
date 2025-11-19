@@ -460,6 +460,21 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
+  name: seafile-seadoc-websocket
+spec:
+  ports:
+  - name: http
+    port: 80
+    protocol: TCP
+    targetPort: http
+  selector:
+    app.kubernetes.io/component: seadoc
+    app.kubernetes.io/name: seafile
+    app.kubernetes.io/part-of: components
+---
+apiVersion: v1
+kind: Service
+metadata:
   name: seafile-thumbnail
 spec:
   ports:

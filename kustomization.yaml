@@ -145,13 +145,6 @@ patches:
     apiVersion: apps/v1
     kind: Deployment
     metadata:
-      name: seafile-frontend
-    spec:
-      replicas: 2
-- patch: |-
-    apiVersion: apps/v1
-    kind: Deployment
-    metadata:
       name: windmill-worker
     spec:
       replicas: 4

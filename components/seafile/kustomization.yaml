@@ -12,11 +12,11 @@ configMapGenerator:
   - ENABLE_SEADOC=true
   - MD_CHECK_UPDATE_INTERVAL=30m
   - MD_FILE_COUNT_LIMIT=100000
-  - MD_LOG_LEVEL=info
   - MD_MAX_CACHE_SIZE=1GB
   - MD_STORAGE_TYPE=s3
+  - MEMCACHED_HOST=memcached
+  - MEMCACHED_PORT=11211
   - NON_ROOT=true
-  - NOTIFICATION_SERVER_LOG_LEVEL=info
   - S3_AWS_REGION=us-east-1
   - S3_BLOCK_BUCKET=seafile-blocks
   - S3_COMMIT_BUCKET=seafile-commits
@@ -26,12 +26,10 @@ configMapGenerator:
   - S3_USE_HTTPS=true
   - S3_USE_V4_SIGNATURE=true
   - SEAF_SERVER_STORAGE_TYPE=s3
-  - SEAFILE_LOG_TO_STDOUT=true
   - SEAFILE_SERVER_HOSTNAME=drive.progamesigner.dev
   - SEAFILE_SERVER_PROTOCOL=https
   - SITE_ROOT=/
   - THUMBNAIL_IMAGE_ORIGINAL_SIZE_LIMIT=256
-  - TIME_ZONE=UTC
 resources:
 - controllers.yaml
 - storages.yaml
@@ -40,11 +38,64 @@ secretGenerator:
   envs:
   - seafile.env
   literals:
-  - METADATA_SERVER_URL=http://seafile-metadata.default.svc.cluster.local:8084
   - INNER_NOTIFICATION_SERVER_URL=http://seafile-notification.default.svc.cluster.local:8083
+  - METADATA_SERVER_URL=http://seafile-metadata.default.svc.cluster.local:8084
+  - NOTIFICATION_SERVER_URL=https://drive.progamesigner.dev/notification
   - REDIS_HOST=redis.default.svc.cluster.local
   - REDIS_PASSWORD=
   - REDIS_PORT=6379
+  - S3_HOST=radosgw.default.svc.cluster.local
+  - S3_KEY_ID=default
+  - S3_SECRET_KEY=password
+  - SEADOC_SERVER_URL=https://drive.progamesigner.dev/sdoc-server
+  - SEAFILE_MYSQL_DB_CCNET_DB_NAME=ccnet
+  - SEAFILE_MYSQL_DB_HOST=mariadb.default.svc.cluster.local
+  - SEAFILE_MYSQL_DB_PASSWORD=password
+  - SEAFILE_MYSQL_DB_PORT=3306
+  - SEAFILE_MYSQL_DB_SEAFILE_DB_NAME=seafile
+  - SEAFILE_MYSQL_DB_SEAHUB_DB_NAME=seahub
+  - SEAFILE_MYSQL_DB_USER=default
+- name: seafile-metadata
+  envs:
+  - seafile.env
+  literals:
+  - REDIS_HOST=redis.default.svc.cluster.local
+  - REDIS_PASSWORD=
+  - REDIS_PORT=6379
+  - S3_HOST=radosgw.default.svc.cluster.local
+  - S3_KEY_ID=default
+  - S3_SECRET_KEY=password
+  - SEAFILE_MYSQL_DB_HOST=mariadb.default.svc.cluster.local
+  - SEAFILE_MYSQL_DB_PASSWORD=password
+  - SEAFILE_MYSQL_DB_PORT=3306
+  - SEAFILE_MYSQL_DB_SEAFILE_DB_NAME=seafile
+  - SEAFILE_MYSQL_DB_USER=default
+- name: seafile-notification
+  envs:
+  - seafile.env
+  literals:
+  - SEAFILE_MYSQL_DB_CCNET_DB_NAME=ccnet
+  - SEAFILE_MYSQL_DB_HOST=mariadb.default.svc.cluster.local
+  - SEAFILE_MYSQL_DB_PASSWORD=password
+  - SEAFILE_MYSQL_DB_PORT=3306
+  - SEAFILE_MYSQL_DB_SEAFILE_DB_NAME=seafile
+  - SEAFILE_MYSQL_DB_USER=default
+- name: seafile-seadoc
+  envs:
+  - seafile.env
+  literals:
+  - CONNECTION_LIMIT=10
+  - DB_HOST=mariadb.default.svc.cluster.local
+  - DB_NAME=seahub
+  - DB_PASSWORD=password
+  - DB_PORT=3306
+  - DB_USER=default
+  - SEAHUB_SERVICE_URL=http://seafile.default.svc.cluster.local
+- name: seafile-thumbnail
+  envs:
+  - seafile.env
+  literals:
+  - INNER_SEAHUB_SERVICE_URL=http://seafile.default.svc.cluster.local
   - S3_HOST=radosgw.default.svc.cluster.local
   - S3_KEY_ID=default
   - S3_SECRET_KEY=password
@@ -53,5 +104,4 @@ secretGenerator:
   - SEAFILE_MYSQL_DB_PASSWORD=password
   - SEAFILE_MYSQL_DB_PORT=3306
   - SEAFILE_MYSQL_DB_SEAFILE_DB_NAME=seafile
-  - SEAFILE_MYSQL_DB_SEAHUB_DB_NAME=seahub
   - SEAFILE_MYSQL_DB_USER=default
