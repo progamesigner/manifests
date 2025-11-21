@@ -8,6 +8,5 @@ secretGenerator:
 - name: elasticsearch
   literals:
   - discovery.type=single-node
-  - ELASTIC_USERNAME=default
   - ELASTIC_PASSWORD=password
   - ingest.geoip.downloader.enabled=false
