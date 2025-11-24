@@ -2110,6 +2110,197 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
+    app.kubernetes.io/component: osd
+    app.kubernetes.io/name: ceph
+    app.kubernetes.io/part-of: kubernetes
+  name: ceph-osd-2a
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: osd
+      app.kubernetes.io/name: ceph
+      app.kubernetes.io/part-of: kubernetes
+  template:
+    metadata:
+      annotations:
+        ceph.kubernetes.progamesigner.dev/osd-lvm-lg: ceph-osd2a-lv
+        ceph.kubernetes.progamesigner.dev/osd-lvm-vg: ceph-vg
+      labels:
+        app.kubernetes.io/component: osd
+        app.kubernetes.io/name: ceph
+        app.kubernetes.io/part-of: kubernetes
+        ceph.kubernetes.progamesigner.dev/osd: '33'
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: osd.ceph.kubernetes.progamesigner.dev/2a
+                operator: Exists
+      automountServiceAccountToken: true
+      hostIPC: true
+      initContainers:
+      - name: chown
+        image: busybox:latest
+        command:
+        - sh
+        - -c
+        - |
+          set -ex;
+
+          cp -LRv /mnt/ceph/*.keyring /etc/ceph/;
+          cp -LRv /mnt/ceph-conf/ceph.conf /etc/ceph/ceph.conf;
+
+          mkdir -p /var/lib/ceph/osd/ceph-${CEPH_NAME};
+
+          chown -R 167:167 /etc/ceph;
+          chown -R 167:167 /var/lib/ceph/osd/ceph-${CEPH_NAME};
+        env:
+        - name: CEPH_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.labels['ceph.kubernetes.progamesigner.dev/osd']
+        resources:
+          requests:
+            cpu: 1m
+            memory: 1Mi
+        volumeMounts:
+        - name: ceph
+          mountPath: /mnt/ceph
+          readOnly: true
+        - name: ceph-conf
+          mountPath: /mnt/ceph-conf
+          readOnly: true
+        - name: conf
+          mountPath: /etc/ceph
+        - name: data
+          mountPath: /var/lib/ceph
+      - name: setup
+        image: ceph/ceph:latest
+        command:
+        - sh
+        - -c
+        - |
+          set -ex;
+
+          while ! ceph mon dump; do
+            echo "Waiting for mon to be ready ...";
+            sleep 5;
+          done
+
+          if [ ! -f /var/lib/ceph/osd/ceph-${CEPH_NAME}/fsid ]; then
+            ceph-volume lvm prepare --data ${CEPH_LVM_VG}/${CEPH_LVM_LG} --dmcrypt --osd-id ${CEPH_NAME} --no-systemd;
+            sleep 5;
+            echo $(ceph-volume lvm list --format json | jq -r --arg osd "${CEPH_NAME}" 'getpath([$osd,0,"tags","ceph.osd_fsid"])') > /var/lib/ceph/osd/ceph-${CEPH_NAME}/fsid;
+          fi
+        env:
+        - name: CEPH_LVM_LG
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.annotations['ceph.kubernetes.progamesigner.dev/osd-lvm-lg']
+        - name: CEPH_LVM_VG
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.annotations['ceph.kubernetes.progamesigner.dev/osd-lvm-vg']
+        - name: CEPH_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.labels['ceph.kubernetes.progamesigner.dev/osd']
+        resources:
+          requests:
+            cpu: 1000m
+            memory: 2Gi
+        securityContext:
+          privileged: true
+        volumeMounts:
+        - name: conf
+          mountPath: /etc/ceph
+          readOnly: true
+        - name: data
+          mountPath: /var/lib/ceph
+        - name: dev
+          mountPath: /dev
+        - name: run-ceph
+          mountPath: /run/ceph
+        - name: run-lvm
+          mountPath: /run/lvm
+        - name: run-udev
+          mountPath: /run/udev
+      containers:
+      - name: osd
+        image: ceph/ceph:latest
+        command:
+        - sh
+        - -c
+        - |
+          set -ex;
+
+          CEPH_FSID=$(cat /var/lib/ceph/osd/ceph-${CEPH_NAME}/fsid);
+
+          ceph-volume lvm activate ${CEPH_NAME} ${CEPH_FSID} --no-systemd;
+
+          exec ceph-osd --foreground --id=${CEPH_NAME} --setgroup=ceph --setuser=ceph;
+        env:
+        - name: CEPH_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.labels['ceph.kubernetes.progamesigner.dev/osd']
+        resources:
+          limits:
+            cpu: 300m
+            memory: 8Gi
+          requests:
+            cpu: 100m
+            memory: 2Gi
+        securityContext:
+          privileged: true
+        volumeMounts:
+        - name: conf
+          mountPath: /etc/ceph
+          readOnly: true
+        - name: data
+          mountPath: /var/lib/ceph
+        - name: dev
+          mountPath: /dev
+        - name: run-lvm
+          mountPath: /run/lvm
+        - name: run-udev
+          mountPath: /run/udev
+      priorityClassName: system-cluster-critical
+      serviceAccountName: ceph
+      volumes:
+      - name: ceph
+        hostPath:
+          path: /etc/ceph
+      - name: ceph-conf
+        configMap:
+          name: ceph
+          items:
+          - key: ceph.conf
+            path: ceph.conf
+      - name: conf
+        emptyDir: {}
+      - name: data
+        hostPath:
+          path: /var/lib/ceph
+      - name: dev
+        hostPath:
+          path: /dev
+      - name: run-ceph
+        emptyDir: {}
+      - name: run-lvm
+        hostPath:
+          path: /run/lvm
+      - name: run-udev
+        hostPath:
+          path: /run/udev
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
     app.kubernetes.io/component: cephfs-provisioner
     app.kubernetes.io/name: ceph-csi
     app.kubernetes.io/part-of: kubernetes
