@@ -1311,6 +1311,8 @@ spec:
           mountPath: /dev
         - name: run-lvm
           mountPath: /run/lvm
+        - name: run-udev
+          mountPath: /run/udev
       priorityClassName: system-cluster-critical
       serviceAccountName: ceph
       volumes:
@@ -1500,6 +1502,8 @@ spec:
           mountPath: /dev
         - name: run-lvm
           mountPath: /run/lvm
+        - name: run-udev
+          mountPath: /run/udev
       priorityClassName: system-cluster-critical
       serviceAccountName: ceph
       volumes:
@@ -1689,6 +1693,8 @@ spec:
           mountPath: /dev
         - name: run-lvm
           mountPath: /run/lvm
+        - name: run-udev
+          mountPath: /run/udev
       priorityClassName: system-cluster-critical
       serviceAccountName: ceph
       volumes:
@@ -1878,6 +1884,8 @@ spec:
           mountPath: /dev
         - name: run-lvm
           mountPath: /run/lvm
+        - name: run-udev
+          mountPath: /run/udev
       priorityClassName: system-cluster-critical
       serviceAccountName: ceph
       volumes:
