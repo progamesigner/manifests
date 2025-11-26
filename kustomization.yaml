@@ -106,7 +106,7 @@ images:
   newTag: 2.0.3
 - name: unifi/network
   newName: lscr.io/linuxserver/unifi-network-application
-  newTag: 9.5.21-ls109
+  newTag: 10.0.160-ls110
 - name: vscode/server
   newName: ghcr.io/progamesigner/vscode-server
   newTag: 20230422-jammy
