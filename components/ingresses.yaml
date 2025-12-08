@@ -284,6 +284,9 @@ kind: Ingress
 metadata:
   annotations:
     kubernetes.progamesigner.dev/hostname: drive
+    nginx.org/client-max-body-size: '0'
+    nginx.org/proxy-read-timeout: 4h
+    nginx.org/proxy-send-timeout: 4h
     nginx.org/rewrites: serviceName=seafile-seadoc rewrite=/
     nginx.org/websocket-services: seafile-notification,seafile-seadoc-websocket
   name: seafile

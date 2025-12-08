@@ -131,6 +131,13 @@ patches:
     apiVersion: apps/v1
     kind: Deployment
     metadata:
+      name: ceph-radosgw
+    spec:
+      replicas: 5
+- patch: |-
+    apiVersion: apps/v1
+    kind: Deployment
+    metadata:
       name: localai
     spec:
       replicas: 0
