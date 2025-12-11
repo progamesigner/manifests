@@ -284,6 +284,8 @@ kind: Ingress
 metadata:
   annotations:
     kubernetes.progamesigner.dev/hostname: drive
+    nginx.org/location-snippets: |
+      proxy_request_buffering off;
     nginx.org/client-max-body-size: '0'
     nginx.org/proxy-read-timeout: 24h
     nginx.org/proxy-send-timeout: 24h
