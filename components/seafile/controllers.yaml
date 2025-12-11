@@ -180,11 +180,17 @@ spec:
           containerPort: 80
           protocol: TCP
         - name: seafile
+          containerPort: 8000
+          protocol: TCP
+        - name: seafdav
           containerPort: 8080
+          protocol: TCP
+        - name: seafhttp
+          containerPort: 8082
           protocol: TCP
         readinessProbe:
           tcpSocket:
-            port: seafile
+            port: http
           initialDelaySeconds: 30
           periodSeconds: 15
         resources:
@@ -413,6 +419,12 @@ spec:
         - name: http
           containerPort: 80
           protocol: TCP
+        - name: seadoc
+          containerPort: 7070
+          protocol: TCP
+        - name: converter
+          containerPort: 8888
+          protocol: TCP
         resources:
           limits:
             cpu: 1000m
@@ -491,6 +503,9 @@ spec:
         ports:
         - name: http
           containerPort: 80
+          protocol: TCP
+        - name: thumbnail
+          containerPort: 8088
           protocol: TCP
         resources:
           limits:

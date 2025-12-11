@@ -285,11 +285,15 @@ metadata:
   annotations:
     kubernetes.progamesigner.dev/hostname: drive
     nginx.org/location-snippets: |
+      add_header Access-Control-Allow-Origin *;
+
       proxy_request_buffering off;
+
+      proxy_set_header Connection "";
     nginx.org/client-max-body-size: '0'
     nginx.org/proxy-read-timeout: 24h
     nginx.org/proxy-send-timeout: 24h
-    nginx.org/rewrites: serviceName=seafile-seadoc rewrite=/
+    nginx.org/rewrites: serviceName=seafile-seafhttp rewrite=/;serviceName=seafile-seadoc rewrite=/
     nginx.org/websocket-services: seafile-notification,seafile-seadoc-websocket
   name: seafile
 spec:
@@ -337,7 +341,35 @@ spec:
           service:
             name: seafile
             port:
+              name: seafdav
+        path: /:dir_browser
+        pathType: Prefix
+      - backend:
+          service:
+            name: seafile
+            port:
+              name: seafdav
+        path: /seafdav/
+        pathType: Prefix
+      - backend:
+          service:
+            name: seafile-seafhttp
+            port:
+              name: seafhttp
+        path: /seafhttp/
+        pathType: Prefix
+      - backend:
+          service:
+            name: seafile
+            port:
               name: http
+        path: /media
+        pathType: Prefix
+      - backend:
+          service:
+            name: seafile
+            port:
+              name: seafile
         path: /
         pathType: Prefix
   tls:

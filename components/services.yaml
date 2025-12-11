@@ -407,6 +407,29 @@ spec:
     port: 80
     protocol: TCP
     targetPort: http
+  - name: seafile
+    port: 8000
+    protocol: TCP
+    targetPort: seafile
+  - name: seafdav
+    port: 8080
+    protocol: TCP
+    targetPort: seafdav
+  selector:
+    app.kubernetes.io/component: frontend
+    app.kubernetes.io/name: seafile
+    app.kubernetes.io/part-of: components
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: seafile-seafhttp
+spec:
+  ports:
+  - name: seafhttp
+    port: 8082
+    protocol: TCP
+    targetPort: seafhttp
   selector:
     app.kubernetes.io/component: frontend
     app.kubernetes.io/name: seafile
