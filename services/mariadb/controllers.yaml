@@ -41,10 +41,20 @@ spec:
             cpu: 500m
             memory: 1Gi
         volumeMounts:
+        - name: conf
+          mountPath: /etc/mysql/conf.d
+          readOnly: true
         - name: data
           mountPath: /var/lib/mysql
       enableServiceLinks: false
       serviceAccountName: default
+      volumes:
+      - name: conf
+        configMap:
+          name: mariadb
+          items:
+          - key: max_connections.cnf
+            path: max_connections.cnf
   volumeClaimTemplates:
   - metadata:
       name: data
