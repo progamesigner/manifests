@@ -49,6 +49,10 @@ secretGenerator:
   literals:
   - userID=ceph-csi-cephfs
   - userKey=AQB7sAppNEruJhAAVYNN4fTKxJ1VUbc6DyN0NA==
+- name: ceph-csi-cephfs-tmp
+  literals:
+  - userID=ceph-csi-cephfs-tmp
+  - userKey=AQBxNFFpDiOmJhAAw0k/dGV6pbonjr/YM4vYVA==
 - name: ceph-csi-rbd
   literals:
   - userID=ceph-csi-rbd
