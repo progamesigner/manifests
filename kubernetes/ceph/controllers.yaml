@@ -154,11 +154,11 @@ spec:
           timeoutSeconds: 30
         resources:
           limits:
-            cpu: 300m
-            memory: 512Mi
+            cpu: 1000m
+            memory: 2Gi
           requests:
             cpu: 100m
-            memory: 32Mi
+            memory: 128Mi
         volumeMounts:
         - name: conf
           mountPath: /etc/ceph
@@ -338,11 +338,11 @@ spec:
           timeoutSeconds: 30
         resources:
           limits:
-            cpu: 300m
-            memory: 512Mi
+            cpu: 1000m
+            memory: 2Gi
           requests:
             cpu: 100m
-            memory: 32Mi
+            memory: 128Mi
         volumeMounts:
         - name: conf
           mountPath: /etc/ceph
@@ -522,11 +522,11 @@ spec:
           timeoutSeconds: 30
         resources:
           limits:
-            cpu: 300m
-            memory: 512Mi
+            cpu: 1000m
+            memory: 2Gi
           requests:
             cpu: 100m
-            memory: 32Mi
+            memory: 128Mi
         volumeMounts:
         - name: conf
           mountPath: /etc/ceph
