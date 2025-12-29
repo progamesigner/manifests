@@ -133,7 +133,7 @@ patches:
     metadata:
       name: ceph-radosgw
     spec:
-      replicas: 5
+      replicas: 2
 - patch: |-
     apiVersion: apps/v1
     kind: Deployment
