@@ -34,6 +34,7 @@ resources:
 - https://raw.githubusercontent.com/metallb/metallb/v0.15.3/config/crd/bases/metallb.io_bgpadvertisements.yaml
 - https://raw.githubusercontent.com/metallb/metallb/v0.15.3/config/crd/bases/metallb.io_bgppeers.yaml
 - https://raw.githubusercontent.com/metallb/metallb/v0.15.3/config/crd/bases/metallb.io_communities.yaml
+- https://raw.githubusercontent.com/metallb/metallb/v0.15.3/config/crd/bases/metallb.io_configurationstates.yaml
 - https://raw.githubusercontent.com/metallb/metallb/v0.15.3/config/crd/bases/metallb.io_ipaddresspools.yaml
 - https://raw.githubusercontent.com/metallb/metallb/v0.15.3/config/crd/bases/metallb.io_l2advertisements.yaml
 - https://raw.githubusercontent.com/metallb/metallb/v0.15.3/config/crd/bases/metallb.io_servicebgpstatuses.yaml
