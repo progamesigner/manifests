@@ -22,27 +22,12 @@ spec:
         app.kubernetes.io/part-of: components
     spec:
       automountServiceAccountToken: false
-      initContainers:
-      - name: chown
-        image: busybox:latest
-        command:
-        - sh
-        - -c
-        - |
-          set -ex;
-          chown -R 1000 /data;
-        resources:
-          requests:
-            cpu: 1m
-            memory: 1Mi
-        securityContext:
-          runAsUser: 0
-        volumeMounts:
-        - name: data
-          mountPath: /data
       containers:
       - name: redis-insight
         image: redis/insight:latest
+        envFrom:
+        - secretRef:
+            name: redis-insight
         ports:
         - name: http
           containerPort: 5540
@@ -53,12 +38,5 @@ spec:
           requests:
             cpu: 100m
             memory: 64Mi
-        volumeMounts:
-        - name: data
-          mountPath: /data
       enableServiceLinks: false
       serviceAccountName: default
-      volumes:
-      - name: data
-        persistentVolumeClaim:
-          claimName: redis-insight

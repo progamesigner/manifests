@@ -4,3 +4,9 @@ kind: Component
 resources:
 - controllers.yaml
 - storages.yaml
+secretGenerator:
+- name: redis-insight
+  envs:
+  - insight.env
+  literals:
+  - RI_DATABASE_MANAGEMENT=false

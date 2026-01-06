@@ -52,7 +52,7 @@ images:
   newTag: v2.26.0-ffmpeg
 - name: mongodb/compass
   newName: haohanyang/compass-web
-  newTag: 0.1.1
+  newTag: 0.4.0-beta.1
 - name: network/cloudflare-warp
   newName: amirdaaee/cloudflare-warp
   newTag: 2023.10.120-1
@@ -76,7 +76,7 @@ images:
   newTag: 5.2.1
 - name: redis/insight
   newName: redis/redisinsight
-  newTag: '2.66'
+  newTag: '2.70'
 - name: rsshub/rsshub
   newName: diygod/rsshub
   newTag: '2026-01-05'
