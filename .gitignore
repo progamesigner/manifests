@@ -6,6 +6,7 @@ components/mongodb-compass/compass.env
 components/redis-insight/insight.env
 components/rsshub/rsshub.env
 components/seafile/seafile.env
+components/tailscale.env
 components/tailscale/protonvpn.ch.conf
 components/tailscale/protonvpn.de.conf
 components/tailscale/protonvpn.jp.conf

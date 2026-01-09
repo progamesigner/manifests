@@ -93,3 +93,6 @@ secretGenerator:
 - name: cert-manager-cloudflare
   envs:
   - cloudflare.env
+- name: tailscale-app-connector
+  envs:
+  - tailscale.env

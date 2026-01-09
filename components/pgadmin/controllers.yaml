@@ -69,6 +69,54 @@ spec:
         volumeMounts:
         - name: data
           mountPath: /var/lib/pgadmin
+      - name: tailscale
+        image: network/tailscale:latest
+        env:
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: POD_UID
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.uid
+        - name: KUBERNETES_SERVICE_HOST
+          value: ''
+        - name: KUBERNETES_SERVICE_PORT
+          value: ''
+        - name: TS_AUTHKEY
+          valueFrom:
+            secretKeyRef:
+              name: tailscale-app-connector
+              key: TS_AUTHKEY
+        - name: TS_EXTRA_ARGS
+          value: --accept-routes=true
+        - name: TS_KUBE_SECRET
+          value: ''
+        - name: TS_USERSPACE
+          value: 'false'
+        livenessProbe:
+          exec:
+            command:
+            - tailscale
+            - ip
+            - --4
+          initialDelaySeconds: 30
+          periodSeconds: 30
+        resources:
+          limits:
+            cpu: 300m
+            memory: 256Mi
+          requests:
+            cpu: 100m
+            memory: 64Mi
+        securityContext:
+          capabilities:
+            add:
+            - NET_ADMIN
+            drop:
+            - ALL
+          privileged: true
       enableServiceLinks: false
       serviceAccountName: default
       volumes:
