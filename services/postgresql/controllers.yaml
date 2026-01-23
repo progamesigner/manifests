@@ -26,6 +26,9 @@ spec:
       containers:
       - name: postgresql
         image: postgresql/postgresql:latest
+        args:
+        - -c
+        - config_file=/etc/postgresql/postgresql.conf
         envFrom:
         - secretRef:
             name: postgresql
@@ -41,10 +44,20 @@ spec:
             cpu: 500m
             memory: 1Gi
         volumeMounts:
+        - name: conf
+          mountPath: /etc/postgresql
+          readOnly: true
         - name: data
           mountPath: /var/lib/postgresql/data
       enableServiceLinks: false
       serviceAccountName: default
+      volumes:
+      - name: conf
+        configMap:
+          name: postgresql
+          items:
+          - key: postgresql.conf
+            path: postgresql.conf
   volumeClaimTemplates:
   - metadata:
       name: data
