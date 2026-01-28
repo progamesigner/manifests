@@ -21,6 +21,7 @@ configMapGenerator:
   - MAIL_DEFAULT_SEND_FROM=default@example.com
   - MAIL_TYPE=smtp
   - PLUGIN_STORAGE_TYPE=local
+  - RESPECT_XFORWARD_HEADERS_ENABLED=true
   - SERVICE_API_URL=''
   - SQLALCHEMY_POOL_PRE_PING=true
   - STORAGE_TYPE=s3
