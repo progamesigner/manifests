@@ -40,10 +40,10 @@ images:
   newTag: 1.11.4
 - name: gloomhaven/client
   newName: gloomhavensecretariat/ghs
-  newTag: v0.73.0
+  newTag: v0.144.7
 - name: gloomhaven/server
-  newName: gloomhavensecretariat/ghs-server
-  newTag: v0.72.10
+  newName: gloomhavensecretariat/ghs-server-postgresql
+  newTag: v0.144.0
 - name: home-assistant/home-assistant
   newName: ghcr.io/home-assistant/home-assistant
   newTag: 2026.1.3
