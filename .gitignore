@@ -2,6 +2,7 @@ components/cloudflare.env
 components/cloudflared/cloudflared.env
 components/coder/coder.env
 components/dify/dify.env
+components/gloomhaven/server.json
 components/mongodb-compass/compass.env
 components/redis-insight/insight.env
 components/rsshub/rsshub.env
