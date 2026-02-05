@@ -16,10 +16,10 @@ images:
   newTag: v2.11.3
 - name: dify/api
   newName: langgenius/dify-api
-  newTag: 1.12.0
+  newTag: 1.12.1
 - name: dify/migration
   newName: langgenius/dify-api
-  newTag: 1.12.0
+  newTag: 1.12.1
 - name: dify/plugin-daemon
   newName: langgenius/dify-plugin-daemon
   newTag: 0.5.3-local
@@ -28,16 +28,16 @@ images:
   newTag: 0.2.12
 - name: dify/scheduler
   newName: langgenius/dify-api
-  newTag: 1.12.0
+  newTag: 1.12.1
 - name: dify/ssrf-proxy
   newName: ubuntu/squid
   newTag: 6.6-24.04_beta
 - name: dify/web
   newName: langgenius/dify-web
-  newTag: 1.12.0
+  newTag: 1.12.1
 - name: dify/worker
   newName: langgenius/dify-api
-  newTag: 1.12.0
+  newTag: 1.12.1
 - name: gloomhaven/client
   newName: gloomhavensecretariat/ghs
   newTag: v0.144.7
