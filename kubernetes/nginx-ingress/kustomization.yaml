@@ -19,12 +19,12 @@ configMapGenerator:
 images:
 - name: nginx-ingress/nginx-ingress
   newName: nginx/nginx-ingress
-  newTag: 5.3.2
+  newTag: 5.3.3
 resources:
 - controllers.yaml
 - rbac.yaml
-- https://raw.githubusercontent.com/nginx/kubernetes-ingress/v5.3.2/config/crd/bases/k8s.nginx.org_globalconfigurations.yaml
-- https://raw.githubusercontent.com/nginx/kubernetes-ingress/v5.3.2/config/crd/bases/k8s.nginx.org_policies.yaml
-- https://raw.githubusercontent.com/nginx/kubernetes-ingress/v5.3.2/config/crd/bases/k8s.nginx.org_transportservers.yaml
-- https://raw.githubusercontent.com/nginx/kubernetes-ingress/v5.3.2/config/crd/bases/k8s.nginx.org_virtualserverroutes.yaml
-- https://raw.githubusercontent.com/nginx/kubernetes-ingress/v5.3.2/config/crd/bases/k8s.nginx.org_virtualservers.yaml
+- https://raw.githubusercontent.com/nginx/kubernetes-ingress/v5.3.3/config/crd/bases/k8s.nginx.org_globalconfigurations.yaml
+- https://raw.githubusercontent.com/nginx/kubernetes-ingress/v5.3.3/config/crd/bases/k8s.nginx.org_policies.yaml
+- https://raw.githubusercontent.com/nginx/kubernetes-ingress/v5.3.3/config/crd/bases/k8s.nginx.org_transportservers.yaml
+- https://raw.githubusercontent.com/nginx/kubernetes-ingress/v5.3.3/config/crd/bases/k8s.nginx.org_virtualserverroutes.yaml
+- https://raw.githubusercontent.com/nginx/kubernetes-ingress/v5.3.3/config/crd/bases/k8s.nginx.org_virtualservers.yaml
