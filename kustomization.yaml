@@ -4,7 +4,7 @@ kind: Kustomization
 images:
 - name: adguard-home/adguard-home
   newName: adguard/adguardhome
-  newTag: v0.107.71
+  newTag: v0.107.72
 - name: apprise/apprise
   newName: caronc/apprise
   newTag: 1.1.8
@@ -79,7 +79,7 @@ images:
   newTag: '2.70'
 - name: rsshub/rsshub
   newName: diygod/rsshub
-  newTag: '2026-02-18'
+  newTag: '2026-02-21'
 - name: seafile/backend
   newName: seafileltd/seafile-pro-mc
   newTag: 13.0-latest
@@ -106,7 +106,7 @@ images:
   newTag: 2.0.3
 - name: unifi/network
   newName: lscr.io/linuxserver/unifi-network-application
-  newTag: 10.1.84-ls116
+  newTag: 10.1.85-ls117
 - name: vscode/server
   newName: ghcr.io/progamesigner/vscode-server
   newTag: 20230422-jammy
@@ -115,10 +115,10 @@ images:
   newTag: 1.603.3
 - name: windmill/windmill-server
   newName: ghcr.io/windmill-labs/windmill
-  newTag: 1.631.2
+  newTag: 1.639.0
 - name: windmill/windmill-worker
   newName: ghcr.io/windmill-labs/windmill
-  newTag: 1.631.2
+  newTag: 1.639.0
 patches:
 - patch: |-
     apiVersion: apps/v1
