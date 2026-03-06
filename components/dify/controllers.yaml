@@ -172,6 +172,8 @@ spec:
               key: PLUGIN_STORAGE_TYPE
         - name: PLUGIN_WORKING_PATH
           value: /app/storage/cwd
+        - name: UV_CACHE_DIR
+          value: /app/storage/.cache/uv
         - name: SERVER_PORT
           value: '5002'
         - name: SERVER_KEY
@@ -191,11 +193,11 @@ spec:
           containerPort: 5003
         resources:
           limits:
-            cpu: 2000m
-            memory: 2Gi
+            cpu: 4000m
+            memory: 4Gi
           requests:
-            cpu: 500m
-            memory: 256Mi
+            cpu: 1000m
+            memory: 2Gi
         volumeMounts:
         - name: data
           mountPath: /app/storage
