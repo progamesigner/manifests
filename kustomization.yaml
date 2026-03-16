@@ -70,7 +70,7 @@ images:
   newTag: '2025-05-20'
 - name: pgadmin/pgadmin
   newName: dpage/pgadmin4
-  newTag: '8.14'
+  newTag: '9.13'
 - name: phpmyadmin/phpmyadmin
   newName: phpmyadmin
   newTag: 5.2.1
