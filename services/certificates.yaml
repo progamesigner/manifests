@@ -2,9 +2,30 @@
 apiVersion: cert-manager.io/v1
 kind: Issuer
 metadata:
-  name: ceph-radosgw
+  name: ceph-radosgw-ca
 spec:
   selfSigned: {}
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: ceph-radosgw-ca
+spec:
+  isCA: true
+  commonName: ceph-radosgw-ca
+  secretName: tls-ceph-radosgw-ca
+  issuerRef:
+    group: cert-manager.io
+    name: ceph-radosgw-ca
+    kind: Issuer
+---
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: ceph-radosgw
+spec:
+  ca:
+    secretName: tls-ceph-radosgw-ca
 ---
 apiVersion: cert-manager.io/v1
 kind: Certificate
