@@ -25,7 +25,7 @@ images:
   newTag: 0.5.4-local
 - name: dify/sandbox
   newName: langgenius/dify-sandbox
-  newTag: 0.2.12
+  newTag: 0.2.14
 - name: dify/scheduler
   newName: langgenius/dify-api
   newTag: 1.13.2
