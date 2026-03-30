@@ -29,9 +29,7 @@ spec:
         command:
         - sh
         - -c
-        - set -ex;
-          sysctl -w net.ipv4.conf.all.rp_filter=2;
-          sysctl -w net.ipv4.conf.all.src_valid_mark=1;
+        - set -ex; sysctl -w net.ipv4.conf.all.rp_filter=2; sysctl -w net.ipv4.conf.all.src_valid_mark=1;
         resources:
           requests:
             cpu: 1m
@@ -55,6 +53,11 @@ spec:
             secretKeyRef:
               name: tailscale
               key: TS_AUTHKEY
+        - name: TS_EXTRA_ARGS
+          valueFrom:
+            secretKeyRef:
+              name: tailscale
+              key: TS_EXTRA_ARGS
         - name: TS_HOSTNAME
           valueFrom:
             secretKeyRef:
@@ -163,9 +166,7 @@ spec:
         command:
         - sh
         - -c
-        - set -ex;
-          sysctl -w net.ipv4.conf.all.rp_filter=2;
-          sysctl -w net.ipv4.conf.all.src_valid_mark=1;
+        - set -ex; sysctl -w net.ipv4.conf.all.rp_filter=2; sysctl -w net.ipv4.conf.all.src_valid_mark=1;
         resources:
           requests:
             cpu: 1m
@@ -189,6 +190,11 @@ spec:
             secretKeyRef:
               name: tailscale
               key: TS_AUTHKEY
+        - name: TS_EXTRA_ARGS
+          valueFrom:
+            secretKeyRef:
+              name: tailscale
+              key: TS_EXTRA_ARGS
         - name: TS_HOSTNAME
           valueFrom:
             secretKeyRef:
@@ -297,9 +303,7 @@ spec:
         command:
         - sh
         - -c
-        - set -ex;
-          sysctl -w net.ipv4.conf.all.rp_filter=2;
-          sysctl -w net.ipv4.conf.all.src_valid_mark=1;
+        - set -ex; sysctl -w net.ipv4.conf.all.rp_filter=2; sysctl -w net.ipv4.conf.all.src_valid_mark=1;
         resources:
           requests:
             cpu: 1m
@@ -323,6 +327,11 @@ spec:
             secretKeyRef:
               name: tailscale
               key: TS_AUTHKEY
+        - name: TS_EXTRA_ARGS
+          valueFrom:
+            secretKeyRef:
+              name: tailscale
+              key: TS_EXTRA_ARGS
         - name: TS_HOSTNAME
           valueFrom:
             secretKeyRef:
@@ -431,9 +440,7 @@ spec:
         command:
         - sh
         - -c
-        - set -ex;
-          sysctl -w net.ipv4.conf.all.rp_filter=2;
-          sysctl -w net.ipv4.conf.all.src_valid_mark=1;
+        - set -ex; sysctl -w net.ipv4.conf.all.rp_filter=2; sysctl -w net.ipv4.conf.all.src_valid_mark=1;
         resources:
           requests:
             cpu: 1m
@@ -457,6 +464,11 @@ spec:
             secretKeyRef:
               name: tailscale
               key: TS_AUTHKEY
+        - name: TS_EXTRA_ARGS
+          valueFrom:
+            secretKeyRef:
+              name: tailscale
+              key: TS_EXTRA_ARGS
         - name: TS_HOSTNAME
           valueFrom:
             secretKeyRef:
@@ -565,9 +577,7 @@ spec:
         command:
         - sh
         - -c
-        - set -ex;
-          sysctl -w net.ipv4.conf.all.rp_filter=2;
-          sysctl -w net.ipv4.conf.all.src_valid_mark=1;
+        - set -ex; sysctl -w net.ipv4.conf.all.rp_filter=2; sysctl -w net.ipv4.conf.all.src_valid_mark=1;
         resources:
           requests:
             cpu: 1m
@@ -591,6 +601,11 @@ spec:
             secretKeyRef:
               name: tailscale
               key: TS_AUTHKEY
+        - name: TS_EXTRA_ARGS
+          valueFrom:
+            secretKeyRef:
+              name: tailscale
+              key: TS_EXTRA_ARGS
         - name: TS_HOSTNAME
           valueFrom:
             secretKeyRef:
