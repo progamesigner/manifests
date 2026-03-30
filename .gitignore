@@ -4,6 +4,7 @@ components/coder/coder.env
 components/dify/dify.env
 components/gloomhaven/server.json
 components/mongodb-compass/compass.env
+components/obsidian/obsidian.env
 components/redis-insight/insight.env
 components/rsshub/rsshub.env
 components/seafile/seafile.env

@@ -68,6 +68,9 @@ images:
 - name: network/wireguard
   newName: ghcr.io/jordanpotter/docker-wireguard
   newTag: '2025-05-20'
+- name: obsidian/obsidian
+  newName: ghcr.io/belphemur/obsidian-headless-sync-docker
+  newTag: 0.0.8
 - name: pgadmin/pgadmin
   newName: dpage/pgadmin4
   newTag: '9.13'

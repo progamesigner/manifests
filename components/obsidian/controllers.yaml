@@ -1,0 +1,60 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/component: obsidian
+    app.kubernetes.io/name: obsidian
+    app.kubernetes.io/part-of: components
+  name: obsidian
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: obsidian
+      app.kubernetes.io/name: obsidian
+      app.kubernetes.io/part-of: components
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/component: obsidian
+        app.kubernetes.io/name: obsidian
+        app.kubernetes.io/part-of: components
+    spec:
+      automountServiceAccountToken: false
+      containers:
+      - name: obsidian
+        image: obsidian/obsidian:latest
+        env:
+        - name: PGID
+          value: '1000'
+        - name: PUID
+          value: '1000'
+        envFrom:
+        - configMapRef:
+            name: obsidian
+        - secretRef:
+            name: obsidian
+        resources:
+          limits:
+            cpu: 500m
+            memory: 256Mi
+          requests:
+            cpu: 300m
+            memory: 128Mi
+        volumeMounts:
+        - name: conf
+          mountPath: /home/obsidian/.config
+        - name: data
+          mountPath: /vault
+      enableServiceLinks: false
+      securityContext:
+        fsGroup: 1000
+      serviceAccountName: default
+      volumes:
+      - name: conf
+        persistentVolumeClaim:
+          claimName: obsidian-config
+      - name: data
+        persistentVolumeClaim:
+          claimName: obsidian

@@ -11,6 +11,7 @@ components:
 - gloomhaven
 - home-assistant
 - mongodb-compass
+- obsidian
 - pgadmin
 - phpmyadmin
 - proxy
