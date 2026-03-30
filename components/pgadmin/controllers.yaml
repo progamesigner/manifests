@@ -89,18 +89,21 @@ spec:
             secretKeyRef:
               name: tailscale-app-connector
               key: TS_AUTHKEY
+        - name: TS_ENABLE_HEALTH_CHECK
+          value: 'true'
         - name: TS_EXTRA_ARGS
-          value: --accept-routes=true
+          valueFrom:
+            secretKeyRef:
+              name: tailscale-app-connector
+              key: TS_EXTRA_ARGS
         - name: TS_KUBE_SECRET
           value: ''
         - name: TS_USERSPACE
           value: 'false'
         livenessProbe:
-          exec:
-            command:
-            - tailscale
-            - ip
-            - --4
+          httpGet:
+            path: /health
+            port: 9002
           initialDelaySeconds: 30
           periodSeconds: 30
         resources:
