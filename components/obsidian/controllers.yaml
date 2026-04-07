@@ -22,23 +22,6 @@ spec:
         app.kubernetes.io/part-of: components
     spec:
       automountServiceAccountToken: false
-      initContainers:
-      - name: init
-        image: busybox:latest
-        command:
-        - sh
-        - -c
-        - |
-          set -ex;
-
-          cp -LRv /mnt/conf-persist/* /mnt/conf/;
-
-          chown -R 1000:1000 /mnt/conf;
-        volumeMounts:
-        - name: conf
-          mountPath: /mnt/conf
-        - name: conf-persist
-          mountPath: /mnt/conf-persist
       containers:
       - name: obsidian
         image: obsidian/obsidian:latest
@@ -52,16 +35,6 @@ spec:
             name: obsidian
         - secretRef:
             name: obsidian
-        lifecycle:
-          preStop:
-            exec:
-              command:
-              - sh
-              - -c
-              - |
-                set -ex;
-
-                cp -LRv /home/obsidian/.config/* /mnt/conf-persist/ || true
         resources:
           limits:
             cpu: 500m
@@ -72,8 +45,6 @@ spec:
         volumeMounts:
         - name: conf
           mountPath: /home/obsidian/.config
-        - name: conf-persist
-          mountPath: /mnt/conf-persist
         - name: data
           mountPath: /vault
       enableServiceLinks: false
@@ -82,9 +53,6 @@ spec:
       serviceAccountName: default
       volumes:
       - name: conf
-        emptyDir:
-          medium: Memory
-      - name: conf-persist
         persistentVolumeClaim:
           claimName: obsidian-config
       - name: data
