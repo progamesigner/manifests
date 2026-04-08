@@ -4,6 +4,7 @@ kind: Component
 configMapGenerator:
 - name: windmill
   literals:
+  - ENABLE_UNSHARE_PID=true
   - RUST_LOG=info
 resources:
 - controllers.yaml

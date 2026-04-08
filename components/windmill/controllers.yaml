@@ -108,10 +108,15 @@ spec:
         resources:
           limits:
             cpu: 2000m
-            memory: 2Gi
+            memory: 4Gi
           requests:
             cpu: 300m
             memory: 256Mi
+        securityContext:
+          appArmorProfile:
+            type: Localhost
+            localhostProfile: nsjail
+          privileged: true
       enableServiceLinks: false
       serviceAccountName: default
 ---
@@ -157,10 +162,15 @@ spec:
         resources:
           limits:
             cpu: 2000m
-            memory: 2Gi
+            memory: 4Gi
           requests:
             cpu: 300m
             memory: 256Mi
+        securityContext:
+          appArmorProfile:
+            type: Localhost
+            localhostProfile: nsjail
+          privileged: true
       enableServiceLinks: false
       serviceAccountName: default
 ---
@@ -210,10 +220,15 @@ spec:
         resources:
           limits:
             cpu: 2000m
-            memory: 2Gi
+            memory: 4Gi
           requests:
             cpu: 300m
             memory: 256Mi
+        securityContext:
+          appArmorProfile:
+            type: Localhost
+            localhostProfile: nsjail
+          privileged: true
       enableServiceLinks: false
       serviceAccountName: default
 ---
