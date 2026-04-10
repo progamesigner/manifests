@@ -52,6 +52,21 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
+  name: bifrost
+spec:
+  ports:
+  - name: http
+    port: 8080
+    protocol: TCP
+    targetPort: http
+  selector:
+    app.kubernetes.io/component: bifrost
+    app.kubernetes.io/name: bifrost
+    app.kubernetes.io/part-of: components
+---
+apiVersion: v1
+kind: Service
+metadata:
   name: clamav
 spec:
   ports:
