@@ -8,36 +8,15 @@ images:
 - name: apprise/apprise
   newName: caronc/apprise
   newTag: 1.1.8
+- name: bifrost/bifrost
+  newName: maximhq/bifrost
+  newTag: v1.5.0-prerelease2
 - name: clamav/clamav
   newName: clamav/clamav
   newTag: 1.5.1
 - name: coder/coder
   newName: ghcr.io/coder/coder
   newTag: v2.11.3
-- name: dify/api
-  newName: langgenius/dify-api
-  newTag: 1.13.3
-- name: dify/migration
-  newName: langgenius/dify-api
-  newTag: 1.13.3
-- name: dify/plugin-daemon
-  newName: langgenius/dify-plugin-daemon
-  newTag: 0.5.6-local
-- name: dify/sandbox
-  newName: langgenius/dify-sandbox
-  newTag: 0.2.14
-- name: dify/scheduler
-  newName: langgenius/dify-api
-  newTag: 1.13.3
-- name: dify/ssrf-proxy
-  newName: ubuntu/squid
-  newTag: 6.6-24.04_beta
-- name: dify/web
-  newName: langgenius/dify-web
-  newTag: 1.13.3
-- name: dify/worker
-  newName: langgenius/dify-api
-  newTag: 1.13.3
 - name: gloomhaven/client
   newName: gloomhavensecretariat/ghs
   newTag: v0.144.7

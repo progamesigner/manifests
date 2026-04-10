@@ -8,7 +8,6 @@ components:
 - clamav
 - cloudflared
 - coder
-- dify
 - gloomhaven
 - home-assistant
 - mongodb-compass
