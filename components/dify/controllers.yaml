@@ -8,7 +8,7 @@ metadata:
     app.kubernetes.io/part-of: components
   name: dify-api
 spec:
-  replicas: 1
+  replicas: 0
   selector:
     matchLabels:
       app.kubernetes.io/component: api
@@ -127,7 +127,7 @@ metadata:
     app.kubernetes.io/part-of: components
   name: dify-plugin-daemon
 spec:
-  replicas: 1
+  replicas: 0
   selector:
     matchLabels:
       app.kubernetes.io/component: plugin-daemon
@@ -217,7 +217,7 @@ metadata:
     app.kubernetes.io/part-of: components
   name: dify-sandbox
 spec:
-  replicas: 1
+  replicas: 0
   selector:
     matchLabels:
       app.kubernetes.io/component: sandbox
@@ -295,7 +295,7 @@ metadata:
     app.kubernetes.io/part-of: components
   name: dify-scheduler
 spec:
-  replicas: 1
+  replicas: 0
   selector:
     matchLabels:
       app.kubernetes.io/component: scheduler
@@ -358,7 +358,7 @@ metadata:
     app.kubernetes.io/part-of: components
   name: dify-ssrf-proxy
 spec:
-  replicas: 1
+  replicas: 0
   selector:
     matchLabels:
       app.kubernetes.io/component: ssrf-proxy
@@ -441,7 +441,7 @@ metadata:
     app.kubernetes.io/part-of: components
   name: dify-web
 spec:
-  replicas: 1
+  replicas: 0
   selector:
     matchLabels:
       app.kubernetes.io/component: web
@@ -491,7 +491,7 @@ metadata:
     app.kubernetes.io/part-of: components
   name: dify-worker
 spec:
-  replicas: 1
+  replicas: 0
   selector:
     matchLabels:
       app.kubernetes.io/component: worker
