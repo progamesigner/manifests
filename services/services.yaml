@@ -132,7 +132,7 @@ spec:
     protocol: TCP
     targetPort: postgresql
   selector:
-    app.kubernetes.io/component: postgresql
+    app.kubernetes.io/component: postgresql-v18
     app.kubernetes.io/name: postgresql
     app.kubernetes.io/part-of: services
   type: LoadBalancer

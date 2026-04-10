@@ -28,9 +28,9 @@ images:
 - name: mongodb/mongodb
   newName: mongo
   newTag: 6.0.5
-- name: postgresql/postgresql
+- name: postgresql/postgresql-v18
   newName: postgres
-  newTag: 15.2-alpine
+  newTag: 18.3-alpine
 - name: rabbitmq/rabbitmq
   newName: rabbitmq
   newTag: 3.11.16-alpine
