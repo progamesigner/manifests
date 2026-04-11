@@ -4,6 +4,7 @@ kind: Component
 configMapGenerator:
 - name: windmill
   literals:
+  - ALLOW_PRIVATE_AI_BASE_URLS=true
   - ENABLE_UNSHARE_PID=true
   - RUST_LOG=info
 resources:
