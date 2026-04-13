@@ -5,7 +5,6 @@ components:
 - browserless
 - ceph
 - elasticsearch
-- localai
 - mariadb
 - mongodb
 - postgresql
