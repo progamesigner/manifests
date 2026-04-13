@@ -11,7 +11,6 @@ components:
 - postgresql
 - rabbitmq
 - redis
-- weaviate
 images:
 - name: browserless/browserless
   newName: ghcr.io/browserless/multi
@@ -37,9 +36,6 @@ images:
 - name: redis/redis
   newName: redis
   newTag: 8.0.0-alpine
-- name: weaviate/weaviate
-  newName: semitechnologies/weaviate
-  newTag: 1.23.8
 namespace: default
 resources:
 - certificates.yaml
