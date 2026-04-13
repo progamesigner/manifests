@@ -141,24 +141,6 @@ apiVersion: v1
 kind: Service
 metadata:
   annotations:
-    kubernetes.progamesigner.dev/hostname: rabbitmq
-  name: rabbitmq
-spec:
-  ports:
-  - name: amqp-tls
-    port: 5672
-    protocol: TCP
-    targetPort: amqp-tls
-  selector:
-    app.kubernetes.io/component: rabbitmq
-    app.kubernetes.io/name: rabbitmq
-    app.kubernetes.io/part-of: services
-  type: LoadBalancer
----
-apiVersion: v1
-kind: Service
-metadata:
-  annotations:
     kubernetes.progamesigner.dev/hostname: redis
   name: redis
 spec:

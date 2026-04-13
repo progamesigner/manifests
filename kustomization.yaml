@@ -125,13 +125,6 @@ patches:
       replicas: 0
 - patch: |-
     apiVersion: apps/v1
-    kind: StatefulSet
-    metadata:
-      name: rabbitmq
-    spec:
-      replicas: 0
-- patch: |-
-    apiVersion: apps/v1
     kind: Deployment
     metadata:
       name: windmill-worker

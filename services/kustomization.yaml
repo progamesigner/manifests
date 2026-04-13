@@ -9,7 +9,6 @@ components:
 - mariadb
 - mongodb
 - postgresql
-- rabbitmq
 - redis
 images:
 - name: browserless/browserless
@@ -30,9 +29,6 @@ images:
 - name: postgresql/postgresql-v18
   newName: postgres
   newTag: 18.3-alpine
-- name: rabbitmq/rabbitmq
-  newName: rabbitmq
-  newTag: 3.11.16-alpine
 - name: redis/redis
   newName: redis
   newTag: 8.0.0-alpine
