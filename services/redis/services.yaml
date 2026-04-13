@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: headless-redis
+  name: headless-redis-v8
 spec:
   clusterIP: None
   ports:
@@ -11,6 +11,6 @@ spec:
     protocol: TCP
     targetPort: redis
   selector:
-    app.kubernetes.io/component: redis
+    app.kubernetes.io/component: redis-v8
     app.kubernetes.io/name: redis
     app.kubernetes.io/part-of: services

@@ -132,7 +132,7 @@ spec:
     protocol: TCP
     targetPort: redis
   selector:
-    app.kubernetes.io/component: redis
+    app.kubernetes.io/component: redis-v8
     app.kubernetes.io/name: redis
     app.kubernetes.io/part-of: services
   type: LoadBalancer

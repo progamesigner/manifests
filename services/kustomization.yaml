@@ -28,9 +28,9 @@ images:
 - name: postgresql/postgresql-v18
   newName: postgres
   newTag: 18.3-alpine
-- name: redis/redis
+- name: redis/redis-v8
   newName: redis
-  newTag: 8.0.0-alpine
+  newTag: 8.6.2-alpine
 namespace: default
 resources:
 - certificates.yaml
