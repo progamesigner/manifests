@@ -10,7 +10,7 @@ images:
   newTag: 1.1.8
 - name: bifrost/bifrost
   newName: maximhq/bifrost
-  newTag: v1.5.0-prerelease2
+  newTag: v1.5.0-prerelease3
 - name: clamav/clamav
   newName: clamav/clamav
   newTag: 1.5.1
@@ -89,9 +89,9 @@ images:
 - name: vscode/server
   newName: ghcr.io/progamesigner/vscode-server
   newTag: 20230422-jammy
-- name: windmill/windmill-lsp
-  newName: ghcr.io/windmill-labs/windmill-lsp
-  newTag: 1.603.3
+- name: windmill/windmill-extra
+  newName: ghcr.io/windmill-labs/windmill-extra
+  newTag: 1.682.0
 - name: windmill/windmill-server
   newName: ghcr.io/windmill-labs/windmill
   newTag: 1.683.2

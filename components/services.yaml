@@ -509,15 +509,23 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: windmill-lsp
+  name: windmill-extra
 spec:
   ports:
   - name: lsp
     port: 3001
     protocol: TCP
     targetPort: lsp
+  - name: multiplayer
+    port: 3002
+    protocol: TCP
+    targetPort: multiplayer
+  - name: debugger
+    port: 3003
+    protocol: TCP
+    targetPort: debugger
   selector:
-    app.kubernetes.io/component: windmill-lsp
+    app.kubernetes.io/component: windmill-extra
     app.kubernetes.io/name: windmill
     app.kubernetes.io/part-of: components
 ---

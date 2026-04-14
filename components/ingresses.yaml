@@ -392,7 +392,7 @@ metadata:
   annotations:
     kubernetes.progamesigner.dev/hostname: api,workflow
     nginx.org/rewrites: serviceName=windmill-api rewrite=/api/r/default/
-    nginx.org/websocket-services: windmill,windmill-api,windmill-lsp
+    nginx.org/websocket-services: windmill,windmill-api,windmill-extra
   name: windmill
 spec:
   ingressClassName: nginx-ingress
@@ -412,10 +412,24 @@ spec:
       paths:
       - backend:
           service:
-            name: windmill-lsp
+            name: windmill-extra
             port:
               name: lsp
         path: /ws/
+        pathType: Prefix
+      - backend:
+          service:
+            name: windmill-extra
+            port:
+              name: debugger
+        path: /ws_debug/
+        pathType: Prefix
+      - backend:
+          service:
+            name: windmill-extra
+            port:
+              name: multiplayer
+        path: /ws_mp/
         pathType: Prefix
       - backend:
           service:

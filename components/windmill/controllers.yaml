@@ -63,6 +63,10 @@ spec:
           requests:
             cpu: 100m
             memory: 128Mi
+        securityContext:
+          runAsGroup: 1000
+          runAsNonRoot: true
+          runAsUser: 1000
       enableServiceLinks: false
       serviceAccountName: default
 ---
@@ -236,31 +240,42 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app.kubernetes.io/component: windmill-lsp
+    app.kubernetes.io/component: windmill-extra
     app.kubernetes.io/name: windmill
     app.kubernetes.io/part-of: components
-  name: windmill-lsp
+  name: windmill-extra
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app.kubernetes.io/component: windmill-lsp
+      app.kubernetes.io/component: windmill-extra
       app.kubernetes.io/name: windmill
       app.kubernetes.io/part-of: components
   template:
     metadata:
       labels:
-        app.kubernetes.io/component: windmill-lsp
+        app.kubernetes.io/component: windmill-extra
         app.kubernetes.io/name: windmill
         app.kubernetes.io/part-of: components
     spec:
       automountServiceAccountToken: false
       containers:
-      - name: windmill-lsp
-        image: windmill/windmill-lsp:latest
+      - name: windmill-extra
+        image: windmill/windmill-extra:latest
+        env:
+        - name: ENABLE_DEBUGGER
+          value: 'true'
+        - name: ENABLE_LSP
+          value: 'true'
+        - name: REQUIRE_SIGNED_DEBUG_REQUESTS
+          value: 'true'
         ports:
         - name: lsp
           containerPort: 3001
+        - name: multiplayer
+          containerPort: 3002
+        - name: debugger
+          containerPort: 3003
         resources:
           limits:
             cpu: 1000m
