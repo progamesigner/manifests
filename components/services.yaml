@@ -157,6 +157,21 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
+  name: obsidian
+spec:
+  ports:
+  - name: webdav
+    port: 8080
+    protocol: TCP
+    targetPort: webdav
+  selector:
+    app.kubernetes.io/component: obsidian
+    app.kubernetes.io/name: obsidian
+    app.kubernetes.io/part-of: components
+---
+apiVersion: v1
+kind: Service
+metadata:
   name: pgadmin
 spec:
   ports:

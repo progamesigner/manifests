@@ -22,29 +22,6 @@ spec:
         app.kubernetes.io/part-of: components
     spec:
       automountServiceAccountToken: false
-      initContainers:
-      - name: init
-        image: busybox:latest
-        command:
-        - sh
-        - -c
-        - |
-          set -ex;
-
-          for path in /mnt/conf-persist/obsidian-headless/sync/*/config.json; do
-            if [ -f $path ]; then
-              relpath=${path#/mnt/conf-persist/}
-              mkdir -p /mnt/conf/$(dirname $relpath)
-              cp -Lv $path /mnt/conf/$relpath
-            fi
-          done
-
-          chown -R 1000:1000 /mnt/conf;
-        volumeMounts:
-        - name: conf
-          mountPath: /mnt/conf
-        - name: conf-persist
-          mountPath: /mnt/conf-persist
       containers:
       - name: obsidian
         image: obsidian/obsidian:latest
@@ -58,22 +35,6 @@ spec:
             name: obsidian
         - secretRef:
             name: obsidian
-        lifecycle:
-          preStop:
-            exec:
-              command:
-              - sh
-              - -c
-              - |
-                set -ex;
-
-                for path in /home/obsidian/.config/obsidian-headless/sync/*/config.json; do
-                  if [ -f $path ]; then
-                    relpath=${path#/home/obsidian/.config/}
-                    mkdir -p /mnt/conf-persist/$(dirname $relpath)
-                    cp -Lv $path /mnt/conf-persist/$relpath || true
-                  fi
-                done
         resources:
           limits:
             cpu: 500m
@@ -84,8 +45,27 @@ spec:
         volumeMounts:
         - name: conf
           mountPath: /home/obsidian/.config
-        - name: conf-persist
-          mountPath: /mnt/conf-persist
+        - name: data
+          mountPath: /vault
+      - name: webdav
+        image: rclone/rclone:latest
+        args:
+        - serve
+        - webdav
+        - /vault
+        - --addr=:8080
+        ports:
+        - name: webdav
+          containerPort: 8080
+          protocol: TCP
+        resources:
+          limits:
+            cpu: 300m
+            memory: 128Mi
+          requests:
+            cpu: 100m
+            memory: 32Mi
+        volumeMounts:
         - name: data
           mountPath: /vault
       enableServiceLinks: false
@@ -94,9 +74,6 @@ spec:
       serviceAccountName: default
       volumes:
       - name: conf
-        emptyDir:
-          medium: Memory
-      - name: conf-persist
         persistentVolumeClaim:
           claimName: obsidian-config
       - name: data
