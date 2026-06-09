@@ -49,6 +49,9 @@ spec:
           mountPath: /vault
       - name: mcp
         image: mcp/memory:latest
+        env:
+        - name: AGENTMEM_HTTP_ALLOWED_HOSTS
+          value: '*'
         ports:
         - name: http
           containerPort: 8000
