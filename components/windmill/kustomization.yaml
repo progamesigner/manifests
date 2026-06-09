@@ -5,6 +5,7 @@ configMapGenerator:
 - name: windmill
   literals:
   - ALLOW_PRIVATE_AI_BASE_URLS=true
+  - ALLOW_PRIVATE_MCP_SERVER_URLS=true
   - ENABLE_UNSHARE_PID=true
   - RUST_LOG=info
 resources:
