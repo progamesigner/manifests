@@ -52,10 +52,21 @@ spec:
         env:
         - name: AGENTMEM_HTTP_ALLOWED_HOSTS
           value: '*'
+        - name: AGENTMEM_RECALL_BACKEND
+          value: tantivy
         ports:
         - name: http
           containerPort: 8000
           protocol: TCP
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 8000
+        readinessProbe:
+          httpGet:
+            path: /readyz
+            port: 8000
+          initialDelaySeconds: 5
         resources:
           limits:
             cpu: 500m
