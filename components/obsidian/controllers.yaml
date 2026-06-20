@@ -54,9 +54,8 @@ spec:
         - claude
         - --channels
         - plugin:telegram@claude-plugins-official
+        - --continue
         - --remote-control
-        - --resume
-        - claude-code
         resources:
           limits:
             cpu: 1000m
