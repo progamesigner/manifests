@@ -49,6 +49,7 @@ spec:
           mountPath: /vault
       - name: claude-code
         image: claude-code/claude-code:latest
+        imagePullPolicy: Always
         args:
         - claude
         - --channels
@@ -56,25 +57,6 @@ spec:
         - --remote-control
         - --resume
         - claude-code
-        command:
-        - /bin/bash
-        - -c
-        - |
-          set -e
-
-          XDG_HOME_PATH=/home/ubuntu
-
-          if [ -f $XDG_HOME_PATH/.claude/.claude.json ]; then
-              ln -sf $XDG_HOME_PATH/.claude/.claude.json $XDG_HOME_PATH/.claude.json
-          fi
-
-          echo "Installing / Updating Claude Code..."
-          curl -fsSL https://claude.ai/install.sh | bash
-
-          echo "Installed Claude Code version: $(claude --version)"
-
-          exec "$@"
-        - --
         resources:
           limits:
             cpu: 1000m
