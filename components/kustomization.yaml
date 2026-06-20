@@ -87,8 +87,8 @@ patches:
 resources:
 - certificates.yaml
 - ingresses.yaml
-- issuers.yaml
 - services.yaml
+- storages.yaml
 - tunnels.yaml
 secretGenerator:
 - name: cert-manager-cloudflare

@@ -87,10 +87,10 @@ spec:
           claimName: syncthing
       - name: files-git
         persistentVolumeClaim:
-          claimName: dev-tunnel-git
+          claimName: dev-conf-git
       - name: files-gpg
         persistentVolumeClaim:
-          claimName: dev-tunnel-gpg
+          claimName: dev-conf-gpg
       - name: files-ssh
         persistentVolumeClaim:
-          claimName: dev-tunnel-ssh
+          claimName: dev-conf-ssh
