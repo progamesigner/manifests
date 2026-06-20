@@ -34,3 +34,15 @@ spec:
     requests:
       storage: 16Mi
   storageClassName: ceph-cephfs
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: dev-data-claude
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 4Gi
+  storageClassName: ceph-cephfs

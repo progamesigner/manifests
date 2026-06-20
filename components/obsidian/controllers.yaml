@@ -47,6 +47,53 @@ spec:
           mountPath: /home/obsidian/.config
         - name: data
           mountPath: /vault
+      - name: claude-code
+        image: claude-code/claude-code:latest
+        args:
+        - claude
+        - --channels
+        - plugin:telegram@claude-plugins-official
+        - --remote-control
+        - --resume
+        - claude-code
+        command:
+        - /bin/bash
+        - -c
+        - |
+          set -e
+
+          XDG_HOME_PATH=/home/ubuntu
+
+          if [ -f $XDG_HOME_PATH/.claude/.claude.json ]; then
+              ln -sf $XDG_HOME_PATH/.claude/.claude.json $XDG_HOME_PATH/.claude.json
+          fi
+
+          echo "Installing / Updating Claude Code..."
+          curl -fsSL https://claude.ai/install.sh | bash
+
+          echo "Installed Claude Code version: $(claude --version)"
+
+          exec "$@"
+        - --
+        resources:
+          limits:
+            cpu: 1000m
+            memory: 2Gi
+          requests:
+            cpu: 500m
+            memory: 1Gi
+        securityContext:
+          runAsUser: 1000
+          runAsGroup: 1000
+          runAsNonRoot: true
+        stdin: true
+        tty: true
+        volumeMounts:
+        - name: data
+          mountPath: /workspace
+          subPath: Agents/workspace
+        - name: data-claude
+          mountPath: /home/ubuntu/.claude
       - name: mcp
         image: mcp/memory:latest
         env:
@@ -113,3 +160,6 @@ spec:
       - name: data
         persistentVolumeClaim:
           claimName: obsidian
+      - name: data-claude
+        persistentVolumeClaim:
+          claimName: dev-data-claude

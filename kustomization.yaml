@@ -17,6 +17,8 @@ images:
 - name: coder/coder
   newName: ghcr.io/coder/coder
   newTag: v2.11.3
+- name: claude-code/claude-code
+  newName: ghcr.io/progamesigner/devtools/claude-code
 - name: gloomhaven/client
   newName: gloomhavensecretariat/ghs
   newTag: v0.144.7
