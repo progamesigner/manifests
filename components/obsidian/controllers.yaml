@@ -22,6 +22,24 @@ spec:
         app.kubernetes.io/part-of: components
     spec:
       automountServiceAccountToken: false
+      initContainers:
+      - name: chown
+        image: busybox:latest
+        command:
+        - sh
+        - -c
+        - set -ex;
+
+          chown -R 1000:1000 /mnt/claude; chown -R 1000:1000 /mnt/gh;
+        resources:
+          requests:
+            cpu: 1m
+            memory: 1Mi
+        volumeMounts:
+        - name: conf-github
+          mountPath: /mnt/gh
+        - name: data-claude
+          mountPath: /mnt/claude
       containers:
       - name: obsidian
         image: obsidian/obsidian:latest
@@ -70,6 +88,8 @@ spec:
         stdin: true
         tty: true
         volumeMounts:
+        - name: conf-github
+          mountPath: /home/ubuntu/.config/gh
         - name: data
           mountPath: /workspace
           subPath: Agents/workspace
@@ -138,6 +158,9 @@ spec:
       - name: conf
         persistentVolumeClaim:
           claimName: obsidian-config
+      - name: conf-github
+        persistentVolumeClaim:
+          claimName: dev-conf-github
       - name: data
         persistentVolumeClaim:
           claimName: obsidian

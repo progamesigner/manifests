@@ -69,9 +69,11 @@ spec:
         - name: files
           mountPath: /home/vscode/.gitignore
           subPath: dotfiles/git/ignore
-        - name: files-git
+        - name: files-github
           mountPath: /home/vscode/.gitconfig
           subPath: gitconfig
+        - name: files-github
+          mountPath: /home/vscode/.config/gh
         - name: files-gpg
           mountPath: /home/vscode/.gnupg
         - name: files-ssh
@@ -88,6 +90,9 @@ spec:
       - name: files-git
         persistentVolumeClaim:
           claimName: dev-conf-git
+      - name: files-github
+        persistentVolumeClaim:
+          claimName: dev-conf-github
       - name: files-gpg
         persistentVolumeClaim:
           claimName: dev-conf-gpg
