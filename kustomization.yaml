@@ -14,11 +14,11 @@ images:
 - name: clamav/clamav
   newName: clamav/clamav
   newTag: 1.5.1
+- name: claude-code/claude-code
+  newName: ghcr.io/progamesigner/devtools/claude-code
 - name: coder/coder
   newName: ghcr.io/coder/coder
   newTag: v2.11.3
-- name: claude-code/claude-code
-  newName: ghcr.io/progamesigner/devtools/claude-code
 - name: gloomhaven/client
   newName: gloomhavensecretariat/ghs
   newTag: v0.144.7
@@ -63,7 +63,7 @@ images:
   newTag: '2.70'
 - name: rsshub/rsshub
   newName: diygod/rsshub
-  newTag: '2026-06-19'
+  newTag: '2026-06-20'
 - name: seafile/backend
   newName: seafileltd/seafile-pro-mc
   newTag: 13.0-latest
