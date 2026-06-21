@@ -14,11 +14,11 @@ images:
 - name: clamav/clamav
   newName: clamav/clamav
   newTag: 1.5.1
+- name: claude-code/claude-code
+  newName: ghcr.io/progamesigner/devtools/claude-code
 - name: coder/coder
   newName: ghcr.io/coder/coder
   newTag: v2.11.3
-- name: claude-code/claude-code
-  newName: ghcr.io/progamesigner/devtools/claude-code
 - name: gloomhaven/client
   newName: gloomhavensecretariat/ghs
   newTag: v0.144.7
@@ -99,10 +99,10 @@ images:
   newTag: 1.733.1
 - name: windmill/windmill-server
   newName: ghcr.io/windmill-labs/windmill
-  newTag: 1.733.1
+  newTag: 1.734.0
 - name: windmill/windmill-worker
   newName: ghcr.io/windmill-labs/windmill
-  newTag: 1.733.1
+  newTag: 1.734.0
 patches:
 - patch: |-
     apiVersion: apps/v1
