@@ -163,6 +163,11 @@ spec:
         - --deployment=metallb-controller
         - --ml-secret-name=metallb-memberlist
         - --webhook-mode=disabled
+        env:
+        - name: METALLB_POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
         ports:
         - name: monitor
           containerPort: 7472
