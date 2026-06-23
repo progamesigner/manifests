@@ -11,7 +11,7 @@ configMapGenerator:
 images:
 - name: ceph/ceph
   newName: quay.io/ceph/ceph
-  newTag: v20.1.1
+  newTag: v20.2.2
 - name: ceph/csi
   newName: quay.io/cephcsi/cephcsi
   newTag: v3.15.0
