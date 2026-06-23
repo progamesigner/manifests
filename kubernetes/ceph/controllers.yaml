@@ -73,11 +73,14 @@ spec:
       - name: setup
         image: ceph/ceph:latest
         command:
-        - ceph-mon
-        args:
-        - --id=$(CEPH_NAME)
-        - --keyring=/etc/ceph/ceph.mon.keyring
-        - --mkfs
+        - sh
+        - -c
+        - |
+          set -ex;
+
+          ceph-mon --id=${CEPH_NAME} --keyring=/etc/ceph/ceph.mon.keyring --mkfs;
+
+          chown -R 167:167 /var/lib/ceph/mon/ceph-${CEPH_NAME};
         env:
         - name: CEPH_NAME
           valueFrom:
@@ -257,11 +260,14 @@ spec:
       - name: setup
         image: ceph/ceph:latest
         command:
-        - ceph-mon
-        args:
-        - --id=$(CEPH_NAME)
-        - --keyring=/etc/ceph/ceph.mon.keyring
-        - --mkfs
+        - sh
+        - -c
+        - |
+          set -ex;
+
+          ceph-mon --id=${CEPH_NAME} --keyring=/etc/ceph/ceph.mon.keyring --mkfs;
+
+          chown -R 167:167 /var/lib/ceph/mon/ceph-${CEPH_NAME};
         env:
         - name: CEPH_NAME
           valueFrom:
@@ -441,11 +447,14 @@ spec:
       - name: setup
         image: ceph/ceph:latest
         command:
-        - ceph-mon
-        args:
-        - --id=$(CEPH_NAME)
-        - --keyring=/etc/ceph/ceph.mon.keyring
-        - --mkfs
+        - sh
+        - -c
+        - |
+          set -ex;
+
+          ceph-mon --id=${CEPH_NAME} --keyring=/etc/ceph/ceph.mon.keyring --mkfs;
+
+          chown -R 167:167 /var/lib/ceph/mon/ceph-${CEPH_NAME};
         env:
         - name: CEPH_NAME
           valueFrom:
