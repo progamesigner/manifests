@@ -16,7 +16,7 @@ spec:
   template:
     metadata:
       annotations:
-        prometheus.io/port: '7472'
+        prometheus.io/port: '9120'
         prometheus.io/scrape: 'true'
         prometheus.io/scheme: 'https'
       labels:
@@ -28,6 +28,9 @@ spec:
       containers:
       - name: speaker
         image: metallb/speaker:latest
+        args:
+        - --port=9120
+        - --log-level=info
         env:
         - name: KUBERNETES_SERVICE_HOST
           valueFrom:
@@ -61,7 +64,7 @@ spec:
               fieldPath: metadata.name
         ports:
         - name: monitor
-          containerPort: 7472
+          containerPort: 9120
           protocol: TCP
         - name: memberlist-tcp
           containerPort: 7946
@@ -71,13 +74,15 @@ spec:
           protocol: UDP
         livenessProbe:
           httpGet:
-            path: /metrics
-            port: monitor
+            host: 127.0.0.1
+            path: /healthz
+            port: 17472
           initialDelaySeconds: 10
         readinessProbe:
           httpGet:
-            path: /metrics
-            port: monitor
+            host: 127.0.0.1
+            path: /readyz
+            port: 17472
           initialDelaySeconds: 10
         resources:
           limits:
@@ -131,7 +136,7 @@ spec:
   template:
     metadata:
       annotations:
-        prometheus.io/port: '7472'
+        prometheus.io/port: '9120'
         prometheus.io/scrape: 'true'
         prometheus.io/scheme: 'https'
       labels:
@@ -162,6 +167,7 @@ spec:
       - name: controller
         image: metallb/controller:latest
         args:
+        - --port=9120
         - --deployment=metallb-controller
         - --ml-secret-name=metallb-memberlist
         - --webhook-mode=disabled
@@ -172,20 +178,22 @@ spec:
               fieldPath: metadata.name
         ports:
         - name: monitor
-          containerPort: 7472
+          containerPort: 9120
           protocol: TCP
         - name: webhook
           containerPort: 9443
           protocol: TCP
         livenessProbe:
           httpGet:
-            path: /metrics
-            port: monitor
+            host: 127.0.0.1
+            path: /healthz
+            port: 17472
           initialDelaySeconds: 10
         readinessProbe:
           httpGet:
-            path: /metrics
-            port: monitor
+            host: 127.0.0.1
+            path: /readyz
+            port: 17472
           initialDelaySeconds: 10
         resources:
           limits:
