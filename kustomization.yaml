@@ -124,14 +124,14 @@ patches:
     metadata:
       name: windmill-worker
     spec:
-      replicas: 4
+      replicas: 8
 - patch: |-
     apiVersion: apps/v1
     kind: Deployment
     metadata:
       name: windmill-browser-worker
     spec:
-      replicas: 2
+      replicas: 0
 - patch: |-
     apiVersion: apps/v1
     kind: Deployment
