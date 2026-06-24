@@ -30,7 +30,7 @@ images:
   newTag: 2026.6.4
 - name: mcp/memory
   newName: ghcr.io/progamesigner/agentmem
-  newTag: 0.6.0
+  newTag: 0.6.1
 - name: mongodb/compass
   newName: haohanyang/compass-web
   newTag: 0.4.0-beta.1
