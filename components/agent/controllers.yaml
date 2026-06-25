@@ -1,0 +1,68 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/component: agent
+    app.kubernetes.io/name: agent
+    app.kubernetes.io/part-of: components
+  name: agent
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: agent
+      app.kubernetes.io/name: agent
+      app.kubernetes.io/part-of: components
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/component: agent
+        app.kubernetes.io/name: agent
+        app.kubernetes.io/part-of: components
+    spec:
+      automountServiceAccountToken: false
+      containers:
+      - name: claude-code
+        image: claude-code/claude-code:latest
+        imagePullPolicy: Always
+        args:
+        - claude
+        - --channels
+        - plugin:telegram@claude-plugins-official
+        - --continue
+        - --remote-control
+        resources:
+          limits:
+            cpu: 1000m
+            memory: 2Gi
+          requests:
+            cpu: 500m
+            memory: 1Gi
+        securityContext:
+          runAsUser: 1000
+          runAsGroup: 1000
+          runAsNonRoot: true
+        stdin: true
+        tty: true
+        volumeMounts:
+        - name: conf-github
+          mountPath: /home/ubuntu/.config/gh
+        - name: data
+          mountPath: /workspace
+        - name: data-claude
+          mountPath: /home/ubuntu/.claude
+      enableServiceLinks: false
+      securityContext:
+        fsGroup: 1000
+      serviceAccountName: default
+      volumes:
+      - name: conf-github
+        persistentVolumeClaim:
+          claimName: dev-conf-github
+      - name: data
+        persistentVolumeClaim:
+          claimName: agent
+      - name: data-claude
+        persistentVolumeClaim:
+          claimName: dev-data-claude
