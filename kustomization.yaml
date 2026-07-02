@@ -27,7 +27,7 @@ images:
   newTag: v0.144.0
 - name: home-assistant/home-assistant
   newName: ghcr.io/home-assistant/home-assistant
-  newTag: 2026.6.4
+  newTag: 2026.7.0
 - name: mcp/memory
   newName: ghcr.io/progamesigner/agentmem
   newTag: 0.8.1
