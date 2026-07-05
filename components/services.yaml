@@ -160,10 +160,10 @@ metadata:
   name: obsidian
 spec:
   ports:
-  - name: http
+  - name: mcp
     port: 8000
     protocol: TCP
-    targetPort: http
+    targetPort: mcp
   - name: webdav
     port: 8080
     protocol: TCP
