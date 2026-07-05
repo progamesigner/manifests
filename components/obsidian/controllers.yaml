@@ -48,11 +48,11 @@ spec:
         - name: data
           mountPath: /vault
       - name: mcp
-        image: mcp/memory:latest
+        image: mcp/muninn:latest
         env:
-        - name: AGENTMEM_HTTP_ALLOWED_HOSTS
+        - name: MUNINN_HTTP_ALLOWED_HOSTS
           value: '*'
-        - name: AGENTMEM_RECALL_BACKEND
+        - name: MUNINN_RECALL_BACKEND
           value: tantivy
         ports:
         - name: http
