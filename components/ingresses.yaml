@@ -231,7 +231,7 @@ spec:
           service:
             name: obsidian
             port:
-              name: http
+              name: mcp
         path: /
         pathType: Prefix
   tls:
