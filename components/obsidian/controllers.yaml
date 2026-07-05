@@ -51,7 +51,10 @@ spec:
         image: mcp/muninn:latest
         env:
         - name: MUNINN_HTTP_ALLOWED_HOSTS
-          value: '*'
+          valueFrom:
+            secretKeyRef:
+              name: obsidian
+              key: MUNINN_HTTP_ALLOWED_HOSTS
         - name: MUNINN_HTTP_TOKENS_FILE
           value: /etc/muninn/tokens.json
         - name: MUNINN_RECALL_BACKEND
@@ -68,7 +71,12 @@ spec:
           httpGet:
             path: /readyz
             port: 8000
-          initialDelaySeconds: 5
+        startupProbe:
+          httpGet:
+            path: /readyz
+            port: 8000
+          failureThreshold: 30
+          periodSeconds: 5
         resources:
           limits:
             cpu: 500m
