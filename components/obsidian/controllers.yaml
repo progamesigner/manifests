@@ -52,6 +52,8 @@ spec:
         env:
         - name: MUNINN_HTTP_ALLOWED_HOSTS
           value: '*'
+        - name: MUNINN_HTTP_TOKENS_FILE
+          value: /etc/muninn/tokens.json
         - name: MUNINN_RECALL_BACKEND
           value: tantivy
         ports:
@@ -81,6 +83,10 @@ spec:
         volumeMounts:
         - name: data
           mountPath: /vault
+        - name: cred
+          mountPath: /etc/muninn/tokens.json
+          subPath: tokens.json
+          readOnly: true
       - name: webdav
         image: rclone/rclone:latest
         args:
@@ -110,6 +116,9 @@ spec:
       - name: conf
         persistentVolumeClaim:
           claimName: obsidian-config
+      - name: cred
+        secret:
+          secretName: obsidian
       - name: data
         persistentVolumeClaim:
           claimName: obsidian

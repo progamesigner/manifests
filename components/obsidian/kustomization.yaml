@@ -12,3 +12,5 @@ secretGenerator:
 - name: obsidian
   envs:
   - obsidian.env
+  files:
+  - tokens.json
