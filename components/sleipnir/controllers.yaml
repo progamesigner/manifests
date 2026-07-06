@@ -3,22 +3,22 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app.kubernetes.io/component: agent
-    app.kubernetes.io/name: agent
+    app.kubernetes.io/component: claude-code
+    app.kubernetes.io/name: sleipnir
     app.kubernetes.io/part-of: components
-  name: agent
+  name: sleipnir
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app.kubernetes.io/component: agent
-      app.kubernetes.io/name: agent
+      app.kubernetes.io/component: claude-code
+      app.kubernetes.io/name: sleipnir
       app.kubernetes.io/part-of: components
   template:
     metadata:
       labels:
-        app.kubernetes.io/component: agent
-        app.kubernetes.io/name: agent
+        app.kubernetes.io/component: claude-code
+        app.kubernetes.io/name: sleipnir
         app.kubernetes.io/part-of: components
     spec:
       automountServiceAccountToken: false
@@ -32,6 +32,9 @@ spec:
         - plugin:telegram@claude-plugins-official
         - --continue
         - --remote-control
+        envFrom:
+        - secretRef:
+            name: sleipnir
         resources:
           limits:
             cpu: 1000m
@@ -62,7 +65,7 @@ spec:
           claimName: dev-conf-github
       - name: data
         persistentVolumeClaim:
-          claimName: agent
+          claimName: sleipnir
       - name: data-claude
         persistentVolumeClaim:
           claimName: dev-data-claude

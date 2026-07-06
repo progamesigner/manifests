@@ -4,3 +4,7 @@ kind: Component
 resources:
 - controllers.yaml
 - storages.yaml
+secretGenerator:
+- name: sleipnir
+  envs:
+  - sleipnir.env
