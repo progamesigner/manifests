@@ -27,7 +27,7 @@ images:
   newTag: v0.144.0
 - name: home-assistant/home-assistant
   newName: ghcr.io/home-assistant/home-assistant
-  newTag: 2026.7.1
+  newTag: 2026.7.2
 - name: mcp/muninn
   newName: ghcr.io/progamesigner/muninn
   newTag: 1.0.0
