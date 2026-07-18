@@ -96,7 +96,7 @@ images:
   newTag: 20230422-jammy
 - name: windmill/windmill-extra
   newName: ghcr.io/windmill-labs/windmill-extra
-  newTag: 1.760.1
+  newTag: 1.762.1
 - name: windmill/windmill-server
   newName: ghcr.io/windmill-labs/windmill
   newTag: 1.760.1
