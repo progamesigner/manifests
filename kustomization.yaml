@@ -14,8 +14,6 @@ images:
 - name: clamav/clamav
   newName: clamav/clamav
   newTag: 1.5.1
-- name: claude-code/claude-code
-  newName: ghcr.io/progamesigner/devtools/claude-code
 - name: coder/coder
   newName: ghcr.io/coder/coder
   newTag: v2.11.3
@@ -82,6 +80,10 @@ images:
 - name: seafile/thumbnail
   newName: seafileltd/thumbnail-server
   newTag: 13.0.20
+- name: sleipnir/claude-code
+  newName: ghcr.io/progamesigner/devtools/claude-code
+- name: sleipnir/codex
+  newName: ghcr.io/progamesigner/devtools/codex
 - name: syncthing/relaysrv
   newName: syncthing/relaysrv
   newTag: 2.0.3

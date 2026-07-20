@@ -24,7 +24,7 @@ spec:
       automountServiceAccountToken: false
       containers:
       - name: claude-code
-        image: claude-code/claude-code:latest
+        image: sleipnir/claude-code:latest
         imagePullPolicy: Always
         args:
         - claude
@@ -66,6 +66,84 @@ spec:
       - name: data
         persistentVolumeClaim:
           claimName: sleipnir-alfheim
+      - name: workspace
+        persistentVolumeClaim:
+          claimName: sleipnir-skuld
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/component: midgard
+    app.kubernetes.io/name: sleipnir
+    app.kubernetes.io/part-of: components
+  name: sleipnir-midgard
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: midgard
+      app.kubernetes.io/name: sleipnir
+      app.kubernetes.io/part-of: components
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/component: midgard
+        app.kubernetes.io/name: sleipnir
+        app.kubernetes.io/part-of: components
+    spec:
+      automountServiceAccountToken: false
+      containers:
+      - name: codex
+        image: sleipnir/codex:latest
+        imagePullPolicy: Always
+        args:
+        - sh
+        - -c
+        - |
+          set -ex;
+
+          codex app-server daemon bootstrap --remote-control && exec tail -f /dev/null
+        envFrom:
+        - secretRef:
+            name: sleipnir
+        resources:
+          limits:
+            cpu: 1000m
+            memory: 2Gi
+          requests:
+            cpu: 500m
+            memory: 1Gi
+        readinessProbe:
+          exec:
+            command:
+            - sh
+            - -c
+            - test -S /home/ubuntu/.codex/app-server-control/app-server-control.sock
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        securityContext:
+          runAsUser: 1000
+          runAsGroup: 1000
+          runAsNonRoot: true
+        volumeMounts:
+        - name: conf-github
+          mountPath: /home/ubuntu/.config/gh
+        - name: data
+          mountPath: /home/ubuntu/.codex
+        - name: workspace
+          mountPath: /workspace
+      enableServiceLinks: false
+      securityContext:
+        fsGroup: 1000
+      serviceAccountName: default
+      volumes:
+      - name: conf-github
+        persistentVolumeClaim:
+          claimName: dev-conf-github
+      - name: data
+        persistentVolumeClaim:
+          claimName: sleipnir-midgard
       - name: workspace
         persistentVolumeClaim:
           claimName: sleipnir-skuld
