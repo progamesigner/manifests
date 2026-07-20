@@ -26,12 +26,11 @@ spec:
       - name: claude-code
         image: sleipnir/claude-code:latest
         imagePullPolicy: Always
-        args:
-        - claude
-        - --channels
-        - plugin:telegram@claude-plugins-official
-        - --continue
-        - --remote-control
+        env:
+        - name: CLAUDE_NAME
+          value: Sleipnir
+        - name: CLAUDE_REMOTE_CONTROL_SESSION_NAME_PREFIX
+          value: Sleipnir
         envFrom:
         - secretRef:
             name: sleipnir
@@ -46,8 +45,6 @@ spec:
           runAsUser: 1000
           runAsGroup: 1000
           runAsNonRoot: true
-        stdin: true
-        tty: true
         volumeMounts:
         - name: conf-github
           mountPath: /home/ubuntu/.config/gh
@@ -97,13 +94,6 @@ spec:
       - name: codex
         image: sleipnir/codex:latest
         imagePullPolicy: Always
-        args:
-        - sh
-        - -c
-        - |
-          set -ex;
-
-          codex app-server daemon bootstrap --remote-control && exec tail -f /dev/null
         envFrom:
         - secretRef:
             name: sleipnir
@@ -114,14 +104,6 @@ spec:
           requests:
             cpu: 500m
             memory: 1Gi
-        readinessProbe:
-          exec:
-            command:
-            - sh
-            - -c
-            - test -S /home/ubuntu/.codex/app-server-control/app-server-control.sock
-          initialDelaySeconds: 5
-          periodSeconds: 10
         securityContext:
           runAsUser: 1000
           runAsGroup: 1000
@@ -146,4 +128,4 @@ spec:
           claimName: sleipnir-midgard
       - name: workspace
         persistentVolumeClaim:
-          claimName: sleipnir-skuld
+          claimName: sleipnir-urd
