@@ -53,6 +53,7 @@ spec:
         - name: workspace
           mountPath: /workspace
       enableServiceLinks: false
+      hostname: sleipnir
       securityContext:
         fsGroup: 1000
       serviceAccountName: default
@@ -116,6 +117,7 @@ spec:
         - name: workspace
           mountPath: /workspace
       enableServiceLinks: false
+      hostname: sleipnir
       securityContext:
         fsGroup: 1000
       serviceAccountName: default
