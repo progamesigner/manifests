@@ -61,7 +61,7 @@ images:
   newTag: '2.70'
 - name: rsshub/rsshub
   newName: diygod/rsshub
-  newTag: '2026-07-22'
+  newTag: '2026-07-23'
 - name: seafile/backend
   newName: seafileltd/seafile-pro-mc
   newTag: 13.0.24
