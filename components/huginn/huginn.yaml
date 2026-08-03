@@ -1,0 +1,260 @@
+defaults:
+  model: gemini/gemini-3.5-flash-lite
+
+providers:
+  bifrost:
+    adapter: openai
+    base_url: http://bifrost.default.svc.cluster.local:8080/v1
+    api_key:
+      value_from:
+        env: BIFROST_API_KEY
+    models:
+    - anthropic/claude-fable-5
+    - anthropic/claude-opus-5
+    - anthropic/claude-sonnet-5
+    - gemini/gemini-3.1-pro-preview
+    - gemini/gemini-3.5-flash
+    - gemini/gemini-3.5-flash-lite
+    - gemini/gemini-3.6-flash
+    - gemini/gemma-4-26b-a4b-it
+    - gemini/gemma-4-31b-it
+    - openai/gpt-5.6-luna
+    - openai/gpt-5.6-sol
+    - openai/gpt-5.6-terra
+
+tools:
+  websearch:
+    kind: websearch
+    api_key:
+      value_from:
+        env: FELO_API_KEY
+
+mcp_servers:
+  muninn:
+    transport: http
+    url: http://obsidian.default.svc.cluster.local:8000/mcp
+    auth:
+      value_from:
+        env: MUNINN_MCP_TOKEN
+
+transcription:
+  kind: openai
+  model: openai/gpt-4o-mini-transcribe
+  api_key:
+    value_from:
+      env: OPENAI_API_KEY
+
+agents:
+  default:
+    model: gemini/gemini-3.5-flash-lite
+    description: An placeholder agent for general purpose.
+    instructions_file: /etc/huginn/instructions.md
+    tools: &tools
+    - name: websearch
+    mcp:
+    - server: muninn
+      allow: &muninn
+      - append_diary_entry
+      - delete_memory_note
+      - edit_memory_note
+      - evolve_core_persona
+      - list_memory_notes
+      - load_session_context
+      - read_memory_note
+      - read_memory_notes
+      - read_note_properties
+      - recall_memory_notes
+      - rename_memory_note
+      - update_note_properties
+      - update_task_heartbeat
+      - write_memory_note
+      - write_memory_notes
+  advisor:
+    description: Helps analyze financial information, trends, and personal finance decisions.
+    model: gemini/gemini-3.6-flash
+    instructions_file: /etc/huginn/instructions.md
+    tools: *tools
+    mcp:
+    - server: muninn
+      allow: *muninn
+      inject:
+        agent: ${MUNINN_ADVISOR_SCOPE_AGENT}
+        user: ${MUNINN_ADVISOR_SCOPE_USER}
+  assistant:
+    description: Helps organize tools, information, notes, and recurring workflows.
+    model: gemini/gemini-3.6-flash
+    instructions_file: /etc/huginn/instructions.md
+    tools: *tools
+    mcp:
+    - server: muninn
+      allow: *muninn
+      inject:
+        agent: ${MUNINN_ASSISTANT_SCOPE_AGENT}
+        user: ${MUNINN_ASSISTANT_SCOPE_USER}
+  coach:
+    description: Helps build learning habits, track progress, and stay accountable.
+    model: gemini/gemini-3.6-flash
+    instructions_file: /etc/huginn/instructions.md
+    tools: *tools
+    mcp:
+    - server: muninn
+      allow: *muninn
+      inject:
+        agent: ${MUNINN_COACH_SCOPE_AGENT}
+        user: ${MUNINN_COACH_SCOPE_USER}
+  companion:
+    description: Provides a supportive space for reflection, conversation, and emotional organization.
+    model: gemini/gemini-3.6-flash
+    instructions_file: /etc/huginn/instructions.md
+    tools: *tools
+    mcp:
+    - server: muninn
+      allow: *muninn
+      inject:
+        agent: ${MUNINN_COMPANION_SCOPE_AGENT}
+        user: ${MUNINN_COMPANION_SCOPE_USER}
+  coordinator:
+    description: Helps organize, track, and coordinate work-related tasks and activities.
+    model: gemini/gemini-3.6-flash
+    instructions_file: /etc/huginn/instructions.md
+    tools: *tools
+    mcp:
+    - server: muninn
+      allow: *muninn
+      inject:
+        agent: ${MUNINN_COORDINATOR_SCOPE_AGENT}
+        user: ${MUNINN_COORDINATOR_SCOPE_USER}
+  counsel:
+    description: Helps review, summarize, and organize legal documents and information.
+    model: gemini/gemini-3.6-flash
+    instructions_file: /etc/huginn/instructions.md
+    tools: *tools
+    mcp:
+    - server: muninn
+      allow: *muninn
+      inject:
+        agent: ${MUNINN_COUNSEL_SCOPE_AGENT}
+        user: ${MUNINN_COUNSEL_SCOPE_USER}
+  guide:
+    description: Helps find and understand game information, guides, strategies, and updates.
+    model: gemini/gemini-3.6-flash
+    instructions_file: /etc/huginn/instructions.md
+    tools: *tools
+    mcp:
+    - server: muninn
+      allow: *muninn
+      inject:
+        agent: ${MUNINN_GUIDE_SCOPE_AGENT}
+        user: ${MUNINN_GUIDE_SCOPE_USER}
+  planner:
+    description: Helps plan projects, break down tasks, and support game development workflows.
+    model: gemini/gemini-3.6-flash
+    instructions_file: /etc/huginn/instructions.md
+    tools: *tools
+    mcp:
+    - server: muninn
+      allow: *muninn
+      inject:
+        agent: ${MUNINN_PLANNER_SCOPE_AGENT}
+        user: ${MUNINN_PLANNER_SCOPE_USER}
+  researcher:
+    description: Collects information, compares ideas, and supports brainstorming and exploration.
+    model: gemini/gemini-3.6-flash
+    instructions_file: /etc/huginn/instructions.md
+    tools: *tools
+    mcp:
+    - server: muninn
+      allow: *muninn
+      inject:
+        agent: ${MUNINN_RESEARCHER_SCOPE_AGENT}
+        user: ${MUNINN_RESEARCHER_SCOPE_USER}
+  sentinel:
+    description: Monitors systems, activities, and status changes, then sends relevant notifications.
+    model: gemini/gemini-3.6-flash
+    instructions_file: /etc/huginn/instructions.md
+    tools: *tools
+    mcp:
+    - server: muninn
+      allow: *muninn
+      inject:
+        agent: ${MUNINN_SENTINEL_SCOPE_AGENT}
+        user: ${MUNINN_SENTINEL_SCOPE_USER}
+  tutor:
+    description: Explains concepts and provides guidance for language and general learning.
+    model: gemini/gemini-3.6-flash
+    instructions_file: /etc/huginn/instructions.md
+    tools: *tools
+    mcp:
+    - server: muninn
+      allow: *muninn
+      inject:
+        agent: ${MUNINN_TUTOR_SCOPE_AGENT}
+        user: ${MUNINN_TUTOR_SCOPE_USER}
+
+channels:
+  advisor:
+    kind: telegram
+    token: ${TELEGRAM_ADVISOR_TOKEN}
+    secret_token: ${TELEGRAM_ADVISOR_SECRET}
+    webhook_base_url: ${HUGINN_WEBHOOK_BASE_URL}/huginn
+    agent: advisor
+  assistant:
+    kind: telegram
+    token: ${TELEGRAM_ASSISTANT_TOKEN}
+    secret_token: ${TELEGRAM_ASSISTANT_SECRET}
+    webhook_base_url: ${HUGINN_WEBHOOK_BASE_URL}/huginn
+    agent: assistant
+  coach:
+    kind: telegram
+    token: ${TELEGRAM_COACH_TOKEN}
+    secret_token: ${TELEGRAM_COACH_SECRET}
+    webhook_base_url: ${HUGINN_WEBHOOK_BASE_URL}/huginn
+    agent: coach
+  companion:
+    kind: telegram
+    token: ${TELEGRAM_COMPANION_TOKEN}
+    secret_token: ${TELEGRAM_COMPANION_SECRET}
+    webhook_base_url: ${HUGINN_WEBHOOK_BASE_URL}/huginn
+    agent: companion
+  coordinator:
+    kind: telegram
+    token: ${TELEGRAM_COORDINATOR_TOKEN}
+    secret_token: ${TELEGRAM_COORDINATOR_SECRET}
+    webhook_base_url: ${HUGINN_WEBHOOK_BASE_URL}/huginn
+    agent: coordinator
+  counsel:
+    kind: telegram
+    token: ${TELEGRAM_COUNSEL_TOKEN}
+    secret_token: ${TELEGRAM_COUNSEL_SECRET}
+    webhook_base_url: ${HUGINN_WEBHOOK_BASE_URL}/huginn
+    agent: counsel
+  guide:
+    kind: telegram
+    token: ${TELEGRAM_GUIDE_TOKEN}
+    secret_token: ${TELEGRAM_GUIDE_SECRET}
+    webhook_base_url: ${HUGINN_WEBHOOK_BASE_URL}/huginn
+    agent: guide
+  planner:
+    kind: telegram
+    token: ${TELEGRAM_PLANNER_TOKEN}
+    secret_token: ${TELEGRAM_PLANNER_SECRET}
+    webhook_base_url: ${HUGINN_WEBHOOK_BASE_URL}/huginn
+    agent: planner
+  researcher:
+    kind: telegram
+    token: ${TELEGRAM_RESEARCHER_TOKEN}
+    secret_token: ${TELEGRAM_RESEARCHER_SECRET}
+    webhook_base_url: ${HUGINN_WEBHOOK_BASE_URL}/huginn
+    agent: researcher
+  sentinel:
+    kind: telegram
+    token: ${TELEGRAM_SENTINEL_TOKEN}
+    secret_token: ${TELEGRAM_SENTINEL_SECRET}
+    webhook_base_url: ${HUGINN_WEBHOOK_BASE_URL}/huginn
+    agent: sentinel
+  tutor:
+    kind: telegram
+    token: ${TELEGRAM_TUTOR_TOKEN}
+    secret_token: ${TELEGRAM_TUTOR_SECRET}
+    webhook_base_url: ${HUGINN_WEBHOOK_BASE_URL}/huginn
+    agent: tutor

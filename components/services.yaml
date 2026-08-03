@@ -142,6 +142,21 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
+  name: huginn
+spec:
+  ports:
+  - name: http
+    port: 8000
+    protocol: TCP
+    targetPort: http
+  selector:
+    app.kubernetes.io/component: huginn
+    app.kubernetes.io/name: huginn
+    app.kubernetes.io/part-of: components
+---
+apiVersion: v1
+kind: Service
+metadata:
   name: mongodb-compass
 spec:
   ports:

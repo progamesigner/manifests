@@ -10,6 +10,7 @@ components:
 - coder
 - gloomhaven
 - home-assistant
+- huginn
 - mongodb-compass
 - obsidian
 - pgadmin
