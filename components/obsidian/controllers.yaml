@@ -59,6 +59,8 @@ spec:
           value: /etc/muninn/tokens.json
         - name: MUNINN_RECALL_BACKEND
           value: tantivy
+        - name: MUNINN_RECALL_INDEX_DIR
+          value: /var/lib/muninn/index
         ports:
         - name: mcp
           containerPort: 8000
@@ -92,6 +94,8 @@ spec:
           runAsGroup: 1000
           runAsNonRoot: true
         volumeMounts:
+        - name: cache
+          mountPath: /var/lib/muninn/index
         - name: data
           mountPath: /vault
         - name: cred
@@ -124,6 +128,9 @@ spec:
         fsGroup: 1000
       serviceAccountName: default
       volumes:
+      - name: cache
+        persistentVolumeClaim:
+          claimName: obsidian-muninn-cache
       - name: conf
         persistentVolumeClaim:
           claimName: obsidian-config
