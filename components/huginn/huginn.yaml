@@ -10,6 +10,8 @@ providers:
         env: BIFROST_API_KEY
     models:
     - anthropic/claude-fable-5
+    - anthropic/claude-haiku-4-5
+    - anthropic/claude-opus-4-8
     - anthropic/claude-opus-5
     - anthropic/claude-sonnet-5
     - gemini/gemini-3.1-pro-preview
@@ -21,6 +23,25 @@ providers:
     - openai/gpt-5.6-luna
     - openai/gpt-5.6-sol
     - openai/gpt-5.6-terra
+    - opencode-go/deepseek-v4-flash
+    - opencode-go/deepseek-v4-pro
+    - opencode-go/grok-4.5
+    - opencode-go/kimi-k3
+    - opencode-go/minimax-m3
+    - opencode-go/qwen-3.8-max
+    - opencode-zen/deepseek-v4-flash
+    - opencode-zen/deepseek-v4-pro
+    - opencode-zen/glm-5.2
+    - opencode-zen/gpt-5.6-luna
+    - opencode-zen/gpt-5.6-sol
+    - opencode-zen/gpt-5.6-terra
+    - opencode-zen/grok-4.5
+    - opencode-zen/kimi-k3
+    - opencode-zen/minimax-m3
+    - opencode-zen/nemotron-3-ultra-free
+    - opencode-zen/qwen3.6-plus
+    - openrouter/deepseek/deepseek-v4-flash
+    - openrouter/nvidia/nemotron-3-ultra-550b-a55b
 
 tools:
   websearch:
@@ -46,7 +67,7 @@ transcription:
 
 agents:
   default:
-    model: gemini/gemini-3.5-flash-lite
+    model: gemini/gemma-4-26b-a4b-it
     description: An placeholder agent for general purpose.
     instructions_file: /etc/huginn/instructions.md
     tools: &tools
@@ -71,7 +92,7 @@ agents:
       - write_memory_notes
   advisor:
     description: Helps analyze financial information, trends, and personal finance decisions.
-    model: gemini/gemini-3.6-flash
+    model: openai/gpt-5.6-terra
     instructions_file: /etc/huginn/instructions.md
     tools: *tools
     mcp:
@@ -93,7 +114,7 @@ agents:
         user: ${MUNINN_ASSISTANT_SCOPE_USER}
   coach:
     description: Helps build learning habits, track progress, and stay accountable.
-    model: gemini/gemini-3.6-flash
+    model: openai/gpt-5.6-luna
     instructions_file: /etc/huginn/instructions.md
     tools: *tools
     mcp:
@@ -104,7 +125,7 @@ agents:
         user: ${MUNINN_COACH_SCOPE_USER}
   companion:
     description: Provides a supportive space for reflection, conversation, and emotional organization.
-    model: gemini/gemini-3.6-flash
+    model: openai/gpt-5.6-sol
     instructions_file: /etc/huginn/instructions.md
     tools: *tools
     mcp:
@@ -115,7 +136,7 @@ agents:
         user: ${MUNINN_COMPANION_SCOPE_USER}
   coordinator:
     description: Helps organize, track, and coordinate work-related tasks and activities.
-    model: gemini/gemini-3.6-flash
+    model: anthropic/claude-haiku-5
     instructions_file: /etc/huginn/instructions.md
     tools: *tools
     mcp:
@@ -126,7 +147,7 @@ agents:
         user: ${MUNINN_COORDINATOR_SCOPE_USER}
   counsel:
     description: Helps review, summarize, and organize legal documents and information.
-    model: gemini/gemini-3.6-flash
+    model: anthropic/claude-fable-5
     instructions_file: /etc/huginn/instructions.md
     tools: *tools
     mcp:
@@ -148,7 +169,7 @@ agents:
         user: ${MUNINN_GUIDE_SCOPE_USER}
   planner:
     description: Helps plan projects, break down tasks, and support game development workflows.
-    model: gemini/gemini-3.6-flash
+    model: anthropic/claude-opus-5
     instructions_file: /etc/huginn/instructions.md
     tools: *tools
     mcp:
@@ -170,7 +191,7 @@ agents:
         user: ${MUNINN_RESEARCHER_SCOPE_USER}
   sentinel:
     description: Monitors systems, activities, and status changes, then sends relevant notifications.
-    model: gemini/gemini-3.6-flash
+    model: gemini/gemini-3.5-flash-lite
     instructions_file: /etc/huginn/instructions.md
     tools: *tools
     mcp:
@@ -181,7 +202,7 @@ agents:
         user: ${MUNINN_SENTINEL_SCOPE_USER}
   tutor:
     description: Explains concepts and provides guidance for language and general learning.
-    model: gemini/gemini-3.6-flash
+    model: anthropic/claude-sonnet-5
     instructions_file: /etc/huginn/instructions.md
     tools: *tools
     mcp:
