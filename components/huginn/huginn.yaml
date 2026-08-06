@@ -1,5 +1,6 @@
 defaults:
   model: gemini/gemini-3.5-flash-lite
+  max_completion_tokens: 32768
 
 providers:
   bifrost:
