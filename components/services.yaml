@@ -97,6 +97,21 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
+  name: dbx
+spec:
+  ports:
+  - name: http
+    port: 4224
+    protocol: TCP
+    targetPort: http
+  selector:
+    app.kubernetes.io/component: dbx
+    app.kubernetes.io/name: dbx
+    app.kubernetes.io/part-of: components
+---
+apiVersion: v1
+kind: Service
+metadata:
   name: dashboard
 spec:
   ports:

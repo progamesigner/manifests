@@ -17,6 +17,9 @@ images:
 - name: coder/coder
   newName: ghcr.io/coder/coder
   newTag: v2.11.3
+- name: dbx/dbx
+  newName: t8y2/dbx
+  newTag: 0.5.77
 - name: gloomhaven/client
   newName: gloomhavensecretariat/ghs
   newTag: v0.144.7

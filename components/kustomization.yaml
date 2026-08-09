@@ -8,6 +8,7 @@ components:
 - clamav
 - cloudflared
 - coder
+- dbx
 - gloomhaven
 - home-assistant
 - huginn
