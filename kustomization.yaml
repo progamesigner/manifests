@@ -35,9 +35,6 @@ images:
 - name: mcp/muninn
   newName: ghcr.io/progamesigner/muninn
   newTag: 1.1.0
-- name: mongodb/compass
-  newName: haohanyang/compass-web
-  newTag: 0.4.0-beta.1
 - name: network/cloudflare-warp
   newName: amirdaaee/cloudflare-warp
   newTag: 2023.10.120-1
@@ -56,15 +53,6 @@ images:
 - name: obsidian/obsidian
   newName: ghcr.io/belphemur/obsidian-headless-sync-docker
   newTag: 0.0.8
-- name: pgadmin/pgadmin
-  newName: dpage/pgadmin4
-  newTag: '9.13'
-- name: phpmyadmin/phpmyadmin
-  newName: phpmyadmin
-  newTag: 5.2.1
-- name: redis/insight
-  newName: redis/redisinsight
-  newTag: '2.70'
 - name: rsshub/rsshub
   newName: diygod/rsshub
   newTag: '2026-08-06'

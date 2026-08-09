@@ -172,21 +172,6 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: mongodb-compass
-spec:
-  ports:
-  - name: http
-    port: 8080
-    protocol: TCP
-    targetPort: http
-  selector:
-    app.kubernetes.io/component: mongodb-compass
-    app.kubernetes.io/name: mongodb-compass
-    app.kubernetes.io/part-of: components
----
-apiVersion: v1
-kind: Service
-metadata:
   name: obsidian
 spec:
   ports:
@@ -201,36 +186,6 @@ spec:
   selector:
     app.kubernetes.io/component: obsidian
     app.kubernetes.io/name: obsidian
-    app.kubernetes.io/part-of: components
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: pgadmin
-spec:
-  ports:
-  - name: http
-    port: 80
-    protocol: TCP
-    targetPort: http
-  selector:
-    app.kubernetes.io/component: pgadmin
-    app.kubernetes.io/name: pgadmin
-    app.kubernetes.io/part-of: components
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: phpmyadmin
-spec:
-  ports:
-  - name: http
-    port: 80
-    protocol: TCP
-    targetPort: http
-  selector:
-    app.kubernetes.io/component: phpmyadmin
-    app.kubernetes.io/name: phpmyadmin
     app.kubernetes.io/part-of: components
 ---
 apiVersion: v1
@@ -351,21 +306,6 @@ spec:
     app.kubernetes.io/name: protonvpn
     app.kubernetes.io/part-of: components
     kubernetes.progamesigner.dev/vpn-region: us
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: redis-insight
-spec:
-  ports:
-  - name: http
-    port: 5540
-    protocol: TCP
-    targetPort: http
-  selector:
-    app.kubernetes.io/component: redis-insight
-    app.kubernetes.io/name: redis-insight
-    app.kubernetes.io/part-of: components
 ---
 apiVersion: v1
 kind: Service
