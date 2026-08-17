@@ -3,57 +3,33 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app.kubernetes.io/component: obsidian
-    app.kubernetes.io/name: obsidian
+    app.kubernetes.io/component: muninn
+    app.kubernetes.io/name: muninn
     app.kubernetes.io/part-of: components
-  name: obsidian
+  name: muninn
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app.kubernetes.io/component: obsidian
-      app.kubernetes.io/name: obsidian
+      app.kubernetes.io/component: muninn
+      app.kubernetes.io/name: muninn
       app.kubernetes.io/part-of: components
   template:
     metadata:
       labels:
-        app.kubernetes.io/component: obsidian
-        app.kubernetes.io/name: obsidian
+        app.kubernetes.io/component: muninn
+        app.kubernetes.io/name: muninn
         app.kubernetes.io/part-of: components
     spec:
       automountServiceAccountToken: false
       containers:
-      - name: obsidian
-        image: obsidian/obsidian:latest
-        env:
-        - name: PGID
-          value: '1000'
-        - name: PUID
-          value: '1000'
-        envFrom:
-        - configMapRef:
-            name: obsidian
-        - secretRef:
-            name: obsidian
-        resources:
-          limits:
-            cpu: 500m
-            memory: 256Mi
-          requests:
-            cpu: 300m
-            memory: 128Mi
-        volumeMounts:
-        - name: conf
-          mountPath: /home/obsidian/.config
-        - name: data
-          mountPath: /vault
-      - name: mcp
-        image: mcp/muninn:latest
+      - name: muninn
+        image: muninn/muninn:latest
         env:
         - name: MUNINN_HTTP_ALLOWED_HOSTS
           valueFrom:
             secretKeyRef:
-              name: obsidian
+              name: muninn
               key: MUNINN_HTTP_ALLOWED_HOSTS
         - name: MUNINN_HTTP_TOKENS_FILE
           value: /etc/muninn/tokens.json
@@ -102,6 +78,45 @@ spec:
           mountPath: /etc/muninn/tokens.json
           subPath: tokens.json
           readOnly: true
+      - name: obsidian
+        image: obsidian/obsidian-sync:latest
+        env:
+        - name: DEVICE_NAME
+          valueFrom:
+            configMapKeyRef:
+              name: muninn
+              key: OBSIDIAN_DEVICE_NAME
+        - name: OBSIDIAN_AUTH_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: muninn
+              key: OBSIDIAN_AUTH_TOKEN
+        - name: PGID
+          value: '1000'
+        - name: PUID
+          value: '1000'
+        - name: VAULT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: muninn
+              key: OBSIDIAN_VAULT_PASSWORD
+        - name: VAULT_NAME
+          valueFrom:
+            secretKeyRef:
+              name: muninn
+              key: OBSIDIAN_VAULT_NAME
+        resources:
+          limits:
+            cpu: 500m
+            memory: 256Mi
+          requests:
+            cpu: 300m
+            memory: 128Mi
+        volumeMounts:
+        - name: conf
+          mountPath: /home/obsidian/.config
+        - name: data
+          mountPath: /vault
       - name: webdav
         image: rclone/rclone:latest
         args:
@@ -130,13 +145,13 @@ spec:
       volumes:
       - name: cache
         persistentVolumeClaim:
-          claimName: obsidian-muninn-cache
+          claimName: muninn-cache
       - name: conf
         persistentVolumeClaim:
           claimName: obsidian-config
       - name: cred
         secret:
-          secretName: obsidian
+          secretName: muninn
       - name: data
         persistentVolumeClaim:
           claimName: obsidian

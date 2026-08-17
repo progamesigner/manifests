@@ -2,15 +2,15 @@
 apiVersion: kustomize.config.k8s.io/v1alpha1
 kind: Component
 configMapGenerator:
-- name: obsidian
+- name: muninn
   literals:
-  - DEVICE_NAME=Obsidian
+  - OBSIDIAN_DEVICE_NAME=Obsidian
 resources:
 - controllers.yaml
 - storages.yaml
 secretGenerator:
-- name: obsidian
+- name: muninn
   envs:
-  - obsidian.env
+  - muninn.env
   files:
   - tokens.json

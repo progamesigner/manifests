@@ -172,7 +172,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: obsidian
+  name: muninn
 spec:
   ports:
   - name: mcp
@@ -184,8 +184,8 @@ spec:
     protocol: TCP
     targetPort: webdav
   selector:
-    app.kubernetes.io/component: obsidian
-    app.kubernetes.io/name: obsidian
+    app.kubernetes.io/component: muninn
+    app.kubernetes.io/name: muninn
     app.kubernetes.io/part-of: components
 ---
 apiVersion: v1

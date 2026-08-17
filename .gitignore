@@ -3,8 +3,8 @@ components/cloudflared/cloudflared.env
 components/coder/coder.env
 components/gloomhaven/server.json
 components/huginn/huginn.env
-components/obsidian/obsidian.env
-components/obsidian/tokens.json
+components/muninn/muninn.env
+components/muninn/tokens.json
 components/rsshub/rsshub.env
 components/seafile/seafile.env
 components/sleipnir/sleipnir.env

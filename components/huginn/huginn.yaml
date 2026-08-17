@@ -61,7 +61,7 @@ tools:
 mcp_servers:
   muninn:
     transport: http
-    url: http://obsidian.default.svc.cluster.local:8000/mcp
+    url: http://muninn.default.svc.cluster.local:8000/mcp
     auth:
       value_from:
         env: MUNINN_MCP_TOKEN

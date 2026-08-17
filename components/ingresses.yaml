@@ -156,8 +156,8 @@ kind: Ingress
 metadata:
   annotations:
     kubernetes.progamesigner.dev/hostname: memory
-    nginx.org/websocket-services: obsidian
-  name: obsidian
+    nginx.org/websocket-services: muninn
+  name: muninn
 spec:
   ingressClassName: nginx-ingress
   rules:
@@ -166,7 +166,7 @@ spec:
       paths:
       - backend:
           service:
-            name: obsidian
+            name: muninn
             port:
               name: mcp
         path: /

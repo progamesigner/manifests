@@ -32,7 +32,7 @@ images:
 - name: huginn/huginn
   newName: ghcr.io/progamesigner/huginn
   newTag: 0.3.0
-- name: mcp/muninn
+- name: muninn/muninn
   newName: ghcr.io/progamesigner/muninn
   newTag: 1.1.0
 - name: network/cloudflare-warp
@@ -50,9 +50,9 @@ images:
 - name: network/wireguard
   newName: ghcr.io/jordanpotter/docker-wireguard
   newTag: '2025-05-20'
-- name: obsidian/obsidian
+- name: obsidian/obsidian-sync
   newName: ghcr.io/belphemur/obsidian-headless-sync-docker
-  newTag: 0.0.8
+  newTag: 0.0.14
 - name: rsshub/rsshub
   newName: diygod/rsshub
   newTag: '2026-08-12'
