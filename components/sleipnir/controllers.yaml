@@ -200,3 +200,67 @@ spec:
       - name: workspace
         persistentVolumeClaim:
           claimName: sleipnir-urd
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/component: vanaheim
+    app.kubernetes.io/name: sleipnir
+    app.kubernetes.io/part-of: components
+  name: sleipnir-vanaheim
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: vanaheim
+      app.kubernetes.io/name: sleipnir
+      app.kubernetes.io/part-of: components
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/component: vanaheim
+        app.kubernetes.io/name: sleipnir
+        app.kubernetes.io/part-of: components
+    spec:
+      automountServiceAccountToken: false
+      containers:
+      - name: claude-code
+        image: sleipnir/claude-code:latest
+        imagePullPolicy: Always
+        env:
+        - name: CLAUDE_NAME
+          value: Sleipnir
+        - name: CLAUDE_REMOTE_CONTROL_SESSION_NAME_PREFIX
+          value: Sleipnir
+        envFrom:
+        - secretRef:
+            name: sleipnir
+        resources:
+          limits:
+            cpu: 1000m
+            memory: 2Gi
+          requests:
+            cpu: 500m
+            memory: 1Gi
+        securityContext:
+          runAsUser: 1000
+          runAsGroup: 1000
+          runAsNonRoot: true
+        volumeMounts:
+        - name: data
+          mountPath: /home/ubuntu/.claude
+        - name: workspace
+          mountPath: /workspace
+      enableServiceLinks: false
+      hostname: sleipnir
+      securityContext:
+        fsGroup: 1000
+      serviceAccountName: default
+      volumes:
+      - name: data
+        persistentVolumeClaim:
+          claimName: sleipnir-vanaheim
+      - name: workspace
+        persistentVolumeClaim:
+          claimName: sleipnir-verdandi
