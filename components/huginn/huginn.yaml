@@ -43,8 +43,14 @@ providers:
     - opencode-zen/minimax-m3
     - opencode-zen/nemotron-3-ultra-free
     - opencode-zen/qwen3.6-plus
-    - openrouter/deepseek/deepseek-v4-flash
+    - openrouter/deepseek/deepseek-v4-flash-0731
+    - openrouter/moonshotai/kimi-k3
     - openrouter/nvidia/nemotron-3-ultra-550b-a55b
+    - openrouter/tencent/hy4-preview
+    - openrouter/x-ai/grok-4.6
+    - openrouter/xiaomi/mimo-v2.5
+    - openrouter/z-ai/glm-5.2
+    - openrouter/z-ai/glm-5.3-flash
     cache_control:
     - anthropic/claude-fable-5
     - anthropic/claude-haiku-4-5
@@ -66,6 +72,15 @@ mcp_servers:
     auth:
       value_from:
         env: MUNINN_MCP_TOKEN
+  twinkle:
+    transport: http
+    url: https://api.twinkleai.tw/mcp
+    auth:
+      value_from:
+        env: TWINKLE_MCP_TOKEN
+  twstock:
+    transport: http
+    url: https://TW-Stock-MCP-Server.fastmcp.app/mcp
 
 transcription:
   kind: openai
@@ -110,6 +125,53 @@ agents:
       inject:
         agent: ${MUNINN_ADVISOR_SCOPE_AGENT}
         user: ${MUNINN_ADVISOR_SCOPE_USER}
+    - server: twstock
+      allow:
+      - get_abnormal_accumulated_noti
+      - get_all_stocks_daily_close
+      - get_company_balance_shee
+      - get_company_dividen
+      - get_company_eps_statistic
+      - get_company_income_statemen
+      - get_company_major_new
+      - get_company_monthly_revenu
+      - get_company_profil
+      - get_company_profitability_analysi
+      - get_daily_day_trading_target
+      - get_dividend_rights_schedul
+      - get_etf_regular_investment_ranking
+      - get_foreign_holdings_history
+      - get_margin_balance
+      - get_margin_loan_restrictions_
+      - get_market_disposal_stocks
+      - get_market_gain_loss_statist
+      - get_market_index_info
+      - get_market_institutional_amo
+      - get_market_turnover_history
+      - get_market_valuation_by_date
+      - get_otc_daily
+      - get_otc_disposal_stocks
+      - get_otc_exright
+      - get_otc_index
+      - get_otc_institutional
+      - get_otc_margin_balance
+      - get_otc_valuation
+      - get_otc_warning_stocks
+      - get_realtime_quote
+      - get_securities_trading_changes
+      - get_short_sale_lending_balance_history
+      - get_stock_daily_trading
+      - get_stock_history
+      - get_stock_monthly_avg_history
+      - get_stock_monthly_history
+      - get_stock_valuation_ratios
+      - get_stock_yearly_history
+      - get_suspended_trading_stocks
+      - get_taiex_index_history
+      - get_today_notice_stocks
+      - get_top_20_volume_stocks
+      - get_twse_institutional_invest
+      - get_twse_institutional_investors_summary
   architect:
     description: Helps design, plan, and organize complex systems, projects, and workflows.
     model: gemini/gemini-3.7-flash
