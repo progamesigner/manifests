@@ -44,8 +44,10 @@ providers:
     - opencode-zen/nemotron-3-ultra-free
     - opencode-zen/qwen3.6-plus
     - openrouter/deepseek/deepseek-v4-flash-0731
+    - openrouter/google/gemma-2-27b-it
     - openrouter/moonshotai/kimi-k3
     - openrouter/nvidia/nemotron-3-ultra-550b-a55b
+    - openrouter/openai/gpt-oss-120b
     - openrouter/tencent/hy4-preview
     - openrouter/x-ai/grok-4.6
     - openrouter/xiaomi/mimo-v2.5
@@ -114,18 +116,20 @@ agents:
       - update_task_heartbeat
       - write_memory_note
       - write_memory_notes
-  advisor:
-    description: Helps analyze financial information, trends, and personal finance decisions.
-    model: openai/gpt-5.6-terra
+  advisor-fast:
+    description: Handles quick budget calculations, price comparisons, and straightforward low-risk financial questions.
+    model: openai/gpt-5.6-luna
     instructions_file: /etc/huginn/instructions.md
     tools: *tools
     mcp:
-    - server: muninn
+    - &advisor-muninn
+      server: muninn
       allow: *muninn
       inject:
         agent: ${MUNINN_ADVISOR_SCOPE_AGENT}
         user: ${MUNINN_ADVISOR_SCOPE_USER}
-    - server: twstock
+    - &advisor-twstock
+      server: twstock
       allow:
       - get_abnormal_accumulated_noti
       - get_all_stocks_daily_close
@@ -172,138 +176,334 @@ agents:
       - get_top_20_volume_stocks
       - get_twse_institutional_invest
       - get_twse_institutional_investors_summary
-  architect:
-    description: Helps design, plan, and organize complex systems, projects, and workflows.
-    model: gemini/gemini-3.7-flash
+  advisor-balanced:
+    description: Handles routine cash-flow planning, project cost estimates, portfolio reviews, and multi-step financial comparisons.
+    model: openai/gpt-5.6-terra
     instructions_file: /etc/huginn/instructions.md
     tools: *tools
     mcp:
-    - server: muninn
-      allow: *muninn
-      inject:
-        agent: ${MUNINN_ARCHITECT_SCOPE_AGENT}
-        user: ${MUNINN_ARCHITECT_SCOPE_USER}
-  assistant:
-    description: Helps organize tools, information, notes, and recurring workflows.
-    model: gemini/gemini-3.7-flash
-    instructions_file: /etc/huginn/instructions.md
-    tools: *tools
-    mcp:
-    - server: muninn
-      allow: *muninn
-      inject:
-        agent: ${MUNINN_ASSISTANT_SCOPE_AGENT}
-        user: ${MUNINN_ASSISTANT_SCOPE_USER}
-  coach:
-    description: Helps build learning habits, track progress, and stay accountable.
-    model: openai/gpt-5.6-luna
-    instructions_file: /etc/huginn/instructions.md
-    tools: *tools
-    mcp:
-    - server: muninn
-      allow: *muninn
-      inject:
-        agent: ${MUNINN_COACH_SCOPE_AGENT}
-        user: ${MUNINN_COACH_SCOPE_USER}
-  companion:
-    description: Provides a supportive space for reflection, conversation, and emotional organization.
+    - *advisor-muninn
+    - *advisor-twstock
+  advisor-advanced:
+    description: Handles high-impact financial decisions with uncertainty, competing scenarios, risk analysis, and long-term tradeoffs.
     model: openai/gpt-5.6-sol
     instructions_file: /etc/huginn/instructions.md
     tools: *tools
     mcp:
-    - server: muninn
-      allow: *muninn
-      inject:
-        agent: ${MUNINN_COMPANION_SCOPE_AGENT}
-        user: ${MUNINN_COMPANION_SCOPE_USER}
-  coordinator:
-    description: Helps organize, track, and coordinate work-related tasks and activities.
+    - *advisor-muninn
+    - *advisor-twstock
+  architect-fast:
+    description: Produces quick API sketches, component choices, and focused technology recommendations for bounded problems.
     model: anthropic/claude-haiku-4-5
     instructions_file: /etc/huginn/instructions.md
     tools: *tools
     mcp:
-    - server: muninn
+    - &architect-muninn
+      server: muninn
       allow: *muninn
       inject:
-        agent: ${MUNINN_COORDINATOR_SCOPE_AGENT}
-        user: ${MUNINN_COORDINATOR_SCOPE_USER}
-  counsel:
-    description: Helps review, summarize, and organize legal documents and information.
-    model: anthropic/claude-fable-5
-    instructions_file: /etc/huginn/instructions.md
-    tools: *tools
-    mcp:
-    - server: muninn
-      allow: *muninn
-      inject:
-        agent: ${MUNINN_COUNSEL_SCOPE_AGENT}
-        user: ${MUNINN_COUNSEL_SCOPE_USER}
-  guide:
-    description: Helps find and understand game information, guides, strategies, and updates.
-    model: gemini/gemini-3.7-flash
-    instructions_file: /etc/huginn/instructions.md
-    tools: *tools
-    mcp:
-    - server: muninn
-      allow: *muninn
-      inject:
-        agent: ${MUNINN_GUIDE_SCOPE_AGENT}
-        user: ${MUNINN_GUIDE_SCOPE_USER}
-  planner:
-    description: Helps plan projects, break down tasks, and support game development workflows.
-    model: anthropic/claude-opus-5
-    instructions_file: /etc/huginn/instructions.md
-    tools: *tools
-    mcp:
-    - server: muninn
-      allow: *muninn
-      inject:
-        agent: ${MUNINN_PLANNER_SCOPE_AGENT}
-        user: ${MUNINN_PLANNER_SCOPE_USER}
-  plotter:
-    description: Helps plot stories, organize narrative ideas, and support creative writing workflows.
-    model: anthropic/claude-opus-5
-    instructions_file: /etc/huginn/instructions.md
-    tools: *tools
-    mcp:
-    - server: muninn
-      allow: *muninn
-      inject:
-        agent: ${MUNINN_PLOTTER_SCOPE_AGENT}
-        user: ${MUNINN_PLOTTER_SCOPE_USER}
-  researcher:
-    description: Collects information, compares ideas, and supports brainstorming and exploration.
-    model: gemini/gemini-3.7-flash
-    instructions_file: /etc/huginn/instructions.md
-    tools: *tools
-    mcp:
-    - server: muninn
-      allow: *muninn
-      inject:
-        agent: ${MUNINN_RESEARCHER_SCOPE_AGENT}
-        user: ${MUNINN_RESEARCHER_SCOPE_USER}
-  sentinel:
-    description: Monitors systems, activities, and status changes, then sends relevant notifications.
-    model: gemini/gemini-3.5-flash-lite
-    instructions_file: /etc/huginn/instructions.md
-    tools: *tools
-    mcp:
-    - server: muninn
-      allow: *muninn
-      inject:
-        agent: ${MUNINN_SENTINEL_SCOPE_AGENT}
-        user: ${MUNINN_SENTINEL_SCOPE_USER}
-  tutor:
-    description: Explains concepts and provides guidance for language and general learning.
+        agent: ${MUNINN_ARCHITECT_SCOPE_AGENT}
+        user: ${MUNINN_ARCHITECT_SCOPE_USER}
+  architect-balanced:
+    description: Designs system boundaries, data flows, APIs, technology tradeoffs, and realistic implementation timelines.
     model: anthropic/claude-sonnet-5
     instructions_file: /etc/huginn/instructions.md
     tools: *tools
     mcp:
-    - server: muninn
+    - *architect-muninn
+  architect-advanced:
+    description: Handles distributed architecture, migrations, failure and threat models, complex tradeoffs, and architecture decisions.
+    model: anthropic/claude-opus-5
+    instructions_file: /etc/huginn/instructions.md
+    tools: *tools
+    mcp:
+    - *architect-muninn
+  assistant-fast:
+    description: Handles one-step formatting, simple lists, reminders, and small administrative tasks.
+    model: openai/gpt-5.6-luna
+    instructions_file: /etc/huginn/instructions.md
+    tools: *tools
+    mcp:
+    - &assistant-muninn
+      server: muninn
+      allow: *muninn
+      inject:
+        agent: ${MUNINN_ASSISTANT_SCOPE_AGENT}
+        user: ${MUNINN_ASSISTANT_SCOPE_USER}
+  assistant-balanced:
+    description: Organizes multi-step errands, information, notes, schedules, and routine tool-assisted workflows.
+    model: openai/gpt-5.6-terra
+    instructions_file: /etc/huginn/instructions.md
+    tools: *tools
+    mcp:
+    - *assistant-muninn
+  assistant-advanced:
+    description: Coordinates complex cross-tool workflows, recurring processes, and large or ambiguous data transformations.
+    model: openai/gpt-5.6-sol
+    instructions_file: /etc/huginn/instructions.md
+    tools: *tools
+    mcp:
+    - *assistant-muninn
+  coach-fast:
+    description: Runs quick quizzes, checks immediate learning progress, and corrects a single clear misconception.
+    model: openai/gpt-5.6-luna
+    instructions_file: /etc/huginn/instructions.md
+    tools: *tools
+    mcp:
+    - &coach-muninn
+      server: muninn
+      allow: *muninn
+      inject:
+        agent: ${MUNINN_COACH_SCOPE_AGENT}
+        user: ${MUNINN_COACH_SCOPE_USER}
+  coach-balanced:
+    description: Builds structured learning plans, sets assessments, reviews progress, and adjusts practice based on results.
+    model: openai/gpt-5.6-terra
+    instructions_file: /etc/huginn/instructions.md
+    tools: *tools
+    mcp:
+    - *coach-muninn
+  coach-advanced:
+    description: Conducts rigorous mastery reviews, diagnoses hidden reasoning gaps, and designs demanding adaptive assessments.
+    model: openai/gpt-5.6-sol
+    instructions_file: /etc/huginn/instructions.md
+    tools: *tools
+    mcp:
+    - *coach-muninn
+  companion-fast:
+    description: Offers brief check-ins, casual conversation, and a low-pressure space to vent or decompress.
+    model: anthropic/claude-haiku-4-5
+    instructions_file: /etc/huginn/instructions.md
+    tools: *tools
+    mcp:
+    - &companion-muninn
+      server: muninn
+      allow: *muninn
+      inject:
+        agent: ${MUNINN_COMPANION_SCOPE_AGENT}
+        user: ${MUNINN_COMPANION_SCOPE_USER}
+  companion-balanced:
+    description: Helps organize emotions, reflect on experiences, and work through ordinary personal conversations with warmth.
+    model: anthropic/claude-sonnet-5
+    instructions_file: /etc/huginn/instructions.md
+    tools: *tools
+    mcp:
+    - *companion-muninn
+  companion-advanced:
+    description: Supports long-context reflection on recurring patterns, difficult conversations, and layered emotional situations.
+    model: anthropic/claude-opus-5
+    instructions_file: /etc/huginn/instructions.md
+    tools: *tools
+    mcp:
+    - *companion-muninn
+  coordinator-fast:
+    description: Handles quick status checks, action-item capture, simple follow-ups, and isolated work requests.
+    model: openrouter/openai/gpt-oss-120b
+    instructions_file: /etc/huginn/instructions.md
+    tools: *tools
+    mcp:
+    - &coordinator-muninn
+      server: muninn
+      allow: *muninn
+      inject:
+        agent: ${MUNINN_COORDINATOR_SCOPE_AGENT}
+        user: ${MUNINN_COORDINATOR_SCOPE_USER}
+  coordinator-balanced:
+    description: Coordinates multiple work tasks, dependencies, schedules, meeting actions, and routine project communication.
+    model: openrouter/google/gemma-2-27b-it
+    instructions_file: /etc/huginn/instructions.md
+    tools: *tools
+    mcp:
+    - *coordinator-muninn
+  coordinator-advanced:
+    description: Handles complex workstreams, cross-team risks, escalation planning, and stakeholder-level synthesis.
+    model: openrouter/x-ai/grok-4.6
+    instructions_file: /etc/huginn/instructions.md
+    tools: *tools
+    mcp:
+    - *coordinator-muninn
+  counsel-fast:
+    description: Extracts clauses, summarizes straightforward terms, and flags obvious omissions in legal documents.
+    model: openai/gpt-5.6-luna
+    instructions_file: /etc/huginn/instructions.md
+    tools: *tools
+    mcp:
+    - &counsel-muninn
+      server: muninn
+      allow: *muninn
+      inject:
+        agent: ${MUNINN_COUNSEL_SCOPE_AGENT}
+        user: ${MUNINN_COUNSEL_SCOPE_USER}
+  counsel-balanced:
+    description: Reviews and compares contracts, licenses, disclaimers, obligations, and practical compliance checklists.
+    model: openai/gpt-5.6-terra
+    instructions_file: /etc/huginn/instructions.md
+    tools: *tools
+    mcp:
+    - *counsel-muninn
+  counsel-advanced:
+    description: Analyzes conflicting clauses, edge-case risks, nuanced implications, and questions for legal negotiation.
+    model: openai/gpt-5.6-sol
+    instructions_file: /etc/huginn/instructions.md
+    tools: *tools
+    mcp:
+    - *counsel-muninn
+  guide-fast:
+    description: Answers quick game lookups about drops, locations, items, and one clearly defined mechanic.
+    model: gemini/gemini-3.5-flash-lite
+    instructions_file: /etc/huginn/instructions.md
+    tools: *tools
+    mcp:
+    - &guide-muninn
+      server: muninn
+      allow: *muninn
+      inject:
+        agent: ${MUNINN_GUIDE_SCOPE_AGENT}
+        user: ${MUNINN_GUIDE_SCOPE_USER}
+  guide-balanced:
+    description: Compares version-specific builds, routes, strategies, and sources for routine game questions.
+    model: gemini/gemini-3.7-flash
+    instructions_file: /etc/huginn/instructions.md
+    tools: *tools
+    mcp:
+    - *guide-muninn
+  guide-advanced:
+    description: Resolves complex mechanics, conflicting sources, metagame tradeoffs, and advanced strategy questions.
+    model: gemini/gemini-3.1-pro-preview
+    instructions_file: /etc/huginn/instructions.md
+    tools: *tools
+    mcp:
+    - *guide-muninn
+  planner-fast:
+    description: Creates small game mechanics, simple rules, quick task breakdowns, and lightweight gamification ideas.
+    model: anthropic/claude-haiku-4-5
+    instructions_file: /etc/huginn/instructions.md
+    tools: *tools
+    mcp:
+    - &planner-muninn
+      server: muninn
+      allow: *muninn
+      inject:
+        agent: ${MUNINN_PLANNER_SCOPE_AGENT}
+        user: ${MUNINN_PLANNER_SCOPE_USER}
+  planner-balanced:
+    description: Designs core loops, progression, economies, prototypes, and structured game-development plans.
+    model: anthropic/claude-sonnet-5
+    instructions_file: /etc/huginn/instructions.md
+    tools: *tools
+    mcp:
+    - *planner-muninn
+  planner-advanced:
+    description: Handles interconnected game systems, balance and simulation, creative constraints, and large project dependencies.
+    model: anthropic/claude-opus-5
+    instructions_file: /etc/huginn/instructions.md
+    tools: *tools
+    mcp:
+    - *planner-muninn
+  plotter-fast:
+    description: Generates story ideas, names, scene prompts, and focused fixes for a single narrative moment.
+    model: anthropic/claude-haiku-4-5
+    instructions_file: /etc/huginn/instructions.md
+    tools: *tools
+    mcp:
+    - &plotter-muninn
+      server: muninn
+      allow: *muninn
+      inject:
+        agent: ${MUNINN_PLOTTER_SCOPE_AGENT}
+        user: ${MUNINN_PLOTTER_SCOPE_USER}
+  plotter-balanced:
+    description: Develops three-act structures, conflicts, character arcs, chapter outlines, and coherent story worlds.
+    model: anthropic/claude-sonnet-5
+    instructions_file: /etc/huginn/instructions.md
+    tools: *tools
+    mcp:
+    - *plotter-muninn
+  plotter-advanced:
+    description: Designs multi-thread narratives, world bibles, long-form continuity, and full structural revisions.
+    model: anthropic/claude-opus-5
+    instructions_file: /etc/huginn/instructions.md
+    tools: *tools
+    mcp:
+    - *plotter-muninn
+  researcher-fast:
+    description: Performs quick searches, verifies simple facts, summarizes one source, and generates lightweight ideas.
+    model: gemini/gemini-3.5-flash-lite
+    instructions_file: /etc/huginn/instructions.md
+    tools: *tools
+    mcp:
+    - &researcher-muninn
+      server: muninn
+      allow: *muninn
+      inject:
+        agent: ${MUNINN_RESEARCHER_SCOPE_AGENT}
+        user: ${MUNINN_RESEARCHER_SCOPE_USER}
+  researcher-balanced:
+    description: Compares multiple sources, organizes themes, summarizes literature, and explores ideas across domains.
+    model: gemini/gemini-3.7-flash
+    instructions_file: /etc/huginn/instructions.md
+    tools: *tools
+    mcp:
+    - *researcher-muninn
+  researcher-advanced:
+    description: Synthesizes conflicting evidence, identifies research gaps, and conducts deep cross-domain investigations.
+    model: gemini/gemini-3.1-pro-preview
+    instructions_file: /etc/huginn/instructions.md
+    tools: *tools
+    mcp:
+    - *researcher-muninn
+  sentinel-fast:
+    description: Reports heartbeats, green status, single alerts, and immediate monitoring facts with minimal analysis.
+    model: gemini/gemini-3.5-flash-lite
+    instructions_file: /etc/huginn/instructions.md
+    tools: *tools
+    mcp:
+    - &sentinel-muninn
+      server: muninn
+      allow: *muninn
+      inject:
+        agent: ${MUNINN_SENTINEL_SCOPE_AGENT}
+        user: ${MUNINN_SENTINEL_SCOPE_USER}
+  sentinel-balanced:
+    description: Correlates routine metrics and alerts, assigns severity, and proposes initial troubleshooting steps.
+    model: gemini/gemini-3.7-flash
+    instructions_file: /etc/huginn/instructions.md
+    tools: *tools
+    mcp:
+    - *sentinel-muninn
+  sentinel-advanced:
+    description: Investigates cross-system incidents, develops root-cause hypotheses, and plans mitigation and recovery.
+    model: gemini/gemini-3.1-pro-preview
+    instructions_file: /etc/huginn/instructions.md
+    tools: *tools
+    mcp:
+    - *sentinel-muninn
+  tutor-fast:
+    description: Gives direct concept explanations, short exercises, and focused corrections for straightforward questions.
+    model: gemini/gemini-3.5-flash-lite
+    instructions_file: /etc/huginn/instructions.md
+    tools: *tools
+    mcp:
+    - &tutor-muninn
+      server: muninn
       allow: *muninn
       inject:
         agent: ${MUNINN_TUTOR_SCOPE_AGENT}
         user: ${MUNINN_TUTOR_SCOPE_USER}
+  tutor-balanced:
+    description: Teaches concepts step by step, guides practice, and explains routine code and problem-solving methods.
+    model: gemini/gemini-3.7-flash
+    instructions_file: /etc/huginn/instructions.md
+    tools: *tools
+    mcp:
+    - *tutor-muninn
+  tutor-advanced:
+    description: Explains underlying mechanisms and algorithms and diagnoses difficult code line by line in depth.
+    model: gemini/gemini-3.1-pro-preview
+    instructions_file: /etc/huginn/instructions.md
+    tools: *tools
+    mcp:
+    - *tutor-muninn
 
 channels:
   advisor:
@@ -311,76 +511,219 @@ channels:
     token: ${TELEGRAM_ADVISOR_TOKEN}
     secret_token: ${TELEGRAM_ADVISOR_SECRET}
     webhook_base_url: ${HUGINN_WEBHOOK_BASE_URL}/huginn
-    agent: advisor
+    agents:
+    - advisor-fast
+    - advisor-balanced
+    - advisor-advanced
+    router:
+      provider: bifrost
+      model: gemini/gemini-3.5-flash-lite
+      fallback: advisor-balanced
+      allowed:
+      - advisor-fast
+      - advisor-balanced
+      - advisor-advanced
   architect:
     kind: telegram
     token: ${TELEGRAM_ARCHITECT_TOKEN}
     secret_token: ${TELEGRAM_ARCHITECT_SECRET}
     webhook_base_url: ${HUGINN_WEBHOOK_BASE_URL}/huginn
-    agent: architect
+    agents:
+    - architect-fast
+    - architect-balanced
+    - architect-advanced
+    router:
+      provider: bifrost
+      model: gemini/gemini-3.5-flash-lite
+      fallback: architect-balanced
+      allowed:
+      - architect-fast
+      - architect-balanced
+      - architect-advanced
   assistant:
     kind: telegram
     token: ${TELEGRAM_ASSISTANT_TOKEN}
     secret_token: ${TELEGRAM_ASSISTANT_SECRET}
     webhook_base_url: ${HUGINN_WEBHOOK_BASE_URL}/huginn
-    agent: assistant
+    agents:
+    - assistant-fast
+    - assistant-balanced
+    - assistant-advanced
+    router:
+      provider: bifrost
+      model: gemini/gemini-3.5-flash-lite
+      fallback: assistant-balanced
+      allowed:
+      - assistant-fast
+      - assistant-balanced
+      - assistant-advanced
   coach:
     kind: telegram
     token: ${TELEGRAM_COACH_TOKEN}
     secret_token: ${TELEGRAM_COACH_SECRET}
     webhook_base_url: ${HUGINN_WEBHOOK_BASE_URL}/huginn
-    agent: coach
+    agents:
+    - coach-fast
+    - coach-balanced
+    - coach-advanced
+    router:
+      provider: bifrost
+      model: gemini/gemini-3.5-flash-lite
+      fallback: coach-balanced
+      allowed:
+      - coach-fast
+      - coach-balanced
+      - coach-advanced
   companion:
     kind: telegram
     token: ${TELEGRAM_COMPANION_TOKEN}
     secret_token: ${TELEGRAM_COMPANION_SECRET}
     webhook_base_url: ${HUGINN_WEBHOOK_BASE_URL}/huginn
-    agent: companion
+    agents:
+    - companion-fast
+    - companion-balanced
+    - companion-advanced
+    router:
+      provider: bifrost
+      model: gemini/gemini-3.5-flash-lite
+      fallback: companion-balanced
+      allowed:
+      - companion-fast
+      - companion-balanced
+      - companion-advanced
   coordinator:
     kind: telegram
     token: ${TELEGRAM_COORDINATOR_TOKEN}
     secret_token: ${TELEGRAM_COORDINATOR_SECRET}
     webhook_base_url: ${HUGINN_WEBHOOK_BASE_URL}/huginn
-    agent: coordinator
+    agents:
+    - coordinator-fast
+    - coordinator-balanced
+    - coordinator-advanced
+    router:
+      provider: bifrost
+      model: gemini/gemini-3.5-flash-lite
+      fallback: coordinator-balanced
+      allowed:
+      - coordinator-fast
+      - coordinator-balanced
+      - coordinator-advanced
   counsel:
     kind: telegram
     token: ${TELEGRAM_COUNSEL_TOKEN}
     secret_token: ${TELEGRAM_COUNSEL_SECRET}
     webhook_base_url: ${HUGINN_WEBHOOK_BASE_URL}/huginn
-    agent: counsel
+    agents:
+    - counsel-fast
+    - counsel-balanced
+    - counsel-advanced
+    router:
+      provider: bifrost
+      model: gemini/gemini-3.5-flash-lite
+      fallback: counsel-balanced
+      allowed:
+      - counsel-fast
+      - counsel-balanced
+      - counsel-advanced
   guide:
     kind: telegram
     token: ${TELEGRAM_GUIDE_TOKEN}
     secret_token: ${TELEGRAM_GUIDE_SECRET}
     webhook_base_url: ${HUGINN_WEBHOOK_BASE_URL}/huginn
-    agent: guide
+    agents:
+    - guide-fast
+    - guide-balanced
+    - guide-advanced
+    router:
+      provider: bifrost
+      model: gemini/gemini-3.5-flash-lite
+      fallback: guide-balanced
+      allowed:
+      - guide-fast
+      - guide-balanced
+      - guide-advanced
   planner:
     kind: telegram
     token: ${TELEGRAM_PLANNER_TOKEN}
     secret_token: ${TELEGRAM_PLANNER_SECRET}
     webhook_base_url: ${HUGINN_WEBHOOK_BASE_URL}/huginn
-    agent: planner
+    agents:
+    - planner-fast
+    - planner-balanced
+    - planner-advanced
+    router:
+      provider: bifrost
+      model: gemini/gemini-3.5-flash-lite
+      fallback: planner-balanced
+      allowed:
+      - planner-fast
+      - planner-balanced
+      - planner-advanced
   plotter:
     kind: telegram
     token: ${TELEGRAM_PLOTTER_TOKEN}
     secret_token: ${TELEGRAM_PLOTTER_SECRET}
     webhook_base_url: ${HUGINN_WEBHOOK_BASE_URL}/huginn
-    agent: plotter
+    agents:
+    - plotter-fast
+    - plotter-balanced
+    - plotter-advanced
+    router:
+      provider: bifrost
+      model: gemini/gemini-3.5-flash-lite
+      fallback: plotter-balanced
+      allowed:
+      - plotter-fast
+      - plotter-balanced
+      - plotter-advanced
   researcher:
     kind: telegram
     token: ${TELEGRAM_RESEARCHER_TOKEN}
     secret_token: ${TELEGRAM_RESEARCHER_SECRET}
     webhook_base_url: ${HUGINN_WEBHOOK_BASE_URL}/huginn
-    agent: researcher
+    agents:
+    - researcher-fast
+    - researcher-balanced
+    - researcher-advanced
+    router:
+      provider: bifrost
+      model: gemini/gemini-3.5-flash-lite
+      fallback: researcher-balanced
+      allowed:
+      - researcher-fast
+      - researcher-balanced
+      - researcher-advanced
   sentinel:
     kind: telegram
     token: ${TELEGRAM_SENTINEL_TOKEN}
     secret_token: ${TELEGRAM_SENTINEL_SECRET}
     webhook_base_url: ${HUGINN_WEBHOOK_BASE_URL}/huginn
-    agent: sentinel
+    agents:
+    - sentinel-fast
+    - sentinel-balanced
+    - sentinel-advanced
+    router:
+      provider: bifrost
+      model: gemini/gemini-3.5-flash-lite
+      fallback: sentinel-balanced
+      allowed:
+      - sentinel-fast
+      - sentinel-balanced
+      - sentinel-advanced
   tutor:
     kind: telegram
     token: ${TELEGRAM_TUTOR_TOKEN}
     secret_token: ${TELEGRAM_TUTOR_SECRET}
     webhook_base_url: ${HUGINN_WEBHOOK_BASE_URL}/huginn
-    agent: tutor
+    agents:
+    - tutor-fast
+    - tutor-balanced
+    - tutor-advanced
+    router:
+      provider: bifrost
+      model: gemini/gemini-3.5-flash-lite
+      fallback: tutor-balanced
+      allowed:
+      - tutor-fast
+      - tutor-balanced
+      - tutor-advanced

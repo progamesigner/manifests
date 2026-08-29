@@ -31,7 +31,7 @@ images:
   newTag: 2026.8.3
 - name: huginn/huginn
   newName: ghcr.io/progamesigner/huginn
-  newTag: 0.3.0
+  newTag: 0.4.0
 - name: muninn/muninn
   newName: ghcr.io/progamesigner/muninn
   newTag: 1.1.2
