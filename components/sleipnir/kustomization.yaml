@@ -8,3 +8,6 @@ secretGenerator:
 - name: sleipnir
   envs:
   - sleipnir.env
+- name: sleipnir-yggdrasil
+  envs:
+  - sleipnir-yggdrasil.env
