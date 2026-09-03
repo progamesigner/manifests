@@ -28,7 +28,7 @@ images:
   newTag: v0.144.0
 - name: home-assistant/home-assistant
   newName: ghcr.io/home-assistant/home-assistant
-  newTag: 2026.8.3
+  newTag: 2026.9.0
 - name: huginn/huginn
   newName: ghcr.io/progamesigner/huginn
   newTag: 0.4.0
