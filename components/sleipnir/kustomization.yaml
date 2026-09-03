@@ -5,6 +5,12 @@ resources:
 - controllers.yaml
 - storages.yaml
 secretGenerator:
-- name: sleipnir
+- name: sleipnir-urd
   envs:
-  - sleipnir.env
+  - sleipnir-urd.env
+- name: sleipnir-verdandi
+  envs:
+  - sleipnir-verdandi.env
+- name: sleipnir-skuld
+  envs:
+  - sleipnir-skuld.env

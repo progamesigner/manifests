@@ -3,264 +3,414 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app.kubernetes.io/component: alfheim
+    app.kubernetes.io/component: urd
     app.kubernetes.io/name: sleipnir
     app.kubernetes.io/part-of: components
-  name: sleipnir-alfheim
+  name: sleipnir-urd
 spec:
   replicas: 1
+  strategy:
+    type: Recreate
   selector:
     matchLabels:
-      app.kubernetes.io/component: alfheim
-      app.kubernetes.io/name: sleipnir
-      app.kubernetes.io/part-of: components
+    app.kubernetes.io/component: urd
+    app.kubernetes.io/name: sleipnir
+    app.kubernetes.io/part-of: components
   template:
     metadata:
       labels:
-        app.kubernetes.io/component: alfheim
-        app.kubernetes.io/name: sleipnir
-        app.kubernetes.io/part-of: components
+    app.kubernetes.io/component: urd
+    app.kubernetes.io/name: sleipnir
+    app.kubernetes.io/part-of: components
     spec:
       automountServiceAccountToken: false
       containers:
-      - name: claude-code
-        image: sleipnir/claude-code:latest
+      - name: sleipnir
+        image: sleipnir/sleipnir:latest
         imagePullPolicy: Always
         env:
-        - name: CLAUDE_NAME
-          value: Sleipnir
+        - name: TS_HOSTNAME
+          value: "sleipnir-urd"
+        - name: CODE_TUNNEL_NAME
+          value: "sleipnir-urd"
+        - name: CLAUDE_RC_NAME
+          value: "Sleipnir Urd"
         - name: CLAUDE_REMOTE_CONTROL_SESSION_NAME_PREFIX
-          value: Sleipnir
+          value: "Sleipnir Urd"
+        - name: SLEIPNIR_ENABLE_RC_CLAUDE
+          value: "1"
+        - name: SLEIPNIR_ENABLE_RC_CODEX
+          value: "1"
         envFrom:
         - secretRef:
-            name: sleipnir
+            name: sleipnir-urd
+        ports:
+        - name: moshi-web
+          containerPort: 24544
         resources:
           limits:
-            cpu: 1000m
-            memory: 2Gi
+            cpu: 4000m
+            memory: 12Gi
           requests:
-            cpu: 500m
-            memory: 1Gi
+            cpu: 1000m
+            memory: 4Gi
+        # s6-overlay supervises as root and drops every service to uid 1000 with
+        # s6-setuidgid, so the container itself cannot run as non-root here.
         securityContext:
-          runAsUser: 1000
-          runAsGroup: 1000
-          runAsNonRoot: true
+          runAsUser: 0
+          runAsGroup: 0
         volumeMounts:
-        - name: conf-github
-          mountPath: /home/ubuntu/.config/gh
-        - name: data
+        - name: claude
           mountPath: /home/ubuntu/.claude
-        - name: workspace
-          mountPath: /workspace
-      enableServiceLinks: false
-      hostname: sleipnir
-      securityContext:
-        fsGroup: 1000
-      serviceAccountName: default
-      volumes:
-      - name: conf-github
-        persistentVolumeClaim:
-          claimName: dev-conf-github
-      - name: data
-        persistentVolumeClaim:
-          claimName: sleipnir-alfheim
-      - name: workspace
-        persistentVolumeClaim:
-          claimName: sleipnir-skuld
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  labels:
-    app.kubernetes.io/component: asgard
-    app.kubernetes.io/name: sleipnir
-    app.kubernetes.io/part-of: components
-  name: sleipnir-asgard
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app.kubernetes.io/component: asgard
-      app.kubernetes.io/name: sleipnir
-      app.kubernetes.io/part-of: components
-  template:
-    metadata:
-      labels:
-        app.kubernetes.io/component: asgard
-        app.kubernetes.io/name: sleipnir
-        app.kubernetes.io/part-of: components
-    spec:
-      automountServiceAccountToken: false
-      containers:
-      - name: claude-code
-        image: sleipnir/claude-code:latest
-        imagePullPolicy: Always
-        env:
-        - name: CLAUDE_NAME
-          value: Sleipnir
-        - name: CLAUDE_REMOTE_CONTROL_SESSION_NAME_PREFIX
-          value: Sleipnir
-        envFrom:
-        - secretRef:
-            name: sleipnir
-        resources:
-          limits:
-            cpu: 1000m
-            memory: 2Gi
-          requests:
-            cpu: 500m
-            memory: 1Gi
-        securityContext:
-          runAsUser: 1000
-          runAsGroup: 1000
-          runAsNonRoot: true
-        volumeMounts:
-        - name: conf-github
-          mountPath: /home/ubuntu/.config/gh
-        - name: data
-          mountPath: /home/ubuntu/.claude
-        - name: workspace
-          mountPath: /workspace
-      enableServiceLinks: false
-      hostname: sleipnir
-      securityContext:
-        fsGroup: 1000
-      serviceAccountName: default
-      volumes:
-      - name: conf-github
-        persistentVolumeClaim:
-          claimName: dev-conf-github
-      - name: data
-        persistentVolumeClaim:
-          claimName: sleipnir-asgard
-      - name: workspace
-        persistentVolumeClaim:
-          claimName: sleipnir-urd
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  labels:
-    app.kubernetes.io/component: midgard
-    app.kubernetes.io/name: sleipnir
-    app.kubernetes.io/part-of: components
-  name: sleipnir-midgard
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app.kubernetes.io/component: midgard
-      app.kubernetes.io/name: sleipnir
-      app.kubernetes.io/part-of: components
-  template:
-    metadata:
-      labels:
-        app.kubernetes.io/component: midgard
-        app.kubernetes.io/name: sleipnir
-        app.kubernetes.io/part-of: components
-    spec:
-      automountServiceAccountToken: false
-      containers:
-      - name: codex
-        image: sleipnir/codex:latest
-        imagePullPolicy: Always
-        envFrom:
-        - secretRef:
-            name: sleipnir
-        resources:
-          limits:
-            cpu: 1000m
-            memory: 2Gi
-          requests:
-            cpu: 500m
-            memory: 1Gi
-        securityContext:
-          runAsUser: 1000
-          runAsGroup: 1000
-          runAsNonRoot: true
-        volumeMounts:
-        - name: conf-github
-          mountPath: /home/ubuntu/.config/gh
-        - name: data
+        - name: codex
           mountPath: /home/ubuntu/.codex
+        - name: gemini
+          mountPath: /home/ubuntu/.gemini
+        - name: copilot
+          mountPath: /home/ubuntu/.copilot
+        - name: github
+          mountPath: /home/ubuntu/.config/gh
+        - name: opencode-conf
+          mountPath: /home/ubuntu/.config/opencode
+        - name: opencode-data
+          mountPath: /home/ubuntu/.local/share/opencode
+        - name: herdr
+          mountPath: /home/ubuntu/.config/herdr
+        - name: moshi-conf
+          mountPath: /home/ubuntu/.config/moshi
+        - name: moshi-state
+          mountPath: /home/ubuntu/.local/state/moshi
+        - name: local-bin
+          mountPath: /home/ubuntu/.local/bin
+        - name: vscode
+          mountPath: /home/ubuntu/.vscode-cli
+        - name: tailscale
+          mountPath: /var/lib/tailscale
         - name: workspace
           mountPath: /workspace
       enableServiceLinks: false
-      hostname: sleipnir
+      hostname: sleipnir-urd
+      nodeSelector:
+        kubernetes.io/arch: amd64
       securityContext:
         fsGroup: 1000
       serviceAccountName: default
       volumes:
-      - name: conf-github
+      - name: claude
         persistentVolumeClaim:
-          claimName: dev-conf-github
-      - name: data
+          claimName: sleipnir-urd-claude
+      - name: codex
         persistentVolumeClaim:
-          claimName: sleipnir-midgard
+          claimName: sleipnir-urd-codex
+      - name: gemini
+        persistentVolumeClaim:
+          claimName: sleipnir-urd-gemini
+      - name: copilot
+        persistentVolumeClaim:
+          claimName: sleipnir-urd-copilot
+      - name: github
+        persistentVolumeClaim:
+          claimName: sleipnir-urd-github
+      - name: opencode-conf
+        persistentVolumeClaim:
+          claimName: sleipnir-urd-opencode-conf
+      - name: opencode-data
+        persistentVolumeClaim:
+          claimName: sleipnir-urd-opencode-data
+      - name: herdr
+        persistentVolumeClaim:
+          claimName: sleipnir-urd-herdr
+      - name: moshi-conf
+        persistentVolumeClaim:
+          claimName: sleipnir-urd-moshi-conf
+      - name: moshi-state
+        persistentVolumeClaim:
+          claimName: sleipnir-urd-moshi-state
+      - name: local-bin
+        persistentVolumeClaim:
+          claimName: sleipnir-urd-local-bin
+      - name: vscode
+        persistentVolumeClaim:
+          claimName: sleipnir-urd-vscode
+      - name: tailscale
+        persistentVolumeClaim:
+          claimName: sleipnir-urd-tailscale
       - name: workspace
         persistentVolumeClaim:
-          claimName: sleipnir-urd
+          claimName: sleipnir-urd-workspace
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app.kubernetes.io/component: vanaheim
+    app.kubernetes.io/component: verdandi
     app.kubernetes.io/name: sleipnir
     app.kubernetes.io/part-of: components
-  name: sleipnir-vanaheim
+  name: sleipnir-verdandi
 spec:
   replicas: 1
+  strategy:
+    type: Recreate
   selector:
     matchLabels:
-      app.kubernetes.io/component: vanaheim
-      app.kubernetes.io/name: sleipnir
-      app.kubernetes.io/part-of: components
+    app.kubernetes.io/component: verdandi
+    app.kubernetes.io/name: sleipnir
+    app.kubernetes.io/part-of: components
   template:
     metadata:
       labels:
-        app.kubernetes.io/component: vanaheim
-        app.kubernetes.io/name: sleipnir
-        app.kubernetes.io/part-of: components
+    app.kubernetes.io/component: verdandi
+    app.kubernetes.io/name: sleipnir
+    app.kubernetes.io/part-of: components
     spec:
       automountServiceAccountToken: false
       containers:
-      - name: claude-code
-        image: sleipnir/claude-code:latest
+      - name: sleipnir
+        image: sleipnir/sleipnir:latest
         imagePullPolicy: Always
         env:
-        - name: CLAUDE_NAME
-          value: Sleipnir
+        - name: TS_HOSTNAME
+          value: "sleipnir-verdandi"
+        - name: CODE_TUNNEL_NAME
+          value: "sleipnir-verdandi"
+        - name: CLAUDE_RC_NAME
+          value: "Sleipnir Verdandi"
         - name: CLAUDE_REMOTE_CONTROL_SESSION_NAME_PREFIX
-          value: Sleipnir
+          value: "Sleipnir Verdandi"
+        - name: SLEIPNIR_ENABLE_RC_CLAUDE
+          value: "1"
         envFrom:
         - secretRef:
-            name: sleipnir
+            name: sleipnir-verdandi
+        ports:
+        - name: moshi-web
+          containerPort: 24544
         resources:
           limits:
-            cpu: 1000m
-            memory: 2Gi
+            cpu: 4000m
+            memory: 12Gi
           requests:
-            cpu: 500m
-            memory: 1Gi
+            cpu: 1000m
+            memory: 4Gi
+        # s6-overlay supervises as root and drops every service to uid 1000 with
+        # s6-setuidgid, so the container itself cannot run as non-root here.
         securityContext:
-          runAsUser: 1000
-          runAsGroup: 1000
-          runAsNonRoot: true
+          runAsUser: 0
+          runAsGroup: 0
         volumeMounts:
-        - name: data
+        - name: claude
           mountPath: /home/ubuntu/.claude
+        - name: codex
+          mountPath: /home/ubuntu/.codex
+        - name: gemini
+          mountPath: /home/ubuntu/.gemini
+        - name: copilot
+          mountPath: /home/ubuntu/.copilot
+        - name: github
+          mountPath: /home/ubuntu/.config/gh
+        - name: opencode-conf
+          mountPath: /home/ubuntu/.config/opencode
+        - name: opencode-data
+          mountPath: /home/ubuntu/.local/share/opencode
+        - name: herdr
+          mountPath: /home/ubuntu/.config/herdr
+        - name: moshi-conf
+          mountPath: /home/ubuntu/.config/moshi
+        - name: moshi-state
+          mountPath: /home/ubuntu/.local/state/moshi
+        - name: local-bin
+          mountPath: /home/ubuntu/.local/bin
+        - name: vscode
+          mountPath: /home/ubuntu/.vscode-cli
+        - name: tailscale
+          mountPath: /var/lib/tailscale
         - name: workspace
           mountPath: /workspace
       enableServiceLinks: false
-      hostname: sleipnir
+      hostname: sleipnir-verdandi
+      nodeSelector:
+        kubernetes.io/arch: amd64
       securityContext:
         fsGroup: 1000
       serviceAccountName: default
       volumes:
-      - name: data
+      - name: claude
         persistentVolumeClaim:
-          claimName: sleipnir-vanaheim
+          claimName: sleipnir-verdandi-claude
+      - name: codex
+        persistentVolumeClaim:
+          claimName: sleipnir-verdandi-codex
+      - name: gemini
+        persistentVolumeClaim:
+          claimName: sleipnir-verdandi-gemini
+      - name: copilot
+        persistentVolumeClaim:
+          claimName: sleipnir-verdandi-copilot
+      - name: github
+        persistentVolumeClaim:
+          claimName: sleipnir-verdandi-github
+      - name: opencode-conf
+        persistentVolumeClaim:
+          claimName: sleipnir-verdandi-opencode-conf
+      - name: opencode-data
+        persistentVolumeClaim:
+          claimName: sleipnir-verdandi-opencode-data
+      - name: herdr
+        persistentVolumeClaim:
+          claimName: sleipnir-verdandi-herdr
+      - name: moshi-conf
+        persistentVolumeClaim:
+          claimName: sleipnir-verdandi-moshi-conf
+      - name: moshi-state
+        persistentVolumeClaim:
+          claimName: sleipnir-verdandi-moshi-state
+      - name: local-bin
+        persistentVolumeClaim:
+          claimName: sleipnir-verdandi-local-bin
+      - name: vscode
+        persistentVolumeClaim:
+          claimName: sleipnir-verdandi-vscode
+      - name: tailscale
+        persistentVolumeClaim:
+          claimName: sleipnir-verdandi-tailscale
       - name: workspace
         persistentVolumeClaim:
-          claimName: sleipnir-verdandi
+          claimName: sleipnir-verdandi-workspace
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/component: skuld
+    app.kubernetes.io/name: sleipnir
+    app.kubernetes.io/part-of: components
+  name: sleipnir-skuld
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+    app.kubernetes.io/component: skuld
+    app.kubernetes.io/name: sleipnir
+    app.kubernetes.io/part-of: components
+  template:
+    metadata:
+      labels:
+    app.kubernetes.io/component: skuld
+    app.kubernetes.io/name: sleipnir
+    app.kubernetes.io/part-of: components
+    spec:
+      automountServiceAccountToken: false
+      containers:
+      - name: sleipnir
+        image: sleipnir/sleipnir:latest
+        imagePullPolicy: Always
+        env:
+        - name: TS_HOSTNAME
+          value: "sleipnir-skuld"
+        - name: CODE_TUNNEL_NAME
+          value: "sleipnir-skuld"
+        - name: CLAUDE_RC_NAME
+          value: "Sleipnir Skuld"
+        - name: CLAUDE_REMOTE_CONTROL_SESSION_NAME_PREFIX
+          value: "Sleipnir Skuld"
+        - name: SLEIPNIR_ENABLE_RC_CLAUDE
+          value: "1"
+        envFrom:
+        - secretRef:
+            name: sleipnir-skuld
+        ports:
+        - name: moshi-web
+          containerPort: 24544
+        resources:
+          limits:
+            cpu: 4000m
+            memory: 12Gi
+          requests:
+            cpu: 1000m
+            memory: 4Gi
+        # s6-overlay supervises as root and drops every service to uid 1000 with
+        # s6-setuidgid, so the container itself cannot run as non-root here.
+        securityContext:
+          runAsUser: 0
+          runAsGroup: 0
+        volumeMounts:
+        - name: claude
+          mountPath: /home/ubuntu/.claude
+        - name: codex
+          mountPath: /home/ubuntu/.codex
+        - name: gemini
+          mountPath: /home/ubuntu/.gemini
+        - name: copilot
+          mountPath: /home/ubuntu/.copilot
+        - name: github
+          mountPath: /home/ubuntu/.config/gh
+        - name: opencode-conf
+          mountPath: /home/ubuntu/.config/opencode
+        - name: opencode-data
+          mountPath: /home/ubuntu/.local/share/opencode
+        - name: herdr
+          mountPath: /home/ubuntu/.config/herdr
+        - name: moshi-conf
+          mountPath: /home/ubuntu/.config/moshi
+        - name: moshi-state
+          mountPath: /home/ubuntu/.local/state/moshi
+        - name: local-bin
+          mountPath: /home/ubuntu/.local/bin
+        - name: vscode
+          mountPath: /home/ubuntu/.vscode-cli
+        - name: tailscale
+          mountPath: /var/lib/tailscale
+        - name: workspace
+          mountPath: /workspace
+      enableServiceLinks: false
+      hostname: sleipnir-skuld
+      nodeSelector:
+        kubernetes.io/arch: amd64
+      securityContext:
+        fsGroup: 1000
+      serviceAccountName: default
+      volumes:
+      - name: claude
+        persistentVolumeClaim:
+          claimName: sleipnir-skuld-claude
+      - name: codex
+        persistentVolumeClaim:
+          claimName: sleipnir-skuld-codex
+      - name: gemini
+        persistentVolumeClaim:
+          claimName: sleipnir-skuld-gemini
+      - name: copilot
+        persistentVolumeClaim:
+          claimName: sleipnir-skuld-copilot
+      - name: github
+        persistentVolumeClaim:
+          claimName: sleipnir-skuld-github
+      - name: opencode-conf
+        persistentVolumeClaim:
+          claimName: sleipnir-skuld-opencode-conf
+      - name: opencode-data
+        persistentVolumeClaim:
+          claimName: sleipnir-skuld-opencode-data
+      - name: herdr
+        persistentVolumeClaim:
+          claimName: sleipnir-skuld-herdr
+      - name: moshi-conf
+        persistentVolumeClaim:
+          claimName: sleipnir-skuld-moshi-conf
+      - name: moshi-state
+        persistentVolumeClaim:
+          claimName: sleipnir-skuld-moshi-state
+      - name: local-bin
+        persistentVolumeClaim:
+          claimName: sleipnir-skuld-local-bin
+      - name: vscode
+        persistentVolumeClaim:
+          claimName: sleipnir-skuld-vscode
+      - name: tailscale
+        persistentVolumeClaim:
+          claimName: sleipnir-skuld-tailscale
+      - name: workspace
+        persistentVolumeClaim:
+          claimName: sleipnir-skuld-workspace

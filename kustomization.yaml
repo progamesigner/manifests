@@ -76,6 +76,8 @@ images:
   newTag: 13.0.20
 - name: sleipnir/claude-code
   newName: ghcr.io/progamesigner/devtools/claude-code
+- name: sleipnir/sleipnir
+  newName: ghcr.io/progamesigner/sleipnir
 - name: sleipnir/codex
   newName: ghcr.io/progamesigner/devtools/codex
 - name: syncthing/relaysrv

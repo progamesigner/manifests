@@ -7,6 +7,9 @@ components/muninn/muninn.env
 components/muninn/tokens.json
 components/rsshub/rsshub.env
 components/seafile/seafile.env
+components/sleipnir/sleipnir-skuld.env
+components/sleipnir/sleipnir-urd.env
+components/sleipnir/sleipnir-verdandi.env
 components/sleipnir/sleipnir.env
 components/tailscale.env
 components/tailscale/protonvpn.ch.conf

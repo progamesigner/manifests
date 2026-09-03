@@ -2,7 +2,139 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: sleipnir-alfheim
+  name: sleipnir-urd-claude
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 2Gi
+  storageClassName: ceph-cephfs
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: sleipnir-urd-codex
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 2Gi
+  storageClassName: ceph-cephfs
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: sleipnir-urd-gemini
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 2Gi
+  storageClassName: ceph-cephfs
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: sleipnir-urd-copilot
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 2Gi
+  storageClassName: ceph-cephfs
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: sleipnir-urd-github
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: ceph-cephfs
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: sleipnir-urd-opencode-conf
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: ceph-cephfs
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: sleipnir-urd-opencode-data
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 2Gi
+  storageClassName: ceph-cephfs
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: sleipnir-urd-herdr
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: ceph-cephfs
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: sleipnir-urd-moshi-conf
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: ceph-cephfs
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: sleipnir-urd-moshi-state
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: ceph-cephfs
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: sleipnir-urd-local-bin
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: ceph-cephfs
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: sleipnir-urd-vscode
 spec:
   accessModes:
   - ReadWriteMany
@@ -14,7 +146,163 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: sleipnir-asgard
+  name: sleipnir-urd-tailscale
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: ceph-cephfs
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: sleipnir-urd-workspace
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 16Gi
+  storageClassName: ceph-cephfs
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: sleipnir-verdandi-claude
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 2Gi
+  storageClassName: ceph-cephfs
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: sleipnir-verdandi-codex
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 2Gi
+  storageClassName: ceph-cephfs
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: sleipnir-verdandi-gemini
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 2Gi
+  storageClassName: ceph-cephfs
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: sleipnir-verdandi-copilot
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 2Gi
+  storageClassName: ceph-cephfs
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: sleipnir-verdandi-github
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: ceph-cephfs
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: sleipnir-verdandi-opencode-conf
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: ceph-cephfs
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: sleipnir-verdandi-opencode-data
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 2Gi
+  storageClassName: ceph-cephfs
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: sleipnir-verdandi-herdr
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: ceph-cephfs
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: sleipnir-verdandi-moshi-conf
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: ceph-cephfs
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: sleipnir-verdandi-moshi-state
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: ceph-cephfs
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: sleipnir-verdandi-local-bin
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: ceph-cephfs
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: sleipnir-verdandi-vscode
 spec:
   accessModes:
   - ReadWriteMany
@@ -26,7 +314,163 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: sleipnir-helheim
+  name: sleipnir-verdandi-tailscale
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: ceph-cephfs
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: sleipnir-verdandi-workspace
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 16Gi
+  storageClassName: ceph-cephfs
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: sleipnir-skuld-claude
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 2Gi
+  storageClassName: ceph-cephfs
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: sleipnir-skuld-codex
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 2Gi
+  storageClassName: ceph-cephfs
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: sleipnir-skuld-gemini
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 2Gi
+  storageClassName: ceph-cephfs
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: sleipnir-skuld-copilot
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 2Gi
+  storageClassName: ceph-cephfs
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: sleipnir-skuld-github
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: ceph-cephfs
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: sleipnir-skuld-opencode-conf
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: ceph-cephfs
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: sleipnir-skuld-opencode-data
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 2Gi
+  storageClassName: ceph-cephfs
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: sleipnir-skuld-herdr
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: ceph-cephfs
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: sleipnir-skuld-moshi-conf
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: ceph-cephfs
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: sleipnir-skuld-moshi-state
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: ceph-cephfs
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: sleipnir-skuld-local-bin
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: ceph-cephfs
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: sleipnir-skuld-vscode
 spec:
   accessModes:
   - ReadWriteMany
@@ -38,119 +482,23 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: sleipnir-jotunheim
+  name: sleipnir-skuld-tailscale
 spec:
   accessModes:
   - ReadWriteMany
   resources:
     requests:
-      storage: 4Gi
+      storage: 1Gi
   storageClassName: ceph-cephfs
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: sleipnir-midgard
+  name: sleipnir-skuld-workspace
 spec:
   accessModes:
   - ReadWriteMany
   resources:
     requests:
-      storage: 4Gi
-  storageClassName: ceph-cephfs
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: sleipnir-muspelheim
-spec:
-  accessModes:
-  - ReadWriteMany
-  resources:
-    requests:
-      storage: 4Gi
-  storageClassName: ceph-cephfs
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: sleipnir-nidavellir
-spec:
-  accessModes:
-  - ReadWriteMany
-  resources:
-    requests:
-      storage: 4Gi
-  storageClassName: ceph-cephfs
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: sleipnir-niflheim
-spec:
-  accessModes:
-  - ReadWriteMany
-  resources:
-    requests:
-      storage: 4Gi
-  storageClassName: ceph-cephfs
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: sleipnir-skuld
-spec:
-  accessModes:
-  - ReadWriteMany
-  resources:
-    requests:
-      storage: 256Gi
-  storageClassName: ceph-cephfs
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: sleipnir-svartalfheim
-spec:
-  accessModes:
-  - ReadWriteMany
-  resources:
-    requests:
-      storage: 4Gi
-  storageClassName: ceph-cephfs
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: sleipnir-urd
-spec:
-  accessModes:
-  - ReadWriteMany
-  resources:
-    requests:
-      storage: 256Gi
-  storageClassName: ceph-cephfs
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: sleipnir-vanaheim
-spec:
-  accessModes:
-  - ReadWriteMany
-  resources:
-    requests:
-      storage: 4Gi
-  storageClassName: ceph-cephfs
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: sleipnir-verdandi
-spec:
-  accessModes:
-  - ReadWriteMany
-  resources:
-    requests:
-      storage: 256Gi
+      storage: 16Gi
   storageClassName: ceph-cephfs
