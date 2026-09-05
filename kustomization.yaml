@@ -22,7 +22,7 @@ images:
   newTag: 0.5.77
 - name: gloomhaven/client
   newName: gloomhavensecretariat/ghs
-  newTag: v0.144.7
+  newTag: v0.169.2
 - name: gloomhaven/server
   newName: gloomhavensecretariat/ghs-server-postgresql
   newTag: v0.167.0
