@@ -25,7 +25,7 @@ images:
   newTag: v0.144.7
 - name: gloomhaven/server
   newName: gloomhavensecretariat/ghs-server-postgresql
-  newTag: v0.144.0
+  newTag: v0.167.0
 - name: home-assistant/home-assistant
   newName: ghcr.io/home-assistant/home-assistant
   newTag: 2026.9.0
