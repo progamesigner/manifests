@@ -3,187 +3,97 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app.kubernetes.io/component: alfheim
+    app.kubernetes.io/component: urd
     app.kubernetes.io/name: sleipnir
     app.kubernetes.io/part-of: components
-  name: sleipnir-alfheim
+  name: sleipnir-urd
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app.kubernetes.io/component: alfheim
+      app.kubernetes.io/component: urd
       app.kubernetes.io/name: sleipnir
       app.kubernetes.io/part-of: components
   template:
     metadata:
       labels:
-        app.kubernetes.io/component: alfheim
+        app.kubernetes.io/component: urd
         app.kubernetes.io/name: sleipnir
         app.kubernetes.io/part-of: components
     spec:
       automountServiceAccountToken: false
       containers:
-      - name: claude-code
-        image: sleipnir/claude-code:latest
-        imagePullPolicy: Always
-        env:
-        - name: CLAUDE_NAME
-          value: Sleipnir
-        - name: CLAUDE_REMOTE_CONTROL_SESSION_NAME_PREFIX
-          value: Sleipnir
+      - name: sleipnir
+        image: sleipnir/sleipnir:latest
         envFrom:
-        - secretRef:
+        - configMapRef:
             name: sleipnir
+        - secretRef:
+            name: sleipnir-urd
+        ports:
+        - name: moshi
+          containerPort: 24544
+          protocol: TCP
         resources:
           limits:
-            cpu: 1000m
-            memory: 2Gi
+            cpu: 4000m
+            memory: 32Gi
           requests:
             cpu: 500m
-            memory: 1Gi
-        securityContext:
-          runAsUser: 1000
-          runAsGroup: 1000
-          runAsNonRoot: true
+            memory: 2Gi
         volumeMounts:
-        - name: conf-github
+        - name: data
           mountPath: /home/ubuntu/.config/gh
+          subPath: dev-conf-github
+        - name: data
+          mountPath: /home/ubuntu/.gnupg
+          subPath: dev-conf-gpg
+        - name: data
+          mountPath: /home/ubuntu/.config/herdr
+          subPath: dev-conf-herdr
+        - name: data
+          mountPath: /home/ubuntu/.ssh
+          subPath: dev-conf-ssh
+        - name: data
+          mountPath: /home/ubuntu/.config/opencode
+          subPath: dev-conf-opencode
+        - name: data
+          mountPath: /home/ubuntu/.config/moshi
+          subPath: dev-conf-moshi
+        - name: data
+          mountPath: /home/ubuntu/.agents
+          subPath: dev-data-agents
+        - name: data
+          mountPath: /home/ubuntu/.local/bin
+          subPath: dev-data-bin
         - name: data
           mountPath: /home/ubuntu/.claude
-        - name: workspace
-          mountPath: /workspace
-      enableServiceLinks: false
-      hostname: sleipnir
-      securityContext:
-        fsGroup: 1000
-      serviceAccountName: default
-      volumes:
-      - name: conf-github
-        persistentVolumeClaim:
-          claimName: dev-conf-github
-      - name: data
-        persistentVolumeClaim:
-          claimName: sleipnir-alfheim
-      - name: workspace
-        persistentVolumeClaim:
-          claimName: sleipnir-skuld
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  labels:
-    app.kubernetes.io/component: asgard
-    app.kubernetes.io/name: sleipnir
-    app.kubernetes.io/part-of: components
-  name: sleipnir-asgard
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app.kubernetes.io/component: asgard
-      app.kubernetes.io/name: sleipnir
-      app.kubernetes.io/part-of: components
-  template:
-    metadata:
-      labels:
-        app.kubernetes.io/component: asgard
-        app.kubernetes.io/name: sleipnir
-        app.kubernetes.io/part-of: components
-    spec:
-      automountServiceAccountToken: false
-      containers:
-      - name: claude-code
-        image: sleipnir/claude-code:latest
-        imagePullPolicy: Always
-        env:
-        - name: CLAUDE_NAME
-          value: Sleipnir
-        - name: CLAUDE_REMOTE_CONTROL_SESSION_NAME_PREFIX
-          value: Sleipnir
-        envFrom:
-        - secretRef:
-            name: sleipnir
-        resources:
-          limits:
-            cpu: 1000m
-            memory: 2Gi
-          requests:
-            cpu: 500m
-            memory: 1Gi
-        securityContext:
-          runAsUser: 1000
-          runAsGroup: 1000
-          runAsNonRoot: true
-        volumeMounts:
-        - name: conf-github
-          mountPath: /home/ubuntu/.config/gh
-        - name: data
-          mountPath: /home/ubuntu/.claude
-        - name: workspace
-          mountPath: /workspace
-      enableServiceLinks: false
-      hostname: sleipnir
-      securityContext:
-        fsGroup: 1000
-      serviceAccountName: default
-      volumes:
-      - name: conf-github
-        persistentVolumeClaim:
-          claimName: dev-conf-github
-      - name: data
-        persistentVolumeClaim:
-          claimName: sleipnir-asgard
-      - name: workspace
-        persistentVolumeClaim:
-          claimName: sleipnir-urd
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  labels:
-    app.kubernetes.io/component: midgard
-    app.kubernetes.io/name: sleipnir
-    app.kubernetes.io/part-of: components
-  name: sleipnir-midgard
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app.kubernetes.io/component: midgard
-      app.kubernetes.io/name: sleipnir
-      app.kubernetes.io/part-of: components
-  template:
-    metadata:
-      labels:
-        app.kubernetes.io/component: midgard
-        app.kubernetes.io/name: sleipnir
-        app.kubernetes.io/part-of: components
-    spec:
-      automountServiceAccountToken: false
-      containers:
-      - name: codex
-        image: sleipnir/codex:latest
-        imagePullPolicy: Always
-        envFrom:
-        - secretRef:
-            name: sleipnir
-        resources:
-          limits:
-            cpu: 1000m
-            memory: 2Gi
-          requests:
-            cpu: 500m
-            memory: 1Gi
-        securityContext:
-          runAsUser: 1000
-          runAsGroup: 1000
-          runAsNonRoot: true
-        volumeMounts:
-        - name: conf-github
-          mountPath: /home/ubuntu/.config/gh
+          subPath: dev-data-claude
         - name: data
           mountPath: /home/ubuntu/.codex
-        - name: workspace
+          subPath: dev-data-codex
+        - name: data
+          mountPath: /home/ubuntu/.copilot
+          subPath: dev-data-copilot
+        - name: data
+          mountPath: /home/ubuntu/.gemini
+          subPath: dev-data-gemini
+        - name: data
+          mountPath: /home/ubuntu/.local/state/moshi
+          subPath: dev-data-moshi
+        - name: data
+          mountPath: /home/ubuntu/.local/share/opencode
+          subPath: dev-data-opencode
+        - name: data
+          mountPath: /var/lib/tailscale
+          subPath: dev-data-tailscale
+        - name: data
+          mountPath: /home/ubuntu/.vscode-cli
+          subPath: dev-data-vscode
+        - name: data
+          mountPath: /home/ubuntu/.vscode-server
+          subPath: dev-data-vscode-server
+        - name: files
           mountPath: /workspace
       enableServiceLinks: false
       hostname: sleipnir
@@ -191,76 +101,9 @@ spec:
         fsGroup: 1000
       serviceAccountName: default
       volumes:
-      - name: conf-github
-        persistentVolumeClaim:
-          claimName: dev-conf-github
       - name: data
         persistentVolumeClaim:
-          claimName: sleipnir-midgard
-      - name: workspace
+          claimName: sleipnir-mimisbrunnr
+      - name: files
         persistentVolumeClaim:
           claimName: sleipnir-urd
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  labels:
-    app.kubernetes.io/component: vanaheim
-    app.kubernetes.io/name: sleipnir
-    app.kubernetes.io/part-of: components
-  name: sleipnir-vanaheim
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app.kubernetes.io/component: vanaheim
-      app.kubernetes.io/name: sleipnir
-      app.kubernetes.io/part-of: components
-  template:
-    metadata:
-      labels:
-        app.kubernetes.io/component: vanaheim
-        app.kubernetes.io/name: sleipnir
-        app.kubernetes.io/part-of: components
-    spec:
-      automountServiceAccountToken: false
-      containers:
-      - name: claude-code
-        image: sleipnir/claude-code:latest
-        imagePullPolicy: Always
-        env:
-        - name: CLAUDE_NAME
-          value: Sleipnir
-        - name: CLAUDE_REMOTE_CONTROL_SESSION_NAME_PREFIX
-          value: Sleipnir
-        envFrom:
-        - secretRef:
-            name: sleipnir
-        resources:
-          limits:
-            cpu: 1000m
-            memory: 2Gi
-          requests:
-            cpu: 500m
-            memory: 1Gi
-        securityContext:
-          runAsUser: 1000
-          runAsGroup: 1000
-          runAsNonRoot: true
-        volumeMounts:
-        - name: data
-          mountPath: /home/ubuntu/.claude
-        - name: workspace
-          mountPath: /workspace
-      enableServiceLinks: false
-      hostname: sleipnir
-      securityContext:
-        fsGroup: 1000
-      serviceAccountName: default
-      volumes:
-      - name: data
-        persistentVolumeClaim:
-          claimName: sleipnir-vanaheim
-      - name: workspace
-        persistentVolumeClaim:
-          claimName: sleipnir-verdandi
