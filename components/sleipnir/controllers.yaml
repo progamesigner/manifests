@@ -3,6 +3,115 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
+    app.kubernetes.io/component: freya
+    app.kubernetes.io/name: sleipnir
+    app.kubernetes.io/part-of: components
+  name: sleipnir-freya
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: freya
+      app.kubernetes.io/name: sleipnir
+      app.kubernetes.io/part-of: components
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/component: freya
+        app.kubernetes.io/name: sleipnir
+        app.kubernetes.io/part-of: components
+    spec:
+      automountServiceAccountToken: false
+      containers:
+      - name: sleipnir
+        image: sleipnir/sleipnir:latest
+        envFrom:
+        - configMapRef:
+            name: sleipnir
+        - secretRef:
+            name: sleipnir-freya
+        ports:
+        - name: moshi
+          containerPort: 24544
+          protocol: TCP
+        resources:
+          limits:
+            cpu: 4000m
+            memory: 32Gi
+          requests:
+            cpu: 500m
+            memory: 2Gi
+        volumeMounts:
+        - name: data
+          mountPath: /home/ubuntu/.config/gh
+          subPath: dev-conf-github
+        - name: data
+          mountPath: /home/ubuntu/.gnupg
+          subPath: dev-conf-gpg
+        - name: data
+          mountPath: /home/ubuntu/.config/herdr
+          subPath: dev-conf-herdr
+        - name: data
+          mountPath: /home/ubuntu/.ssh
+          subPath: dev-conf-ssh
+        - name: data
+          mountPath: /home/ubuntu/.config/opencode
+          subPath: dev-conf-opencode
+        - name: data
+          mountPath: /home/ubuntu/.config/moshi
+          subPath: dev-conf-moshi
+        - name: data
+          mountPath: /home/ubuntu/.agents
+          subPath: dev-data-agents
+        - name: data
+          mountPath: /home/ubuntu/.local/bin
+          subPath: dev-data-bin
+        - name: data
+          mountPath: /home/ubuntu/.claude
+          subPath: dev-data-claude
+        - name: data
+          mountPath: /home/ubuntu/.codex
+          subPath: dev-data-codex
+        - name: data
+          mountPath: /home/ubuntu/.copilot
+          subPath: dev-data-copilot
+        - name: data
+          mountPath: /home/ubuntu/.gemini
+          subPath: dev-data-gemini
+        - name: data
+          mountPath: /home/ubuntu/.local/state/moshi
+          subPath: dev-data-moshi
+        - name: data
+          mountPath: /home/ubuntu/.local/share/opencode
+          subPath: dev-data-opencode
+        - name: data
+          mountPath: /var/lib/tailscale
+          subPath: dev-data-tailscale
+        - name: data
+          mountPath: /home/ubuntu/.vscode-cli
+          subPath: dev-data-vscode
+        - name: data
+          mountPath: /home/ubuntu/.vscode-server
+          subPath: dev-data-vscode-server
+        - name: files
+          mountPath: /workspace
+      enableServiceLinks: false
+      hostname: sleipnir
+      securityContext:
+        fsGroup: 1000
+      serviceAccountName: default
+      volumes:
+      - name: data
+        persistentVolumeClaim:
+          claimName: sleipnir-folkvangr
+      - name: files
+        persistentVolumeClaim:
+          claimName: sleipnir-freya
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
     app.kubernetes.io/component: skuld
     app.kubernetes.io/name: sleipnir
     app.kubernetes.io/part-of: components
@@ -55,6 +164,9 @@ spec:
           mountPath: /home/ubuntu/.ssh
           subPath: dev-conf-ssh
         - name: data
+          mountPath: /home/ubuntu/.config/opencode
+          subPath: dev-conf-opencode
+        - name: data
           mountPath: /home/ubuntu/.config/moshi
           subPath: dev-conf-moshi
         - name: data
@@ -67,11 +179,20 @@ spec:
           mountPath: /home/ubuntu/.claude
           subPath: dev-data-claude
         - name: data
+          mountPath: /home/ubuntu/.codex
+          subPath: dev-data-codex
+        - name: data
+          mountPath: /home/ubuntu/.copilot
+          subPath: dev-data-copilot
+        - name: data
           mountPath: /home/ubuntu/.gemini
           subPath: dev-data-gemini
         - name: data
           mountPath: /home/ubuntu/.local/state/moshi
           subPath: dev-data-moshi
+        - name: data
+          mountPath: /home/ubuntu/.local/share/opencode
+          subPath: dev-data-opencode
         - name: data
           mountPath: /var/lib/tailscale
           subPath: dev-data-tailscale

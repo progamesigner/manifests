@@ -11,6 +11,9 @@ resources:
 - controllers.yaml
 - storages.yaml
 secretGenerator:
+- name: sleipnir-freya
+  envs:
+  - sleipnir-freya.env
 - name: sleipnir-skuld
   envs:
   - sleipnir-skuld.env

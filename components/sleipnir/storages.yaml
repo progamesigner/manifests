@@ -2,6 +2,30 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
+  name: sleipnir-folkvangr
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 64Gi
+  storageClassName: ceph-cephfs
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: sleipnir-freya
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 256Gi
+  storageClassName: ceph-cephfs
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
   name: sleipnir-hvergelmir
 spec:
   accessModes:
