@@ -40,7 +40,7 @@ images:
   newTag: 2023.10.120-1
 - name: network/cloudflared
   newName: cloudflare/cloudflared
-  newTag: 2026.8.3
+  newTag: 2026.9.0
 - name: network/haproxy
   newName: haproxy
   newTag: 3.0.2-alpine
@@ -55,7 +55,7 @@ images:
   newTag: 0.0.14
 - name: rsshub/rsshub
   newName: diygod/rsshub
-  newTag: '2026-09-07'
+  newTag: '2026-09-09'
 - name: seafile/backend
   newName: seafileltd/seafile-pro-mc
   newTag: 13.0.24
@@ -78,6 +78,9 @@ images:
   newName: ghcr.io/progamesigner/devtools/claude-code
 - name: sleipnir/codex
   newName: ghcr.io/progamesigner/devtools/codex
+- name: sleipnir/sleipnir
+  newName: ghcr.io/progamesigner/sleipnir
+  newTag: 2026.09.10-r10
 - name: syncthing/relaysrv
   newName: syncthing/relaysrv
   newTag: 2.0.3
@@ -86,19 +89,16 @@ images:
   newTag: 2.0.3
 - name: unifi/network
   newName: lscr.io/linuxserver/unifi-network-application
-  newTag: 10.6.101-ls145
-- name: vscode/server
-  newName: ghcr.io/progamesigner/vscode-server
-  newTag: 20230422-jammy
+  newTag: 10.6.101-ls144
 - name: windmill/windmill-extra
   newName: ghcr.io/windmill-labs/windmill-extra
   newTag: 1.805.0
 - name: windmill/windmill-server
   newName: ghcr.io/windmill-labs/windmill
-  newTag: 1.805.0
+  newTag: 1.808.0
 - name: windmill/windmill-worker
   newName: ghcr.io/windmill-labs/windmill
-  newTag: 1.805.0
+  newTag: 1.808.0
 patches:
 - patch: |-
     apiVersion: apps/v1

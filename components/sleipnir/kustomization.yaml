@@ -1,10 +1,22 @@
 ---
 apiVersion: kustomize.config.k8s.io/v1alpha1
 kind: Component
+configMapGenerator:
+- name: sleipnir
+  literals:
+  - NO_GHOSTTY=1
+  - VSCODE_CLI_DISABLE_KEYCHAIN_ENCRYPT=1
+  - VSCODE_CLI_USE_FILE_KEYCHAIN=1
 resources:
 - controllers.yaml
 - storages.yaml
 secretGenerator:
-- name: sleipnir
+- name: sleipnir-skuld
   envs:
-  - sleipnir.env
+  - sleipnir-skuld.env
+- name: sleipnir-urd
+  envs:
+  - sleipnir-urd.env
+- name: sleipnir-verdandi
+  envs:
+  - sleipnir-verdandi.env
