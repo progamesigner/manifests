@@ -102,11 +102,6 @@ spec:
             cpu: 100m
             memory: 64Mi
         securityContext:
-          capabilities:
-            add:
-            - NET_ADMIN
-            drop:
-            - ALL
           privileged: true
       enableServiceLinks: false
       serviceAccountName: default

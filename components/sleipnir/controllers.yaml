@@ -41,6 +41,10 @@ spec:
           requests:
             cpu: 500m
             memory: 2Gi
+        securityContext:
+          capabilities:
+            add:
+            - SYS_ADMIN
         volumeMounts:
         - name: data
           mountPath: /home/ubuntu/.config/gh
@@ -150,6 +154,10 @@ spec:
           requests:
             cpu: 500m
             memory: 2Gi
+        securityContext:
+          capabilities:
+            add:
+            - SYS_ADMIN
         volumeMounts:
         - name: data
           mountPath: /home/ubuntu/.config/gh
@@ -259,6 +267,10 @@ spec:
           requests:
             cpu: 500m
             memory: 2Gi
+        securityContext:
+          capabilities:
+            add:
+            - SYS_ADMIN
         volumeMounts:
         - name: data
           mountPath: /home/ubuntu/.config/gh
@@ -368,6 +380,10 @@ spec:
           requests:
             cpu: 500m
             memory: 2Gi
+        securityContext:
+          capabilities:
+            add:
+            - SYS_ADMIN
         volumeMounts:
         - name: data
           mountPath: /home/ubuntu/.config/gh

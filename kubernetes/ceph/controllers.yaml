@@ -3238,10 +3238,6 @@ spec:
             cpu: 100m
             memory: 32Mi
         securityContext:
-          allowPrivilegeEscalation: true
-          capabilities:
-            add:
-            - SYS_ADMIN
           privileged: true
         volumeMounts:
         - name: conf
@@ -3324,7 +3320,6 @@ spec:
             cpu: 10m
             memory: 64Mi
         securityContext:
-          allowPrivilegeEscalation: true
           privileged: true
         volumeMounts:
         - name: socket
@@ -3832,10 +3827,6 @@ spec:
             cpu: 100m
             memory: 32Mi
         securityContext:
-          allowPrivilegeEscalation: true
-          capabilities:
-            add:
-            - SYS_ADMIN
           privileged: true
         volumeMounts:
         - name: conf
@@ -3916,7 +3907,6 @@ spec:
             cpu: 10m
             memory: 64Mi
         securityContext:
-          allowPrivilegeEscalation: true
           privileged: true
         volumeMounts:
         - name: socket
@@ -4360,10 +4350,6 @@ spec:
             cpu: 100m
             memory: 32Mi
         securityContext:
-          allowPrivilegeEscalation: true
-          capabilities:
-            add:
-            - SYS_ADMIN
           privileged: true
         volumeMounts:
         - name: conf
@@ -4444,7 +4430,6 @@ spec:
             cpu: 10m
             memory: 64Mi
         securityContext:
-          allowPrivilegeEscalation: true
           privileged: true
         volumeMounts:
         - name: socket
