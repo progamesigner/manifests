@@ -10,7 +10,7 @@ images:
   newTag: 1.1.8
 - name: bifrost/bifrost
   newName: maximhq/bifrost
-  newTag: v2.0.0
+  newTag: v2.1.1
 - name: clamav/clamav
   newName: clamav/clamav
   newTag: 1.5.1
