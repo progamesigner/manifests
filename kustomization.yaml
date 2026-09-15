@@ -14,9 +14,6 @@ images:
 - name: clamav/clamav
   newName: clamav/clamav
   newTag: 1.5.1
-- name: coder/coder
-  newName: ghcr.io/coder/coder
-  newTag: v2.11.3
 - name: dbx/dbx
   newName: t8y2/dbx
   newTag: 0.5.77

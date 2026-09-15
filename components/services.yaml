@@ -82,21 +82,6 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: coder
-spec:
-  ports:
-  - name: http
-    port: 3000
-    protocol: TCP
-    targetPort: http
-  selector:
-    app.kubernetes.io/component: coder
-    app.kubernetes.io/name: coder
-    app.kubernetes.io/part-of: components
----
-apiVersion: v1
-kind: Service
-metadata:
   name: dbx
 spec:
   ports:

@@ -7,7 +7,6 @@ components:
 - bifrost
 - clamav
 - cloudflared
-- coder
 - dbx
 - gloomhaven
 - home-assistant
