@@ -30,7 +30,9 @@ spec:
         - -c
         - set -ex;
 
-          mkdir -p /mnt/dev-conf-zsh && touch /mnt/dev-conf-zsh/.zshenv
+          mkdir -p /mnt/dev-conf-zsh && touch /mnt/dev-conf-zsh/.zshenv;
+
+          install -d -o ubuntu -g ubuntu -m 0755 /mnt/dev-data-serenal;
         volumeMounts:
         - name: data
           mountPath: /mnt
@@ -89,6 +91,9 @@ spec:
           mountPath: /home/ubuntu/.claude
           subPath: dev-data-claude
         - name: data
+          mountPath: /home/ubuntu/.local/share/claude
+          subPath: dev-data-claude-code
+        - name: data
           mountPath: /home/ubuntu/.codex
           subPath: dev-data-codex
         - name: data
@@ -101,11 +106,20 @@ spec:
           mountPath: /home/ubuntu/.local/state/moshi
           subPath: dev-data-moshi
         - name: data
+          mountPath: /usr/local/npm
+          subPath: dev-data-npm
+        - name: data
           mountPath: /home/ubuntu/.local/share/opencode
           subPath: dev-data-opencode
         - name: data
+          mountPath: /home/ubuntu/.serena
+          subPath: dev-data-serena
+        - name: data
           mountPath: /var/lib/tailscale
           subPath: dev-data-tailscale
+        - name: data
+          mountPath: /usr/local/uv
+          subPath: dev-data-uv
         - name: data
           mountPath: /home/ubuntu/.vscode-cli
           subPath: dev-data-vscode
@@ -158,7 +172,9 @@ spec:
         - -c
         - set -ex;
 
-          mkdir -p /mnt/dev-conf-zsh && touch /mnt/dev-conf-zsh/.zshenv
+          mkdir -p /mnt/dev-conf-zsh && touch /mnt/dev-conf-zsh/.zshenv;
+
+          install -d -o ubuntu -g ubuntu -m 0755 /mnt/dev-data-serena;
         volumeMounts:
         - name: data
           mountPath: /mnt
@@ -217,6 +233,9 @@ spec:
           mountPath: /home/ubuntu/.claude
           subPath: dev-data-claude
         - name: data
+          mountPath: /home/ubuntu/.local/share/claude
+          subPath: dev-data-claude-code
+        - name: data
           mountPath: /home/ubuntu/.codex
           subPath: dev-data-codex
         - name: data
@@ -229,11 +248,20 @@ spec:
           mountPath: /home/ubuntu/.local/state/moshi
           subPath: dev-data-moshi
         - name: data
+          mountPath: /usr/local/npm
+          subPath: dev-data-npm
+        - name: data
           mountPath: /home/ubuntu/.local/share/opencode
           subPath: dev-data-opencode
         - name: data
+          mountPath: /home/ubuntu/.serena
+          subPath: dev-data-serena
+        - name: data
           mountPath: /var/lib/tailscale
           subPath: dev-data-tailscale
+        - name: data
+          mountPath: /usr/local/uv
+          subPath: dev-data-uv
         - name: data
           mountPath: /home/ubuntu/.vscode-cli
           subPath: dev-data-vscode
@@ -286,7 +314,9 @@ spec:
         - -c
         - set -ex;
 
-          mkdir -p /mnt/dev-conf-zsh && touch /mnt/dev-conf-zsh/.zshenv
+          mkdir -p /mnt/dev-conf-zsh && touch /mnt/dev-conf-zsh/.zshenv;
+
+          install -d -o ubuntu -g ubuntu -m 0755 /mnt/dev-data-serena;
         volumeMounts:
         - name: data
           mountPath: /mnt
@@ -345,6 +375,9 @@ spec:
           mountPath: /home/ubuntu/.claude
           subPath: dev-data-claude
         - name: data
+          mountPath: /home/ubuntu/.local/share/claude
+          subPath: dev-data-claude-code
+        - name: data
           mountPath: /home/ubuntu/.codex
           subPath: dev-data-codex
         - name: data
@@ -357,11 +390,20 @@ spec:
           mountPath: /home/ubuntu/.local/state/moshi
           subPath: dev-data-moshi
         - name: data
+          mountPath: /usr/local/npm
+          subPath: dev-data-npm
+        - name: data
           mountPath: /home/ubuntu/.local/share/opencode
           subPath: dev-data-opencode
         - name: data
+          mountPath: /home/ubuntu/.serena
+          subPath: dev-data-serena
+        - name: data
           mountPath: /var/lib/tailscale
           subPath: dev-data-tailscale
+        - name: data
+          mountPath: /usr/local/uv
+          subPath: dev-data-uv
         - name: data
           mountPath: /home/ubuntu/.vscode-cli
           subPath: dev-data-vscode
@@ -414,7 +456,9 @@ spec:
         - -c
         - set -ex;
 
-          mkdir -p /mnt/dev-conf-zsh && touch /mnt/dev-conf-zsh/.zshenv
+          mkdir -p /mnt/dev-conf-zsh && touch /mnt/dev-conf-zsh/.zshenv;
+
+          install -d -o ubuntu -g ubuntu -m 0755 /mnt/dev-data-serena;
         volumeMounts:
         - name: data
           mountPath: /mnt
@@ -473,6 +517,9 @@ spec:
           mountPath: /home/ubuntu/.claude
           subPath: dev-data-claude
         - name: data
+          mountPath: /home/ubuntu/.local/share/claude
+          subPath: dev-data-claude-code
+        - name: data
           mountPath: /home/ubuntu/.codex
           subPath: dev-data-codex
         - name: data
@@ -485,11 +532,20 @@ spec:
           mountPath: /home/ubuntu/.local/state/moshi
           subPath: dev-data-moshi
         - name: data
+          mountPath: /usr/local/npm
+          subPath: dev-data-npm
+        - name: data
           mountPath: /home/ubuntu/.local/share/opencode
           subPath: dev-data-opencode
         - name: data
+          mountPath: /home/ubuntu/.serena
+          subPath: dev-data-serena
+        - name: data
           mountPath: /var/lib/tailscale
           subPath: dev-data-tailscale
+        - name: data
+          mountPath: /usr/local/uv
+          subPath: dev-data-uv
         - name: data
           mountPath: /home/ubuntu/.vscode-cli
           subPath: dev-data-vscode
