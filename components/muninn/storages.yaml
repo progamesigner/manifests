@@ -20,5 +20,5 @@ spec:
   - ReadWriteMany
   resources:
     requests:
-      storage: 64Mi
+      storage: 4Gi
   storageClassName: ceph-cephfs
