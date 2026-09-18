@@ -278,6 +278,64 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   annotations:
+    kubernetes.progamesigner.dev/hostname: code,lab,office,studio
+    nginx.org/websocket-services: sleipnir-freya,sleipnir-skuld,sleipnir-urd,sleipnir-verdandi
+  name: sleipnir
+spec:
+  ingressClassName: nginx-ingress
+  rules:
+  - host: code.progamesigner.dev
+    http:
+      paths:
+      - backend:
+          service:
+            name: sleipnir-urd
+            port:
+              name: moshi
+        path: /
+        pathType: Prefix
+  - host: lab.progamesigner.dev
+    http:
+      paths:
+      - backend:
+          service:
+            name: sleipnir-freya
+            port:
+              name: moshi
+        path: /
+        pathType: Prefix
+  - host: office.progamesigner.dev
+    http:
+      paths:
+      - backend:
+          service:
+            name: sleipnir-verdandi
+            port:
+              name: moshi
+        path: /
+        pathType: Prefix
+  - host: studio.progamesigner.dev
+    http:
+      paths:
+      - backend:
+          service:
+            name: sleipnir-skuld
+            port:
+              name: moshi
+        path: /
+        pathType: Prefix
+  tls:
+  - hosts:
+    - code.progamesigner.dev
+    - lab.progamesigner.dev
+    - office.progamesigner.dev
+    - studio.progamesigner.dev
+    secretName: tls-dev-progamesigner
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
     kubernetes.progamesigner.dev/hostname: syncthing
     nginx.org/ssl-services: syncthing
   name: syncthing

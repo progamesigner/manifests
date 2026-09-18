@@ -423,6 +423,66 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
+  name: sleipnir-freya
+spec:
+  ports:
+  - name: moshi
+    port: 24544
+    protocol: TCP
+    targetPort: moshi
+  selector:
+    app.kubernetes.io/component: freya
+    app.kubernetes.io/name: sleipnir
+    app.kubernetes.io/part-of: components
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: sleipnir-skuld
+spec:
+  ports:
+  - name: moshi
+    port: 24544
+    protocol: TCP
+    targetPort: moshi
+  selector:
+    app.kubernetes.io/component: skuld
+    app.kubernetes.io/name: sleipnir
+    app.kubernetes.io/part-of: components
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: sleipnir-urd
+spec:
+  ports:
+  - name: moshi
+    port: 24544
+    protocol: TCP
+    targetPort: moshi
+  selector:
+    app.kubernetes.io/component: urd
+    app.kubernetes.io/name: sleipnir
+    app.kubernetes.io/part-of: components
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: sleipnir-verdandi
+spec:
+  ports:
+  - name: moshi
+    port: 24544
+    protocol: TCP
+    targetPort: moshi
+  selector:
+    app.kubernetes.io/component: verdandi
+    app.kubernetes.io/name: sleipnir
+    app.kubernetes.io/part-of: components
+---
+apiVersion: v1
+kind: Service
+metadata:
   name: syncthing
 spec:
   ports:
