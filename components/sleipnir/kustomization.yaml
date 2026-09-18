@@ -10,6 +10,13 @@ configMapGenerator:
 resources:
 - controllers.yaml
 - storages.yaml
+patches:
+- path: docker-sidecar.yaml
+  target:
+    group: apps
+    version: v1
+    kind: Deployment
+    labelSelector: app.kubernetes.io/name=sleipnir
 secretGenerator:
 - name: sleipnir-freya
   envs:

@@ -1,0 +1,56 @@
+- op: add
+  path: /spec/template/spec/containers/0/volumeMounts/-
+  value:
+    name: docker-socket
+    mountPath: /run/docker
+- op: add
+  path: /spec/template/spec/containers/-
+  value:
+    name: docker
+    image: docker:29.8.1-dind-rootless
+    command:
+    - dockerd-rootless.sh
+    args:
+    - --host=unix:///run/user/1000/docker.sock
+    readinessProbe:
+      exec:
+        command:
+        - docker
+        - --host
+        - unix:///run/user/1000/docker.sock
+        - info
+      failureThreshold: 6
+      initialDelaySeconds: 2
+      periodSeconds: 5
+      timeoutSeconds: 2
+    resources:
+      limits:
+        cpu: 4000m
+        ephemeral-storage: 24Gi
+        memory: 16Gi
+      requests:
+        cpu: 100m
+        ephemeral-storage: 1Gi
+        memory: 256Mi
+    securityContext:
+      privileged: true
+      runAsGroup: 1000
+      runAsUser: 1000
+    volumeMounts:
+    - name: docker-socket
+      mountPath: /run/user/1000
+    - name: docker-data
+      mountPath: /home/rootless/.local/share/docker
+    - name: files
+      mountPath: /workspace
+- op: add
+  path: /spec/template/spec/volumes/-
+  value:
+    name: docker-socket
+    emptyDir: {}
+- op: add
+  path: /spec/template/spec/volumes/-
+  value:
+    name: docker-data
+    emptyDir:
+      sizeLimit: 20Gi
