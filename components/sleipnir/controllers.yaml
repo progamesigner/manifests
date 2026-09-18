@@ -44,6 +44,9 @@ spec:
             name: sleipnir
         - secretRef:
             name: sleipnir-freya
+        env:
+        - name: SLEIPNIR_TAILSCALE_TUN
+          value: userspace-networking
         ports:
         - name: moshi
           containerPort: 24544
@@ -204,6 +207,9 @@ spec:
             name: sleipnir
         - secretRef:
             name: sleipnir-skuld
+        env:
+        - name: SLEIPNIR_TAILSCALE_TUN
+          value: userspace-networking
         ports:
         - name: moshi
           containerPort: 24544
@@ -364,6 +370,9 @@ spec:
             name: sleipnir
         - secretRef:
             name: sleipnir-urd
+        env:
+        - name: SLEIPNIR_TAILSCALE_TUN
+          value: userspace-networking
         ports:
         - name: moshi
           containerPort: 24544
@@ -524,6 +533,9 @@ spec:
             name: sleipnir
         - secretRef:
             name: sleipnir-verdandi
+        env:
+        - name: SLEIPNIR_TAILSCALE_TUN
+          value: userspace-networking
         ports:
         - name: moshi
           containerPort: 24544
