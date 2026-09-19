@@ -10,6 +10,7 @@ components/sleipnir/sleipnir-freya.env
 components/sleipnir/sleipnir-skuld.env
 components/sleipnir/sleipnir-urd.env
 components/sleipnir/sleipnir-verdandi.env
+components/sleipnir/sleipnir.env
 components/tailscale.env
 components/tailscale/protonvpn.ch.conf
 components/tailscale/protonvpn.de.conf
