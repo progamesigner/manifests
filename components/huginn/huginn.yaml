@@ -11,53 +11,31 @@ providers:
       value_from:
         env: BIFROST_API_KEY
     models:
-    - anthropic/claude-fable-5
+    - anthropic/claude-fable-5-1
     - anthropic/claude-haiku-4-5
-    - anthropic/claude-opus-4-8
-    - anthropic/claude-opus-5
+    - anthropic/claude-opus-5-5
     - anthropic/claude-sonnet-5
     - gemini/gemini-3.1-pro-preview
-    - gemini/gemini-3.5-flash
     - gemini/gemini-3.5-flash-lite
-    - gemini/gemini-3.6-flash
-    - gemini/gemini-3.7-flash
+    - gemini/gemini-3.8-flash
     - gemini/gemma-4-26b-a4b-it
     - gemini/gemma-4-31b-it
-    - openai/gpt-5.6-luna
-    - openai/gpt-5.6-sol
     - openai/gpt-5.6-terra
-    - opencode-go/deepseek-v4-flash
-    - opencode-go/deepseek-v4-pro
-    - opencode-go/grok-4.5
-    - opencode-go/kimi-k3
-    - opencode-go/minimax-m3
-    - opencode-go/qwen-3.8-max
-    - opencode-zen/deepseek-v4-flash
-    - opencode-zen/deepseek-v4-pro
-    - opencode-zen/glm-5.2
-    - opencode-zen/gpt-5.6-luna
-    - opencode-zen/gpt-5.6-sol
-    - opencode-zen/gpt-5.6-terra
-    - opencode-zen/grok-4.5
-    - opencode-zen/kimi-k3
-    - opencode-zen/minimax-m3
-    - opencode-zen/nemotron-3-ultra-free
-    - opencode-zen/qwen3.6-plus
+    - openai/gpt-6-astra
+    - openai/gpt-6-luna
+    - openai/gpt-6-sol
+    - xai/grok-4.7
     - openrouter/deepseek/deepseek-v4-flash-0731
-    - openrouter/google/gemma-2-27b-it
     - openrouter/moonshotai/kimi-k3
     - openrouter/nvidia/nemotron-3-ultra-550b-a55b
     - openrouter/openai/gpt-oss-120b
     - openrouter/tencent/hy4-preview
-    - openrouter/x-ai/grok-4.6
     - openrouter/xiaomi/mimo-v2.5
     - openrouter/z-ai/glm-5.2
-    - openrouter/z-ai/glm-5.3-flash
     cache_control:
-    - anthropic/claude-fable-5
+    - anthropic/claude-fable-5-1
     - anthropic/claude-haiku-4-5
-    - anthropic/claude-opus-4-8
-    - anthropic/claude-opus-5
+    - anthropic/claude-opus-5-5
     - anthropic/claude-sonnet-5
 
 tools:
@@ -97,28 +75,28 @@ agents:
     description: An placeholder agent for general purpose.
     instructions_file: /etc/huginn/instructions.md
     tools: &tools
-    - name: websearch
+      - name: websearch
     mcp:
     - server: muninn
       allow: &muninn
-      - append_diary_entry
-      - delete_memory_note
-      - edit_memory_note
-      - evolve_core_persona
-      - list_memory_notes
-      - load_session_context
-      - read_memory_note
-      - read_memory_notes
-      - read_note_properties
-      - recall_memory_notes
-      - rename_memory_note
-      - update_note_properties
-      - update_task_heartbeat
-      - write_memory_note
-      - write_memory_notes
+        - append_diary_entry
+        - delete_memory_note
+        - edit_memory_note
+        - evolve_core_persona
+        - list_memory_notes
+        - load_session_context
+        - read_memory_note
+        - read_memory_notes
+        - read_note_properties
+        - recall_memory_notes
+        - rename_memory_note
+        - update_note_properties
+        - update_task_heartbeat
+        - write_memory_note
+        - write_memory_notes
   advisor-fast:
     description: Handles quick budget calculations, price comparisons, and straightforward low-risk financial questions.
-    model: openai/gpt-5.6-luna
+    model: openai/gpt-6-luna
     instructions_file: /etc/huginn/instructions.md
     tools: *tools
     mcp:
@@ -178,7 +156,7 @@ agents:
       - get_twse_institutional_investors_summary
   advisor-balanced:
     description: Handles routine cash-flow planning, project cost estimates, portfolio reviews, and multi-step financial comparisons.
-    model: openai/gpt-5.6-terra
+    model: openai/gpt-6-sol
     instructions_file: /etc/huginn/instructions.md
     tools: *tools
     mcp:
@@ -186,7 +164,7 @@ agents:
     - *advisor-twstock
   advisor-advanced:
     description: Handles high-impact financial decisions with uncertainty, competing scenarios, risk analysis, and long-term tradeoffs.
-    model: openai/gpt-5.6-sol
+    model: openai/gpt-6-astra
     instructions_file: /etc/huginn/instructions.md
     tools: *tools
     mcp:
@@ -213,14 +191,14 @@ agents:
     - *architect-muninn
   architect-advanced:
     description: Handles distributed architecture, migrations, failure and threat models, complex tradeoffs, and architecture decisions.
-    model: anthropic/claude-opus-5
+    model: anthropic/claude-opus-5-5
     instructions_file: /etc/huginn/instructions.md
     tools: *tools
     mcp:
     - *architect-muninn
   assistant-fast:
     description: Handles one-step formatting, simple lists, reminders, and small administrative tasks.
-    model: openai/gpt-5.6-luna
+    model: openai/gpt-6-luna
     instructions_file: /etc/huginn/instructions.md
     tools: *tools
     mcp:
@@ -232,21 +210,21 @@ agents:
         user: ${MUNINN_ASSISTANT_SCOPE_USER}
   assistant-balanced:
     description: Organizes multi-step errands, information, notes, schedules, and routine tool-assisted workflows.
-    model: openai/gpt-5.6-terra
+    model: openai/gpt-6-sol
     instructions_file: /etc/huginn/instructions.md
     tools: *tools
     mcp:
     - *assistant-muninn
   assistant-advanced:
     description: Coordinates complex cross-tool workflows, recurring processes, and large or ambiguous data transformations.
-    model: openai/gpt-5.6-sol
+    model: openai/gpt-6-astra
     instructions_file: /etc/huginn/instructions.md
     tools: *tools
     mcp:
     - *assistant-muninn
   coach-fast:
     description: Runs quick quizzes, checks immediate learning progress, and corrects a single clear misconception.
-    model: openai/gpt-5.6-luna
+    model: openai/gpt-6-luna
     instructions_file: /etc/huginn/instructions.md
     tools: *tools
     mcp:
@@ -258,14 +236,14 @@ agents:
         user: ${MUNINN_COACH_SCOPE_USER}
   coach-balanced:
     description: Builds structured learning plans, sets assessments, reviews progress, and adjusts practice based on results.
-    model: openai/gpt-5.6-terra
+    model: openai/gpt-6-sol
     instructions_file: /etc/huginn/instructions.md
     tools: *tools
     mcp:
     - *coach-muninn
   coach-advanced:
     description: Conducts rigorous mastery reviews, diagnoses hidden reasoning gaps, and designs demanding adaptive assessments.
-    model: openai/gpt-5.6-sol
+    model: openai/gpt-6-astra
     instructions_file: /etc/huginn/instructions.md
     tools: *tools
     mcp:
@@ -291,7 +269,7 @@ agents:
     - *companion-muninn
   companion-advanced:
     description: Supports long-context reflection on recurring patterns, difficult conversations, and layered emotional situations.
-    model: anthropic/claude-opus-5
+    model: anthropic/claude-opus-5-5
     instructions_file: /etc/huginn/instructions.md
     tools: *tools
     mcp:
@@ -310,21 +288,21 @@ agents:
         user: ${MUNINN_COORDINATOR_SCOPE_USER}
   coordinator-balanced:
     description: Coordinates multiple work tasks, dependencies, schedules, meeting actions, and routine project communication.
-    model: openrouter/google/gemma-2-27b-it
+    model: openrouter/google/gemma-4-31b-it
     instructions_file: /etc/huginn/instructions.md
     tools: *tools
     mcp:
     - *coordinator-muninn
   coordinator-advanced:
     description: Handles complex workstreams, cross-team risks, escalation planning, and stakeholder-level synthesis.
-    model: openrouter/x-ai/grok-4.6
+    model: openrouter/x-ai/grok-4.7
     instructions_file: /etc/huginn/instructions.md
     tools: *tools
     mcp:
     - *coordinator-muninn
   counsel-fast:
     description: Extracts clauses, summarizes straightforward terms, and flags obvious omissions in legal documents.
-    model: openai/gpt-5.6-luna
+    model: openai/gpt-6-luna
     instructions_file: /etc/huginn/instructions.md
     tools: *tools
     mcp:
@@ -336,14 +314,14 @@ agents:
         user: ${MUNINN_COUNSEL_SCOPE_USER}
   counsel-balanced:
     description: Reviews and compares contracts, licenses, disclaimers, obligations, and practical compliance checklists.
-    model: openai/gpt-5.6-terra
+    model: openai/gpt-6-sol
     instructions_file: /etc/huginn/instructions.md
     tools: *tools
     mcp:
     - *counsel-muninn
   counsel-advanced:
     description: Analyzes conflicting clauses, edge-case risks, nuanced implications, and questions for legal negotiation.
-    model: openai/gpt-5.6-sol
+    model: openai/gpt-6-astra
     instructions_file: /etc/huginn/instructions.md
     tools: *tools
     mcp:
@@ -362,7 +340,7 @@ agents:
         user: ${MUNINN_GUIDE_SCOPE_USER}
   guide-balanced:
     description: Compares version-specific builds, routes, strategies, and sources for routine game questions.
-    model: gemini/gemini-3.7-flash
+    model: gemini/gemini-3.8-flash
     instructions_file: /etc/huginn/instructions.md
     tools: *tools
     mcp:
@@ -395,7 +373,7 @@ agents:
     - *planner-muninn
   planner-advanced:
     description: Handles interconnected game systems, balance and simulation, creative constraints, and large project dependencies.
-    model: anthropic/claude-opus-5
+    model: anthropic/claude-opus-5-5
     instructions_file: /etc/huginn/instructions.md
     tools: *tools
     mcp:
@@ -421,7 +399,7 @@ agents:
     - *plotter-muninn
   plotter-advanced:
     description: Designs multi-thread narratives, world bibles, long-form continuity, and full structural revisions.
-    model: anthropic/claude-opus-5
+    model: anthropic/claude-opus-5-5
     instructions_file: /etc/huginn/instructions.md
     tools: *tools
     mcp:
@@ -440,7 +418,7 @@ agents:
         user: ${MUNINN_RESEARCHER_SCOPE_USER}
   researcher-balanced:
     description: Compares multiple sources, organizes themes, summarizes literature, and explores ideas across domains.
-    model: gemini/gemini-3.7-flash
+    model: gemini/gemini-3.8-flash
     instructions_file: /etc/huginn/instructions.md
     tools: *tools
     mcp:
@@ -466,7 +444,7 @@ agents:
         user: ${MUNINN_SENTINEL_SCOPE_USER}
   sentinel-balanced:
     description: Correlates routine metrics and alerts, assigns severity, and proposes initial troubleshooting steps.
-    model: gemini/gemini-3.7-flash
+    model: gemini/gemini-3.8-flash
     instructions_file: /etc/huginn/instructions.md
     tools: *tools
     mcp:
@@ -492,7 +470,7 @@ agents:
         user: ${MUNINN_TUTOR_SCOPE_USER}
   tutor-balanced:
     description: Teaches concepts step by step, guides practice, and explains routine code and problem-solving methods.
-    model: gemini/gemini-3.7-flash
+    model: gemini/gemini-3.8-flash
     instructions_file: /etc/huginn/instructions.md
     tools: *tools
     mcp:
