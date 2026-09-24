@@ -71,6 +71,9 @@ images:
 - name: seafile/thumbnail
   newName: seafileltd/thumbnail-server
   newTag: 13.0.20
+- name: searxng/searxng
+  newName: ghcr.io/searxng/searxng
+  newTag: 2026.9.23-3cd69d30e
 - name: sleipnir/claude-code
   newName: ghcr.io/progamesigner/devtools/claude-code
 - name: sleipnir/codex

@@ -15,6 +15,7 @@ components:
 - proxy
 - rsshub
 - seafile
+- searxng
 - sleipnir
 - syncthing
 - tailscale
