@@ -4,6 +4,7 @@ kind: Component
 configMapGenerator:
 - name: tailscale
   literals:
+  - TS_ENABLE_HEALTH_CHECK=true
   - TS_OUTBOUND_HTTP_PROXY_LISTEN=:8080
   - TS_SOCKS5_SERVER=:1080
 - name: wireguard

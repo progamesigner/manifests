@@ -208,7 +208,7 @@ spec:
     targetPort: proxy
   selector:
     app.kubernetes.io/component: tailscale
-    app.kubernetes.io/name: protonvpn
+    app.kubernetes.io/name: wireguard
     app.kubernetes.io/part-of: components
     kubernetes.progamesigner.dev/vpn-region: ch
 ---
@@ -228,7 +228,7 @@ spec:
     targetPort: proxy
   selector:
     app.kubernetes.io/component: tailscale
-    app.kubernetes.io/name: protonvpn
+    app.kubernetes.io/name: wireguard
     app.kubernetes.io/part-of: components
     kubernetes.progamesigner.dev/vpn-region: de
 ---
@@ -248,7 +248,7 @@ spec:
     targetPort: proxy
   selector:
     app.kubernetes.io/component: tailscale
-    app.kubernetes.io/name: protonvpn
+    app.kubernetes.io/name: wireguard
     app.kubernetes.io/part-of: components
     kubernetes.progamesigner.dev/vpn-region: jp
 ---
@@ -268,7 +268,7 @@ spec:
     targetPort: proxy
   selector:
     app.kubernetes.io/component: tailscale
-    app.kubernetes.io/name: protonvpn
+    app.kubernetes.io/name: wireguard
     app.kubernetes.io/part-of: components
     kubernetes.progamesigner.dev/vpn-region: tw
 ---
@@ -288,7 +288,7 @@ spec:
     targetPort: proxy
   selector:
     app.kubernetes.io/component: tailscale
-    app.kubernetes.io/name: protonvpn
+    app.kubernetes.io/name: wireguard
     app.kubernetes.io/part-of: components
     kubernetes.progamesigner.dev/vpn-region: us
 ---
