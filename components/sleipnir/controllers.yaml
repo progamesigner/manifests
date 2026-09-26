@@ -198,6 +198,12 @@ spec:
           mountPath: /home/ubuntu/.config/gh
           subPath: dev-conf-github
         - name: data
+          mountPath: /home/ubuntu/.config/k9s
+          subPath: dev-conf-k9s
+        - name: data
+          mountPath: /home/ubuntu/.kube
+          subPath: dev-conf-kube
+        - name: data
           mountPath: /home/ubuntu/.gnupg
           subPath: dev-conf-gpg
         - name: data
@@ -448,6 +454,12 @@ spec:
         - name: data
           mountPath: /home/ubuntu/.config/gh
           subPath: dev-conf-github
+        - name: data
+          mountPath: /home/ubuntu/.config/k9s
+          subPath: dev-conf-k9s
+        - name: data
+          mountPath: /home/ubuntu/.kube
+          subPath: dev-conf-kube
         - name: data
           mountPath: /home/ubuntu/.gnupg
           subPath: dev-conf-gpg
@@ -700,6 +712,12 @@ spec:
           mountPath: /home/ubuntu/.config/gh
           subPath: dev-conf-github
         - name: data
+          mountPath: /home/ubuntu/.config/k9s
+          subPath: dev-conf-k9s
+        - name: data
+          mountPath: /home/ubuntu/.kube
+          subPath: dev-conf-kube
+        - name: data
           mountPath: /home/ubuntu/.gnupg
           subPath: dev-conf-gpg
         - name: data
@@ -950,6 +968,12 @@ spec:
         - name: data
           mountPath: /home/ubuntu/.config/gh
           subPath: dev-conf-github
+        - name: data
+          mountPath: /home/ubuntu/.config/k9s
+          subPath: dev-conf-k9s
+        - name: data
+          mountPath: /home/ubuntu/.kube
+          subPath: dev-conf-kube
         - name: data
           mountPath: /home/ubuntu/.gnupg
           subPath: dev-conf-gpg
