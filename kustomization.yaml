@@ -74,13 +74,9 @@ images:
 - name: searxng/searxng
   newName: ghcr.io/searxng/searxng
   newTag: 2026.9.23-3cd69d30e
-- name: sleipnir/claude-code
-  newName: ghcr.io/progamesigner/devtools/claude-code
-- name: sleipnir/codex
-  newName: ghcr.io/progamesigner/devtools/codex
 - name: sleipnir/sleipnir
   newName: ghcr.io/progamesigner/sleipnir
-  newTag: 2026.09.20-r33
+  newTag: 2026.09.26-r41
 - name: syncthing/relaysrv
   newName: syncthing/relaysrv
   newTag: 2.0.3
