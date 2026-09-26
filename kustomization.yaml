@@ -76,7 +76,7 @@ images:
   newTag: 2026.9.23-3cd69d30e
 - name: sleipnir/sleipnir
   newName: ghcr.io/progamesigner/sleipnir
-  newTag: 2026.09.26-r41
+  newTag: main
 - name: syncthing/relaysrv
   newName: syncthing/relaysrv
   newTag: 2.0.3
