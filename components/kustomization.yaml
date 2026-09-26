@@ -36,8 +36,6 @@ patches:
     metadata:
       name: home-assistant
     spec:
-      strategy:
-        type: Recreate
       template:
         metadata:
           annotations:
@@ -55,8 +53,6 @@ patches:
     metadata:
       name: unifi-network
     spec:
-      strategy:
-        type: Recreate
       template:
         metadata:
           annotations:
