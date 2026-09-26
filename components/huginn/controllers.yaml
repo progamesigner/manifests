@@ -69,20 +69,22 @@ spec:
           httpGet:
             path: /healthz
             port: http
+          timeoutSeconds: 5
         readinessProbe:
           httpGet:
             path: /readyz
             port: http
+          timeoutSeconds: 5
         startupProbe:
           httpGet:
             path: /readyz
             port: http
-          failureThreshold: 30
+          failureThreshold: 60
           periodSeconds: 5
         resources:
           limits:
-            cpu: 500m
-            memory: 2Gi
+            cpu: 1000m
+            memory: 4Gi
           requests:
             cpu: 300m
             memory: 256Mi
