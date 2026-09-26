@@ -189,10 +189,6 @@ spec:
           requests:
             cpu: 500m
             memory: 2Gi
-        securityContext:
-          capabilities:
-            add:
-            - SYS_ADMIN
         volumeMounts:
         - name: data
           mountPath: /home/ubuntu/.cache/copilot
@@ -280,6 +276,53 @@ spec:
           subPath: dev-data-vscode-server
         - name: files
           mountPath: /workspace
+        - name: sock-docker
+          mountPath: /run/docker
+      - name: docker
+        image: docker/docker:latest
+        args:
+        - dockerd
+        - --host=unix:///run/user/1000/docker.sock
+        livenessProbe:
+          exec:
+            command:
+            - docker
+            - --host
+            - unix:///run/user/1000/docker.sock
+            - info
+          failureThreshold: 3
+          periodSeconds: 30
+          timeoutSeconds: 10
+        startupProbe:
+          exec:
+            command:
+            - docker
+            - --host
+            - unix:///run/user/1000/docker.sock
+            - info
+          failureThreshold: 30
+          periodSeconds: 3
+          timeoutSeconds: 5
+        resources:
+          limits:
+            cpu: 4000m
+            ephemeral-storage: 4Gi
+            memory: 8Gi
+          requests:
+            cpu: 100m
+            ephemeral-storage: 256Mi
+            memory: 256Mi
+        securityContext:
+          privileged: true
+          runAsGroup: 1000
+          runAsUser: 1000
+        volumeMounts:
+        - name: docker
+          mountPath: /home/rootless/.local/share/docker
+        - name: files
+          mountPath: /workspace
+        - name: sock-docker
+          mountPath: /run/user/1000
       enableServiceLinks: false
       hostname: sleipnir
       securityContext:
@@ -289,9 +332,23 @@ spec:
       - name: data
         persistentVolumeClaim:
           claimName: sleipnir-folkvangr
+      - name: docker
+        ephemeral:
+          volumeClaimTemplate:
+            spec:
+              accessModes:
+              - ReadWriteOnce
+              resources:
+                requests:
+                  storage: 64Gi
+              storageClassName: ceph-rbd
       - name: files
         persistentVolumeClaim:
           claimName: sleipnir-freya
+      - name: sock-docker
+        emptyDir:
+          medium: Memory
+          sizeLimit: 16Mi
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -375,10 +432,6 @@ spec:
           requests:
             cpu: 500m
             memory: 2Gi
-        securityContext:
-          capabilities:
-            add:
-            - SYS_ADMIN
         volumeMounts:
         - name: data
           mountPath: /home/ubuntu/.cache/copilot
@@ -466,6 +519,53 @@ spec:
           subPath: dev-data-vscode-server
         - name: files
           mountPath: /workspace
+        - name: sock-docker
+          mountPath: /run/docker
+      - name: docker
+        image: docker/docker:latest
+        args:
+        - dockerd
+        - --host=unix:///run/user/1000/docker.sock
+        livenessProbe:
+          exec:
+            command:
+            - docker
+            - --host
+            - unix:///run/user/1000/docker.sock
+            - info
+          failureThreshold: 3
+          periodSeconds: 30
+          timeoutSeconds: 10
+        startupProbe:
+          exec:
+            command:
+            - docker
+            - --host
+            - unix:///run/user/1000/docker.sock
+            - info
+          failureThreshold: 30
+          periodSeconds: 3
+          timeoutSeconds: 5
+        resources:
+          limits:
+            cpu: 4000m
+            ephemeral-storage: 4Gi
+            memory: 8Gi
+          requests:
+            cpu: 100m
+            ephemeral-storage: 256Mi
+            memory: 256Mi
+        securityContext:
+          privileged: true
+          runAsGroup: 1000
+          runAsUser: 1000
+        volumeMounts:
+        - name: docker
+          mountPath: /home/rootless/.local/share/docker
+        - name: files
+          mountPath: /workspace
+        - name: sock-docker
+          mountPath: /run/user/1000
       enableServiceLinks: false
       hostname: sleipnir
       securityContext:
@@ -475,9 +575,23 @@ spec:
       - name: data
         persistentVolumeClaim:
           claimName: sleipnir-hvergelmir
+      - name: docker
+        ephemeral:
+          volumeClaimTemplate:
+            spec:
+              accessModes:
+              - ReadWriteOnce
+              resources:
+                requests:
+                  storage: 64Gi
+              storageClassName: ceph-rbd
       - name: files
         persistentVolumeClaim:
           claimName: sleipnir-skuld
+      - name: sock-docker
+        emptyDir:
+          medium: Memory
+          sizeLimit: 16Mi
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -561,10 +675,6 @@ spec:
           requests:
             cpu: 500m
             memory: 2Gi
-        securityContext:
-          capabilities:
-            add:
-            - SYS_ADMIN
         volumeMounts:
         - name: data
           mountPath: /home/ubuntu/.cache/copilot
@@ -652,6 +762,53 @@ spec:
           subPath: dev-data-vscode-server
         - name: files
           mountPath: /workspace
+        - name: sock-docker
+          mountPath: /run/docker
+      - name: docker
+        image: docker/docker:latest
+        args:
+        - dockerd
+        - --host=unix:///run/user/1000/docker.sock
+        livenessProbe:
+          exec:
+            command:
+            - docker
+            - --host
+            - unix:///run/user/1000/docker.sock
+            - info
+          failureThreshold: 3
+          periodSeconds: 30
+          timeoutSeconds: 10
+        startupProbe:
+          exec:
+            command:
+            - docker
+            - --host
+            - unix:///run/user/1000/docker.sock
+            - info
+          failureThreshold: 30
+          periodSeconds: 3
+          timeoutSeconds: 5
+        resources:
+          limits:
+            cpu: 4000m
+            ephemeral-storage: 4Gi
+            memory: 8Gi
+          requests:
+            cpu: 100m
+            ephemeral-storage: 256Mi
+            memory: 256Mi
+        securityContext:
+          privileged: true
+          runAsGroup: 1000
+          runAsUser: 1000
+        volumeMounts:
+        - name: docker
+          mountPath: /home/rootless/.local/share/docker
+        - name: files
+          mountPath: /workspace
+        - name: sock-docker
+          mountPath: /run/user/1000
       enableServiceLinks: false
       hostname: sleipnir
       securityContext:
@@ -661,9 +818,23 @@ spec:
       - name: data
         persistentVolumeClaim:
           claimName: sleipnir-mimisbrunnr
+      - name: docker
+        ephemeral:
+          volumeClaimTemplate:
+            spec:
+              accessModes:
+              - ReadWriteOnce
+              resources:
+                requests:
+                  storage: 64Gi
+              storageClassName: ceph-rbd
       - name: files
         persistentVolumeClaim:
           claimName: sleipnir-urd
+      - name: sock-docker
+        emptyDir:
+          medium: Memory
+          sizeLimit: 16Mi
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -747,10 +918,6 @@ spec:
           requests:
             cpu: 500m
             memory: 2Gi
-        securityContext:
-          capabilities:
-            add:
-            - SYS_ADMIN
         volumeMounts:
         - name: data
           mountPath: /home/ubuntu/.cache/copilot
@@ -838,6 +1005,53 @@ spec:
           subPath: dev-data-vscode-server
         - name: files
           mountPath: /workspace
+        - name: sock-docker
+          mountPath: /run/docker
+      - name: docker
+        image: docker/docker:latest
+        args:
+        - dockerd
+        - --host=unix:///run/user/1000/docker.sock
+        livenessProbe:
+          exec:
+            command:
+            - docker
+            - --host
+            - unix:///run/user/1000/docker.sock
+            - info
+          failureThreshold: 3
+          periodSeconds: 30
+          timeoutSeconds: 10
+        startupProbe:
+          exec:
+            command:
+            - docker
+            - --host
+            - unix:///run/user/1000/docker.sock
+            - info
+          failureThreshold: 30
+          periodSeconds: 3
+          timeoutSeconds: 5
+        resources:
+          limits:
+            cpu: 4000m
+            ephemeral-storage: 4Gi
+            memory: 8Gi
+          requests:
+            cpu: 100m
+            ephemeral-storage: 256Mi
+            memory: 256Mi
+        securityContext:
+          privileged: true
+          runAsGroup: 1000
+          runAsUser: 1000
+        volumeMounts:
+        - name: docker-data
+          mountPath: /home/rootless/.local/share/docker
+        - name: files
+          mountPath: /workspace
+        - name: sock-docker
+          mountPath: /run/user/1000
       enableServiceLinks: false
       hostname: sleipnir
       securityContext:
@@ -847,6 +1061,20 @@ spec:
       - name: data
         persistentVolumeClaim:
           claimName: sleipnir-urdarbrunnr
+      - name: docker
+        ephemeral:
+          volumeClaimTemplate:
+            spec:
+              accessModes:
+              - ReadWriteOnce
+              resources:
+                requests:
+                  storage: 64Gi
+              storageClassName: ceph-rbd
       - name: files
         persistentVolumeClaim:
           claimName: sleipnir-verdandi
+      - name: sock-docker
+        emptyDir:
+          medium: Memory
+          sizeLimit: 16Mi
