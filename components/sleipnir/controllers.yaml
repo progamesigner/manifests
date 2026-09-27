@@ -324,6 +324,8 @@ spec:
           mountPath: /var/lib/docker
         - name: files
           mountPath: /workspace
+        - name: kvm
+          mountPath: /dev/kvm
         - name: modules
           mountPath: /lib/modules
           readOnly: true
@@ -353,6 +355,10 @@ spec:
       - name: files
         persistentVolumeClaim:
           claimName: sleipnir-freya
+      - name: kvm
+        hostPath:
+          path: /dev/kvm
+          type: CharDevice
       - name: modules
         hostPath:
           path: /lib/modules
@@ -581,6 +587,8 @@ spec:
           mountPath: /var/lib/docker
         - name: files
           mountPath: /workspace
+        - name: kvm
+          mountPath: /dev/kvm
         - name: modules
           mountPath: /lib/modules
           readOnly: true
@@ -610,6 +618,10 @@ spec:
       - name: files
         persistentVolumeClaim:
           claimName: sleipnir-skuld
+      - name: kvm
+        hostPath:
+          path: /dev/kvm
+          type: CharDevice
       - name: modules
         hostPath:
           path: /lib/modules
@@ -838,6 +850,8 @@ spec:
           mountPath: /var/lib/docker
         - name: files
           mountPath: /workspace
+        - name: kvm
+          mountPath: /dev/kvm
         - name: modules
           mountPath: /lib/modules
           readOnly: true
@@ -867,6 +881,10 @@ spec:
       - name: files
         persistentVolumeClaim:
           claimName: sleipnir-urd
+      - name: kvm
+        hostPath:
+          path: /dev/kvm
+          type: CharDevice
       - name: modules
         hostPath:
           path: /lib/modules
@@ -1095,6 +1113,8 @@ spec:
           mountPath: /var/lib/docker
         - name: files
           mountPath: /workspace
+        - name: kvm
+          mountPath: /dev/kvm
         - name: modules
           mountPath: /lib/modules
           readOnly: true
@@ -1124,6 +1144,10 @@ spec:
       - name: files
         persistentVolumeClaim:
           claimName: sleipnir-verdandi
+      - name: kvm
+        hostPath:
+          path: /dev/kvm
+          type: CharDevice
       - name: modules
         hostPath:
           path: /lib/modules
