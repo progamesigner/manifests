@@ -129,6 +129,13 @@ spec:
         app.kubernetes.io/name: sleipnir
         app.kubernetes.io/part-of: components
     spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: workload.kubernetes.progamesigner.dev/kvm
+                operator: Exists
       automountServiceAccountToken: false
       initContainers:
       - name: setup
@@ -392,6 +399,13 @@ spec:
         app.kubernetes.io/name: sleipnir
         app.kubernetes.io/part-of: components
     spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: workload.kubernetes.progamesigner.dev/kvm
+                operator: Exists
       automountServiceAccountToken: false
       initContainers:
       - name: setup
@@ -655,6 +669,13 @@ spec:
         app.kubernetes.io/name: sleipnir
         app.kubernetes.io/part-of: components
     spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: workload.kubernetes.progamesigner.dev/kvm
+                operator: Exists
       automountServiceAccountToken: false
       initContainers:
       - name: setup
@@ -918,6 +939,13 @@ spec:
         app.kubernetes.io/name: sleipnir
         app.kubernetes.io/part-of: components
     spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: workload.kubernetes.progamesigner.dev/kvm
+                operator: Exists
       automountServiceAccountToken: false
       initContainers:
       - name: setup
