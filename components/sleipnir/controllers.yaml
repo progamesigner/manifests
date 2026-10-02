@@ -149,7 +149,11 @@ spec:
 
           install -d -o ubuntu -g ubuntu -m 0755 /mnt/dev-data-serena;
           install -d -o ubuntu -g ubuntu -m 0700 /mnt/dev-data-codex-rc;
+
+          install -d -o ubuntu -g ubuntu -m 0700 /codex/main /codex/rc;
         volumeMounts:
+        - name: codex
+          mountPath: /codex
         - name: data
           mountPath: /mnt
       containers:
@@ -196,6 +200,8 @@ spec:
             cpu: 500m
             memory: 2Gi
         volumeMounts:
+        - name: codex
+          mountPath: /home/ubuntu/.local/state/codex
         - name: data
           mountPath: /home/ubuntu/.cache/copilot
           subPath: dev-cache-copilot
@@ -350,6 +356,8 @@ spec:
         - 2375
       serviceAccountName: default
       volumes:
+      - name: codex
+        emptyDir: {}
       - name: data
         persistentVolumeClaim:
           claimName: sleipnir-folkvangr
@@ -423,7 +431,11 @@ spec:
 
           install -d -o ubuntu -g ubuntu -m 0755 /mnt/dev-data-serena;
           install -d -o ubuntu -g ubuntu -m 0700 /mnt/dev-data-codex-rc;
+
+          install -d -o ubuntu -g ubuntu -m 0700 /codex/main /codex/rc;
         volumeMounts:
+        - name: codex
+          mountPath: /codex
         - name: data
           mountPath: /mnt
       containers:
@@ -470,6 +482,8 @@ spec:
             cpu: 500m
             memory: 2Gi
         volumeMounts:
+        - name: codex
+          mountPath: /home/ubuntu/.local/state/codex
         - name: data
           mountPath: /home/ubuntu/.cache/copilot
           subPath: dev-cache-copilot
@@ -624,6 +638,8 @@ spec:
         - 2375
       serviceAccountName: default
       volumes:
+      - name: codex
+        emptyDir: {}
       - name: data
         persistentVolumeClaim:
           claimName: sleipnir-hvergelmir
@@ -697,7 +713,11 @@ spec:
 
           install -d -o ubuntu -g ubuntu -m 0755 /mnt/dev-data-serena;
           install -d -o ubuntu -g ubuntu -m 0700 /mnt/dev-data-codex-rc;
+
+          install -d -o ubuntu -g ubuntu -m 0700 /codex/main /codex/rc;
         volumeMounts:
+        - name: codex
+          mountPath: /codex
         - name: data
           mountPath: /mnt
       containers:
@@ -744,6 +764,8 @@ spec:
             cpu: 500m
             memory: 2Gi
         volumeMounts:
+        - name: codex
+          mountPath: /home/ubuntu/.local/state/codex
         - name: data
           mountPath: /home/ubuntu/.cache/copilot
           subPath: dev-cache-copilot
@@ -898,6 +920,8 @@ spec:
         - 2375
       serviceAccountName: default
       volumes:
+      - name: codex
+        emptyDir: {}
       - name: data
         persistentVolumeClaim:
           claimName: sleipnir-mimisbrunnr
@@ -971,7 +995,11 @@ spec:
 
           install -d -o ubuntu -g ubuntu -m 0755 /mnt/dev-data-serena;
           install -d -o ubuntu -g ubuntu -m 0700 /mnt/dev-data-codex-rc;
+
+          install -d -o ubuntu -g ubuntu -m 0700 /codex/main /codex/rc;
         volumeMounts:
+        - name: codex
+          mountPath: /codex
         - name: data
           mountPath: /mnt
       containers:
@@ -1018,6 +1046,8 @@ spec:
             cpu: 500m
             memory: 2Gi
         volumeMounts:
+        - name: codex
+          mountPath: /home/ubuntu/.local/state/codex
         - name: data
           mountPath: /home/ubuntu/.cache/copilot
           subPath: dev-cache-copilot
@@ -1172,6 +1202,8 @@ spec:
         - 2375
       serviceAccountName: default
       volumes:
+      - name: codex
+        emptyDir: {}
       - name: data
         persistentVolumeClaim:
           claimName: sleipnir-urdarbrunnr
