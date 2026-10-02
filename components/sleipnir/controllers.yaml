@@ -148,6 +148,7 @@ spec:
           mkdir -p /mnt/dev-conf-zsh && touch /mnt/dev-conf-zsh/.zshenv;
 
           install -d -o ubuntu -g ubuntu -m 0755 /mnt/dev-data-serena;
+          install -d -o ubuntu -g ubuntu -m 0700 /mnt/dev-data-codex-rc;
         volumeMounts:
         - name: data
           mountPath: /mnt
@@ -243,6 +244,9 @@ spec:
         - name: data
           mountPath: /home/ubuntu/.codex
           subPath: dev-data-codex
+        - name: data
+          mountPath: /home/ubuntu/.codex.rc
+          subPath: dev-data-codex-rc
         - name: data
           mountPath: /home/ubuntu/.copilot
           subPath: dev-data-copilot
@@ -418,6 +422,7 @@ spec:
           mkdir -p /mnt/dev-conf-zsh && touch /mnt/dev-conf-zsh/.zshenv;
 
           install -d -o ubuntu -g ubuntu -m 0755 /mnt/dev-data-serena;
+          install -d -o ubuntu -g ubuntu -m 0700 /mnt/dev-data-codex-rc;
         volumeMounts:
         - name: data
           mountPath: /mnt
@@ -513,6 +518,9 @@ spec:
         - name: data
           mountPath: /home/ubuntu/.codex
           subPath: dev-data-codex
+        - name: data
+          mountPath: /home/ubuntu/.codex.rc
+          subPath: dev-data-codex-rc
         - name: data
           mountPath: /home/ubuntu/.copilot
           subPath: dev-data-copilot
@@ -688,6 +696,7 @@ spec:
           mkdir -p /mnt/dev-conf-zsh && touch /mnt/dev-conf-zsh/.zshenv;
 
           install -d -o ubuntu -g ubuntu -m 0755 /mnt/dev-data-serena;
+          install -d -o ubuntu -g ubuntu -m 0700 /mnt/dev-data-codex-rc;
         volumeMounts:
         - name: data
           mountPath: /mnt
@@ -783,6 +792,9 @@ spec:
         - name: data
           mountPath: /home/ubuntu/.codex
           subPath: dev-data-codex
+        - name: data
+          mountPath: /home/ubuntu/.codex.rc
+          subPath: dev-data-codex-rc
         - name: data
           mountPath: /home/ubuntu/.copilot
           subPath: dev-data-copilot
@@ -958,6 +970,7 @@ spec:
           mkdir -p /mnt/dev-conf-zsh && touch /mnt/dev-conf-zsh/.zshenv;
 
           install -d -o ubuntu -g ubuntu -m 0755 /mnt/dev-data-serena;
+          install -d -o ubuntu -g ubuntu -m 0700 /mnt/dev-data-codex-rc;
         volumeMounts:
         - name: data
           mountPath: /mnt
@@ -1053,6 +1066,9 @@ spec:
         - name: data
           mountPath: /home/ubuntu/.codex
           subPath: dev-data-codex
+        - name: data
+          mountPath: /home/ubuntu/.codex.rc
+          subPath: dev-data-codex-rc
         - name: data
           mountPath: /home/ubuntu/.copilot
           subPath: dev-data-copilot
