@@ -357,8 +357,7 @@ spec:
       serviceAccountName: default
       volumes:
       - name: codex
-        persistentVolumeClaim:
-          claimName: sleipnir-freya-codex
+        emptyDir: {}
       - name: data
         persistentVolumeClaim:
           claimName: sleipnir-folkvangr
@@ -640,8 +639,7 @@ spec:
       serviceAccountName: default
       volumes:
       - name: codex
-        persistentVolumeClaim:
-          claimName: sleipnir-skuld-codex
+        emptyDir: {}
       - name: data
         persistentVolumeClaim:
           claimName: sleipnir-hvergelmir
@@ -923,8 +921,7 @@ spec:
       serviceAccountName: default
       volumes:
       - name: codex
-        persistentVolumeClaim:
-          claimName: sleipnir-urd-codex
+        emptyDir: {}
       - name: data
         persistentVolumeClaim:
           claimName: sleipnir-mimisbrunnr
@@ -1206,8 +1203,7 @@ spec:
       serviceAccountName: default
       volumes:
       - name: codex
-        persistentVolumeClaim:
-          claimName: sleipnir-verdandi-codex
+        emptyDir: {}
       - name: data
         persistentVolumeClaim:
           claimName: sleipnir-urdarbrunnr

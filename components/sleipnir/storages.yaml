@@ -38,18 +38,6 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: sleipnir-freya-codex
-spec:
-  accessModes:
-  - ReadWriteOnce
-  resources:
-    requests:
-      storage: 4Gi
-  storageClassName: ceph-rbd
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
   name: sleipnir-hvergelmir
 spec:
   accessModes:
@@ -86,18 +74,6 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: sleipnir-skuld-codex
-spec:
-  accessModes:
-  - ReadWriteOnce
-  resources:
-    requests:
-      storage: 4Gi
-  storageClassName: ceph-rbd
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
   name: sleipnir-urd
 spec:
   accessModes:
@@ -106,18 +82,6 @@ spec:
     requests:
       storage: 256Gi
   storageClassName: ceph-cephfs
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: sleipnir-urd-codex
-spec:
-  accessModes:
-  - ReadWriteOnce
-  resources:
-    requests:
-      storage: 4Gi
-  storageClassName: ceph-rbd
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -142,15 +106,3 @@ spec:
     requests:
       storage: 256Gi
   storageClassName: ceph-cephfs
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: sleipnir-verdandi-codex
-spec:
-  accessModes:
-  - ReadWriteOnce
-  resources:
-    requests:
-      storage: 4Gi
-  storageClassName: ceph-rbd
