@@ -5,6 +5,7 @@ configMapGenerator:
 - name: sleipnir
   literals:
   - NO_GHOSTTY=1
+  - SLEIPNIR_RC_CODEX_HOME=/home/ubuntu/.codex.rc
   - VSCODE_CLI_DISABLE_KEYCHAIN_ENCRYPT=1
   - VSCODE_CLI_USE_FILE_KEYCHAIN=1
 resources:
