@@ -22,10 +22,10 @@ images:
   newTag: 29.8.1-dind
 - name: gloomhaven/client
   newName: gloomhavensecretariat/ghs
-  newTag: v0.169.2
+  newTag: v0.171.2
 - name: gloomhaven/server
   newName: gloomhavensecretariat/ghs-server-postgresql
-  newTag: v0.167.0
+  newTag: v0.171.0
 - name: home-assistant/home-assistant
   newName: ghcr.io/home-assistant/home-assistant
   newTag: 2026.9.4
