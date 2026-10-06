@@ -88,7 +88,7 @@ images:
   newTag: 2.0.3
 - name: unifi/network
   newName: lscr.io/linuxserver/unifi-network-application
-  newTag: 10.6.106-ls148
+  newTag: 10.6.106-ls149
 - name: windmill/windmill-extra
   newName: ghcr.io/windmill-labs/windmill-extra
   newTag: 1.824.1
