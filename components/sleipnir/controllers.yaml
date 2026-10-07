@@ -352,6 +352,7 @@ spec:
       hostname: sleipnir
       securityContext:
         fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
         supplementalGroups:
         - 2375
       serviceAccountName: default
@@ -634,6 +635,7 @@ spec:
       hostname: sleipnir
       securityContext:
         fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
         supplementalGroups:
         - 2375
       serviceAccountName: default
@@ -916,6 +918,7 @@ spec:
       hostname: sleipnir
       securityContext:
         fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
         supplementalGroups:
         - 2375
       serviceAccountName: default
@@ -1198,6 +1201,7 @@ spec:
       hostname: sleipnir
       securityContext:
         fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
         supplementalGroups:
         - 2375
       serviceAccountName: default
