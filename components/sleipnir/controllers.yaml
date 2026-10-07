@@ -194,7 +194,7 @@ spec:
           failureThreshold: 2
         resources:
           limits:
-            cpu: 4000m
+            cpu: 12000m
             memory: 32Gi
           requests:
             cpu: 500m
@@ -476,7 +476,7 @@ spec:
           failureThreshold: 2
         resources:
           limits:
-            cpu: 4000m
+            cpu: 12000m
             memory: 32Gi
           requests:
             cpu: 500m
@@ -758,7 +758,7 @@ spec:
           failureThreshold: 2
         resources:
           limits:
-            cpu: 4000m
+            cpu: 12000m
             memory: 32Gi
           requests:
             cpu: 500m
@@ -1040,7 +1040,7 @@ spec:
           failureThreshold: 2
         resources:
           limits:
-            cpu: 4000m
+            cpu: 12000m
             memory: 32Gi
           requests:
             cpu: 500m
