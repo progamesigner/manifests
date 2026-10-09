@@ -1,5 +1,6 @@
 {
     "$schema": "https://www.getbifrost.ai/schema",
+    "setup_token": "env.BIFROST_PASSWORD",
     "config_store": {
         "enabled": true,
         "type": "postgres",
