@@ -86,11 +86,33 @@ providers:
 tools:
   read_document:
     kind: read_document
+  write_document:
+    kind: write_document
+    description: Write a Markdown, CSV, Word or Excel file for the user to download.
   websearch:
     kind: websearch
     api_key:
       value_from:
         env: FELO_API_KEY
+  illustrator:
+    kind: images
+    description: Draw an image the user asked for; it is sent to them directly.
+    model: openai/gpt-image-2.5-sunburst
+    base_url: http://bifrost.default.svc.cluster.local:8080
+    api_key:
+      value_from:
+        env: BIFROST_API_KEY
+    size: 1024x1024
+  narrator:
+    kind: speech
+    description: Read a short answer aloud as a voice message.
+    model: openai/gpt-4o-mini-tts-2025-12-15
+    base_url: http://bifrost.default.svc.cluster.local:8080
+    voice: alloy
+    format: opus
+    api_key:
+      value_from:
+        env: BIFROST_API_KEY
 
 mcp_servers:
   muninn:
@@ -109,12 +131,124 @@ mcp_servers:
     transport: http
     url: https://TW-Stock-MCP-Server.fastmcp.app/mcp
 
+hooks:
+  advisor-session-context:
+    kind: mcp
+    server: muninn
+    tool: load_session_context
+    arguments:
+      agent: ${MUNINN_ADVISOR_SCOPE_AGENT}
+      user: ${MUNINN_ADVISOR_SCOPE_USER}
+    cache_ttl: 600
+  architect-session-context:
+    kind: mcp
+    server: muninn
+    tool: load_session_context
+    arguments:
+      agent: ${MUNINN_ARCHITECT_SCOPE_AGENT}
+      user: ${MUNINN_ARCHITECT_SCOPE_USER}
+    cache_ttl: 600
+  assistant-session-context:
+    kind: mcp
+    server: muninn
+    tool: load_session_context
+    arguments:
+      agent: ${MUNINN_ASSISTANT_SCOPE_AGENT}
+      user: ${MUNINN_ASSISTANT_SCOPE_USER}
+    cache_ttl: 600
+  coach-session-context:
+    kind: mcp
+    server: muninn
+    tool: load_session_context
+    arguments:
+      agent: ${MUNINN_COACH_SCOPE_AGENT}
+      user: ${MUNINN_COACH_SCOPE_USER}
+    cache_ttl: 600
+  companion-session-context:
+    kind: mcp
+    server: muninn
+    tool: load_session_context
+    arguments:
+      agent: ${MUNINN_COMPANION_SCOPE_AGENT}
+      user: ${MUNINN_COMPANION_SCOPE_USER}
+    cache_ttl: 600
+  coordinator-session-context:
+    kind: mcp
+    server: muninn
+    tool: load_session_context
+    arguments:
+      agent: ${MUNINN_COORDINATOR_SCOPE_AGENT}
+      user: ${MUNINN_COORDINATOR_SCOPE_USER}
+    cache_ttl: 600
+  counsel-session-context:
+    kind: mcp
+    server: muninn
+    tool: load_session_context
+    arguments:
+      agent: ${MUNINN_COUNSEL_SCOPE_AGENT}
+      user: ${MUNINN_COUNSEL_SCOPE_USER}
+    cache_ttl: 600
+  guide-session-context:
+    kind: mcp
+    server: muninn
+    tool: load_session_context
+    arguments:
+      agent: ${MUNINN_GUIDE_SCOPE_AGENT}
+      user: ${MUNINN_GUIDE_SCOPE_USER}
+    cache_ttl: 600
+  planner-session-context:
+    kind: mcp
+    server: muninn
+    tool: load_session_context
+    arguments:
+      agent: ${MUNINN_PLANNER_SCOPE_AGENT}
+      user: ${MUNINN_PLANNER_SCOPE_USER}
+    cache_ttl: 600
+  plotter-session-context:
+    kind: mcp
+    server: muninn
+    tool: load_session_context
+    arguments:
+      agent: ${MUNINN_PLOTTER_SCOPE_AGENT}
+      user: ${MUNINN_PLOTTER_SCOPE_USER}
+    cache_ttl: 600
+  researcher-session-context:
+    kind: mcp
+    server: muninn
+    tool: load_session_context
+    arguments:
+      agent: ${MUNINN_RESEARCHER_SCOPE_AGENT}
+      user: ${MUNINN_RESEARCHER_SCOPE_USER}
+    cache_ttl: 600
+  sentinel-session-context:
+    kind: mcp
+    server: muninn
+    tool: load_session_context
+    arguments:
+      agent: ${MUNINN_SENTINEL_SCOPE_AGENT}
+      user: ${MUNINN_SENTINEL_SCOPE_USER}
+    cache_ttl: 600
+  tutor-session-context:
+    kind: mcp
+    server: muninn
+    tool: load_session_context
+    arguments:
+      agent: ${MUNINN_TUTOR_SCOPE_AGENT}
+      user: ${MUNINN_TUTOR_SCOPE_USER}
+    cache_ttl: 600
+
 transcription:
   kind: openai
-  model: openai/gpt-4o-mini-transcribe
+  model: openai/gpt-transcribe
+  base_url: http://bifrost.default.svc.cluster.local:8080
   api_key:
     value_from:
-      env: OPENAI_API_KEY
+      env: BIFROST_API_KEY
+
+blobs:
+  retention:
+    generated: 30d
+    inbound: null
 
 agents:
   default:
@@ -123,7 +257,10 @@ agents:
     instructions_file: /etc/huginn/instructions.md
     tools: &tools
       - name: read_document
+      - name: write_document
       - name: websearch
+      - name: illustrator
+      - name: narrator
     mcp:
     - server: muninn
       allow: &muninn
@@ -147,6 +284,8 @@ agents:
     model: openai/gpt-6-luna
     instructions_file: /etc/huginn/instructions.md
     tools: *tools
+    hooks:
+    - advisor-session-context
     mcp:
     - &advisor-muninn
       server: muninn
@@ -207,6 +346,8 @@ agents:
     model: openai/gpt-6.1-sol
     instructions_file: /etc/huginn/instructions.md
     tools: *tools
+    hooks:
+    - advisor-session-context
     mcp:
     - *advisor-muninn
     - *advisor-twstock
@@ -215,6 +356,8 @@ agents:
     model: openai/gpt-6-astra
     instructions_file: /etc/huginn/instructions.md
     tools: *tools
+    hooks:
+    - advisor-session-context
     mcp:
     - *advisor-muninn
     - *advisor-twstock
@@ -223,6 +366,8 @@ agents:
     model: anthropic/claude-haiku-5-5
     instructions_file: /etc/huginn/instructions.md
     tools: *tools
+    hooks:
+    - architect-session-context
     mcp:
     - &architect-muninn
       server: muninn
@@ -235,6 +380,8 @@ agents:
     model: anthropic/claude-sonnet-5-5
     instructions_file: /etc/huginn/instructions.md
     tools: *tools
+    hooks:
+    - architect-session-context
     mcp:
     - *architect-muninn
   architect-advanced:
@@ -242,6 +389,8 @@ agents:
     model: anthropic/claude-opus-5-5
     instructions_file: /etc/huginn/instructions.md
     tools: *tools
+    hooks:
+    - architect-session-context
     mcp:
     - *architect-muninn
   assistant-fast:
@@ -249,6 +398,8 @@ agents:
     model: openai/gpt-6-luna
     instructions_file: /etc/huginn/instructions.md
     tools: *tools
+    hooks:
+    - assistant-session-context
     mcp:
     - &assistant-muninn
       server: muninn
@@ -261,6 +412,8 @@ agents:
     model: openai/gpt-6.1-sol
     instructions_file: /etc/huginn/instructions.md
     tools: *tools
+    hooks:
+    - assistant-session-context
     mcp:
     - *assistant-muninn
   assistant-advanced:
@@ -268,6 +421,8 @@ agents:
     model: openai/gpt-6-astra
     instructions_file: /etc/huginn/instructions.md
     tools: *tools
+    hooks:
+    - assistant-session-context
     mcp:
     - *assistant-muninn
   coach-fast:
@@ -275,6 +430,8 @@ agents:
     model: openai/gpt-6-luna
     instructions_file: /etc/huginn/instructions.md
     tools: *tools
+    hooks:
+    - coach-session-context
     mcp:
     - &coach-muninn
       server: muninn
@@ -287,6 +444,8 @@ agents:
     model: openai/gpt-6.1-sol
     instructions_file: /etc/huginn/instructions.md
     tools: *tools
+    hooks:
+    - coach-session-context
     mcp:
     - *coach-muninn
   coach-advanced:
@@ -294,6 +453,8 @@ agents:
     model: openai/gpt-6-astra
     instructions_file: /etc/huginn/instructions.md
     tools: *tools
+    hooks:
+    - coach-session-context
     mcp:
     - *coach-muninn
   companion-fast:
@@ -301,6 +462,8 @@ agents:
     model: anthropic/claude-haiku-5-5
     instructions_file: /etc/huginn/instructions.md
     tools: *tools
+    hooks:
+    - companion-session-context
     mcp:
     - &companion-muninn
       server: muninn
@@ -313,6 +476,8 @@ agents:
     model: anthropic/claude-sonnet-5-5
     instructions_file: /etc/huginn/instructions.md
     tools: *tools
+    hooks:
+    - companion-session-context
     mcp:
     - *companion-muninn
   companion-advanced:
@@ -320,6 +485,8 @@ agents:
     model: anthropic/claude-opus-5-5
     instructions_file: /etc/huginn/instructions.md
     tools: *tools
+    hooks:
+    - companion-session-context
     mcp:
     - *companion-muninn
   coordinator-fast:
@@ -327,6 +494,8 @@ agents:
     model: openrouter/openai/gpt-oss-120b
     instructions_file: /etc/huginn/instructions.md
     tools: *tools
+    hooks:
+    - coordinator-session-context
     mcp:
     - &coordinator-muninn
       server: muninn
@@ -339,6 +508,8 @@ agents:
     model: gemini/gemma-4-31b-it
     instructions_file: /etc/huginn/instructions.md
     tools: *tools
+    hooks:
+    - coordinator-session-context
     mcp:
     - *coordinator-muninn
   coordinator-advanced:
@@ -346,6 +517,8 @@ agents:
     model: xai/grok-4.7
     instructions_file: /etc/huginn/instructions.md
     tools: *tools
+    hooks:
+    - coordinator-session-context
     mcp:
     - *coordinator-muninn
   counsel-fast:
@@ -353,6 +526,8 @@ agents:
     model: openai/gpt-6-luna
     instructions_file: /etc/huginn/instructions.md
     tools: *tools
+    hooks:
+    - counsel-session-context
     mcp:
     - &counsel-muninn
       server: muninn
@@ -365,6 +540,8 @@ agents:
     model: openai/gpt-6.1-sol
     instructions_file: /etc/huginn/instructions.md
     tools: *tools
+    hooks:
+    - counsel-session-context
     mcp:
     - *counsel-muninn
   counsel-advanced:
@@ -372,6 +549,8 @@ agents:
     model: openai/gpt-6-astra
     instructions_file: /etc/huginn/instructions.md
     tools: *tools
+    hooks:
+    - counsel-session-context
     mcp:
     - *counsel-muninn
   guide-fast:
@@ -379,6 +558,8 @@ agents:
     model: gemini/gemini-3.5-flash-lite
     instructions_file: /etc/huginn/instructions.md
     tools: *tools
+    hooks:
+    - guide-session-context
     mcp:
     - &guide-muninn
       server: muninn
@@ -391,6 +572,8 @@ agents:
     model: gemini/gemini-3.8-flash
     instructions_file: /etc/huginn/instructions.md
     tools: *tools
+    hooks:
+    - guide-session-context
     mcp:
     - *guide-muninn
   guide-advanced:
@@ -398,6 +581,8 @@ agents:
     model: gemini/gemini-3.1-pro-preview
     instructions_file: /etc/huginn/instructions.md
     tools: *tools
+    hooks:
+    - guide-session-context
     mcp:
     - *guide-muninn
   planner-fast:
@@ -408,6 +593,8 @@ agents:
     tool_timeout: 300
     instructions_file: /etc/huginn/instructions.md
     tools: *tools
+    hooks:
+    - planner-session-context
     mcp:
     - &planner-muninn
       server: muninn
@@ -423,6 +610,8 @@ agents:
     tool_timeout: 300
     instructions_file: /etc/huginn/instructions.md
     tools: *tools
+    hooks:
+    - planner-session-context
     mcp:
     - *planner-muninn
   planner-advanced:
@@ -433,6 +622,8 @@ agents:
     tool_timeout: 300
     instructions_file: /etc/huginn/instructions.md
     tools: *tools
+    hooks:
+    - planner-session-context
     mcp:
     - *planner-muninn
   plotter-fast:
@@ -440,6 +631,8 @@ agents:
     model: anthropic/claude-haiku-5-5
     instructions_file: /etc/huginn/instructions.md
     tools: *tools
+    hooks:
+    - plotter-session-context
     mcp:
     - &plotter-muninn
       server: muninn
@@ -452,6 +645,8 @@ agents:
     model: anthropic/claude-sonnet-5-5
     instructions_file: /etc/huginn/instructions.md
     tools: *tools
+    hooks:
+    - plotter-session-context
     mcp:
     - *plotter-muninn
   plotter-advanced:
@@ -459,6 +654,8 @@ agents:
     model: anthropic/claude-opus-5-5
     instructions_file: /etc/huginn/instructions.md
     tools: *tools
+    hooks:
+    - plotter-session-context
     mcp:
     - *plotter-muninn
   researcher-fast:
@@ -466,6 +663,8 @@ agents:
     model: gemini/gemini-3.5-flash-lite
     instructions_file: /etc/huginn/instructions.md
     tools: *tools
+    hooks:
+    - researcher-session-context
     mcp:
     - &researcher-muninn
       server: muninn
@@ -478,6 +677,8 @@ agents:
     model: gemini/gemini-3.8-flash
     instructions_file: /etc/huginn/instructions.md
     tools: *tools
+    hooks:
+    - researcher-session-context
     mcp:
     - *researcher-muninn
   researcher-advanced:
@@ -485,6 +686,8 @@ agents:
     model: gemini/gemini-3.1-pro-preview
     instructions_file: /etc/huginn/instructions.md
     tools: *tools
+    hooks:
+    - researcher-session-context
     mcp:
     - *researcher-muninn
   sentinel-fast:
@@ -492,6 +695,8 @@ agents:
     model: gemini/gemini-3.5-flash-lite
     instructions_file: /etc/huginn/instructions.md
     tools: *tools
+    hooks:
+    - sentinel-session-context
     mcp:
     - &sentinel-muninn
       server: muninn
@@ -504,6 +709,8 @@ agents:
     model: gemini/gemini-3.8-flash
     instructions_file: /etc/huginn/instructions.md
     tools: *tools
+    hooks:
+    - sentinel-session-context
     mcp:
     - *sentinel-muninn
   sentinel-advanced:
@@ -511,6 +718,8 @@ agents:
     model: gemini/gemini-3.1-pro-preview
     instructions_file: /etc/huginn/instructions.md
     tools: *tools
+    hooks:
+    - sentinel-session-context
     mcp:
     - *sentinel-muninn
   tutor-fast:
@@ -518,6 +727,8 @@ agents:
     model: gemini/gemini-3.5-flash-lite
     instructions_file: /etc/huginn/instructions.md
     tools: *tools
+    hooks:
+    - tutor-session-context
     mcp:
     - &tutor-muninn
       server: muninn
@@ -530,6 +741,8 @@ agents:
     model: gemini/gemini-3.8-flash
     instructions_file: /etc/huginn/instructions.md
     tools: *tools
+    hooks:
+    - tutor-session-context
     mcp:
     - *tutor-muninn
   tutor-advanced:
@@ -537,6 +750,8 @@ agents:
     model: gemini/gemini-3.1-pro-preview
     instructions_file: /etc/huginn/instructions.md
     tools: *tools
+    hooks:
+    - tutor-session-context
     mcp:
     - *tutor-muninn
 
