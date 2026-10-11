@@ -5,7 +5,6 @@ configMapGenerator:
 - name: huginn
   files:
   - config.yaml=huginn.yaml
-  - instructions.md=instructions.md
   literals:
   - HUGINN_CONFIG_FILE=/etc/huginn/config.yaml
   - HUGINN_ENVIRONMENT=prod

@@ -97,10 +97,6 @@ spec:
           mountPath: /etc/huginn/config.yaml
           subPath: config.yaml
           readOnly: true
-        - name: conf
-          mountPath: /etc/huginn/instructions.md
-          subPath: instructions.md
-          readOnly: true
       enableServiceLinks: false
       serviceAccountName: default
       volumes:

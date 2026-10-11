@@ -254,7 +254,7 @@ agents:
   default:
     model: gemini/gemma-4-26b-a4b-it
     description: An placeholder agent for general purpose.
-    instructions_file: /etc/huginn/instructions.md
+    instructions: "You are a helpful assistant"
     tools: &tools
       - name: read_document
       - name: write_document
@@ -282,7 +282,7 @@ agents:
   advisor-fast:
     description: Handles quick budget calculations, price comparisons, and straightforward low-risk financial questions.
     model: openai/gpt-6-luna
-    instructions_file: /etc/huginn/instructions.md
+    instructions: ''
     tools: *tools
     hooks:
     - advisor-session-context
@@ -344,7 +344,7 @@ agents:
   advisor-balanced:
     description: Handles routine cash-flow planning, project cost estimates, portfolio reviews, and multi-step financial comparisons.
     model: openai/gpt-6.1-sol
-    instructions_file: /etc/huginn/instructions.md
+    instructions: ''
     tools: *tools
     hooks:
     - advisor-session-context
@@ -354,7 +354,7 @@ agents:
   advisor-advanced:
     description: Handles high-impact financial decisions with uncertainty, competing scenarios, risk analysis, and long-term tradeoffs.
     model: openai/gpt-6-astra
-    instructions_file: /etc/huginn/instructions.md
+    instructions: ''
     tools: *tools
     hooks:
     - advisor-session-context
@@ -364,7 +364,7 @@ agents:
   architect-fast:
     description: Produces quick API sketches, component choices, and focused technology recommendations for bounded problems.
     model: anthropic/claude-haiku-5-5
-    instructions_file: /etc/huginn/instructions.md
+    instructions: ''
     tools: *tools
     hooks:
     - architect-session-context
@@ -378,7 +378,7 @@ agents:
   architect-balanced:
     description: Designs system boundaries, data flows, APIs, technology tradeoffs, and realistic implementation timelines.
     model: anthropic/claude-sonnet-5-5
-    instructions_file: /etc/huginn/instructions.md
+    instructions: ''
     tools: *tools
     hooks:
     - architect-session-context
@@ -387,7 +387,7 @@ agents:
   architect-advanced:
     description: Handles distributed architecture, migrations, failure and threat models, complex tradeoffs, and architecture decisions.
     model: anthropic/claude-opus-5-5
-    instructions_file: /etc/huginn/instructions.md
+    instructions: ''
     tools: *tools
     hooks:
     - architect-session-context
@@ -396,7 +396,7 @@ agents:
   assistant-fast:
     description: Handles one-step formatting, simple lists, reminders, and small administrative tasks.
     model: openai/gpt-6-luna
-    instructions_file: /etc/huginn/instructions.md
+    instructions: ''
     tools: *tools
     hooks:
     - assistant-session-context
@@ -410,7 +410,7 @@ agents:
   assistant-balanced:
     description: Organizes multi-step errands, information, notes, schedules, and routine tool-assisted workflows.
     model: openai/gpt-6.1-sol
-    instructions_file: /etc/huginn/instructions.md
+    instructions: ''
     tools: *tools
     hooks:
     - assistant-session-context
@@ -419,7 +419,7 @@ agents:
   assistant-advanced:
     description: Coordinates complex cross-tool workflows, recurring processes, and large or ambiguous data transformations.
     model: openai/gpt-6-astra
-    instructions_file: /etc/huginn/instructions.md
+    instructions: ''
     tools: *tools
     hooks:
     - assistant-session-context
@@ -428,7 +428,7 @@ agents:
   coach-fast:
     description: Runs quick quizzes, checks immediate learning progress, and corrects a single clear misconception.
     model: openai/gpt-6-luna
-    instructions_file: /etc/huginn/instructions.md
+    instructions: ''
     tools: *tools
     hooks:
     - coach-session-context
@@ -442,7 +442,7 @@ agents:
   coach-balanced:
     description: Builds structured learning plans, sets assessments, reviews progress, and adjusts practice based on results.
     model: openai/gpt-6.1-sol
-    instructions_file: /etc/huginn/instructions.md
+    instructions: ''
     tools: *tools
     hooks:
     - coach-session-context
@@ -451,7 +451,7 @@ agents:
   coach-advanced:
     description: Conducts rigorous mastery reviews, diagnoses hidden reasoning gaps, and designs demanding adaptive assessments.
     model: openai/gpt-6-astra
-    instructions_file: /etc/huginn/instructions.md
+    instructions: ''
     tools: *tools
     hooks:
     - coach-session-context
@@ -460,7 +460,7 @@ agents:
   companion-fast:
     description: Offers brief check-ins, casual conversation, and a low-pressure space to vent or decompress.
     model: anthropic/claude-haiku-5-5
-    instructions_file: /etc/huginn/instructions.md
+    instructions: ''
     tools: *tools
     hooks:
     - companion-session-context
@@ -474,7 +474,7 @@ agents:
   companion-balanced:
     description: Helps organize emotions, reflect on experiences, and work through ordinary personal conversations with warmth.
     model: anthropic/claude-sonnet-5-5
-    instructions_file: /etc/huginn/instructions.md
+    instructions: ''
     tools: *tools
     hooks:
     - companion-session-context
@@ -483,7 +483,7 @@ agents:
   companion-advanced:
     description: Supports long-context reflection on recurring patterns, difficult conversations, and layered emotional situations.
     model: anthropic/claude-opus-5-5
-    instructions_file: /etc/huginn/instructions.md
+    instructions: ''
     tools: *tools
     hooks:
     - companion-session-context
@@ -492,7 +492,7 @@ agents:
   coordinator-fast:
     description: Handles quick status checks, action-item capture, simple follow-ups, and isolated work requests.
     model: openrouter/openai/gpt-oss-120b
-    instructions_file: /etc/huginn/instructions.md
+    instructions: ''
     tools: *tools
     hooks:
     - coordinator-session-context
@@ -506,7 +506,7 @@ agents:
   coordinator-balanced:
     description: Coordinates multiple work tasks, dependencies, schedules, meeting actions, and routine project communication.
     model: gemini/gemma-4-31b-it
-    instructions_file: /etc/huginn/instructions.md
+    instructions: ''
     tools: *tools
     hooks:
     - coordinator-session-context
@@ -515,7 +515,7 @@ agents:
   coordinator-advanced:
     description: Handles complex workstreams, cross-team risks, escalation planning, and stakeholder-level synthesis.
     model: xai/grok-4.7
-    instructions_file: /etc/huginn/instructions.md
+    instructions: ''
     tools: *tools
     hooks:
     - coordinator-session-context
@@ -524,7 +524,7 @@ agents:
   counsel-fast:
     description: Extracts clauses, summarizes straightforward terms, and flags obvious omissions in legal documents.
     model: openai/gpt-6-luna
-    instructions_file: /etc/huginn/instructions.md
+    instructions: ''
     tools: *tools
     hooks:
     - counsel-session-context
@@ -538,7 +538,7 @@ agents:
   counsel-balanced:
     description: Reviews and compares contracts, licenses, disclaimers, obligations, and practical compliance checklists.
     model: openai/gpt-6.1-sol
-    instructions_file: /etc/huginn/instructions.md
+    instructions: ''
     tools: *tools
     hooks:
     - counsel-session-context
@@ -547,7 +547,7 @@ agents:
   counsel-advanced:
     description: Analyzes conflicting clauses, edge-case risks, nuanced implications, and questions for legal negotiation.
     model: openai/gpt-6-astra
-    instructions_file: /etc/huginn/instructions.md
+    instructions: ''
     tools: *tools
     hooks:
     - counsel-session-context
@@ -556,7 +556,7 @@ agents:
   guide-fast:
     description: Answers quick game lookups about drops, locations, items, and one clearly defined mechanic.
     model: gemini/gemini-3.5-flash-lite
-    instructions_file: /etc/huginn/instructions.md
+    instructions: ''
     tools: *tools
     hooks:
     - guide-session-context
@@ -570,7 +570,7 @@ agents:
   guide-balanced:
     description: Compares version-specific builds, routes, strategies, and sources for routine game questions.
     model: gemini/gemini-3.8-flash
-    instructions_file: /etc/huginn/instructions.md
+    instructions: ''
     tools: *tools
     hooks:
     - guide-session-context
@@ -579,7 +579,7 @@ agents:
   guide-advanced:
     description: Resolves complex mechanics, conflicting sources, metagame tradeoffs, and advanced strategy questions.
     model: gemini/gemini-3.1-pro-preview
-    instructions_file: /etc/huginn/instructions.md
+    instructions: ''
     tools: *tools
     hooks:
     - guide-session-context
@@ -591,7 +591,7 @@ agents:
     max_iterations: 50
     turn_timeout: 1500
     tool_timeout: 300
-    instructions_file: /etc/huginn/instructions.md
+    instructions: ''
     tools: *tools
     hooks:
     - planner-session-context
@@ -608,7 +608,7 @@ agents:
     max_iterations: 50
     turn_timeout: 1500
     tool_timeout: 300
-    instructions_file: /etc/huginn/instructions.md
+    instructions: ''
     tools: *tools
     hooks:
     - planner-session-context
@@ -620,7 +620,7 @@ agents:
     max_iterations: 50
     turn_timeout: 1500
     tool_timeout: 300
-    instructions_file: /etc/huginn/instructions.md
+    instructions: ''
     tools: *tools
     hooks:
     - planner-session-context
@@ -629,7 +629,7 @@ agents:
   plotter-fast:
     description: Generates story ideas, names, scene prompts, and focused fixes for a single narrative moment.
     model: anthropic/claude-haiku-5-5
-    instructions_file: /etc/huginn/instructions.md
+    instructions: ''
     tools: *tools
     hooks:
     - plotter-session-context
@@ -643,7 +643,7 @@ agents:
   plotter-balanced:
     description: Develops three-act structures, conflicts, character arcs, chapter outlines, and coherent story worlds.
     model: anthropic/claude-sonnet-5-5
-    instructions_file: /etc/huginn/instructions.md
+    instructions: ''
     tools: *tools
     hooks:
     - plotter-session-context
@@ -652,7 +652,7 @@ agents:
   plotter-advanced:
     description: Designs multi-thread narratives, world bibles, long-form continuity, and full structural revisions.
     model: anthropic/claude-opus-5-5
-    instructions_file: /etc/huginn/instructions.md
+    instructions: ''
     tools: *tools
     hooks:
     - plotter-session-context
@@ -661,7 +661,7 @@ agents:
   researcher-fast:
     description: Performs quick searches, verifies simple facts, summarizes one source, and generates lightweight ideas.
     model: gemini/gemini-3.5-flash-lite
-    instructions_file: /etc/huginn/instructions.md
+    instructions: ''
     tools: *tools
     hooks:
     - researcher-session-context
@@ -675,7 +675,7 @@ agents:
   researcher-balanced:
     description: Compares multiple sources, organizes themes, summarizes literature, and explores ideas across domains.
     model: gemini/gemini-3.8-flash
-    instructions_file: /etc/huginn/instructions.md
+    instructions: ''
     tools: *tools
     hooks:
     - researcher-session-context
@@ -684,7 +684,7 @@ agents:
   researcher-advanced:
     description: Synthesizes conflicting evidence, identifies research gaps, and conducts deep cross-domain investigations.
     model: gemini/gemini-3.1-pro-preview
-    instructions_file: /etc/huginn/instructions.md
+    instructions: ''
     tools: *tools
     hooks:
     - researcher-session-context
@@ -693,7 +693,7 @@ agents:
   sentinel-fast:
     description: Reports heartbeats, green status, single alerts, and immediate monitoring facts with minimal analysis.
     model: gemini/gemini-3.5-flash-lite
-    instructions_file: /etc/huginn/instructions.md
+    instructions: ''
     tools: *tools
     hooks:
     - sentinel-session-context
@@ -707,7 +707,7 @@ agents:
   sentinel-balanced:
     description: Correlates routine metrics and alerts, assigns severity, and proposes initial troubleshooting steps.
     model: gemini/gemini-3.8-flash
-    instructions_file: /etc/huginn/instructions.md
+    instructions: ''
     tools: *tools
     hooks:
     - sentinel-session-context
@@ -716,7 +716,7 @@ agents:
   sentinel-advanced:
     description: Investigates cross-system incidents, develops root-cause hypotheses, and plans mitigation and recovery.
     model: gemini/gemini-3.1-pro-preview
-    instructions_file: /etc/huginn/instructions.md
+    instructions: ''
     tools: *tools
     hooks:
     - sentinel-session-context
@@ -725,7 +725,7 @@ agents:
   tutor-fast:
     description: Gives direct concept explanations, short exercises, and focused corrections for straightforward questions.
     model: gemini/gemini-3.5-flash-lite
-    instructions_file: /etc/huginn/instructions.md
+    instructions: ''
     tools: *tools
     hooks:
     - tutor-session-context
@@ -739,7 +739,7 @@ agents:
   tutor-balanced:
     description: Teaches concepts step by step, guides practice, and explains routine code and problem-solving methods.
     model: gemini/gemini-3.8-flash
-    instructions_file: /etc/huginn/instructions.md
+    instructions: ''
     tools: *tools
     hooks:
     - tutor-session-context
@@ -748,7 +748,7 @@ agents:
   tutor-advanced:
     description: Explains underlying mechanisms and algorithms and diagnoses difficult code line by line in depth.
     model: gemini/gemini-3.1-pro-preview
-    instructions_file: /etc/huginn/instructions.md
+    instructions: ''
     tools: *tools
     hooks:
     - tutor-session-context
