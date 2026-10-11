@@ -4,6 +4,7 @@ kind: Component
 configMapGenerator:
 - name: sleipnir
   literals:
+  - HERDR_STARTUP_CWD=/home/ubuntu/workspaces
   - NO_GHOSTTY=1
   - SLEIPNIR_RC_CODEX_HOME=/home/ubuntu/.codex.rc
   - VSCODE_CLI_DISABLE_KEYCHAIN_ENCRYPT=1
