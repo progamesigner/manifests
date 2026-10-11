@@ -297,8 +297,6 @@ spec:
           subPath: dev-data-vscode-server
         - name: files
           mountPath: /home/ubuntu/workspaces
-        - name: files
-          mountPath: /workspace
         - name: sock-docker
           mountPath: /run/docker
       - name: docker
@@ -343,8 +341,6 @@ spec:
           mountPath: /var/lib/docker
         - name: files
           mountPath: /home/ubuntu/workspaces
-        - name: files
-          mountPath: /workspace
         - name: kvm
           mountPath: /dev/kvm
         - name: modules
@@ -584,8 +580,6 @@ spec:
           subPath: dev-data-vscode-server
         - name: files
           mountPath: /home/ubuntu/workspaces
-        - name: files
-          mountPath: /workspace
         - name: sock-docker
           mountPath: /run/docker
       - name: docker
@@ -630,8 +624,6 @@ spec:
           mountPath: /var/lib/docker
         - name: files
           mountPath: /home/ubuntu/workspaces
-        - name: files
-          mountPath: /workspace
         - name: kvm
           mountPath: /dev/kvm
         - name: modules
@@ -871,8 +863,6 @@ spec:
           subPath: dev-data-vscode-server
         - name: files
           mountPath: /home/ubuntu/workspaces
-        - name: files
-          mountPath: /workspace
         - name: sock-docker
           mountPath: /run/docker
       - name: docker
@@ -917,8 +907,6 @@ spec:
           mountPath: /var/lib/docker
         - name: files
           mountPath: /home/ubuntu/workspaces
-        - name: files
-          mountPath: /workspace
         - name: kvm
           mountPath: /dev/kvm
         - name: modules
@@ -1158,8 +1146,6 @@ spec:
           subPath: dev-data-vscode-server
         - name: files
           mountPath: /home/ubuntu/workspaces
-        - name: files
-          mountPath: /workspace
         - name: sock-docker
           mountPath: /run/docker
       - name: docker
@@ -1204,8 +1190,6 @@ spec:
           mountPath: /var/lib/docker
         - name: files
           mountPath: /home/ubuntu/workspaces
-        - name: files
-          mountPath: /workspace
         - name: kvm
           mountPath: /dev/kvm
         - name: modules
