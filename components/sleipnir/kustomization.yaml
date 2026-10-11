@@ -7,6 +7,7 @@ configMapGenerator:
   - HERDR_STARTUP_CWD=/home/ubuntu/workspaces
   - NO_GHOSTTY=1
   - SLEIPNIR_RC_CODEX_HOME=/home/ubuntu/.codex.rc
+  - SLEIPNIR_SCHEDULER_CRONTAB=/home/ubuntu/workspaces/scheduler/crontab
   - VSCODE_CLI_DISABLE_KEYCHAIN_ENCRYPT=1
   - VSCODE_CLI_USE_FILE_KEYCHAIN=1
 resources:
