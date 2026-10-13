@@ -1,0 +1,17 @@
+---
+apiVersion: kustomize.config.k8s.io/v1alpha1
+kind: Component
+configMapGenerator:
+- name: gungnir
+  literals:
+  - BIFROST_BASE_URL=http://bifrost.default.svc.cluster.local:8080/v1
+  - GUNGNIR_MODEL_ANSWER=gemini/gemini-3.8-flash
+  - GUNGNIR_MODEL_PLANNER=gemini/gemini-3.5-flash-lite
+  - ORIGIN=https://search.progamesigner.dev
+  - SEARXNG_URL=http://searxng.default.svc.cluster.local:8080
+resources:
+- controllers.yaml
+secretGenerator:
+- name: gungnir
+  envs:
+  - gungnir.env

@@ -127,6 +127,21 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
+  name: gungnir
+spec:
+  ports:
+  - name: http
+    port: 3000
+    protocol: TCP
+    targetPort: http
+  selector:
+    app.kubernetes.io/component: gungnir
+    app.kubernetes.io/name: gungnir
+    app.kubernetes.io/part-of: components
+---
+apiVersion: v1
+kind: Service
+metadata:
   name: home-assistant
 spec:
   ports:

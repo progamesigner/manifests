@@ -1,6 +1,7 @@
 components/cloudflare.env
 components/cloudflared/cloudflared.env
 components/gloomhaven/server.json
+components/gungnir/gungnir.env
 components/huginn/huginn.env
 components/muninn/muninn.env
 components/muninn/tokens.json

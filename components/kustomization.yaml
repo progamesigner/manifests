@@ -9,6 +9,7 @@ components:
 - cloudflared
 - dbx
 - gloomhaven
+- gungnir
 - home-assistant
 - huginn
 - muninn

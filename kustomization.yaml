@@ -26,6 +26,9 @@ images:
 - name: gloomhaven/server
   newName: gloomhavensecretariat/ghs-server-postgresql
   newTag: v0.171.0
+- name: gungnir/gungnir
+  newName: ghcr.io/progamesigner/gungnir
+  newTag: 0.1.0
 - name: home-assistant/home-assistant
   newName: ghcr.io/home-assistant/home-assistant
   newTag: 2026.10.1

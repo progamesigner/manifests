@@ -1,0 +1,99 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/component: gungnir
+    app.kubernetes.io/name: gungnir
+    app.kubernetes.io/part-of: components
+  name: gungnir
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: gungnir
+      app.kubernetes.io/name: gungnir
+      app.kubernetes.io/part-of: components
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/component: gungnir
+        app.kubernetes.io/name: gungnir
+        app.kubernetes.io/part-of: components
+    spec:
+      automountServiceAccountToken: false
+      initContainers:
+      - name: migrate
+        image: gungnir/gungnir:latest
+        command:
+        - node_modules/.bin/prisma
+        args:
+        - migrate
+        - deploy
+        envFrom:
+        - configMapRef:
+            name: gungnir
+        - secretRef:
+            name: gungnir
+        resources:
+          limits:
+            cpu: 300m
+            memory: 512Mi
+          requests:
+            cpu: 100m
+            memory: 128Mi
+        securityContext:
+          runAsGroup: 65534
+          runAsNonRoot: true
+          runAsUser: 65534
+      containers:
+      - name: gungnir
+        image: gungnir/gungnir:latest
+        envFrom:
+        - configMapRef:
+            name: gungnir
+        - secretRef:
+            name: gungnir
+        ports:
+        - name: http
+          containerPort: 3000
+          protocol: TCP
+        lifecycle:
+          preStop:
+            exec:
+              command:
+              - sh
+              - -c
+              - sleep 5
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: http
+          timeoutSeconds: 5
+        readinessProbe:
+          httpGet:
+            path: /readyz
+            port: http
+          timeoutSeconds: 5
+        startupProbe:
+          httpGet:
+            path: /readyz
+            port: http
+          failureThreshold: 60
+          periodSeconds: 5
+        resources:
+          limits:
+            cpu: 1000m
+            memory: 768Mi
+          requests:
+            cpu: 100m
+            memory: 192Mi
+        securityContext:
+          runAsGroup: 65534
+          runAsNonRoot: true
+          runAsUser: 65534
+      enableServiceLinks: false
+      serviceAccountName: default
+      terminationGracePeriodSeconds: 90
