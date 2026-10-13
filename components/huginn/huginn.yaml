@@ -250,8 +250,112 @@ blobs:
     generated: 30d
     inbound: null
 
+skills:
+  sources:
+    default:
+      kind: mcp
+      server: muninn
+      glob: Agents/skills/**/SKILL.md
+      inject:
+        agent: default
+        user: default
+    advisor:
+      kind: mcp
+      server: muninn
+      glob: Agents/skills/**/SKILL.md
+      inject:
+        agent: ${MUNINN_ADVISOR_SCOPE_AGENT}
+        user: ${MUNINN_ADVISOR_SCOPE_USER}
+    architect:
+      kind: mcp
+      server: muninn
+      glob: Agents/skills/**/SKILL.md
+      inject:
+        agent: ${MUNINN_ARCHITECT_SCOPE_AGENT}
+        user: ${MUNINN_ARCHITECT_SCOPE_USER}
+    assistant:
+      kind: mcp
+      server: muninn
+      glob: Agents/skills/**/SKILL.md
+      inject:
+        agent: ${MUNINN_ASSISTANT_SCOPE_AGENT}
+        user: ${MUNINN_ASSISTANT_SCOPE_USER}
+    coach:
+      kind: mcp
+      server: muninn
+      glob: Agents/skills/**/SKILL.md
+      inject:
+        agent: ${MUNINN_COACH_SCOPE_AGENT}
+        user: ${MUNINN_COACH_SCOPE_USER}
+    companion:
+      kind: mcp
+      server: muninn
+      glob: Agents/skills/**/SKILL.md
+      inject:
+        agent: ${MUNINN_COMPANION_SCOPE_AGENT}
+        user: ${MUNINN_COMPANION_SCOPE_USER}
+    coordinator:
+      kind: mcp
+      server: muninn
+      glob: Agents/skills/**/SKILL.md
+      inject:
+        agent: ${MUNINN_COORDINATOR_SCOPE_AGENT}
+        user: ${MUNINN_COORDINATOR_SCOPE_USER}
+    counsel:
+      kind: mcp
+      server: muninn
+      glob: Agents/skills/**/SKILL.md
+      inject:
+        agent: ${MUNINN_COUNSEL_SCOPE_AGENT}
+        user: ${MUNINN_COUNSEL_SCOPE_USER}
+    guide:
+      kind: mcp
+      server: muninn
+      glob: Agents/skills/**/SKILL.md
+      inject:
+        agent: ${MUNINN_GUIDE_SCOPE_AGENT}
+        user: ${MUNINN_GUIDE_SCOPE_USER}
+    planner:
+      kind: mcp
+      server: muninn
+      glob: Agents/skills/**/SKILL.md
+      inject:
+        agent: ${MUNINN_PLANNER_SCOPE_AGENT}
+        user: ${MUNINN_PLANNER_SCOPE_USER}
+    plotter:
+      kind: mcp
+      server: muninn
+      glob: Agents/skills/**/SKILL.md
+      inject:
+        agent: ${MUNINN_PLOTTER_SCOPE_AGENT}
+        user: ${MUNINN_PLOTTER_SCOPE_USER}
+    researcher:
+      kind: mcp
+      server: muninn
+      glob: Agents/skills/**/SKILL.md
+      inject:
+        agent: ${MUNINN_RESEARCHER_SCOPE_AGENT}
+        user: ${MUNINN_RESEARCHER_SCOPE_USER}
+    sentinel:
+      kind: mcp
+      server: muninn
+      glob: Agents/skills/**/SKILL.md
+      inject:
+        agent: ${MUNINN_SENTINEL_SCOPE_AGENT}
+        user: ${MUNINN_SENTINEL_SCOPE_USER}
+    tutor:
+      kind: mcp
+      server: muninn
+      glob: Agents/skills/**/SKILL.md
+      inject:
+        agent: ${MUNINN_TUTOR_SCOPE_AGENT}
+        user: ${MUNINN_TUTOR_SCOPE_USER}
+
 agents:
   default:
+    skills:
+      enabled: true
+      source: default
     model: gemini/gemma-4-26b-a4b-it
     description: An placeholder agent for general purpose.
     instructions: "You are a helpful assistant"
@@ -280,6 +384,9 @@ agents:
         - write_memory_note
         - write_memory_notes
   advisor-fast:
+    skills:
+      enabled: true
+      source: advisor
     description: Handles quick budget calculations, price comparisons, and straightforward low-risk financial questions.
     model: openai/gpt-6-luna
     instructions: ''
@@ -342,6 +449,9 @@ agents:
       - get_twse_institutional_invest
       - get_twse_institutional_investors_summary
   advisor-balanced:
+    skills:
+      enabled: true
+      source: advisor
     description: Handles routine cash-flow planning, project cost estimates, portfolio reviews, and multi-step financial comparisons.
     model: openai/gpt-6.1-sol
     instructions: ''
@@ -352,6 +462,9 @@ agents:
     - *advisor-muninn
     - *advisor-twstock
   advisor-advanced:
+    skills:
+      enabled: true
+      source: advisor
     description: Handles high-impact financial decisions with uncertainty, competing scenarios, risk analysis, and long-term tradeoffs.
     model: openai/gpt-6-astra
     instructions: ''
@@ -362,6 +475,9 @@ agents:
     - *advisor-muninn
     - *advisor-twstock
   architect-fast:
+    skills:
+      enabled: true
+      source: architect
     description: Produces quick API sketches, component choices, and focused technology recommendations for bounded problems.
     model: anthropic/claude-haiku-5-5
     instructions: ''
@@ -376,6 +492,9 @@ agents:
         agent: ${MUNINN_ARCHITECT_SCOPE_AGENT}
         user: ${MUNINN_ARCHITECT_SCOPE_USER}
   architect-balanced:
+    skills:
+      enabled: true
+      source: architect
     description: Designs system boundaries, data flows, APIs, technology tradeoffs, and realistic implementation timelines.
     model: anthropic/claude-sonnet-5-5
     instructions: ''
@@ -385,6 +504,9 @@ agents:
     mcp:
     - *architect-muninn
   architect-advanced:
+    skills:
+      enabled: true
+      source: architect
     description: Handles distributed architecture, migrations, failure and threat models, complex tradeoffs, and architecture decisions.
     model: anthropic/claude-opus-5-5
     instructions: ''
@@ -394,6 +516,9 @@ agents:
     mcp:
     - *architect-muninn
   assistant-fast:
+    skills:
+      enabled: true
+      source: assistant
     description: Handles one-step formatting, simple lists, reminders, and small administrative tasks.
     model: openai/gpt-6-luna
     instructions: ''
@@ -408,6 +533,9 @@ agents:
         agent: ${MUNINN_ASSISTANT_SCOPE_AGENT}
         user: ${MUNINN_ASSISTANT_SCOPE_USER}
   assistant-balanced:
+    skills:
+      enabled: true
+      source: assistant
     description: Organizes multi-step errands, information, notes, schedules, and routine tool-assisted workflows.
     model: openai/gpt-6.1-sol
     instructions: ''
@@ -417,6 +545,9 @@ agents:
     mcp:
     - *assistant-muninn
   assistant-advanced:
+    skills:
+      enabled: true
+      source: assistant
     description: Coordinates complex cross-tool workflows, recurring processes, and large or ambiguous data transformations.
     model: openai/gpt-6-astra
     instructions: ''
@@ -426,6 +557,9 @@ agents:
     mcp:
     - *assistant-muninn
   coach-fast:
+    skills:
+      enabled: true
+      source: coach
     description: Runs quick quizzes, checks immediate learning progress, and corrects a single clear misconception.
     model: openai/gpt-6-luna
     instructions: ''
@@ -440,6 +574,9 @@ agents:
         agent: ${MUNINN_COACH_SCOPE_AGENT}
         user: ${MUNINN_COACH_SCOPE_USER}
   coach-balanced:
+    skills:
+      enabled: true
+      source: coach
     description: Builds structured learning plans, sets assessments, reviews progress, and adjusts practice based on results.
     model: openai/gpt-6.1-sol
     instructions: ''
@@ -449,6 +586,9 @@ agents:
     mcp:
     - *coach-muninn
   coach-advanced:
+    skills:
+      enabled: true
+      source: coach
     description: Conducts rigorous mastery reviews, diagnoses hidden reasoning gaps, and designs demanding adaptive assessments.
     model: openai/gpt-6-astra
     instructions: ''
@@ -458,6 +598,9 @@ agents:
     mcp:
     - *coach-muninn
   companion-fast:
+    skills:
+      enabled: true
+      source: companion
     description: Offers brief check-ins, casual conversation, and a low-pressure space to vent or decompress.
     model: anthropic/claude-haiku-5-5
     instructions: ''
@@ -472,6 +615,9 @@ agents:
         agent: ${MUNINN_COMPANION_SCOPE_AGENT}
         user: ${MUNINN_COMPANION_SCOPE_USER}
   companion-balanced:
+    skills:
+      enabled: true
+      source: companion
     description: Helps organize emotions, reflect on experiences, and work through ordinary personal conversations with warmth.
     model: anthropic/claude-sonnet-5-5
     instructions: ''
@@ -481,6 +627,9 @@ agents:
     mcp:
     - *companion-muninn
   companion-advanced:
+    skills:
+      enabled: true
+      source: companion
     description: Supports long-context reflection on recurring patterns, difficult conversations, and layered emotional situations.
     model: anthropic/claude-opus-5-5
     instructions: ''
@@ -490,6 +639,9 @@ agents:
     mcp:
     - *companion-muninn
   coordinator-fast:
+    skills:
+      enabled: true
+      source: coordinator
     description: Handles quick status checks, action-item capture, simple follow-ups, and isolated work requests.
     model: openrouter/openai/gpt-oss-120b
     instructions: ''
@@ -504,6 +656,9 @@ agents:
         agent: ${MUNINN_COORDINATOR_SCOPE_AGENT}
         user: ${MUNINN_COORDINATOR_SCOPE_USER}
   coordinator-balanced:
+    skills:
+      enabled: true
+      source: coordinator
     description: Coordinates multiple work tasks, dependencies, schedules, meeting actions, and routine project communication.
     model: gemini/gemma-4-31b-it
     instructions: ''
@@ -513,6 +668,9 @@ agents:
     mcp:
     - *coordinator-muninn
   coordinator-advanced:
+    skills:
+      enabled: true
+      source: coordinator
     description: Handles complex workstreams, cross-team risks, escalation planning, and stakeholder-level synthesis.
     model: xai/grok-4.7
     instructions: ''
@@ -522,6 +680,9 @@ agents:
     mcp:
     - *coordinator-muninn
   counsel-fast:
+    skills:
+      enabled: true
+      source: counsel
     description: Extracts clauses, summarizes straightforward terms, and flags obvious omissions in legal documents.
     model: openai/gpt-6-luna
     instructions: ''
@@ -536,6 +697,9 @@ agents:
         agent: ${MUNINN_COUNSEL_SCOPE_AGENT}
         user: ${MUNINN_COUNSEL_SCOPE_USER}
   counsel-balanced:
+    skills:
+      enabled: true
+      source: counsel
     description: Reviews and compares contracts, licenses, disclaimers, obligations, and practical compliance checklists.
     model: openai/gpt-6.1-sol
     instructions: ''
@@ -545,6 +709,9 @@ agents:
     mcp:
     - *counsel-muninn
   counsel-advanced:
+    skills:
+      enabled: true
+      source: counsel
     description: Analyzes conflicting clauses, edge-case risks, nuanced implications, and questions for legal negotiation.
     model: openai/gpt-6-astra
     instructions: ''
@@ -554,6 +721,9 @@ agents:
     mcp:
     - *counsel-muninn
   guide-fast:
+    skills:
+      enabled: true
+      source: guide
     description: Answers quick game lookups about drops, locations, items, and one clearly defined mechanic.
     model: gemini/gemini-3.5-flash-lite
     instructions: ''
@@ -568,6 +738,9 @@ agents:
         agent: ${MUNINN_GUIDE_SCOPE_AGENT}
         user: ${MUNINN_GUIDE_SCOPE_USER}
   guide-balanced:
+    skills:
+      enabled: true
+      source: guide
     description: Compares version-specific builds, routes, strategies, and sources for routine game questions.
     model: gemini/gemini-3.8-flash
     instructions: ''
@@ -577,6 +750,9 @@ agents:
     mcp:
     - *guide-muninn
   guide-advanced:
+    skills:
+      enabled: true
+      source: guide
     description: Resolves complex mechanics, conflicting sources, metagame tradeoffs, and advanced strategy questions.
     model: gemini/gemini-3.1-pro-preview
     instructions: ''
@@ -586,6 +762,9 @@ agents:
     mcp:
     - *guide-muninn
   planner-fast:
+    skills:
+      enabled: true
+      source: planner
     description: Creates small game mechanics, simple rules, quick task breakdowns, and lightweight gamification ideas.
     model: anthropic/claude-haiku-5-5
     max_iterations: 50
@@ -603,6 +782,9 @@ agents:
         agent: ${MUNINN_PLANNER_SCOPE_AGENT}
         user: ${MUNINN_PLANNER_SCOPE_USER}
   planner-balanced:
+    skills:
+      enabled: true
+      source: planner
     description: Designs core loops, progression, economies, prototypes, and structured game-development plans.
     model: anthropic/claude-sonnet-5-5
     max_iterations: 50
@@ -615,6 +797,9 @@ agents:
     mcp:
     - *planner-muninn
   planner-advanced:
+    skills:
+      enabled: true
+      source: planner
     description: Handles interconnected game systems, balance and simulation, creative constraints, and large project dependencies.
     model: anthropic/claude-opus-5-5
     max_iterations: 50
@@ -627,6 +812,9 @@ agents:
     mcp:
     - *planner-muninn
   plotter-fast:
+    skills:
+      enabled: true
+      source: plotter
     description: Generates story ideas, names, scene prompts, and focused fixes for a single narrative moment.
     model: anthropic/claude-haiku-5-5
     instructions: ''
@@ -641,6 +829,9 @@ agents:
         agent: ${MUNINN_PLOTTER_SCOPE_AGENT}
         user: ${MUNINN_PLOTTER_SCOPE_USER}
   plotter-balanced:
+    skills:
+      enabled: true
+      source: plotter
     description: Develops three-act structures, conflicts, character arcs, chapter outlines, and coherent story worlds.
     model: anthropic/claude-sonnet-5-5
     instructions: ''
@@ -650,6 +841,9 @@ agents:
     mcp:
     - *plotter-muninn
   plotter-advanced:
+    skills:
+      enabled: true
+      source: plotter
     description: Designs multi-thread narratives, world bibles, long-form continuity, and full structural revisions.
     model: anthropic/claude-opus-5-5
     instructions: ''
@@ -659,6 +853,9 @@ agents:
     mcp:
     - *plotter-muninn
   researcher-fast:
+    skills:
+      enabled: true
+      source: researcher
     description: Performs quick searches, verifies simple facts, summarizes one source, and generates lightweight ideas.
     model: gemini/gemini-3.5-flash-lite
     instructions: ''
@@ -673,6 +870,9 @@ agents:
         agent: ${MUNINN_RESEARCHER_SCOPE_AGENT}
         user: ${MUNINN_RESEARCHER_SCOPE_USER}
   researcher-balanced:
+    skills:
+      enabled: true
+      source: researcher
     description: Compares multiple sources, organizes themes, summarizes literature, and explores ideas across domains.
     model: gemini/gemini-3.8-flash
     instructions: ''
@@ -682,6 +882,9 @@ agents:
     mcp:
     - *researcher-muninn
   researcher-advanced:
+    skills:
+      enabled: true
+      source: researcher
     description: Synthesizes conflicting evidence, identifies research gaps, and conducts deep cross-domain investigations.
     model: gemini/gemini-3.1-pro-preview
     instructions: ''
@@ -691,6 +894,9 @@ agents:
     mcp:
     - *researcher-muninn
   sentinel-fast:
+    skills:
+      enabled: true
+      source: sentinel
     description: Reports heartbeats, green status, single alerts, and immediate monitoring facts with minimal analysis.
     model: gemini/gemini-3.5-flash-lite
     instructions: ''
@@ -705,6 +911,9 @@ agents:
         agent: ${MUNINN_SENTINEL_SCOPE_AGENT}
         user: ${MUNINN_SENTINEL_SCOPE_USER}
   sentinel-balanced:
+    skills:
+      enabled: true
+      source: sentinel
     description: Correlates routine metrics and alerts, assigns severity, and proposes initial troubleshooting steps.
     model: gemini/gemini-3.8-flash
     instructions: ''
@@ -714,6 +923,9 @@ agents:
     mcp:
     - *sentinel-muninn
   sentinel-advanced:
+    skills:
+      enabled: true
+      source: sentinel
     description: Investigates cross-system incidents, develops root-cause hypotheses, and plans mitigation and recovery.
     model: gemini/gemini-3.1-pro-preview
     instructions: ''
@@ -723,6 +935,9 @@ agents:
     mcp:
     - *sentinel-muninn
   tutor-fast:
+    skills:
+      enabled: true
+      source: tutor
     description: Gives direct concept explanations, short exercises, and focused corrections for straightforward questions.
     model: gemini/gemini-3.5-flash-lite
     instructions: ''
@@ -737,6 +952,9 @@ agents:
         agent: ${MUNINN_TUTOR_SCOPE_AGENT}
         user: ${MUNINN_TUTOR_SCOPE_USER}
   tutor-balanced:
+    skills:
+      enabled: true
+      source: tutor
     description: Teaches concepts step by step, guides practice, and explains routine code and problem-solving methods.
     model: gemini/gemini-3.8-flash
     instructions: ''
@@ -746,6 +964,9 @@ agents:
     mcp:
     - *tutor-muninn
   tutor-advanced:
+    skills:
+      enabled: true
+      source: tutor
     description: Explains underlying mechanisms and algorithms and diagnoses difficult code line by line in depth.
     model: gemini/gemini-3.1-pro-preview
     instructions: ''
