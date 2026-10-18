@@ -138,7 +138,8 @@ hooks:
     tool: load_session_context
     arguments:
       agent: ${MUNINN_ADVISOR_SCOPE_AGENT}
-      user: ${MUNINN_ADVISOR_SCOPE_USER}
+    bind:
+      user: memory_scope
     cache_ttl: 600
   architect-session-context:
     kind: mcp
@@ -146,7 +147,8 @@ hooks:
     tool: load_session_context
     arguments:
       agent: ${MUNINN_ARCHITECT_SCOPE_AGENT}
-      user: ${MUNINN_ARCHITECT_SCOPE_USER}
+    bind:
+      user: memory_scope
     cache_ttl: 600
   assistant-session-context:
     kind: mcp
@@ -154,7 +156,8 @@ hooks:
     tool: load_session_context
     arguments:
       agent: ${MUNINN_ASSISTANT_SCOPE_AGENT}
-      user: ${MUNINN_ASSISTANT_SCOPE_USER}
+    bind:
+      user: memory_scope
     cache_ttl: 600
   coach-session-context:
     kind: mcp
@@ -162,7 +165,8 @@ hooks:
     tool: load_session_context
     arguments:
       agent: ${MUNINN_COACH_SCOPE_AGENT}
-      user: ${MUNINN_COACH_SCOPE_USER}
+    bind:
+      user: memory_scope
     cache_ttl: 600
   companion-session-context:
     kind: mcp
@@ -170,7 +174,8 @@ hooks:
     tool: load_session_context
     arguments:
       agent: ${MUNINN_COMPANION_SCOPE_AGENT}
-      user: ${MUNINN_COMPANION_SCOPE_USER}
+    bind:
+      user: memory_scope
     cache_ttl: 600
   coordinator-session-context:
     kind: mcp
@@ -178,7 +183,8 @@ hooks:
     tool: load_session_context
     arguments:
       agent: ${MUNINN_COORDINATOR_SCOPE_AGENT}
-      user: ${MUNINN_COORDINATOR_SCOPE_USER}
+    bind:
+      user: memory_scope
     cache_ttl: 600
   counsel-session-context:
     kind: mcp
@@ -186,7 +192,8 @@ hooks:
     tool: load_session_context
     arguments:
       agent: ${MUNINN_COUNSEL_SCOPE_AGENT}
-      user: ${MUNINN_COUNSEL_SCOPE_USER}
+    bind:
+      user: memory_scope
     cache_ttl: 600
   guide-session-context:
     kind: mcp
@@ -194,7 +201,8 @@ hooks:
     tool: load_session_context
     arguments:
       agent: ${MUNINN_GUIDE_SCOPE_AGENT}
-      user: ${MUNINN_GUIDE_SCOPE_USER}
+    bind:
+      user: memory_scope
     cache_ttl: 600
   planner-session-context:
     kind: mcp
@@ -202,7 +210,8 @@ hooks:
     tool: load_session_context
     arguments:
       agent: ${MUNINN_PLANNER_SCOPE_AGENT}
-      user: ${MUNINN_PLANNER_SCOPE_USER}
+    bind:
+      user: memory_scope
     cache_ttl: 600
   plotter-session-context:
     kind: mcp
@@ -210,7 +219,8 @@ hooks:
     tool: load_session_context
     arguments:
       agent: ${MUNINN_PLOTTER_SCOPE_AGENT}
-      user: ${MUNINN_PLOTTER_SCOPE_USER}
+    bind:
+      user: memory_scope
     cache_ttl: 600
   researcher-session-context:
     kind: mcp
@@ -218,7 +228,8 @@ hooks:
     tool: load_session_context
     arguments:
       agent: ${MUNINN_RESEARCHER_SCOPE_AGENT}
-      user: ${MUNINN_RESEARCHER_SCOPE_USER}
+    bind:
+      user: memory_scope
     cache_ttl: 600
   sentinel-session-context:
     kind: mcp
@@ -226,7 +237,8 @@ hooks:
     tool: load_session_context
     arguments:
       agent: ${MUNINN_SENTINEL_SCOPE_AGENT}
-      user: ${MUNINN_SENTINEL_SCOPE_USER}
+    bind:
+      user: memory_scope
     cache_ttl: 600
   tutor-session-context:
     kind: mcp
@@ -234,7 +246,8 @@ hooks:
     tool: load_session_context
     arguments:
       agent: ${MUNINN_TUTOR_SCOPE_AGENT}
-      user: ${MUNINN_TUTOR_SCOPE_USER}
+    bind:
+      user: memory_scope
     cache_ttl: 600
 
 transcription:
@@ -265,91 +278,104 @@ skills:
       glob: Agents/skills/**/SKILL.md
       inject:
         agent: ${MUNINN_ADVISOR_SCOPE_AGENT}
-        user: ${MUNINN_ADVISOR_SCOPE_USER}
+      bind:
+        user: memory_scope
     architect:
       kind: mcp
       server: muninn
       glob: Agents/skills/**/SKILL.md
       inject:
         agent: ${MUNINN_ARCHITECT_SCOPE_AGENT}
-        user: ${MUNINN_ARCHITECT_SCOPE_USER}
+      bind:
+        user: memory_scope
     assistant:
       kind: mcp
       server: muninn
       glob: Agents/skills/**/SKILL.md
       inject:
         agent: ${MUNINN_ASSISTANT_SCOPE_AGENT}
-        user: ${MUNINN_ASSISTANT_SCOPE_USER}
+      bind:
+        user: memory_scope
     coach:
       kind: mcp
       server: muninn
       glob: Agents/skills/**/SKILL.md
       inject:
         agent: ${MUNINN_COACH_SCOPE_AGENT}
-        user: ${MUNINN_COACH_SCOPE_USER}
+      bind:
+        user: memory_scope
     companion:
       kind: mcp
       server: muninn
       glob: Agents/skills/**/SKILL.md
       inject:
         agent: ${MUNINN_COMPANION_SCOPE_AGENT}
-        user: ${MUNINN_COMPANION_SCOPE_USER}
+      bind:
+        user: memory_scope
     coordinator:
       kind: mcp
       server: muninn
       glob: Agents/skills/**/SKILL.md
       inject:
         agent: ${MUNINN_COORDINATOR_SCOPE_AGENT}
-        user: ${MUNINN_COORDINATOR_SCOPE_USER}
+      bind:
+        user: memory_scope
     counsel:
       kind: mcp
       server: muninn
       glob: Agents/skills/**/SKILL.md
       inject:
         agent: ${MUNINN_COUNSEL_SCOPE_AGENT}
-        user: ${MUNINN_COUNSEL_SCOPE_USER}
+      bind:
+        user: memory_scope
     guide:
       kind: mcp
       server: muninn
       glob: Agents/skills/**/SKILL.md
       inject:
         agent: ${MUNINN_GUIDE_SCOPE_AGENT}
-        user: ${MUNINN_GUIDE_SCOPE_USER}
+      bind:
+        user: memory_scope
     planner:
       kind: mcp
       server: muninn
       glob: Agents/skills/**/SKILL.md
       inject:
         agent: ${MUNINN_PLANNER_SCOPE_AGENT}
-        user: ${MUNINN_PLANNER_SCOPE_USER}
+      bind:
+        user: memory_scope
     plotter:
       kind: mcp
       server: muninn
       glob: Agents/skills/**/SKILL.md
       inject:
         agent: ${MUNINN_PLOTTER_SCOPE_AGENT}
-        user: ${MUNINN_PLOTTER_SCOPE_USER}
+      bind:
+        user: memory_scope
     researcher:
       kind: mcp
       server: muninn
       glob: Agents/skills/**/SKILL.md
       inject:
         agent: ${MUNINN_RESEARCHER_SCOPE_AGENT}
-        user: ${MUNINN_RESEARCHER_SCOPE_USER}
+      bind:
+        user: memory_scope
     sentinel:
       kind: mcp
       server: muninn
       glob: Agents/skills/**/SKILL.md
       inject:
         agent: ${MUNINN_SENTINEL_SCOPE_AGENT}
-        user: ${MUNINN_SENTINEL_SCOPE_USER}
+      bind:
+        user: memory_scope
     tutor:
       kind: mcp
       server: muninn
       glob: Agents/skills/**/SKILL.md
       inject:
         agent: ${MUNINN_TUTOR_SCOPE_AGENT}
-        user: ${MUNINN_TUTOR_SCOPE_USER}
+      bind:
+        user: memory_scope
 
 agents:
   default:
@@ -399,7 +425,8 @@ agents:
       allow: *muninn
       inject:
         agent: ${MUNINN_ADVISOR_SCOPE_AGENT}
-        user: ${MUNINN_ADVISOR_SCOPE_USER}
+      bind:
+        user: memory_scope
     - &advisor-twstock
       server: twstock
       allow:
@@ -490,7 +517,8 @@ agents:
       allow: *muninn
       inject:
         agent: ${MUNINN_ARCHITECT_SCOPE_AGENT}
-        user: ${MUNINN_ARCHITECT_SCOPE_USER}
+      bind:
+        user: memory_scope
   architect-balanced:
     skills:
       enabled: true
@@ -531,7 +559,8 @@ agents:
       allow: *muninn
       inject:
         agent: ${MUNINN_ASSISTANT_SCOPE_AGENT}
-        user: ${MUNINN_ASSISTANT_SCOPE_USER}
+      bind:
+        user: memory_scope
   assistant-balanced:
     skills:
       enabled: true
@@ -572,7 +601,8 @@ agents:
       allow: *muninn
       inject:
         agent: ${MUNINN_COACH_SCOPE_AGENT}
-        user: ${MUNINN_COACH_SCOPE_USER}
+      bind:
+        user: memory_scope
   coach-balanced:
     skills:
       enabled: true
@@ -613,7 +643,8 @@ agents:
       allow: *muninn
       inject:
         agent: ${MUNINN_COMPANION_SCOPE_AGENT}
-        user: ${MUNINN_COMPANION_SCOPE_USER}
+      bind:
+        user: memory_scope
   companion-balanced:
     skills:
       enabled: true
@@ -654,7 +685,8 @@ agents:
       allow: *muninn
       inject:
         agent: ${MUNINN_COORDINATOR_SCOPE_AGENT}
-        user: ${MUNINN_COORDINATOR_SCOPE_USER}
+      bind:
+        user: memory_scope
   coordinator-balanced:
     skills:
       enabled: true
@@ -695,7 +727,8 @@ agents:
       allow: *muninn
       inject:
         agent: ${MUNINN_COUNSEL_SCOPE_AGENT}
-        user: ${MUNINN_COUNSEL_SCOPE_USER}
+      bind:
+        user: memory_scope
   counsel-balanced:
     skills:
       enabled: true
@@ -736,7 +769,8 @@ agents:
       allow: *muninn
       inject:
         agent: ${MUNINN_GUIDE_SCOPE_AGENT}
-        user: ${MUNINN_GUIDE_SCOPE_USER}
+      bind:
+        user: memory_scope
   guide-balanced:
     skills:
       enabled: true
@@ -780,7 +814,8 @@ agents:
       allow: *muninn
       inject:
         agent: ${MUNINN_PLANNER_SCOPE_AGENT}
-        user: ${MUNINN_PLANNER_SCOPE_USER}
+      bind:
+        user: memory_scope
   planner-balanced:
     skills:
       enabled: true
@@ -827,7 +862,8 @@ agents:
       allow: *muninn
       inject:
         agent: ${MUNINN_PLOTTER_SCOPE_AGENT}
-        user: ${MUNINN_PLOTTER_SCOPE_USER}
+      bind:
+        user: memory_scope
   plotter-balanced:
     skills:
       enabled: true
@@ -868,7 +904,8 @@ agents:
       allow: *muninn
       inject:
         agent: ${MUNINN_RESEARCHER_SCOPE_AGENT}
-        user: ${MUNINN_RESEARCHER_SCOPE_USER}
+      bind:
+        user: memory_scope
   researcher-balanced:
     skills:
       enabled: true
@@ -909,7 +946,8 @@ agents:
       allow: *muninn
       inject:
         agent: ${MUNINN_SENTINEL_SCOPE_AGENT}
-        user: ${MUNINN_SENTINEL_SCOPE_USER}
+      bind:
+        user: memory_scope
   sentinel-balanced:
     skills:
       enabled: true
@@ -950,7 +988,8 @@ agents:
       allow: *muninn
       inject:
         agent: ${MUNINN_TUTOR_SCOPE_AGENT}
-        user: ${MUNINN_TUTOR_SCOPE_USER}
+      bind:
+        user: memory_scope
   tutor-balanced:
     skills:
       enabled: true
