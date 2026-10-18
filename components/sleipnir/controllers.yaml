@@ -48,6 +48,8 @@ spec:
         - secretRef:
             name: sleipnir
         env:
+        - name: MOSHI_ALLOWED_HOSTS
+          value: code.progamesigner.dev
         - name: MOSHI_LISTEN
           value: 0.0.0.0:24544
         - name: SLEIPNIR_ENABLE_HERDR
