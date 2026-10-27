@@ -981,7 +981,7 @@ spec:
         resources:
           limits:
             cpu: 300m
-            memory: 2Gi
+            memory: 4Gi
           requests:
             cpu: 100m
             memory: 256Mi
@@ -1132,7 +1132,7 @@ spec:
         resources:
           limits:
             cpu: 300m
-            memory: 2Gi
+            memory: 4Gi
           requests:
             cpu: 100m
             memory: 256Mi
