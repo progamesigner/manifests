@@ -115,6 +115,9 @@ tools:
         env: BIFROST_API_KEY
 
 mcp_servers:
+  mingyu:
+    transport: http
+    url: https://aov.cc/mcp
   muninn:
     transport: http
     url: http://muninn.default.svc.cluster.local:8000/mcp
@@ -638,6 +641,15 @@ agents:
     hooks:
     - companion-session-context
     mcp:
+    - &companion-mingyu
+      server: mingyu
+      allow:
+      - lenormand_prompt
+      - liuyao_prompt
+      - meihua_prompt
+      - ssgw_prompt
+      - tarot_prompt
+      - xiaoliuren_prompt
     - &companion-muninn
       server: muninn
       allow: *muninn
@@ -656,6 +668,7 @@ agents:
     hooks:
     - companion-session-context
     mcp:
+    - *companion-mingyu
     - *companion-muninn
   companion-advanced:
     skills:
@@ -668,6 +681,7 @@ agents:
     hooks:
     - companion-session-context
     mcp:
+    - *companion-mingyu
     - *companion-muninn
   coordinator-fast:
     skills:
