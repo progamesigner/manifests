@@ -54,6 +54,8 @@ spec:
           value: 0.0.0.0:24544
         - name: SLEIPNIR_ENABLE_HERDR
           value: '0'
+        - name: SLEIPNIR_ENABLE_HERDR_CORE
+          value: '0'
         - name: SLEIPNIR_ENABLE_MOSHI
           value: '1'
         - name: SLEIPNIR_ENABLE_TAILSCALE
@@ -226,6 +228,9 @@ spec:
           mountPath: /home/ubuntu/.config/herdr
           subPath: dev-conf-herdr
         - name: data
+          mountPath: /home/ubuntu/.config/herdr-core
+          subPath: dev-conf-herdr-core
+        - name: data
           mountPath: /home/ubuntu/.config/moshi
           subPath: dev-conf-moshi
         - name: data
@@ -267,6 +272,9 @@ spec:
         - name: data
           mountPath: /home/ubuntu/.local/state/herdr
           subPath: dev-data-herdr
+        - name: data
+          mountPath: /home/ubuntu/.local/state/herdr-core
+          subPath: dev-data-herdr-core
         - name: data
           mountPath: /home/ubuntu/.local/state/moshi
           subPath: dev-data-moshi
@@ -509,6 +517,9 @@ spec:
           mountPath: /home/ubuntu/.config/herdr
           subPath: dev-conf-herdr
         - name: data
+          mountPath: /home/ubuntu/.config/herdr-core
+          subPath: dev-conf-herdr-core
+        - name: data
           mountPath: /home/ubuntu/.config/moshi
           subPath: dev-conf-moshi
         - name: data
@@ -550,6 +561,9 @@ spec:
         - name: data
           mountPath: /home/ubuntu/.local/state/herdr
           subPath: dev-data-herdr
+        - name: data
+          mountPath: /home/ubuntu/.local/state/herdr-core
+          subPath: dev-data-herdr-core
         - name: data
           mountPath: /home/ubuntu/.local/state/moshi
           subPath: dev-data-moshi
@@ -792,6 +806,9 @@ spec:
           mountPath: /home/ubuntu/.config/herdr
           subPath: dev-conf-herdr
         - name: data
+          mountPath: /home/ubuntu/.config/herdr-core
+          subPath: dev-conf-herdr-core
+        - name: data
           mountPath: /home/ubuntu/.config/moshi
           subPath: dev-conf-moshi
         - name: data
@@ -833,6 +850,9 @@ spec:
         - name: data
           mountPath: /home/ubuntu/.local/state/herdr
           subPath: dev-data-herdr
+        - name: data
+          mountPath: /home/ubuntu/.local/state/herdr-core
+          subPath: dev-data-herdr-core
         - name: data
           mountPath: /home/ubuntu/.local/state/moshi
           subPath: dev-data-moshi
@@ -1075,6 +1095,9 @@ spec:
           mountPath: /home/ubuntu/.config/herdr
           subPath: dev-conf-herdr
         - name: data
+          mountPath: /home/ubuntu/.config/herdr-core
+          subPath: dev-conf-herdr-core
+        - name: data
           mountPath: /home/ubuntu/.config/moshi
           subPath: dev-conf-moshi
         - name: data
@@ -1116,6 +1139,9 @@ spec:
         - name: data
           mountPath: /home/ubuntu/.local/state/herdr
           subPath: dev-data-herdr
+        - name: data
+          mountPath: /home/ubuntu/.local/state/herdr-core
+          subPath: dev-data-herdr-core
         - name: data
           mountPath: /home/ubuntu/.local/state/moshi
           subPath: dev-data-moshi
