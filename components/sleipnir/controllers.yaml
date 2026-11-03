@@ -288,6 +288,9 @@ spec:
           mountPath: /home/ubuntu/.local/state/opencode
           subPath: dev-data-opencode.state
         - name: data
+          mountPath: /home/ubuntu/.local/state/rex
+          subPath: dev-data-rex
+        - name: data
           mountPath: /home/ubuntu/.serena
           subPath: dev-data-serena
         - name: data
@@ -576,6 +579,9 @@ spec:
         - name: data
           mountPath: /home/ubuntu/.local/state/opencode
           subPath: dev-data-opencode.state
+        - name: data
+          mountPath: /home/ubuntu/.local/state/rex
+          subPath: dev-data-rex
         - name: data
           mountPath: /home/ubuntu/.serena
           subPath: dev-data-serena
@@ -866,6 +872,9 @@ spec:
           mountPath: /home/ubuntu/.local/state/opencode
           subPath: dev-data-opencode.state
         - name: data
+          mountPath: /home/ubuntu/.local/state/rex
+          subPath: dev-data-rex
+        - name: data
           mountPath: /home/ubuntu/.serena
           subPath: dev-data-serena
         - name: data
@@ -1154,6 +1163,9 @@ spec:
         - name: data
           mountPath: /home/ubuntu/.local/state/opencode
           subPath: dev-data-opencode.state
+        - name: data
+          mountPath: /home/ubuntu/.local/state/rex
+          subPath: dev-data-rex
         - name: data
           mountPath: /home/ubuntu/.serena
           subPath: dev-data-serena
