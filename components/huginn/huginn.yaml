@@ -266,19 +266,17 @@ blobs:
     generated: 30d
     inbound: null
 
-skills:
+assets:
   sources:
     default:
       kind: mcp
       server: muninn
-      glob: Agents/skills/**/SKILL.md
       inject:
         agent: default
         user: default
     advisor:
       kind: mcp
       server: muninn
-      glob: Agents/skills/**/SKILL.md
       inject:
         agent: ${MUNINN_ADVISOR_SCOPE_AGENT}
       bind:
@@ -286,7 +284,6 @@ skills:
     architect:
       kind: mcp
       server: muninn
-      glob: Agents/skills/**/SKILL.md
       inject:
         agent: ${MUNINN_ARCHITECT_SCOPE_AGENT}
       bind:
@@ -294,7 +291,6 @@ skills:
     assistant:
       kind: mcp
       server: muninn
-      glob: Agents/skills/**/SKILL.md
       inject:
         agent: ${MUNINN_ASSISTANT_SCOPE_AGENT}
       bind:
@@ -302,7 +298,6 @@ skills:
     coach:
       kind: mcp
       server: muninn
-      glob: Agents/skills/**/SKILL.md
       inject:
         agent: ${MUNINN_COACH_SCOPE_AGENT}
       bind:
@@ -310,7 +305,6 @@ skills:
     companion:
       kind: mcp
       server: muninn
-      glob: Agents/skills/**/SKILL.md
       inject:
         agent: ${MUNINN_COMPANION_SCOPE_AGENT}
       bind:
@@ -318,7 +312,6 @@ skills:
     coordinator:
       kind: mcp
       server: muninn
-      glob: Agents/skills/**/SKILL.md
       inject:
         agent: ${MUNINN_COORDINATOR_SCOPE_AGENT}
       bind:
@@ -326,7 +319,6 @@ skills:
     counsel:
       kind: mcp
       server: muninn
-      glob: Agents/skills/**/SKILL.md
       inject:
         agent: ${MUNINN_COUNSEL_SCOPE_AGENT}
       bind:
@@ -334,7 +326,6 @@ skills:
     guide:
       kind: mcp
       server: muninn
-      glob: Agents/skills/**/SKILL.md
       inject:
         agent: ${MUNINN_GUIDE_SCOPE_AGENT}
       bind:
@@ -342,7 +333,6 @@ skills:
     planner:
       kind: mcp
       server: muninn
-      glob: Agents/skills/**/SKILL.md
       inject:
         agent: ${MUNINN_PLANNER_SCOPE_AGENT}
       bind:
@@ -350,7 +340,6 @@ skills:
     plotter:
       kind: mcp
       server: muninn
-      glob: Agents/skills/**/SKILL.md
       inject:
         agent: ${MUNINN_PLOTTER_SCOPE_AGENT}
       bind:
@@ -358,7 +347,6 @@ skills:
     researcher:
       kind: mcp
       server: muninn
-      glob: Agents/skills/**/SKILL.md
       inject:
         agent: ${MUNINN_RESEARCHER_SCOPE_AGENT}
       bind:
@@ -366,7 +354,6 @@ skills:
     sentinel:
       kind: mcp
       server: muninn
-      glob: Agents/skills/**/SKILL.md
       inject:
         agent: ${MUNINN_SENTINEL_SCOPE_AGENT}
       bind:
@@ -374,7 +361,6 @@ skills:
     tutor:
       kind: mcp
       server: muninn
-      glob: Agents/skills/**/SKILL.md
       inject:
         agent: ${MUNINN_TUTOR_SCOPE_AGENT}
       bind:
@@ -382,7 +368,13 @@ skills:
 
 agents:
   default:
+    commands:
+      enabled: true
+      source: default
     skills:
+      enabled: true
+      source: default
+    subagents:
       enabled: true
       source: default
     model: gemini/gemma-4-26b-a4b-it
@@ -413,7 +405,13 @@ agents:
         - write_memory_note
         - write_memory_notes
   advisor-fast:
+    commands:
+      enabled: true
+      source: advisor
     skills:
+      enabled: true
+      source: advisor
+    subagents:
       enabled: true
       source: advisor
     description: Handles quick budget calculations, price comparisons, and straightforward low-risk financial questions.
@@ -479,7 +477,13 @@ agents:
       - get_twse_institutional_invest
       - get_twse_institutional_investors_summary
   advisor-balanced:
+    commands:
+      enabled: true
+      source: advisor
     skills:
+      enabled: true
+      source: advisor
+    subagents:
       enabled: true
       source: advisor
     description: Handles routine cash-flow planning, project cost estimates, portfolio reviews, and multi-step financial comparisons.
@@ -492,7 +496,13 @@ agents:
     - *advisor-muninn
     - *advisor-twstock
   advisor-advanced:
+    commands:
+      enabled: true
+      source: advisor
     skills:
+      enabled: true
+      source: advisor
+    subagents:
       enabled: true
       source: advisor
     description: Handles high-impact financial decisions with uncertainty, competing scenarios, risk analysis, and long-term tradeoffs.
@@ -505,7 +515,13 @@ agents:
     - *advisor-muninn
     - *advisor-twstock
   architect-fast:
+    commands:
+      enabled: true
+      source: architect
     skills:
+      enabled: true
+      source: architect
+    subagents:
       enabled: true
       source: architect
     description: Produces quick API sketches, component choices, and focused technology recommendations for bounded problems.
@@ -523,7 +539,13 @@ agents:
       bind:
         user: memory_scope
   architect-balanced:
+    commands:
+      enabled: true
+      source: architect
     skills:
+      enabled: true
+      source: architect
+    subagents:
       enabled: true
       source: architect
     description: Designs system boundaries, data flows, APIs, technology tradeoffs, and realistic implementation timelines.
@@ -535,7 +557,13 @@ agents:
     mcp:
     - *architect-muninn
   architect-advanced:
+    commands:
+      enabled: true
+      source: architect
     skills:
+      enabled: true
+      source: architect
+    subagents:
       enabled: true
       source: architect
     description: Handles distributed architecture, migrations, failure and threat models, complex tradeoffs, and architecture decisions.
@@ -547,7 +575,13 @@ agents:
     mcp:
     - *architect-muninn
   assistant-fast:
+    commands:
+      enabled: true
+      source: assistant
     skills:
+      enabled: true
+      source: assistant
+    subagents:
       enabled: true
       source: assistant
     description: Handles one-step formatting, simple lists, reminders, and small administrative tasks.
@@ -565,7 +599,13 @@ agents:
       bind:
         user: memory_scope
   assistant-balanced:
+    commands:
+      enabled: true
+      source: assistant
     skills:
+      enabled: true
+      source: assistant
+    subagents:
       enabled: true
       source: assistant
     description: Organizes multi-step errands, information, notes, schedules, and routine tool-assisted workflows.
@@ -577,7 +617,13 @@ agents:
     mcp:
     - *assistant-muninn
   assistant-advanced:
+    commands:
+      enabled: true
+      source: assistant
     skills:
+      enabled: true
+      source: assistant
+    subagents:
       enabled: true
       source: assistant
     description: Coordinates complex cross-tool workflows, recurring processes, and large or ambiguous data transformations.
@@ -589,7 +635,13 @@ agents:
     mcp:
     - *assistant-muninn
   coach-fast:
+    commands:
+      enabled: true
+      source: coach
     skills:
+      enabled: true
+      source: coach
+    subagents:
       enabled: true
       source: coach
     description: Runs quick quizzes, checks immediate learning progress, and corrects a single clear misconception.
@@ -607,7 +659,13 @@ agents:
       bind:
         user: memory_scope
   coach-balanced:
+    commands:
+      enabled: true
+      source: coach
     skills:
+      enabled: true
+      source: coach
+    subagents:
       enabled: true
       source: coach
     description: Builds structured learning plans, sets assessments, reviews progress, and adjusts practice based on results.
@@ -619,7 +677,13 @@ agents:
     mcp:
     - *coach-muninn
   coach-advanced:
+    commands:
+      enabled: true
+      source: coach
     skills:
+      enabled: true
+      source: coach
+    subagents:
       enabled: true
       source: coach
     description: Conducts rigorous mastery reviews, diagnoses hidden reasoning gaps, and designs demanding adaptive assessments.
@@ -631,7 +695,13 @@ agents:
     mcp:
     - *coach-muninn
   companion-fast:
+    commands:
+      enabled: true
+      source: companion
     skills:
+      enabled: true
+      source: companion
+    subagents:
       enabled: true
       source: companion
     description: Offers brief check-ins, casual conversation, and a low-pressure space to vent or decompress.
@@ -658,7 +728,13 @@ agents:
       bind:
         user: memory_scope
   companion-balanced:
+    commands:
+      enabled: true
+      source: companion
     skills:
+      enabled: true
+      source: companion
+    subagents:
       enabled: true
       source: companion
     description: Helps organize emotions, reflect on experiences, and work through ordinary personal conversations with warmth.
@@ -671,7 +747,13 @@ agents:
     - *companion-mingyu
     - *companion-muninn
   companion-advanced:
+    commands:
+      enabled: true
+      source: companion
     skills:
+      enabled: true
+      source: companion
+    subagents:
       enabled: true
       source: companion
     description: Supports long-context reflection on recurring patterns, difficult conversations, and layered emotional situations.
@@ -684,7 +766,13 @@ agents:
     - *companion-mingyu
     - *companion-muninn
   coordinator-fast:
+    commands:
+      enabled: true
+      source: coordinator
     skills:
+      enabled: true
+      source: coordinator
+    subagents:
       enabled: true
       source: coordinator
     description: Handles quick status checks, action-item capture, simple follow-ups, and isolated work requests.
@@ -702,7 +790,13 @@ agents:
       bind:
         user: memory_scope
   coordinator-balanced:
+    commands:
+      enabled: true
+      source: coordinator
     skills:
+      enabled: true
+      source: coordinator
+    subagents:
       enabled: true
       source: coordinator
     description: Coordinates multiple work tasks, dependencies, schedules, meeting actions, and routine project communication.
@@ -714,7 +808,13 @@ agents:
     mcp:
     - *coordinator-muninn
   coordinator-advanced:
+    commands:
+      enabled: true
+      source: coordinator
     skills:
+      enabled: true
+      source: coordinator
+    subagents:
       enabled: true
       source: coordinator
     description: Handles complex workstreams, cross-team risks, escalation planning, and stakeholder-level synthesis.
@@ -726,7 +826,13 @@ agents:
     mcp:
     - *coordinator-muninn
   counsel-fast:
+    commands:
+      enabled: true
+      source: counsel
     skills:
+      enabled: true
+      source: counsel
+    subagents:
       enabled: true
       source: counsel
     description: Extracts clauses, summarizes straightforward terms, and flags obvious omissions in legal documents.
@@ -744,7 +850,13 @@ agents:
       bind:
         user: memory_scope
   counsel-balanced:
+    commands:
+      enabled: true
+      source: counsel
     skills:
+      enabled: true
+      source: counsel
+    subagents:
       enabled: true
       source: counsel
     description: Reviews and compares contracts, licenses, disclaimers, obligations, and practical compliance checklists.
@@ -756,7 +868,13 @@ agents:
     mcp:
     - *counsel-muninn
   counsel-advanced:
+    commands:
+      enabled: true
+      source: counsel
     skills:
+      enabled: true
+      source: counsel
+    subagents:
       enabled: true
       source: counsel
     description: Analyzes conflicting clauses, edge-case risks, nuanced implications, and questions for legal negotiation.
@@ -768,7 +886,13 @@ agents:
     mcp:
     - *counsel-muninn
   guide-fast:
+    commands:
+      enabled: true
+      source: guide
     skills:
+      enabled: true
+      source: guide
+    subagents:
       enabled: true
       source: guide
     description: Answers quick game lookups about drops, locations, items, and one clearly defined mechanic.
@@ -786,7 +910,13 @@ agents:
       bind:
         user: memory_scope
   guide-balanced:
+    commands:
+      enabled: true
+      source: guide
     skills:
+      enabled: true
+      source: guide
+    subagents:
       enabled: true
       source: guide
     description: Compares version-specific builds, routes, strategies, and sources for routine game questions.
@@ -798,7 +928,13 @@ agents:
     mcp:
     - *guide-muninn
   guide-advanced:
+    commands:
+      enabled: true
+      source: guide
     skills:
+      enabled: true
+      source: guide
+    subagents:
       enabled: true
       source: guide
     description: Resolves complex mechanics, conflicting sources, metagame tradeoffs, and advanced strategy questions.
@@ -810,7 +946,13 @@ agents:
     mcp:
     - *guide-muninn
   planner-fast:
+    commands:
+      enabled: true
+      source: planner
     skills:
+      enabled: true
+      source: planner
+    subagents:
       enabled: true
       source: planner
     description: Creates small game mechanics, simple rules, quick task breakdowns, and lightweight gamification ideas.
@@ -831,7 +973,13 @@ agents:
       bind:
         user: memory_scope
   planner-balanced:
+    commands:
+      enabled: true
+      source: planner
     skills:
+      enabled: true
+      source: planner
+    subagents:
       enabled: true
       source: planner
     description: Designs core loops, progression, economies, prototypes, and structured game-development plans.
@@ -846,7 +994,13 @@ agents:
     mcp:
     - *planner-muninn
   planner-advanced:
+    commands:
+      enabled: true
+      source: planner
     skills:
+      enabled: true
+      source: planner
+    subagents:
       enabled: true
       source: planner
     description: Handles interconnected game systems, balance and simulation, creative constraints, and large project dependencies.
@@ -861,7 +1015,13 @@ agents:
     mcp:
     - *planner-muninn
   plotter-fast:
+    commands:
+      enabled: true
+      source: plotter
     skills:
+      enabled: true
+      source: plotter
+    subagents:
       enabled: true
       source: plotter
     description: Generates story ideas, names, scene prompts, and focused fixes for a single narrative moment.
@@ -879,7 +1039,13 @@ agents:
       bind:
         user: memory_scope
   plotter-balanced:
+    commands:
+      enabled: true
+      source: plotter
     skills:
+      enabled: true
+      source: plotter
+    subagents:
       enabled: true
       source: plotter
     description: Develops three-act structures, conflicts, character arcs, chapter outlines, and coherent story worlds.
@@ -891,7 +1057,13 @@ agents:
     mcp:
     - *plotter-muninn
   plotter-advanced:
+    commands:
+      enabled: true
+      source: plotter
     skills:
+      enabled: true
+      source: plotter
+    subagents:
       enabled: true
       source: plotter
     description: Designs multi-thread narratives, world bibles, long-form continuity, and full structural revisions.
@@ -903,7 +1075,13 @@ agents:
     mcp:
     - *plotter-muninn
   researcher-fast:
+    commands:
+      enabled: true
+      source: researcher
     skills:
+      enabled: true
+      source: researcher
+    subagents:
       enabled: true
       source: researcher
     description: Performs quick searches, verifies simple facts, summarizes one source, and generates lightweight ideas.
@@ -921,7 +1099,13 @@ agents:
       bind:
         user: memory_scope
   researcher-balanced:
+    commands:
+      enabled: true
+      source: researcher
     skills:
+      enabled: true
+      source: researcher
+    subagents:
       enabled: true
       source: researcher
     description: Compares multiple sources, organizes themes, summarizes literature, and explores ideas across domains.
@@ -933,7 +1117,13 @@ agents:
     mcp:
     - *researcher-muninn
   researcher-advanced:
+    commands:
+      enabled: true
+      source: researcher
     skills:
+      enabled: true
+      source: researcher
+    subagents:
       enabled: true
       source: researcher
     description: Synthesizes conflicting evidence, identifies research gaps, and conducts deep cross-domain investigations.
@@ -945,7 +1135,13 @@ agents:
     mcp:
     - *researcher-muninn
   sentinel-fast:
+    commands:
+      enabled: true
+      source: sentinel
     skills:
+      enabled: true
+      source: sentinel
+    subagents:
       enabled: true
       source: sentinel
     description: Reports heartbeats, green status, single alerts, and immediate monitoring facts with minimal analysis.
@@ -963,7 +1159,13 @@ agents:
       bind:
         user: memory_scope
   sentinel-balanced:
+    commands:
+      enabled: true
+      source: sentinel
     skills:
+      enabled: true
+      source: sentinel
+    subagents:
       enabled: true
       source: sentinel
     description: Correlates routine metrics and alerts, assigns severity, and proposes initial troubleshooting steps.
@@ -975,7 +1177,13 @@ agents:
     mcp:
     - *sentinel-muninn
   sentinel-advanced:
+    commands:
+      enabled: true
+      source: sentinel
     skills:
+      enabled: true
+      source: sentinel
+    subagents:
       enabled: true
       source: sentinel
     description: Investigates cross-system incidents, develops root-cause hypotheses, and plans mitigation and recovery.
@@ -987,7 +1195,13 @@ agents:
     mcp:
     - *sentinel-muninn
   tutor-fast:
+    commands:
+      enabled: true
+      source: tutor
     skills:
+      enabled: true
+      source: tutor
+    subagents:
       enabled: true
       source: tutor
     description: Gives direct concept explanations, short exercises, and focused corrections for straightforward questions.
@@ -1005,7 +1219,13 @@ agents:
       bind:
         user: memory_scope
   tutor-balanced:
+    commands:
+      enabled: true
+      source: tutor
     skills:
+      enabled: true
+      source: tutor
+    subagents:
       enabled: true
       source: tutor
     description: Teaches concepts step by step, guides practice, and explains routine code and problem-solving methods.
@@ -1017,7 +1237,13 @@ agents:
     mcp:
     - *tutor-muninn
   tutor-advanced:
+    commands:
+      enabled: true
+      source: tutor
     skills:
+      enabled: true
+      source: tutor
+    subagents:
       enabled: true
       source: tutor
     description: Explains underlying mechanisms and algorithms and diagnoses difficult code line by line in depth.
