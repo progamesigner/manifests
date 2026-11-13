@@ -226,9 +226,6 @@ spec:
           mountPath: /home/ubuntu/.gnupg
           subPath: dev-conf-gpg
         - name: data
-          mountPath: /home/ubuntu/.config/herdr
-          subPath: dev-conf-herdr
-        - name: data
           mountPath: /home/ubuntu/.config/herdr-core
           subPath: dev-conf-herdr-core
         - name: data
@@ -270,9 +267,6 @@ spec:
         - name: data
           mountPath: /home/ubuntu/.local/state/gh
           subPath: dev-data-github
-        - name: data
-          mountPath: /home/ubuntu/.local/state/herdr
-          subPath: dev-data-herdr
         - name: data
           mountPath: /home/ubuntu/.local/state/herdr-core
           subPath: dev-data-herdr-core
@@ -519,9 +513,6 @@ spec:
           mountPath: /home/ubuntu/.gnupg
           subPath: dev-conf-gpg
         - name: data
-          mountPath: /home/ubuntu/.config/herdr
-          subPath: dev-conf-herdr
-        - name: data
           mountPath: /home/ubuntu/.config/herdr-core
           subPath: dev-conf-herdr-core
         - name: data
@@ -563,9 +554,6 @@ spec:
         - name: data
           mountPath: /home/ubuntu/.local/state/gh
           subPath: dev-data-github
-        - name: data
-          mountPath: /home/ubuntu/.local/state/herdr
-          subPath: dev-data-herdr
         - name: data
           mountPath: /home/ubuntu/.local/state/herdr-core
           subPath: dev-data-herdr-core
@@ -812,9 +800,6 @@ spec:
           mountPath: /home/ubuntu/.gnupg
           subPath: dev-conf-gpg
         - name: data
-          mountPath: /home/ubuntu/.config/herdr
-          subPath: dev-conf-herdr
-        - name: data
           mountPath: /home/ubuntu/.config/herdr-core
           subPath: dev-conf-herdr-core
         - name: data
@@ -856,9 +841,6 @@ spec:
         - name: data
           mountPath: /home/ubuntu/.local/state/gh
           subPath: dev-data-github
-        - name: data
-          mountPath: /home/ubuntu/.local/state/herdr
-          subPath: dev-data-herdr
         - name: data
           mountPath: /home/ubuntu/.local/state/herdr-core
           subPath: dev-data-herdr-core
@@ -1105,9 +1087,6 @@ spec:
           mountPath: /home/ubuntu/.gnupg
           subPath: dev-conf-gpg
         - name: data
-          mountPath: /home/ubuntu/.config/herdr
-          subPath: dev-conf-herdr
-        - name: data
           mountPath: /home/ubuntu/.config/herdr-core
           subPath: dev-conf-herdr-core
         - name: data
@@ -1149,9 +1128,6 @@ spec:
         - name: data
           mountPath: /home/ubuntu/.local/state/gh
           subPath: dev-data-github
-        - name: data
-          mountPath: /home/ubuntu/.local/state/herdr
-          subPath: dev-data-herdr
         - name: data
           mountPath: /home/ubuntu/.local/state/herdr-core
           subPath: dev-data-herdr-core
