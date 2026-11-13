@@ -1,0 +1,61 @@
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: ceph-radosgw-tls-reconciler
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: ceph-radosgw-tls-reconciler
+rules:
+- apiGroups:
+  - ''
+  resourceNames:
+  - tls-ceph-radosgw-client-trust
+  resources:
+  - configmaps
+  verbs:
+  - get
+  - patch
+- apiGroups:
+  - ''
+  resourceNames:
+  - radosgw
+  resources:
+  - endpoints
+  verbs:
+  - get
+- apiGroups:
+  - ''
+  resourceNames:
+  - tls-ceph-radosgw
+  resources:
+  - secrets
+  verbs:
+  - get
+- apiGroups:
+  - apps
+  resourceNames:
+  - ceph-radosgw
+  - seafile-backend
+  - seafile-frontend
+  - seafile-metadata
+  - seafile-thumbnail
+  resources:
+  - deployments
+  verbs:
+  - get
+  - patch
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: system:ceph:radosgw-tls-reconciler
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: ceph-radosgw-tls-reconciler
+subjects:
+- kind: ServiceAccount
+  name: ceph-radosgw-tls-reconciler

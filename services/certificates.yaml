@@ -13,6 +13,10 @@ metadata:
 spec:
   isCA: true
   commonName: ceph-radosgw-ca
+  duration: 43800h
+  renewBefore: 4320h
+  privateKey:
+    rotationPolicy: Never
   secretName: tls-ceph-radosgw-ca
   issuerRef:
     group: cert-manager.io
@@ -33,6 +37,8 @@ metadata:
   name: ceph-radosgw
 spec:
   commonName: ceph-radosgw
+  duration: 2160h
+  renewBefore: 720h
   dnsNames:
   - radosgw.default
   - radosgw.default.svc
@@ -44,6 +50,7 @@ spec:
   privateKey:
     algorithm: RSA
     size: 2048
+    rotationPolicy: Always
   secretName: tls-ceph-radosgw
   usages:
   - client auth

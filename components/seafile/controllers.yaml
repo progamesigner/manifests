@@ -9,6 +9,8 @@ metadata:
   name: seafile-backend
 spec:
   replicas: 1
+  strategy:
+    type: Recreate
   selector:
     matchLabels:
       app.kubernetes.io/component: backend
@@ -44,22 +46,45 @@ spec:
         command:
         - sh
         - -c
-        - set -ex;
+        - |
+          set -eu;
 
-          update-ca-certificates
+          while :; do
+            if [ -n "$TLS_CONTENT_SHA256" ] && cp /mnt/ceph-ca/ca.crt /usr/local/share/ca-certificates/ceph-radosgw.crt; then
+              actual=$(sha256sum /usr/local/share/ca-certificates/ceph-radosgw.crt | cut -d ' ' -f 1);
+              [ "$actual" != "$TLS_CONTENT_SHA256" ] || break;
+            fi
+            sleep 5;
+          done;
+          update-ca-certificates;
+          printf '%s\n' "$actual" > /etc/ssl/certs/ceph-radosgw-ca.sha256;
+        env:
+        - name: TLS_CONTENT_SHA256
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.annotations['tls.progamesigner.dev/content-sha256']
         resources:
           requests:
             cpu: 1m
             memory: 1Mi
         volumeMounts:
         - name: ca
-          mountPath: /usr/local/share/ca-certificates
+          mountPath: /mnt/ceph-ca
           readOnly: true
         - name: certs
           mountPath: /etc/ssl/certs
       containers:
       - name: seafile
         image: seafile/backend:latest
+        readinessProbe:
+          exec:
+            command:
+            - sh
+            - -c
+            - pgrep -x seaf-server && pgrep -x fileserver
+          initialDelaySeconds: 30
+          periodSeconds: 15
+          timeoutSeconds: 5
         env:
         - name: AWS_CA_BUNDLE
           value: /etc/ssl/certs/ca-certificates.crt
@@ -96,8 +121,8 @@ spec:
       serviceAccountName: default
       volumes:
       - name: ca
-        secret:
-          secretName: tls-ceph-radosgw
+        configMap:
+          name: tls-ceph-radosgw-client-trust
           defaultMode: 420
           items:
           - key: ca.crt
@@ -143,16 +168,30 @@ spec:
         command:
         - sh
         - -c
-        - set -ex;
+        - |
+          set -eu;
 
-          update-ca-certificates
+          while :; do
+            if [ -n "$TLS_CONTENT_SHA256" ] && cp /mnt/ceph-ca/ca.crt /usr/local/share/ca-certificates/ceph-radosgw.crt; then
+              actual=$(sha256sum /usr/local/share/ca-certificates/ceph-radosgw.crt | cut -d ' ' -f 1);
+              [ "$actual" != "$TLS_CONTENT_SHA256" ] || break;
+            fi
+            sleep 5;
+          done;
+          update-ca-certificates;
+          printf '%s\n' "$actual" > /etc/ssl/certs/ceph-radosgw-ca.sha256;
+        env:
+        - name: TLS_CONTENT_SHA256
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.annotations['tls.progamesigner.dev/content-sha256']
         resources:
           requests:
             cpu: 1m
             memory: 1Mi
         volumeMounts:
         - name: ca
-          mountPath: /usr/local/share/ca-certificates
+          mountPath: /mnt/ceph-ca
           readOnly: true
         - name: certs
           mountPath: /etc/ssl/certs
@@ -189,7 +228,11 @@ spec:
           containerPort: 8082
           protocol: TCP
         readinessProbe:
-          tcpSocket:
+          httpGet:
+            httpHeaders:
+            - name: Host
+              value: localhost
+            path: /api2/ping/
             port: http
           initialDelaySeconds: 30
           periodSeconds: 15
@@ -213,8 +256,8 @@ spec:
       serviceAccountName: default
       volumes:
       - name: ca
-        secret:
-          secretName: tls-ceph-radosgw
+        configMap:
+          name: tls-ceph-radosgw-client-trust
           defaultMode: 420
           items:
           - key: ca.crt
@@ -320,16 +363,30 @@ spec:
         command:
         - sh
         - -c
-        - set -ex;
+        - |
+          set -eu;
 
-          update-ca-certificates
+          while :; do
+            if [ -n "$TLS_CONTENT_SHA256" ] && cp /mnt/ceph-ca/ca.crt /usr/local/share/ca-certificates/ceph-radosgw.crt; then
+              actual=$(sha256sum /usr/local/share/ca-certificates/ceph-radosgw.crt | cut -d ' ' -f 1);
+              [ "$actual" != "$TLS_CONTENT_SHA256" ] || break;
+            fi
+            sleep 5;
+          done;
+          update-ca-certificates;
+          printf '%s\n' "$actual" > /etc/ssl/certs/ceph-radosgw-ca.sha256;
+        env:
+        - name: TLS_CONTENT_SHA256
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.annotations['tls.progamesigner.dev/content-sha256']
         resources:
           requests:
             cpu: 1m
             memory: 1Mi
         volumeMounts:
         - name: ca
-          mountPath: /usr/local/share/ca-certificates
+          mountPath: /mnt/ceph-ca
           readOnly: true
         - name: certs
           mountPath: /etc/ssl/certs
@@ -352,6 +409,11 @@ spec:
         - name: http
           containerPort: 8084
           protocol: TCP
+        readinessProbe:
+          tcpSocket:
+            port: http
+          initialDelaySeconds: 30
+          periodSeconds: 15
         resources:
           limits:
             cpu: 1000m
@@ -369,8 +431,8 @@ spec:
       serviceAccountName: default
       volumes:
       - name: ca
-        secret:
-          secretName: tls-ceph-radosgw
+        configMap:
+          name: tls-ceph-radosgw-client-trust
           defaultMode: 420
           items:
           - key: ca.crt
@@ -472,16 +534,30 @@ spec:
         command:
         - sh
         - -c
-        - set -ex;
+        - |
+          set -eu;
 
-          update-ca-certificates
+          while :; do
+            if [ -n "$TLS_CONTENT_SHA256" ] && cp /mnt/ceph-ca/ca.crt /usr/local/share/ca-certificates/ceph-radosgw.crt; then
+              actual=$(sha256sum /usr/local/share/ca-certificates/ceph-radosgw.crt | cut -d ' ' -f 1);
+              [ "$actual" != "$TLS_CONTENT_SHA256" ] || break;
+            fi
+            sleep 5;
+          done;
+          update-ca-certificates;
+          printf '%s\n' "$actual" > /etc/ssl/certs/ceph-radosgw-ca.sha256;
+        env:
+        - name: TLS_CONTENT_SHA256
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.annotations['tls.progamesigner.dev/content-sha256']
         resources:
           requests:
             cpu: 1m
             memory: 1Mi
         volumeMounts:
         - name: ca
-          mountPath: /usr/local/share/ca-certificates
+          mountPath: /mnt/ceph-ca
           readOnly: true
         - name: certs
           mountPath: /etc/ssl/certs
@@ -507,6 +583,11 @@ spec:
         - name: thumbnail
           containerPort: 8088
           protocol: TCP
+        readinessProbe:
+          tcpSocket:
+            port: thumbnail
+          initialDelaySeconds: 30
+          periodSeconds: 15
         resources:
           limits:
             cpu: 500m
@@ -524,8 +605,8 @@ spec:
       serviceAccountName: default
       volumes:
       - name: ca
-        secret:
-          secretName: tls-ceph-radosgw
+        configMap:
+          name: tls-ceph-radosgw-client-trust
           defaultMode: 420
           items:
           - key: ca.crt

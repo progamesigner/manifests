@@ -9,6 +9,7 @@ metadata:
   name: ceph-radosgw
 spec:
   replicas: 1
+  minReadySeconds: 15
   strategy:
     rollingUpdate:
       maxSurge: 0
@@ -50,7 +51,43 @@ spec:
                 - services
             topologyKey: kubernetes.io/hostname
       automountServiceAccountToken: true
+      terminationGracePeriodSeconds: 60
       initContainers:
+      - name: tls
+        image: ceph/ceph:latest
+        command:
+        - sh
+        - -c
+        - |
+          set -eu;
+          umask 077;
+
+          while :; do
+            if [ -n "$TLS_CONTENT_SHA256" ] && cp /mnt/ceph-tls/tls.crt /etc/ceph-tls/tls.crt.next && cp /mnt/ceph-tls/tls.key /etc/ceph-tls/tls.key.next; then
+              actual=$(cat /etc/ceph-tls/tls.crt.next /etc/ceph-tls/tls.key.next | sha256sum | cut -d ' ' -f 1);
+              [ "$actual" != "$TLS_CONTENT_SHA256" ] || break;
+            fi
+            sleep 5;
+          done;
+          mv /etc/ceph-tls/tls.crt.next /etc/ceph-tls/tls.crt;
+          mv /etc/ceph-tls/tls.key.next /etc/ceph-tls/tls.key;
+          chown 167:167 /etc/ceph-tls/tls.crt /etc/ceph-tls/tls.key;
+          printf '%s\n' "$actual" > /etc/ceph-tls/content.sha256;
+        env:
+        - name: TLS_CONTENT_SHA256
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.annotations['tls.progamesigner.dev/content-sha256']
+        resources:
+          requests:
+            cpu: 1m
+            memory: 1Mi
+        volumeMounts:
+        - name: tls
+          mountPath: /mnt/ceph-tls
+          readOnly: true
+        - name: certs
+          mountPath: /etc/ceph-tls
       - name: chown
         image: busybox:latest
         command:
@@ -130,6 +167,14 @@ spec:
         - name: https
           containerPort: 8443
           protocol: TCP
+        readinessProbe:
+          exec:
+            command:
+            - sh
+            - -c
+            - curl --silent --show-error --insecure --max-time 5 --output /dev/null https://127.0.0.1:8443/
+          periodSeconds: 10
+          timeoutSeconds: 6
         resources:
           limits:
             cpu: 300m
@@ -159,7 +204,7 @@ spec:
           items:
           - key: ceph.conf
             path: ceph.conf
-      - name: certs
+      - name: tls
         secret:
           secretName: tls-ceph-radosgw
           defaultMode: 420
@@ -168,7 +213,85 @@ spec:
             path: tls.crt
           - key: tls.key
             path: tls.key
+      - name: certs
+        emptyDir:
+          medium: Memory
       - name: conf
         emptyDir: {}
       - name: data
         emptyDir: {}
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  labels:
+    app.kubernetes.io/component: radosgw-tls
+    app.kubernetes.io/name: ceph
+    app.kubernetes.io/part-of: services
+  name: ceph-radosgw-tls-reconcile
+spec:
+  concurrencyPolicy: Forbid
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      activeDeadlineSeconds: 600
+      backoffLimit: 0
+      template:
+        metadata:
+          labels:
+            app.kubernetes.io/component: radosgw-tls
+            app.kubernetes.io/name: ceph
+            app.kubernetes.io/part-of: services
+        spec:
+          automountServiceAccountToken: true
+          containers:
+          - name: reconcile
+            image: ceph/ceph:latest
+            command:
+            - bash
+            - /etc/ceph-tls-tools/tls-reconcile.sh
+            env:
+            - name: POD_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            resources:
+              limits:
+                cpu: 100m
+                memory: 128Mi
+              requests:
+                cpu: 10m
+                memory: 32Mi
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities:
+                drop:
+                - ALL
+            volumeMounts:
+            - name: scripts
+              mountPath: /etc/ceph-tls-tools
+              readOnly: true
+            - name: tmp
+              mountPath: /tmp
+          enableServiceLinks: false
+          restartPolicy: Never
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 65532
+            runAsGroup: 65532
+            fsGroup: 65532
+            seccompProfile:
+              type: RuntimeDefault
+          serviceAccountName: ceph-radosgw-tls-reconciler
+          volumes:
+          - name: scripts
+            configMap:
+              name: ceph-radosgw-tls
+          - name: tmp
+            emptyDir:
+              medium: Memory
+              sizeLimit: 16Mi
+  schedule: '*/5 * * * *'
+  startingDeadlineSeconds: 120
+  successfulJobsHistoryLimit: 2

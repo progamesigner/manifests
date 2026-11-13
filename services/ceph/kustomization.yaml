@@ -5,5 +5,14 @@ configMapGenerator:
 - name: ceph
   files:
   - ceph.conf=ceph.conf
+- name: ceph-radosgw-tls
+  files:
+  - tls-reconcile.sh=tls-reconcile.sh
+- name: tls-ceph-radosgw-client-trust
+  literals:
+  - managed-by=ceph-radosgw-tls-reconciler
+  options:
+    disableNameSuffixHash: true
 resources:
 - controllers.yaml
+- rbac.yaml
