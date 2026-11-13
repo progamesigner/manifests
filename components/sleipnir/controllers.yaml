@@ -153,6 +153,7 @@ spec:
 
           install -d -o ubuntu -g ubuntu -m 0755 /mnt/dev-data-serena;
           install -d -o ubuntu -g ubuntu -m 0700 /mnt/dev-data-codex-rc;
+          install -d -o ubuntu -g ubuntu -m 0700 /mnt/dev-data-sleipnir;
 
           install -d -o ubuntu -g ubuntu -m 0700 /codex/main /codex/rc;
         volumeMounts:
@@ -275,6 +276,9 @@ spec:
         - name: data
           mountPath: /home/ubuntu/.local/state/herdr-core
           subPath: dev-data-herdr-core
+        - name: data
+          mountPath: /home/ubuntu/.local/state/sleipnir
+          subPath: dev-data-sleipnir
         - name: data
           mountPath: /home/ubuntu/.local/state/moshi
           subPath: dev-data-moshi
@@ -442,6 +446,7 @@ spec:
 
           install -d -o ubuntu -g ubuntu -m 0755 /mnt/dev-data-serena;
           install -d -o ubuntu -g ubuntu -m 0700 /mnt/dev-data-codex-rc;
+          install -d -o ubuntu -g ubuntu -m 0700 /mnt/dev-data-sleipnir;
 
           install -d -o ubuntu -g ubuntu -m 0700 /codex/main /codex/rc;
         volumeMounts:
@@ -564,6 +569,9 @@ spec:
         - name: data
           mountPath: /home/ubuntu/.local/state/herdr-core
           subPath: dev-data-herdr-core
+        - name: data
+          mountPath: /home/ubuntu/.local/state/sleipnir
+          subPath: dev-data-sleipnir
         - name: data
           mountPath: /home/ubuntu/.local/state/moshi
           subPath: dev-data-moshi
@@ -731,6 +739,7 @@ spec:
 
           install -d -o ubuntu -g ubuntu -m 0755 /mnt/dev-data-serena;
           install -d -o ubuntu -g ubuntu -m 0700 /mnt/dev-data-codex-rc;
+          install -d -o ubuntu -g ubuntu -m 0700 /mnt/dev-data-sleipnir;
 
           install -d -o ubuntu -g ubuntu -m 0700 /codex/main /codex/rc;
         volumeMounts:
@@ -853,6 +862,9 @@ spec:
         - name: data
           mountPath: /home/ubuntu/.local/state/herdr-core
           subPath: dev-data-herdr-core
+        - name: data
+          mountPath: /home/ubuntu/.local/state/sleipnir
+          subPath: dev-data-sleipnir
         - name: data
           mountPath: /home/ubuntu/.local/state/moshi
           subPath: dev-data-moshi
@@ -1020,6 +1032,7 @@ spec:
 
           install -d -o ubuntu -g ubuntu -m 0755 /mnt/dev-data-serena;
           install -d -o ubuntu -g ubuntu -m 0700 /mnt/dev-data-codex-rc;
+          install -d -o ubuntu -g ubuntu -m 0700 /mnt/dev-data-sleipnir;
 
           install -d -o ubuntu -g ubuntu -m 0700 /codex/main /codex/rc;
         volumeMounts:
@@ -1142,6 +1155,9 @@ spec:
         - name: data
           mountPath: /home/ubuntu/.local/state/herdr-core
           subPath: dev-data-herdr-core
+        - name: data
+          mountPath: /home/ubuntu/.local/state/sleipnir
+          subPath: dev-data-sleipnir
         - name: data
           mountPath: /home/ubuntu/.local/state/moshi
           subPath: dev-data-moshi
