@@ -34,7 +34,7 @@ images:
   newTag: 0.7.0
 - name: muninn/muninn
   newName: ghcr.io/progamesigner/muninn
-  newTag: 1.1.2
+  newTag: 1.3.0
 - name: network/cloudflare-warp
   newName: amirdaaee/cloudflare-warp
   newTag: 2023.10.120-1
