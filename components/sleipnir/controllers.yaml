@@ -200,9 +200,11 @@ spec:
         resources:
           limits:
             cpu: 12000m
+            ephemeral-storage: 8Gi
             memory: 64Gi
           requests:
             cpu: 500m
+            ephemeral-storage: 256Mi
             memory: 2Gi
         volumeMounts:
         - name: codex
@@ -487,9 +489,11 @@ spec:
         resources:
           limits:
             cpu: 12000m
+            ephemeral-storage: 8Gi
             memory: 64Gi
           requests:
             cpu: 500m
+            ephemeral-storage: 256Mi
             memory: 2Gi
         volumeMounts:
         - name: codex
@@ -774,9 +778,11 @@ spec:
         resources:
           limits:
             cpu: 12000m
+            ephemeral-storage: 8Gi
             memory: 64Gi
           requests:
             cpu: 500m
+            ephemeral-storage: 256Mi
             memory: 2Gi
         volumeMounts:
         - name: codex
@@ -1061,9 +1067,11 @@ spec:
         resources:
           limits:
             cpu: 12000m
+            ephemeral-storage: 8Gi
             memory: 64Gi
           requests:
             cpu: 500m
+            ephemeral-storage: 256Mi
             memory: 2Gi
         volumeMounts:
         - name: codex
