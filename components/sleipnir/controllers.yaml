@@ -200,7 +200,7 @@ spec:
         resources:
           limits:
             cpu: 12000m
-            memory: 32Gi
+            memory: 64Gi
           requests:
             cpu: 500m
             memory: 2Gi
@@ -487,7 +487,7 @@ spec:
         resources:
           limits:
             cpu: 12000m
-            memory: 32Gi
+            memory: 64Gi
           requests:
             cpu: 500m
             memory: 2Gi
@@ -774,7 +774,7 @@ spec:
         resources:
           limits:
             cpu: 12000m
-            memory: 32Gi
+            memory: 64Gi
           requests:
             cpu: 500m
             memory: 2Gi
@@ -1061,7 +1061,7 @@ spec:
         resources:
           limits:
             cpu: 12000m
-            memory: 32Gi
+            memory: 64Gi
           requests:
             cpu: 500m
             memory: 2Gi
