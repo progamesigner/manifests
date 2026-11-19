@@ -1,4 +1,11 @@
-use_default_settings: true
+use_default_settings:
+  engines:
+    remove:
+    - ahmia
+    - torch
+    - brave
+    - wikidata
+    - duckduckgo
 
 general:
   instance_name: SearXNG
@@ -9,9 +16,40 @@ search:
   - json
 
 server:
+  base_url: https://searxng.progamesigner.dev/
   image_proxy: false
   limiter: false
   public_instance: false
 
 valkey:
   url: false
+
+engines:
+- name: duckduckgo web
+  disabled: false
+- name: yandex
+  disabled: false
+
+plugins:
+  searx.plugins.ahmia_filter.SXNGPlugin:
+    active: false
+  searx.plugins.calculator.SXNGPlugin:
+    active: true
+  searx.plugins.hash_plugin.SXNGPlugin:
+    active: true
+  searx.plugins.hostnames.SXNGPlugin:
+    active: true
+  searx.plugins.infinite_scroll.SXNGPlugin:
+    active: false
+  searx.plugins.oa_doi_rewrite.SXNGPlugin:
+    active: false
+  searx.plugins.self_info.SXNGPlugin:
+    active: true
+  searx.plugins.time_zone.SXNGPlugin:
+    active: true
+  searx.plugins.tor_check.SXNGPlugin:
+    active: false
+  searx.plugins.tracker_url_remover.SXNGPlugin:
+    active: false
+  searx.plugins.unit_converter.SXNGPlugin:
+    active: true

@@ -5,6 +5,7 @@ configMapGenerator:
 - name: searxng
   files:
   - settings.yml=searxng.yaml
+  - limiter.toml=limiter.toml
 resources:
 - controllers.yaml
 secretGenerator:

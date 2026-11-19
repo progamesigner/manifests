@@ -22,12 +22,20 @@ spec:
         app.kubernetes.io/part-of: components
     spec:
       automountServiceAccountToken: false
+      initContainers:
+      - name: chown
+        image: searxng/searxng:latest
+        command:
+        - sh
+        - -c
+        - chown -R 977:977 /var/cache/searxng
+        volumeMounts:
+        - name: cache
+          mountPath: /var/cache/searxng
       containers:
       - name: searxng
         image: searxng/searxng:latest
         env:
-        - name: FORCE_OWNERSHIP
-          value: 'false'
         - name: SEARXNG_SECRET
           valueFrom:
             secretKeyRef:
@@ -39,11 +47,17 @@ spec:
           protocol: TCP
         livenessProbe:
           httpGet:
+            httpHeaders:
+            - name: X-Forwarded-For
+              value: 127.0.0.1
             path: /healthz
             port: 8080
           timeoutSeconds: 5
         readinessProbe:
           httpGet:
+            httpHeaders:
+            - name: X-Forwarded-For
+              value: 127.0.0.1
             path: /healthz
             port: 8080
           periodSeconds: 30
@@ -59,7 +73,12 @@ spec:
         - name: cache
           mountPath: /var/cache/searxng
         - name: conf
-          mountPath: /etc/searxng
+          mountPath: /etc/searxng/settings.yml
+          subPath: settings.yml
+          readOnly: true
+        - name: conf
+          mountPath: /etc/searxng/limiter.toml
+          subPath: limiter.toml
           readOnly: true
       enableServiceLinks: false
       serviceAccountName: default
