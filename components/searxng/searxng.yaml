@@ -4,6 +4,9 @@ use_default_settings:
     - ahmia
     - torch
     - brave
+    - brave.images
+    - brave.videos
+    - brave.news
     - wikidata
     - duckduckgo
 
