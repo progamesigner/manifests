@@ -156,11 +156,16 @@ spec:
           install -d -o ubuntu -g ubuntu -m 0700 /mnt/dev-data-sleipnir;
 
           install -d -o ubuntu -g ubuntu -m 0700 /codex/main /codex/rc;
+
+          install -d -o root -g root -m 0700 /mnt/dev-data-gpg;
+          find /mnt/dev-data-gpg -mindepth 1 -maxdepth 1 -type f -exec install -o root -g root -m 0400 -t /run/secrets/gpg -- {} +;
         volumeMounts:
         - name: codex
           mountPath: /codex
         - name: data
           mountPath: /mnt
+        - name: gpg-secrets
+          mountPath: /run/secrets/gpg
       containers:
       - name: sleipnir
         image: sleipnir/sleipnir:latest
@@ -307,6 +312,8 @@ spec:
           subPath: dev-data-vscode-server
         - name: files
           mountPath: /home/ubuntu/workspaces
+        - name: gpg-secrets
+          mountPath: /run/secrets/gpg
         - name: sock-docker
           mountPath: /run/docker
       - name: docker
@@ -385,6 +392,10 @@ spec:
       - name: files
         persistentVolumeClaim:
           claimName: sleipnir-freya
+      - name: gpg-secrets
+        emptyDir:
+          medium: Memory
+          sizeLimit: 1Mi
       - name: kvm
         hostPath:
           path: /dev/kvm
@@ -445,11 +456,16 @@ spec:
           install -d -o ubuntu -g ubuntu -m 0700 /mnt/dev-data-sleipnir;
 
           install -d -o ubuntu -g ubuntu -m 0700 /codex/main /codex/rc;
+
+          install -d -o root -g root -m 0700 /mnt/dev-data-gpg;
+          find /mnt/dev-data-gpg -mindepth 1 -maxdepth 1 -type f -exec install -o root -g root -m 0400 -t /run/secrets/gpg -- {} +;
         volumeMounts:
         - name: codex
           mountPath: /codex
         - name: data
           mountPath: /mnt
+        - name: gpg-secrets
+          mountPath: /run/secrets/gpg
       containers:
       - name: sleipnir
         image: sleipnir/sleipnir:latest
@@ -596,6 +612,8 @@ spec:
           subPath: dev-data-vscode-server
         - name: files
           mountPath: /home/ubuntu/workspaces
+        - name: gpg-secrets
+          mountPath: /run/secrets/gpg
         - name: sock-docker
           mountPath: /run/docker
       - name: docker
@@ -674,6 +692,10 @@ spec:
       - name: files
         persistentVolumeClaim:
           claimName: sleipnir-skuld
+      - name: gpg-secrets
+        emptyDir:
+          medium: Memory
+          sizeLimit: 1Mi
       - name: kvm
         hostPath:
           path: /dev/kvm
@@ -734,11 +756,16 @@ spec:
           install -d -o ubuntu -g ubuntu -m 0700 /mnt/dev-data-sleipnir;
 
           install -d -o ubuntu -g ubuntu -m 0700 /codex/main /codex/rc;
+
+          install -d -o root -g root -m 0700 /mnt/dev-data-gpg;
+          find /mnt/dev-data-gpg -mindepth 1 -maxdepth 1 -type f -exec install -o root -g root -m 0400 -t /run/secrets/gpg -- {} +;
         volumeMounts:
         - name: codex
           mountPath: /codex
         - name: data
           mountPath: /mnt
+        - name: gpg-secrets
+          mountPath: /run/secrets/gpg
       containers:
       - name: sleipnir
         image: sleipnir/sleipnir:latest
@@ -885,6 +912,8 @@ spec:
           subPath: dev-data-vscode-server
         - name: files
           mountPath: /home/ubuntu/workspaces
+        - name: gpg-secrets
+          mountPath: /run/secrets/gpg
         - name: sock-docker
           mountPath: /run/docker
       - name: docker
@@ -963,6 +992,10 @@ spec:
       - name: files
         persistentVolumeClaim:
           claimName: sleipnir-urd
+      - name: gpg-secrets
+        emptyDir:
+          medium: Memory
+          sizeLimit: 1Mi
       - name: kvm
         hostPath:
           path: /dev/kvm
@@ -1023,11 +1056,16 @@ spec:
           install -d -o ubuntu -g ubuntu -m 0700 /mnt/dev-data-sleipnir;
 
           install -d -o ubuntu -g ubuntu -m 0700 /codex/main /codex/rc;
+
+          install -d -o root -g root -m 0700 /mnt/dev-data-gpg;
+          find /mnt/dev-data-gpg -mindepth 1 -maxdepth 1 -type f -exec install -o root -g root -m 0400 -t /run/secrets/gpg -- {} +;
         volumeMounts:
         - name: codex
           mountPath: /codex
         - name: data
           mountPath: /mnt
+        - name: gpg-secrets
+          mountPath: /run/secrets/gpg
       containers:
       - name: sleipnir
         image: sleipnir/sleipnir:latest
@@ -1174,6 +1212,8 @@ spec:
           subPath: dev-data-vscode-server
         - name: files
           mountPath: /home/ubuntu/workspaces
+        - name: gpg-secrets
+          mountPath: /run/secrets/gpg
         - name: sock-docker
           mountPath: /run/docker
       - name: docker
@@ -1252,6 +1292,10 @@ spec:
       - name: files
         persistentVolumeClaim:
           claimName: sleipnir-verdandi
+      - name: gpg-secrets
+        emptyDir:
+          medium: Memory
+          sizeLimit: 1Mi
       - name: kvm
         hostPath:
           path: /dev/kvm
