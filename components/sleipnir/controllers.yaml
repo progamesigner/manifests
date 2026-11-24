@@ -217,9 +217,9 @@ spec:
         - name: data
           mountPath: /home/ubuntu/.cache/copilot
           subPath: dev-cache-copilot
-        - name: data
+        - name: scratch
           mountPath: /home/ubuntu/.cache/uv
-          subPath: dev-cache-uv
+          subPath: cache-uv
         - name: data
           mountPath: /home/ubuntu/.config/gh
           subPath: dev-conf-github
@@ -314,6 +314,8 @@ spec:
           mountPath: /home/ubuntu/workspaces
         - name: gpg-secrets
           mountPath: /run/secrets/gpg
+        - name: scratch
+          mountPath: /home/ubuntu/scratch
         - name: sock-docker
           mountPath: /run/docker
       - name: docker
@@ -363,6 +365,8 @@ spec:
         - name: modules
           mountPath: /lib/modules
           readOnly: true
+        - name: scratch
+          mountPath: /home/ubuntu/scratch
         - name: sock-docker
           mountPath: /run/docker
       enableServiceLinks: false
@@ -404,6 +408,16 @@ spec:
         hostPath:
           path: /lib/modules
           type: Directory
+      - name: scratch
+        ephemeral:
+          volumeClaimTemplate:
+            spec:
+              accessModes:
+              - ReadWriteOnce
+              resources:
+                requests:
+                  storage: 64Gi
+              storageClassName: ceph-rbd
       - name: sock-docker
         emptyDir:
           medium: Memory
@@ -517,9 +531,9 @@ spec:
         - name: data
           mountPath: /home/ubuntu/.cache/copilot
           subPath: dev-cache-copilot
-        - name: data
+        - name: scratch
           mountPath: /home/ubuntu/.cache/uv
-          subPath: dev-cache-uv
+          subPath: cache-uv
         - name: data
           mountPath: /home/ubuntu/.config/gh
           subPath: dev-conf-github
@@ -614,6 +628,8 @@ spec:
           mountPath: /home/ubuntu/workspaces
         - name: gpg-secrets
           mountPath: /run/secrets/gpg
+        - name: scratch
+          mountPath: /home/ubuntu/scratch
         - name: sock-docker
           mountPath: /run/docker
       - name: docker
@@ -663,6 +679,8 @@ spec:
         - name: modules
           mountPath: /lib/modules
           readOnly: true
+        - name: scratch
+          mountPath: /home/ubuntu/scratch
         - name: sock-docker
           mountPath: /run/docker
       enableServiceLinks: false
@@ -704,6 +722,16 @@ spec:
         hostPath:
           path: /lib/modules
           type: Directory
+      - name: scratch
+        ephemeral:
+          volumeClaimTemplate:
+            spec:
+              accessModes:
+              - ReadWriteOnce
+              resources:
+                requests:
+                  storage: 64Gi
+              storageClassName: ceph-rbd
       - name: sock-docker
         emptyDir:
           medium: Memory
@@ -817,9 +845,9 @@ spec:
         - name: data
           mountPath: /home/ubuntu/.cache/copilot
           subPath: dev-cache-copilot
-        - name: data
+        - name: scratch
           mountPath: /home/ubuntu/.cache/uv
-          subPath: dev-cache-uv
+          subPath: cache-uv
         - name: data
           mountPath: /home/ubuntu/.config/gh
           subPath: dev-conf-github
@@ -914,6 +942,8 @@ spec:
           mountPath: /home/ubuntu/workspaces
         - name: gpg-secrets
           mountPath: /run/secrets/gpg
+        - name: scratch
+          mountPath: /home/ubuntu/scratch
         - name: sock-docker
           mountPath: /run/docker
       - name: docker
@@ -963,6 +993,8 @@ spec:
         - name: modules
           mountPath: /lib/modules
           readOnly: true
+        - name: scratch
+          mountPath: /home/ubuntu/scratch
         - name: sock-docker
           mountPath: /run/docker
       enableServiceLinks: false
@@ -1004,6 +1036,16 @@ spec:
         hostPath:
           path: /lib/modules
           type: Directory
+      - name: scratch
+        ephemeral:
+          volumeClaimTemplate:
+            spec:
+              accessModes:
+              - ReadWriteOnce
+              resources:
+                requests:
+                  storage: 64Gi
+              storageClassName: ceph-rbd
       - name: sock-docker
         emptyDir:
           medium: Memory
@@ -1117,9 +1159,9 @@ spec:
         - name: data
           mountPath: /home/ubuntu/.cache/copilot
           subPath: dev-cache-copilot
-        - name: data
+        - name: scratch
           mountPath: /home/ubuntu/.cache/uv
-          subPath: dev-cache-uv
+          subPath: cache-uv
         - name: data
           mountPath: /home/ubuntu/.config/gh
           subPath: dev-conf-github
@@ -1214,6 +1256,8 @@ spec:
           mountPath: /home/ubuntu/workspaces
         - name: gpg-secrets
           mountPath: /run/secrets/gpg
+        - name: scratch
+          mountPath: /home/ubuntu/scratch
         - name: sock-docker
           mountPath: /run/docker
       - name: docker
@@ -1263,6 +1307,8 @@ spec:
         - name: modules
           mountPath: /lib/modules
           readOnly: true
+        - name: scratch
+          mountPath: /home/ubuntu/scratch
         - name: sock-docker
           mountPath: /run/docker
       enableServiceLinks: false
@@ -1304,6 +1350,16 @@ spec:
         hostPath:
           path: /lib/modules
           type: Directory
+      - name: scratch
+        ephemeral:
+          volumeClaimTemplate:
+            spec:
+              accessModes:
+              - ReadWriteOnce
+              resources:
+                requests:
+                  storage: 64Gi
+              storageClassName: ceph-rbd
       - name: sock-docker
         emptyDir:
           medium: Memory
