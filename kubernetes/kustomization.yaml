@@ -71,5 +71,6 @@ resources:
 - certificates.yaml
 - ingressclasses.yaml
 - networks.yaml
+- runtimeclasses.yaml
 - services.yaml
 - storageclasses.yaml
