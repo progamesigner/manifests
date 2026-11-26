@@ -1,6 +1,11 @@
 ---
 apiVersion: kustomize.config.k8s.io/v1alpha1
 kind: Component
+configMapGenerator:
+- name: browserless
+  files:
+  - webgl-manifest.json=extensions/webgl/manifest.json
+  - webgl-spoof.js=extensions/webgl/spoof.js
 resources:
 - controllers.yaml
 secretGenerator:
