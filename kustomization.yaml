@@ -91,7 +91,7 @@ images:
   newTag: 10.6.109-ls156
 - name: windmill/windmill-extra
   newName: ghcr.io/windmill-labs/windmill-extra
-  newTag: 1.885.0
+  newTag: 1.886.0
 - name: windmill/windmill-server
   newName: ghcr.io/windmill-labs/windmill
   newTag: 1.885.0
