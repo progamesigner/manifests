@@ -34,6 +34,31 @@ spec:
       containers:
       - name: cloudflare-warp
         image: network/cloudflare-warp:latest
+        env:
+        - name: GOST_ARGS
+          value: -L :1080 -L :8080
+        - name: WARP_SLEEP
+          value: '2'
+        livenessProbe:
+          exec:
+            command:
+            - sh
+            - -c
+            - curl -fsS --max-time 5 -x http://127.0.0.1:8080 https://www.cloudflare.com/cdn-cgi/trace | grep -qE "warp=(on|plus)"
+          failureThreshold: 3
+          initialDelaySeconds: 20
+          periodSeconds: 30
+          timeoutSeconds: 10
+        readinessProbe:
+          exec:
+            command:
+            - sh
+            - -c
+            - curl -fsS --max-time 5 -x http://127.0.0.1:8080 https://www.cloudflare.com/cdn-cgi/trace | grep -qE "warp=(on|plus)"
+          failureThreshold: 3
+          initialDelaySeconds: 10
+          periodSeconds: 15
+          timeoutSeconds: 10
         ports:
         - name: socks
           containerPort: 1080
@@ -42,16 +67,13 @@ spec:
         resources:
           limits:
             cpu: 300m
-            memory: 256Mi
+            memory: 512Mi
           requests:
             cpu: 100m
             memory: 64Mi
         securityContext:
-          allowPrivilegeEscalation: false
           capabilities:
             add:
             - NET_ADMIN
-            drop:
-            - ALL
       enableServiceLinks: false
       serviceAccountName: default
