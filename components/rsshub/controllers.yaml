@@ -36,10 +36,14 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: spec.nodeName
+        - name: PROXY_STRATEGY
+          value: on_retry
         - name: PROXY_URI
           value: http://proxy.default.svc.cluster.local:8080
+        - name: PROXY_URL_REGEX
+          value: ^(?!https?://([^/]+\.)?(bilibili\.com|douyin\.com)/)
         - name: PLAYWRIGHT_CDP_ENDPOINT
-          value: ws://browserless.default.svc.cluster.local:3000?token=default&&blockAds=true&launch={"args":["--window-size=1920,1080","--load-extension=/opt/browserless/extensions/webgl","--use-angle=swiftshader"],"stealth":true}
+          value: ws://browserless.default.svc.cluster.local:3000?token=default&blockAds=true&launch={"args":["--window-size=1920,1080","--load-extension=/opt/browserless/extensions/webgl","--use-angle=swiftshader"],"stealth":true}
         - name: REDIS_URL
           value: redis://redis.default.svc.cluster.local:6379
         envFrom:
