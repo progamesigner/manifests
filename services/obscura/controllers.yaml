@@ -1,0 +1,39 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/component: obscura
+    app.kubernetes.io/name: obscura
+    app.kubernetes.io/part-of: services
+  name: obscura
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: obscura
+      app.kubernetes.io/name: obscura
+      app.kubernetes.io/part-of: services
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/component: obscura
+        app.kubernetes.io/name: obscura
+        app.kubernetes.io/part-of: services
+    spec:
+      automountServiceAccountToken: false
+      containers:
+      - name: obscura
+        image: obscura/obscura:latest
+        env:
+        - name: OBSCURA_CDP_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: obscura
+              key: OBSCURA_CDP_TOKEN
+        ports:
+        - name: http
+          containerPort: 9222
+          protocol: TCP
+      enableServiceLinks: false
+      serviceAccountName: default
